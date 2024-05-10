@@ -20,7 +20,7 @@ public class DampenRune extends ModifierRuneItem {
 
     @Override
     public AbstractSpellEntity addModifiersToSpellEntity(AbstractSpellEntity spell) {
-        spell.power -= spell.getDefaultPower();
+        spell.power -= 4.0F;
         return spell;
     }
 

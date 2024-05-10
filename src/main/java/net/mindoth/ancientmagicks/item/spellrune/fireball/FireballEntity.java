@@ -42,7 +42,7 @@ public class FireballEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultSpeed() {
-        return 1.0F;
+        return 0.8F;
     }
 
     @Override

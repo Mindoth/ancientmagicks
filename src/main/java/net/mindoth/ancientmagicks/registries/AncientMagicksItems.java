@@ -43,32 +43,32 @@ public class AncientMagicksItems {
 
 
     public static final RegistryObject<Item> WITCH_SPARK_RUNE = ITEMS.register("witch_spark_rune",
-            () -> new WitchSparkRune(new Item.Properties(), 4));
+            () -> new WitchSparkRune(new Item.Properties(), 20));
 
     public static final RegistryObject<Item> FIREBALL_RUNE = ITEMS.register("fireball_rune",
-            () -> new FireballRune(new Item.Properties(), 20));
+            () -> new FireballRune(new Item.Properties(), 40));
 
     //TODO: Implement strength runes into this, maybe?
     public static final RegistryObject<Item> TELEKINETIC_GRAB_RUNE = ITEMS.register("telekinetic_grab_rune",
-            () -> new TelekineticGrabRune(new Item.Properties(), 10));
+            () -> new TelekineticGrabRune(new Item.Properties(), 20));
 
     //TODO: Recolor the earth on the rune texture
     public static final RegistryObject<Item> COLLAPSE_RUNE = ITEMS.register("collapse_rune",
             () -> new CollapseRune(new Item.Properties(), 120));
 
     public static final RegistryObject<Item> FLIGHT_RUNE = ITEMS.register("flight_rune",
-            () -> new FlightRune(new Item.Properties(), 80));
+            () -> new FlightRune(new Item.Properties(), 120));
 
     //TODO: Implement blockPierce rune for DynamiteEntity to go through ground?
     public static final RegistryObject<Item> DYNAMITE_RUNE = ITEMS.register("dynamite_rune",
-            () -> new DynamiteRune(new Item.Properties(), 40));
+            () -> new DynamiteRune(new Item.Properties(), 80));
 
     //TODO: Re-balance health and damage added by runes
     public static final RegistryObject<Item> RAISE_DEAD_RUNE = ITEMS.register("raise_dead_rune",
-            () -> new RaiseDeadRune(new Item.Properties(), 80));
+            () -> new RaiseDeadRune(new Item.Properties(), 120));
 
     public static final RegistryObject<Item> ENDER_BOLT_RUNE = ITEMS.register("ender_bolt_rune",
-            () -> new EnderBoltRune(new Item.Properties(), 40));
+            () -> new EnderBoltRune(new Item.Properties(), 60));
 
     public static final RegistryObject<Item> BLACK_HOLE_RUNE = ITEMS.register("black_hole_rune",
             () -> new BlackHoleRune(new Item.Properties(), 120));
@@ -78,7 +78,7 @@ public class AncientMagicksItems {
             () -> new AmplifyRune(new Item.Properties(), 5));
 
     public static final RegistryObject<Item> DAMPEN_RUNE = ITEMS.register("dampen_rune",
-            () -> new DampenRune(new Item.Properties(), -5));
+            () -> new DampenRune(new Item.Properties(), 0));
 
     public static final RegistryObject<Item> QUICKEN_RUNE = ITEMS.register("quicken_rune",
             () -> new QuickenRune(new Item.Properties(), 5));
@@ -92,15 +92,6 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> DIMINISH_RUNE = ITEMS.register("diminish_rune",
             () -> new DiminishRune(new Item.Properties(), -5));
 
-    public static final RegistryObject<Item> HOMING_RUNE = ITEMS.register("homing_rune",
-            () -> new HomingRune(new Item.Properties(), 20));
-
-    public static final RegistryObject<Item> ENEMY_PIERCE_RUNE = ITEMS.register("enemy_pierce_rune",
-            () -> new EnemyPierceRune(new Item.Properties(), 10));
-
-    public static final RegistryObject<Item> BLOCK_PIERCE_RUNE = ITEMS.register("block_pierce_rune",
-            () -> new BlockPierceRune(new Item.Properties(), 10));
-
     public static final RegistryObject<Item> REACH_RUNE = ITEMS.register("reach_rune",
             () -> new ReachRune(new Item.Properties(), 5));
 
@@ -112,4 +103,13 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> COMPACT_RUNE = ITEMS.register("compact_rune",
             () -> new CompactRune(new Item.Properties(), 0));
+
+    public static final RegistryObject<Item> ENEMY_PIERCE_RUNE = ITEMS.register("enemy_pierce_rune",
+            () -> new EnemyPierceRune(new Item.Properties(), 10));
+
+    public static final RegistryObject<Item> BLOCK_PIERCE_RUNE = ITEMS.register("block_pierce_rune",
+            () -> new BlockPierceRune(new Item.Properties(), 10));
+
+    public static final RegistryObject<Item> HOMING_RUNE = ITEMS.register("homing_rune",
+            () -> new HomingRune(new Item.Properties(), 20));
 }

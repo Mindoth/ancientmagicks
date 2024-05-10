@@ -14,6 +14,6 @@ public class AncientMagicksGroup extends ItemGroup {
 
     @Override
     public ItemStack makeIcon() {
-        return new ItemStack(AncientMagicksItems.SPELL_TABLET.get());
+        return new ItemStack(AncientMagicksItems.BEGINNER_STAFF.get());
     }
 }

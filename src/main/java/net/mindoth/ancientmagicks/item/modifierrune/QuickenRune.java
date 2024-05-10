@@ -20,7 +20,7 @@ public class QuickenRune extends ModifierRuneItem {
 
     @Override
     public AbstractSpellEntity addModifiersToSpellEntity(AbstractSpellEntity spell) {
-        spell.speed += 0.4;
+        spell.speed += 0.4F;
         return spell;
     }
 

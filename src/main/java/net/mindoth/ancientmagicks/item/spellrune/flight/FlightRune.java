@@ -36,13 +36,15 @@ public class FlightRune extends SpellRuneItem {
         else if ( valueMap.get("life") < 0 ) life /= (-1 * valueMap.get("life") + 1);
         if ( valueMap.get("size") <= 0 ) valueMap.put("size", 1.0F);
 
-        LivingEntity target = owner;
-        if ( (float)caster.getEyePosition(1.0F).distanceTo(center) != 0 ) {
-            target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, (float)caster.getEyePosition(1).distanceTo(center), 1, caster == owner);
+        LivingEntity target;
+        if ( caster == owner ) {
+            if ( (float)caster.getEyePosition(1.0F).distanceTo(center) != 0 ) {
+                target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, (float)caster.getEyePosition(1).distanceTo(center), 1, caster == owner);
+            }
+            else target = owner;
         }
-        if ( caster != owner ) {
-            target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, valueMap.get("size"), null);
-        }
+        else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, valueMap.get("size"), null);
+
         if ( target instanceof PlayerEntity ) {
             target.addEffect(new EffectInstance(AncientMagicksEffects.FLIGHT.get(), life, 0, false, false));
         }

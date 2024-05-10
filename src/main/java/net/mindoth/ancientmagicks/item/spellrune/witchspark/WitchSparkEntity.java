@@ -31,7 +31,7 @@ public class WitchSparkEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultSpeed() {
-        return 1.6F;
+        return 0.8F;
     }
 
     @Override

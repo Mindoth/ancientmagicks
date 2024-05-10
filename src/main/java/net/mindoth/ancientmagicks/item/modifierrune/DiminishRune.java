@@ -18,7 +18,7 @@ public class DiminishRune extends ModifierRuneItem {
 
     @Override
     public AbstractSpellEntity addModifiersToSpellEntity(AbstractSpellEntity spell) {
-        spell.life *= 0.5F;
+        spell.life -= 10.0F;
         return spell;
     }
 }
