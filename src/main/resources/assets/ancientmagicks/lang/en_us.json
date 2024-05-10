@@ -1,0 +1,48 @@
+{
+  "itemGroup.ancientmagicks_tab": "Ancient Magicks",
+
+
+  "key.category.ancientmagicks": "Ancient Magicks",
+  "key.ancientmagicks.spell_selector": "Spell Selector",
+
+
+  "item.ancientmagicks.spell_tablet": "Spell Tablet",
+  "item.ancientmagicks.beginner_wand": "Beginner Wand",
+  "item.ancientmagicks.beginner_staff": "Beginner Staff",
+
+  "item.ancientmagicks.empty_rune": "Empty Rune",
+
+  "item.ancientmagicks.witch_spark_rune": "Witch Spark Rune",
+  "item.ancientmagicks.fireball_rune": "Fireball Rune",
+  "item.ancientmagicks.telekinetic_grab_rune": "Telekinetic Grab Rune",
+  "item.ancientmagicks.collapse_rune": "Collapse Rune",
+  "item.ancientmagicks.flight_rune": "Flight Rune",
+  "item.ancientmagicks.dynamite_rune": "Dynamite Rune",
+  "item.ancientmagicks.raise_dead_rune": "Raise Dead Rune",
+  "item.ancientmagicks.ender_bolt_rune": "Ender Bolt Rune",
+  "item.ancientmagicks.black_hole_rune": "Black Hole Rune",
+
+  "item.ancientmagicks.amplify_rune": "Amplify Rune",
+  "item.ancientmagicks.dampen_rune": "Dampen Rune",
+  "item.ancientmagicks.quicken_rune": "Quicken Rune",
+  "item.ancientmagicks.slacken_rune": "Slacken Rune",
+  "item.ancientmagicks.extend_rune": "Extend Rune",
+  "item.ancientmagicks.diminish_rune": "Diminish Rune",
+  "item.ancientmagicks.homing_rune": "Homing Rune",
+  "item.ancientmagicks.enemy_pierce_rune": "Enemy Pierce Rune",
+  "item.ancientmagicks.block_pierce_rune": "Block Pierce Rune",
+  "item.ancientmagicks.reach_rune": "Reach Rune",
+  "item.ancientmagicks.abridge_rune": "Abridge Rune",
+  "item.ancientmagicks.expand_rune": "Expand Rune",
+  "item.ancientmagicks.compact_rune": "Compact Rune",
+
+
+  "effect.ancientmagicks.flight": "Flight",
+
+
+  "entity.ancientmagicks.skeleton_minion": "Skeleton Minion",
+
+
+  "tooltip.ancientmagicks.empty": "Tinker",
+  "tooltip.ancientmagicks.rune_cooldown": "\u00A79Spell Cooldown\u00A7r"
+}
