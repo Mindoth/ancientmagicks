@@ -33,6 +33,11 @@ public class BlackHoleEntity extends AbstractSpellEntity {
     }
 
     @Override
+    protected float getGravity() {
+        return 0.0F;
+    }
+
+    @Override
     public float getDefaultPower() {
         return 0.0F;
     }
@@ -84,7 +89,7 @@ public class BlackHoleEntity extends AbstractSpellEntity {
         for ( Entity target : ShadowEvents.getEntitiesAround(this, this.size, this.size, this.size) ) {
             if ( SpellRuneItem.isPushable(target) ) {
                 target.push((point.x - target.getX()) / 6, (point.y - target.getY()) / 6, (point.z - target.getZ()) / 6);
-                if ( target.getBoundingBox().intersects(this.getBoundingBox()) && !(target instanceof LivingEntity) ) target.remove();
+                if ( target.getBoundingBox().intersects(this.getBoundingBox().inflate(this.size, this.size, this.size)) && !(target instanceof LivingEntity) ) target.remove();
             }
         }
     }
