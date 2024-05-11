@@ -1,8 +1,9 @@
-package net.mindoth.ancientmagicks.item.spellrune.tornado;
+package net.mindoth.ancientmagicks.item.spellrune.slimeball;
 
 import net.mindoth.ancientmagicks.item.modifierrune.ModifierRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.item.spellrune.witchspark.WitchSparkEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.vector.Vector3d;
@@ -10,9 +11,9 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class TornadoRune {
+public class SlimeballRune extends SpellRuneItem {
 
-    /*public TornadoRune(Properties pProperties, int cooldown) {
+    public SlimeballRune(Properties pProperties, int cooldown) {
         super(pProperties, cooldown);
     }
 
@@ -22,14 +23,13 @@ public class TornadoRune {
         int adjuster;
         if ( caster != owner ) adjuster = -1;
         else adjuster = 1;
-        playMagicSummonSound(level, center);
-        AbstractSpellEntity projectile = new TornadoEntity(level, owner, caster, this);
-        projectile.setNoGravity(true);
+        playMagicShootSound(level, center);
+        AbstractSpellEntity projectile = new SlimeballEntity(level, owner, caster, this);
 
         for ( ModifierRuneItem rune : modifierList ) rune.addModifiersToSpellEntity(projectile);
+        projectile.setColor(AbstractSpellEntity.getSpellColor("green"), 0.8F);
         projectile.setPos(center.x, center.y, center.z);
         projectile.shootFromRotation(caster, xRot * adjuster, yRot * adjuster, 0F, projectile.speed, 1.0F);
-        projectile.setDeltaMovement(projectile.getDeltaMovement().x, 0, projectile.getDeltaMovement().z);
         level.addFreshEntity(projectile);
-    }*/
+    }
 }

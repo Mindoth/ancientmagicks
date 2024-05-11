@@ -14,6 +14,7 @@ import net.mindoth.ancientmagicks.item.spellrune.enderbolt.EnderBoltRune;
 import net.mindoth.ancientmagicks.item.spellrune.fireball.FireballRune;
 import net.mindoth.ancientmagicks.item.spellrune.flight.FlightRune;
 import net.mindoth.ancientmagicks.item.spellrune.raisedead.RaiseDeadRune;
+import net.mindoth.ancientmagicks.item.spellrune.slimeball.SlimeballRune;
 import net.mindoth.ancientmagicks.item.spellrune.telekineticgrab.TelekineticGrabRune;
 import net.mindoth.ancientmagicks.item.spellrune.tornado.TornadoRune;
 import net.mindoth.ancientmagicks.item.spellrune.windburst.WindBurstRune;
@@ -51,6 +52,7 @@ public class AncientMagicksItems {
             () -> new FireballRune(new Item.Properties(), 40));
 
     //TODO: Implement strength runes into this, maybe?
+    //TODO: Maybe disarm weakened enemies?
     public static final RegistryObject<Item> TELEKINETIC_GRAB_RUNE = ITEMS.register("telekinetic_grab_rune",
             () -> new TelekineticGrabRune(new Item.Properties(), 20));
 
@@ -78,8 +80,8 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> WIND_BURST_RUNE = ITEMS.register("wind_burst_rune",
             () -> new WindBurstRune(new Item.Properties(), 20));
 
-    public static final RegistryObject<Item> TORNADO_RUNE = ITEMS.register("tornado_rune",
-            () -> new TornadoRune(new Item.Properties(), 80));
+    public static final RegistryObject<Item> SLIMEBALL_RUNE = ITEMS.register("slimeball_rune",
+            () -> new SlimeballRune(new Item.Properties(), 20));
 
 
     public static final RegistryObject<Item> AMPLIFY_RUNE = ITEMS.register("amplify_rune",
@@ -118,6 +120,7 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> BLOCK_PIERCE_RUNE = ITEMS.register("block_pierce_rune",
             () -> new BlockPierceRune(new Item.Properties(), 10));
 
+    //TODO: check for line of sight if blockpiercing is 0
     public static final RegistryObject<Item> HOMING_RUNE = ITEMS.register("homing_rune",
             () -> new HomingRune(new Item.Properties(), 20));
 }

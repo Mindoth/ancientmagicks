@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item.spellrune.flight;
 
 import net.mindoth.ancientmagicks.item.modifierrune.ModifierRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
+import net.mindoth.ancientmagicks.item.spellrune.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.entity.Entity;
@@ -31,6 +32,7 @@ public class FlightRune extends SpellRuneItem {
         int life = 200;
         valueMap.put("life", 0.0F);
         valueMap.put("size", 1.0F);
+        valueMap.put("blockPierce", 0.0F);
         for ( ModifierRuneItem rune : modifierList ) rune.addModifiersToValues(valueMap);
         if ( valueMap.get("life") > 0 ) life *= valueMap.get("life");
         else if ( valueMap.get("life") < 0 ) life /= (-1 * valueMap.get("life") + 1);
@@ -39,13 +41,13 @@ public class FlightRune extends SpellRuneItem {
         LivingEntity target;
         if ( caster == owner ) {
             if ( (float)casterPos.distanceTo(center) != 0 ) {
-                target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, (float)casterPos.distanceTo(center), 1, caster == owner);
+                target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, (float)casterPos.distanceTo(center), 0.25F, caster == owner, valueMap.get("blockPierce") == 0);
             }
             else target = owner;
         }
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, valueMap.get("size"), null);
 
-        if ( target instanceof PlayerEntity ) {
+        if ( target instanceof PlayerEntity && isAlly(owner, target)) {
             target.addEffect(new EffectInstance(AncientMagicksEffects.FLIGHT.get(), life, 0, false, false));
         }
         else {

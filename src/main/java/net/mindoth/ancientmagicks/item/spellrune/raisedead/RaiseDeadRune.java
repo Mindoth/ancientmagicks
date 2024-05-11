@@ -31,6 +31,7 @@ public class RaiseDeadRune extends SpellRuneItem {
         MobEntity minion = new SkeletonMinionEntity(level, owner);
 
         valueMap.put("life", 0.0F);
+        valueMap.put("blockPierce", 0.0F);
         for ( ModifierRuneItem rune : modifierList ) rune.addModifiersToValues(valueMap);
 
         float life = 600.0F;
@@ -44,7 +45,7 @@ public class RaiseDeadRune extends SpellRuneItem {
         for ( ModifierRuneItem rune : modifierList ) rune.addModifiersToMinionEntity(minion);
         minion.addEffect(new EffectInstance(AncientMagicksEffects.SKELETON_TIMER.get(), (int)life, 0, false, false, true));
 
-        minion.moveTo(ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, true, true, true));
+        minion.moveTo(ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, true, true, valueMap.get("blockPierce") == 0));
         minion.finalizeSpawn((ServerWorld)level, level.getCurrentDifficultyAt(minion.blockPosition()), SpawnReason.MOB_SUMMONED, null, null);
         level.addFreshEntity(minion);
         minion.spawnAnim();

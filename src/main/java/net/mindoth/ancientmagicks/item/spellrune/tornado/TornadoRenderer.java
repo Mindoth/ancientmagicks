@@ -9,9 +9,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 
-public class TornadoRenderer extends EntityRenderer<TornadoEntity> {
+public class TornadoRenderer {
 
-    public TornadoRenderer(EntityRendererManager renderManager) {
+    /*public TornadoRenderer(EntityRendererManager renderManager) {
         super(renderManager);
     }
 
@@ -28,5 +28,5 @@ public class TornadoRenderer extends EntityRenderer<TornadoEntity> {
         matrixStackIn.scale(1.0F, 1.0F, 1.0F);
         matrixStackIn.translate(0, 0, 0);
         matrixStackIn.popPose();
-    }
+    }*/
 }

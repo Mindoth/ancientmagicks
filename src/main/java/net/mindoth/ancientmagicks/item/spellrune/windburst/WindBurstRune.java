@@ -30,13 +30,14 @@ public class WindBurstRune extends SpellRuneItem {
 
         valueMap.put("size", 1.0F);
         valueMap.put("power", 1.0F);
+        valueMap.put("blockPierce", 0.0F);
         float range = 3.5F + (float)casterPos.distanceTo(center);
         for ( ModifierRuneItem rune : modifierList ) rune.addModifiersToValues(valueMap);
         if ( valueMap.get("size") <= 0 ) valueMap.put("size", 1.0F);
         float size = 0.5F * valueMap.get("size");
 
-        Entity target = getPointedPushableEntity(level, caster, range, 0.25F, caster == owner, true);
-        Vector3d targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, caster == owner, false, true, true);
+        Entity target = getPointedPushableEntity(level, caster, range, 0.25F, caster == owner, valueMap.get("blockPierce") == 0);
+        Vector3d targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, caster == owner, false, true, valueMap.get("blockPierce") == 0);
         if ( target != caster && isPushable(target) ) {
             List<Entity> pushEntity = ShadowEvents.getEntitiesAround(target, size * 0.25F, size * 0.25F, size * 0.25F);
             pushEntity.add(target);
@@ -48,7 +49,7 @@ public class WindBurstRune extends SpellRuneItem {
                 }
             }
         }
-        Vector3d particlePoint = ShadowEvents.getPoint(level, caster, range, 0.25F, caster == owner, false, true, true);
+        Vector3d particlePoint = ShadowEvents.getPoint(level, caster, range, 0.25F, caster == owner, false, true, valueMap.get("blockPierce") == 0);
         addParticles(level, casterPos, particlePoint);
     }
 

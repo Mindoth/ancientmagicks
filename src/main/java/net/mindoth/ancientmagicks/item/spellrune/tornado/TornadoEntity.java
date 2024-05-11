@@ -22,9 +22,9 @@ import net.minecraftforge.fml.network.FMLPlayMessages;
 
 import java.util.List;
 
-public class TornadoEntity extends AbstractSpellEntity {
+public class TornadoEntity {
 
-    public TornadoEntity(FMLPlayMessages.SpawnEntity spawnEntity, World level) {
+    /*public TornadoEntity(FMLPlayMessages.SpawnEntity spawnEntity, World level) {
         this(AncientMagicksEntities.TORNADO.get(), level);
     }
 
@@ -77,7 +77,7 @@ public class TornadoEntity extends AbstractSpellEntity {
                 target.push((center.x - target.getX()) / 6, (center.y - target.getY()) / 6, (center.z - target.getZ()) / 6);
             }
         }
-        /*int lines = 6;
+        int lines = 6;
         int angle = this.tickCount * lines;
         int maxHeight = (int)this.size;
         double maxRadius = this.size * 0.5D;
@@ -92,7 +92,7 @@ public class TornadoEntity extends AbstractSpellEntity {
                 level.sendParticles(new BlockParticleData(ParticleTypes.BLOCK, blockUnder(this)), posX + x, posY + y, posZ + z,
                         0, this.getDeltaMovement().x, 10, this.getDeltaMovement().z, 1);
             }
-        }*/
+        }
         double posX = center.x;
         double posY = center.y - 1;
         double posZ = center.z;
@@ -142,5 +142,5 @@ public class TornadoEntity extends AbstractSpellEntity {
             }
         }
         return blockpos;
-    }
+    }*/
 }

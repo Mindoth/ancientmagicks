@@ -47,6 +47,6 @@ description='''
 [[dependencies.ancientmagicks]]
     modId="shadowizardlib"
     mandatory=true
-    versionRange="[1.16.5-1.1.4,)"
+    versionRange="[1.16.5-1.1.5,)"
     ordering="NONE"
     side="BOTH"

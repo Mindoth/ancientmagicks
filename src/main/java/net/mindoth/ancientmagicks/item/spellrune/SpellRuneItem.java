@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class SpellRuneItem extends RuneItem {
@@ -15,5 +16,9 @@ public class SpellRuneItem extends RuneItem {
 
     public static boolean isPushable(Entity entity) {
         return ( (entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof TNTEntity) && !(entity instanceof PlayerEntity) );
+    }
+
+    public static boolean isAlly(LivingEntity owner, LivingEntity target) {
+        return target == owner || target.isAlliedTo(owner) || (target instanceof TameableEntity && ((TameableEntity)target).isOwnedBy(owner));
     }
 }
