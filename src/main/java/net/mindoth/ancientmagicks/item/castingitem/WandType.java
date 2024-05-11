@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.weapon;
+package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;

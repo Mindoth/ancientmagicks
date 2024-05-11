@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.weapon;
+package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.client.gui.inventory.WandData;
 import net.minecraft.entity.LivingEntity;

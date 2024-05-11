@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.client.gui.inventory;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.weapon.WandType;
+import net.mindoth.ancientmagicks.item.castingitem.WandType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;

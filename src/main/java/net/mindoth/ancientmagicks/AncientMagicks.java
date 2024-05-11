@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.spellrune.raisedead.SkeletonMinionEntity;
-import net.mindoth.ancientmagicks.item.weapon.CastingItem;
+import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.AncientMagicksContainers;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;

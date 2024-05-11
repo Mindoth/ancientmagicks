@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.network;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandData;
-import net.mindoth.ancientmagicks.item.weapon.CastingItem;
+import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;

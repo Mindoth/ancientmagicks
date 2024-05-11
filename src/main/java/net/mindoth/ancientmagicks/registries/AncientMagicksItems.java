@@ -11,11 +11,12 @@ import net.mindoth.ancientmagicks.item.spellrune.fireball.FireballRune;
 import net.mindoth.ancientmagicks.item.spellrune.flight.FlightRune;
 import net.mindoth.ancientmagicks.item.spellrune.raisedead.RaiseDeadRune;
 import net.mindoth.ancientmagicks.item.spellrune.telekineticgrab.TelekineticGrabRune;
+import net.mindoth.ancientmagicks.item.spellrune.windburst.WindBurstRune;
 import net.mindoth.ancientmagicks.item.spellrune.witchspark.WitchSparkRune;
-import net.mindoth.ancientmagicks.item.weapon.SpellTabletItem;
-import net.mindoth.ancientmagicks.item.weapon.StaffItem;
-import net.mindoth.ancientmagicks.item.weapon.WandItem;
-import net.mindoth.ancientmagicks.item.weapon.WandType;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
+import net.mindoth.ancientmagicks.item.castingitem.WandItem;
+import net.mindoth.ancientmagicks.item.castingitem.WandType;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -72,6 +73,9 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> BLACK_HOLE_RUNE = ITEMS.register("black_hole_rune",
             () -> new BlackHoleRune(new Item.Properties(), 120));
+
+    public static final RegistryObject<Item> WIND_BURST_RUNE = ITEMS.register("wind_burst_rune",
+            () -> new WindBurstRune(new Item.Properties(), 20));
 
 
     public static final RegistryObject<Item> AMPLIFY_RUNE = ITEMS.register("amplify_rune",

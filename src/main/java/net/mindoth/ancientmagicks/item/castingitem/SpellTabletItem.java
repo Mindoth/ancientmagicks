@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.weapon;
+package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

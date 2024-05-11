@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.weapon;
+package net.mindoth.ancientmagicks.item.castingitem;
 
 public class WandItem extends CastingItem {
 

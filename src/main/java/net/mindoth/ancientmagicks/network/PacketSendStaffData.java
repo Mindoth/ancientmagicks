@@ -1,8 +1,8 @@
 package net.mindoth.ancientmagicks.network;
 
 import net.mindoth.ancientmagicks.client.gui.inventory.WandData;
-import net.mindoth.ancientmagicks.item.weapon.CastingItem;
-import net.mindoth.ancientmagicks.item.weapon.WandItem;
+import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.castingitem.WandItem;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;

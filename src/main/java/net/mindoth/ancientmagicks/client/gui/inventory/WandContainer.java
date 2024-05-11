@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.client.gui.inventory;
 
-import net.mindoth.ancientmagicks.item.weapon.WandType;
+import net.mindoth.ancientmagicks.item.castingitem.WandType;
 import net.mindoth.ancientmagicks.registries.AncientMagicksContainers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

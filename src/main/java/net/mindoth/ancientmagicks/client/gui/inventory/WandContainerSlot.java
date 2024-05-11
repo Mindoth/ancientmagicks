@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.client.gui.inventory;
 
 import net.mindoth.ancientmagicks.item.RuneItem;
-import net.mindoth.ancientmagicks.item.weapon.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;

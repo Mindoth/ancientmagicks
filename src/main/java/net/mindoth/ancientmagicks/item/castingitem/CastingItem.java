@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.weapon;
+package net.mindoth.ancientmagicks.item.castingitem;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
@@ -80,6 +80,8 @@ public class CastingItem extends Item {
         if ( caster == owner && owner.getCooldowns().isOnCooldown(wand.getItem()) && !owner.isUsingItem() ) return;
         boolean hasTablet = false;
         ItemStack tabletItem = null;
+
+        //Checking if player has EMPTY tablet in either hand
         if ( caster == owner && !(wand.getItem() instanceof SpellTabletItem)
                 && (owner.getItemBySlot(EquipmentSlotType.OFFHAND).getItem() instanceof SpellTabletItem
                 || owner.getItemBySlot(EquipmentSlotType.MAINHAND).getItem() instanceof SpellTabletItem) ) {
@@ -89,6 +91,8 @@ public class CastingItem extends Item {
             else tabletItem = owner.getItemBySlot(EquipmentSlotType.MAINHAND);
             if ( !CastingItem.isValidCastingItem(tabletItem) ) hasTablet = true;
         }
+
+        //If not then casting normally
         if ( !hasTablet ) {
             int spellRunesToCast = 1;
             List<ModifierRuneItem> modifierList = Lists.newArrayList();
@@ -109,14 +113,20 @@ public class CastingItem extends Item {
                     }
                     distance = Math.max(0, distance);
                     if ( distance > 0 ) {
+
+                        //Adjusters are there to flip rotation if the caster is not a LivingEntity, don't ask why this works like this...
                         int adjuster = 1;
                         if ( caster != owner ) adjuster = -1;
                         Vector3d direction = ShadowEvents.calculateViewVector(xRot * adjuster, yRot * adjuster).normalize();
                         direction = direction.multiply(distance, distance, distance);
                         center = caster.getEyePosition(1).add(direction);
                     }
-                    else center = new Vector3d(ShadowEvents.getEntityCenter(caster).x, caster.getEyeY(), ShadowEvents.getEntityCenter(caster).z);
+                    else center = caster.getEyePosition(1.0F);
+
+                    //This actually casts the given Spell Rune
                     rune.shootMagic(owner, caster, center, xRot, yRot, useTime, modifierList);
+
+                    //These are cooldown and channeling related handling
                     if ( caster == owner ) addCastingCooldown(owner, spellCooldown);
                     modifierList.clear();
                     if ( spellCooldown > 2 ) owner.stopUsingItem();
@@ -129,6 +139,7 @@ public class CastingItem extends Item {
             }
         }
         else {
+            //If player has EMPTY tablet in hand, populate its slots
             if ( !wandList.isEmpty() ) {
                 ItemStack spellTablet = new ItemStack(tabletItem.getItem());
                 if ( !owner.isCreative() ) tabletItem.shrink(1);

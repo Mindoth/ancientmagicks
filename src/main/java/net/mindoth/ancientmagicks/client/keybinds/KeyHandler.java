@@ -2,9 +2,9 @@ package net.mindoth.ancientmagicks.client.keybinds;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.client.gui.GuiSpellWheel;
-import net.mindoth.ancientmagicks.item.weapon.CastingItem;
-import net.mindoth.ancientmagicks.item.weapon.StaffItem;
-import net.mindoth.ancientmagicks.item.weapon.WandItem;
+import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
+import net.mindoth.ancientmagicks.item.castingitem.WandItem;
 import net.mindoth.ancientmagicks.network.PacketOpenWandGui;
 import net.mindoth.ancientmagicks.network.PacketSendStaffData;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;

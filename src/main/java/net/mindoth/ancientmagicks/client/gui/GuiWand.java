@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks.client.gui;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandContainer;
-import net.mindoth.ancientmagicks.item.weapon.WandType;
+import net.mindoth.ancientmagicks.item.castingitem.WandType;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
