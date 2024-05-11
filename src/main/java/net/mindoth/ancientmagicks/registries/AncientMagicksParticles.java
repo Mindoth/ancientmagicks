@@ -1,7 +1,9 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.client.particle.*;
+import net.mindoth.ancientmagicks.client.particle.ember.ColoredDynamicTypeData;
+import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleData;
+import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.particles.ParticleType;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;

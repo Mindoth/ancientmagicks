@@ -1,8 +1,8 @@
 package net.mindoth.ancientmagicks.item.spellrune.abstractspell;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.client.particle.EmberParticleData;
-import net.mindoth.ancientmagicks.client.particle.ParticleColor;
+import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleData;
+import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.block.BlockState;

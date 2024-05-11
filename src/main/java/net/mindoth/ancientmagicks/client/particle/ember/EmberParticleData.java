@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.client.particle;
+package net.mindoth.ancientmagicks.client.particle.ember;
 
 import net.mindoth.ancientmagicks.registries.AncientMagicksParticles;
 import net.minecraft.client.particle.IAnimatedSprite;

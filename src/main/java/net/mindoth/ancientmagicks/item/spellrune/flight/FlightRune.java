@@ -24,7 +24,7 @@ public class FlightRune extends SpellRuneItem {
     @Override
     public void shootMagic(PlayerEntity owner, Entity caster, Vector3d center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
         World level = caster.level;
-        Vector3d casterPos = ShadowEvents.getEntityCenter(caster);
+        Vector3d casterPos = caster.getEyePosition(1.0F);
         playMagicSound(level, casterPos);
         HashMap<String, Float> valueMap = new HashMap<>();
 
@@ -38,8 +38,8 @@ public class FlightRune extends SpellRuneItem {
 
         LivingEntity target;
         if ( caster == owner ) {
-            if ( (float)caster.getEyePosition(1.0F).distanceTo(center) != 0 ) {
-                target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, (float)caster.getEyePosition(1).distanceTo(center), 1, caster == owner);
+            if ( (float)casterPos.distanceTo(center) != 0 ) {
+                target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, (float)casterPos.distanceTo(center), 1, caster == owner);
             }
             else target = owner;
         }

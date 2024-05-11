@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.network;
 
-import net.mindoth.ancientmagicks.client.particle.EmberParticleData;
-import net.mindoth.ancientmagicks.client.particle.ParticleColor;
+import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleData;
+import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;

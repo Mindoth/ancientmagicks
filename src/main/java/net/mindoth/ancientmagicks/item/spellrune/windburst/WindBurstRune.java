@@ -4,10 +4,6 @@ import net.mindoth.ancientmagicks.item.modifierrune.ModifierRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.FallingBlockEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -28,51 +24,43 @@ public class WindBurstRune extends SpellRuneItem {
     @Override
     public void shootMagic(PlayerEntity owner, Entity caster, Vector3d center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
         World level = caster.level;
-        Vector3d casterPos = ShadowEvents.getEntityCenter(caster);
+        Vector3d casterPos = caster.getEyePosition(1.0F);
         playWindSound(level, center);
         HashMap<String, Float> valueMap = new HashMap<>();
 
         valueMap.put("size", 1.0F);
         valueMap.put("power", 1.0F);
-        float range = 3.5F + (float)caster.getEyePosition(1.0F).distanceTo(center);
+        float range = 3.5F + (float)casterPos.distanceTo(center);
         for ( ModifierRuneItem rune : modifierList ) rune.addModifiersToValues(valueMap);
         if ( valueMap.get("size") <= 0 ) valueMap.put("size", 1.0F);
         float size = 0.5F * valueMap.get("size");
 
         Entity target = getPointedPushableEntity(level, caster, range, 0.25F, caster == owner, true);
-        if ( target == caster ) {
-            addParticles(level, center, ShadowEvents.getPoint(level, caster, range - 2.5F, 0, caster == owner, false, false, true));
-            return;
-        }
-        Vector3d targetPos = ShadowEvents.getEntityCenter(target);
-        if ( isPushable(target) ) {
-            List<Entity> pushEntity = ShadowEvents.getEntitiesAround(target, size, size, size);
+        Vector3d targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, caster == owner, false, true, true);
+        if ( target != caster && isPushable(target) ) {
+            List<Entity> pushEntity = ShadowEvents.getEntitiesAround(target, size * 0.25F, size * 0.25F, size * 0.25F);
             pushEntity.add(target);
             pushEntity.remove(caster);
             for ( Entity listEntity : pushEntity ) {
-                if ( isPushable(listEntity) ) {
-                    float power = 0.25F * valueMap.get("power");
-                    if ( listEntity.isOnGround() ) power = 0.5F * valueMap.get("power");
-                    listEntity.push((targetPos.x - casterPos.x) * power, (targetPos.y - casterPos.y) * power, (targetPos.z - casterPos.z) * power);
-                    addParticles(level, center, ShadowEvents.getPoint(level, caster, range - 2.5F, 0, caster == owner, false, false, true));
+                if ( SpellRuneItem.isPushable(listEntity) ) {
+                    float power = valueMap.get("power");
+                    listEntity.push((targetPoint.x - casterPos.x) * power, (targetPoint.y - casterPos.y + 0.5F) * power, (targetPoint.z - casterPos.z) * power);
                 }
             }
         }
+        Vector3d particlePoint = ShadowEvents.getPoint(level, caster, range, 0.25F, caster == owner, false, true, true);
+        addParticles(level, casterPos, particlePoint);
     }
 
     private static void addParticles(World level, Vector3d casterPos, Vector3d center) {
-        float size = 0.5F;
+        float size = 0.1F;
         for ( int i = 0; i < 4; i++ ) {
             float randX = (float) ((Math.random() * (size - (-size))) + (-size));
             float randY = (float) ((Math.random() * (size - (-size))) + (-size));
             float randZ = (float) ((Math.random() * (size - (-size))) + (-size));
-            ((ServerWorld)level).sendParticles(ParticleTypes.POOF, center.x + randX, center.y + randY, center.z + randZ,
-                    0, center.x - casterPos.x, center.y - casterPos.y, center.z - casterPos.z, 0.5F);
+            ((ServerWorld)level).sendParticles(ParticleTypes.POOF, casterPos.x + randX, casterPos.y + randY, casterPos.z + randZ,
+                    0, (center.x - casterPos.x) / 3, (center.y - casterPos.y) / 3, (center.z - casterPos.z) / 3, 0.5F);
         }
-    }
-
-    private static boolean isPushable(Entity entity) {
-        return ( (entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof FallingBlockEntity || entity instanceof TNTEntity) && !(entity instanceof PlayerEntity) );
     }
 
     private static Entity getPointedPushableEntity(World level, Entity caster, float range, float error, boolean isPlayer, boolean stopsAtSolid) {
@@ -100,7 +88,7 @@ public class WindBurstRune extends SpellRuneItem {
             Entity target = null;
             double lowestSoFar = Double.MAX_VALUE;
             for ( Entity closestSoFar : targets ) {
-                if ( isPushable(closestSoFar) ) {
+                if ( SpellRuneItem.isPushable(closestSoFar) ) {
                     double testDistance = closestSoFar.distanceToSqr(center);
                     if ( testDistance < lowestSoFar ) {
                         target = closestSoFar;

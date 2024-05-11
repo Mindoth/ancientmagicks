@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.client.particle;
+package net.mindoth.ancientmagicks.client.particle.ember;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;

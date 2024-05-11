@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.client.particle;
+package net.mindoth.ancientmagicks.client.particle.ember;
 
 import javax.annotation.Nonnull;
 import java.util.Random;

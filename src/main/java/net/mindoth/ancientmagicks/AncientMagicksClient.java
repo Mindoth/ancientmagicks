@@ -5,6 +5,7 @@ import net.mindoth.ancientmagicks.client.keybinds.AncientMagicksKeyBinds;
 import net.mindoth.ancientmagicks.item.spellrune.blackhole.BlackHoleRenderer;
 import net.mindoth.ancientmagicks.item.spellrune.enderbolt.EnderBoltRenderer;
 import net.mindoth.ancientmagicks.item.spellrune.fireball.FireballRenderer;
+import net.mindoth.ancientmagicks.item.spellrune.tornado.TornadoRenderer;
 import net.mindoth.ancientmagicks.item.spellrune.witchspark.WitchSparkRenderer;
 import net.mindoth.ancientmagicks.registries.AncientMagicksContainers;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
@@ -32,5 +33,6 @@ public class AncientMagicksClient {
         RenderingRegistry.registerEntityRenderingHandler(AncientMagicksEntities.SKELETON_MINION.get(), SkeletonRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(AncientMagicksEntities.ENDER_BOLT.get(), EnderBoltRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(AncientMagicksEntities.BLACK_HOLE.get(), BlackHoleRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(AncientMagicksEntities.TORNADO.get(), TornadoRenderer::new);
     }
 }

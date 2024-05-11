@@ -6,6 +6,7 @@ import net.mindoth.ancientmagicks.item.spellrune.dynamite.DynamiteEntity;
 import net.mindoth.ancientmagicks.item.spellrune.enderbolt.EnderBoltEntity;
 import net.mindoth.ancientmagicks.item.spellrune.fireball.FireballEntity;
 import net.mindoth.ancientmagicks.item.spellrune.raisedead.SkeletonMinionEntity;
+import net.mindoth.ancientmagicks.item.spellrune.tornado.TornadoEntity;
 import net.mindoth.ancientmagicks.item.spellrune.witchspark.WitchSparkEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
@@ -37,6 +38,10 @@ public class AncientMagicksEntities {
     public static final RegistryObject<EntityType<BlackHoleEntity>> BLACK_HOLE
             = registerEntity(EntityType.Builder.<BlackHoleEntity>of(BlackHoleEntity::new,
             EntityClassification.MISC).sized(1.0F, 1.0F).setCustomClientFactory(BlackHoleEntity::new), "black_hole");
+
+    public static final RegistryObject<EntityType<TornadoEntity>> TORNADO
+            = registerEntity(EntityType.Builder.<TornadoEntity>of(TornadoEntity::new,
+            EntityClassification.MISC).sized(1.0F, 1.0F).setCustomClientFactory(TornadoEntity::new), "tornado");
 
 
     public static final RegistryObject<EntityType<SkeletonMinionEntity>> SKELETON_MINION =

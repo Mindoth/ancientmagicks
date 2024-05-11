@@ -25,7 +25,7 @@ public class CollapseRune extends SpellRuneItem {
     @Override
     public void shootMagic(PlayerEntity owner, Entity caster, Vector3d center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
         World level = caster.level;
-        Vector3d casterPos = ShadowEvents.getEntityCenter(caster);
+        Vector3d casterPos = caster.getEyePosition(1.0F);
         playMagicSummonSound(level, casterPos);
         HashMap<String, Float> valueMap = new HashMap<>();
 
@@ -35,7 +35,7 @@ public class CollapseRune extends SpellRuneItem {
         if ( valueMap.get("size") < 0 ) valueMap.put("size", 1.0F);
         float sizeF = valueMap.get("size");
         int size = (int)sizeF;
-        float range = 3.5F + (float)caster.getEyePosition(1).distanceTo(center);
+        float range = 3.5F + (float)casterPos.distanceTo(center);
 
         Vector3d point = getBlockPoint(caster, range, 0, caster == owner);
         BlockPos pos = new BlockPos(point.x, point.y, point.z);

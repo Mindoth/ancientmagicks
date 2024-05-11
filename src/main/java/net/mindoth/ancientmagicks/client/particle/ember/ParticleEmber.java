@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.client.particle;
+package net.mindoth.ancientmagicks.client.particle.ember;
 
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleRenderType;
@@ -71,7 +71,7 @@ public class ParticleEmber extends SpriteTexturedParticle {
 
     @Override
     public IParticleRenderType getRenderType() {
-        return this.disableDepthTest ? ParticleRenderTypes.RUNIC_RENDER : ParticleRenderTypes.RUNIC_RENDER_DARK;
+        return this.disableDepthTest ? ParticleRenderTypes.AMAGICKS_RENDER : ParticleRenderTypes.AMAGICKS_RENDER_DARK;
     }
 
 

@@ -2,6 +2,10 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.RuneItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
+import net.mindoth.ancientmagicks.item.castingitem.WandItem;
+import net.mindoth.ancientmagicks.item.castingitem.WandType;
 import net.mindoth.ancientmagicks.item.modifierrune.*;
 import net.mindoth.ancientmagicks.item.spellrune.blackhole.BlackHoleRune;
 import net.mindoth.ancientmagicks.item.spellrune.collapse.CollapseRune;
@@ -11,12 +15,9 @@ import net.mindoth.ancientmagicks.item.spellrune.fireball.FireballRune;
 import net.mindoth.ancientmagicks.item.spellrune.flight.FlightRune;
 import net.mindoth.ancientmagicks.item.spellrune.raisedead.RaiseDeadRune;
 import net.mindoth.ancientmagicks.item.spellrune.telekineticgrab.TelekineticGrabRune;
+import net.mindoth.ancientmagicks.item.spellrune.tornado.TornadoRune;
 import net.mindoth.ancientmagicks.item.spellrune.windburst.WindBurstRune;
 import net.mindoth.ancientmagicks.item.spellrune.witchspark.WitchSparkRune;
-import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
-import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
-import net.mindoth.ancientmagicks.item.castingitem.WandItem;
-import net.mindoth.ancientmagicks.item.castingitem.WandType;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -76,6 +77,9 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> WIND_BURST_RUNE = ITEMS.register("wind_burst_rune",
             () -> new WindBurstRune(new Item.Properties(), 20));
+
+    public static final RegistryObject<Item> TORNADO_RUNE = ITEMS.register("tornado_rune",
+            () -> new TornadoRune(new Item.Properties(), 80));
 
 
     public static final RegistryObject<Item> AMPLIFY_RUNE = ITEMS.register("amplify_rune",

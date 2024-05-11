@@ -41,52 +41,52 @@ public class RuneItem extends Item {
     public void shootMagic(PlayerEntity owner, Entity caster, Vector3d center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
     }
 
-    protected static void playMagicSound(World level, Vector3d center) {
+    public static void playMagicSound(World level, Vector3d center) {
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.ENCHANTMENT_TABLE_USE, SoundCategory.PLAYERS, 0.25F, 2.0F);
     }
 
-    protected static void playMagicShootSound(World level, Vector3d center) {
+    public static void playMagicShootSound(World level, Vector3d center) {
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.ENDER_PEARL_THROW, SoundCategory.PLAYERS, 0.25F, 1.0F);
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.ENCHANTMENT_TABLE_USE, SoundCategory.PLAYERS, 0.25F, 2.0F);
     }
 
-    protected static void playMagicSummonSound(World level, Vector3d center) {
+    public static void playMagicSummonSound(World level, Vector3d center) {
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.LIGHTNING_BOLT_IMPACT, SoundCategory.PLAYERS, 0.25F, 2.0F);
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.ENCHANTMENT_TABLE_USE, SoundCategory.PLAYERS, 0.25F, 2.0F);
     }
 
-    protected static void playFireShootSound(World level, Vector3d center) {
+    public static void playFireShootSound(World level, Vector3d center) {
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.ENDER_PEARL_THROW, SoundCategory.PLAYERS, 0.25F, 1.0F);
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.BLAZE_SHOOT, SoundCategory.PLAYERS, 0.25F, 1.0F);
     }
 
-    protected static void playWaterShootSound(World level, Vector3d center) {
+    public static void playWaterShootSound(World level, Vector3d center) {
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.ENDER_PEARL_THROW, SoundCategory.PLAYERS, 0.5F, 1.0F);
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.DOLPHIN_SPLASH, SoundCategory.PLAYERS, 0.25F, 0.85F);
     }
 
-    protected static void playStormShootSound(World level, Vector3d center) {
+    public static void playStormShootSound(World level, Vector3d center) {
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.ENDER_PEARL_THROW, SoundCategory.PLAYERS, 0.5F, 1.0F);
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.LIGHTNING_BOLT_IMPACT, SoundCategory.PLAYERS, 0.35F, 2.0F);
     }
 
-    protected static void playEvilShootSound(World level, Vector3d center) {
+    public static void playEvilShootSound(World level, Vector3d center) {
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.WITHER_SHOOT, SoundCategory.PLAYERS, 0.5F, 1.0F);
     }
 
-    protected static void playWindSound(World level, Vector3d center) {
+    public static void playWindSound(World level, Vector3d center) {
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.HORSE_BREATHE, SoundCategory.PLAYERS, 2.0F, 0.02F);
         level.playSound(null, center.x, center.y, center.z,

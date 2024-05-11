@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.client.particle;
+package net.mindoth.ancientmagicks.client.particle.ember;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 public class ParticleRenderTypes {
 
-    static final IParticleRenderType RUNIC_RENDER = new IParticleRenderType() {
+    static final IParticleRenderType AMAGICKS_RENDER = new IParticleRenderType() {
 
         @Override
         public void begin(BufferBuilder buffer, TextureManager textureManager) {
@@ -45,7 +45,7 @@ public class ParticleRenderTypes {
         }
     };
 
-    static final IParticleRenderType RUNIC_RENDER_DARK = new IParticleRenderType() {
+    static final IParticleRenderType AMAGICKS_RENDER_DARK = new IParticleRenderType() {
 
         @Override
         public void begin(BufferBuilder buffer, TextureManager textureManager) {

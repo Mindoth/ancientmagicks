@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spellrune.blackhole;
 
-import net.mindoth.ancientmagicks.client.particle.EmberParticleData;
+import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleData;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
@@ -9,7 +9,6 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -73,7 +72,7 @@ public class BlackHoleEntity extends AbstractSpellEntity {
             }
         }
         for ( Entity target : ShadowEvents.getEntitiesAround(this, this.size, this.size, this.size) ) {
-            if ( (target instanceof LivingEntity && !isAlly((LivingEntity)target)) || target instanceof ItemEntity ) {
+            if ( SpellRuneItem.isPushable(target) ) {
                 target.push((point.x - target.getX()) / 6, (point.y - target.getY()) / 6, (point.z - target.getZ()) / 6);
             }
         }

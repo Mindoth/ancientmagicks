@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.client.particle;
+package net.mindoth.ancientmagicks.client.particle.ember;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.particles.ParticleType;

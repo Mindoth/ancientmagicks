@@ -24,12 +24,12 @@ public class TelekineticGrabRune extends SpellRuneItem {
     @Override
     public void shootMagic(PlayerEntity owner, Entity caster, Vector3d center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
         World level = caster.level;
-        Vector3d casterPos = ShadowEvents.getEntityCenter(caster);
+        Vector3d casterPos = caster.getEyePosition(1.0F);
         playMagicShootSound(level, casterPos);
         HashMap<String, Float> valueMap = new HashMap<>();
 
         valueMap.put("size", 1.0F);
-        float range = 3.5F + (float)caster.getEyePosition(1.0F).distanceTo(center);
+        float range = 3.5F + (float)casterPos.distanceTo(center);
         for ( ModifierRuneItem rune : modifierList ) rune.addModifiersToValues(valueMap);
         if ( valueMap.get("size") <= 0 ) valueMap.put("size", 1.0F);
 

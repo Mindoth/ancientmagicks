@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spellrune.enderbolt;
 
-import net.mindoth.ancientmagicks.client.particle.EmberParticleData;
+import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleData;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
