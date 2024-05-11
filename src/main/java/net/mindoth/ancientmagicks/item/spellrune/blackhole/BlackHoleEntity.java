@@ -5,10 +5,14 @@ import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FallingBlock;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -67,13 +71,20 @@ public class BlackHoleEntity extends AbstractSpellEntity {
             for ( int yPos = pos.getY() - size; yPos <= pos.getY() + size; yPos++ ) {
                 for ( int zPos = pos.getZ() - size; zPos <= pos.getZ() + size; zPos++ ) {
                     BlockPos blockPos = new BlockPos(xPos, yPos, zPos);
-                    this.level.removeBlock(blockPos, false);
+                    BlockState blockState = level.getBlockState(blockPos);
+                    if ( blockState.getBlock() != Blocks.BEDROCK && blockState.getMaterial().isSolid() ) {
+                        FallingBlockEntity fallingBlock = new FallingBlockEntity(level, blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5D, blockState);
+                        fallingBlock.time = 1;
+                        level.removeBlock(blockPos, false);
+                        level.addFreshEntity(fallingBlock);
+                    }
                 }
             }
         }
         for ( Entity target : ShadowEvents.getEntitiesAround(this, this.size, this.size, this.size) ) {
             if ( SpellRuneItem.isPushable(target) ) {
                 target.push((point.x - target.getX()) / 6, (point.y - target.getY()) / 6, (point.z - target.getZ()) / 6);
+                if ( target.getBoundingBox().intersects(this.getBoundingBox()) && !(target instanceof LivingEntity) ) target.remove();
             }
         }
     }

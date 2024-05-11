@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item.spellrune;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.passive.TameableEntity;
@@ -15,7 +16,7 @@ public class SpellRuneItem extends RuneItem {
     }
 
     public static boolean isPushable(Entity entity) {
-        return ( (entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof TNTEntity) && !(entity instanceof PlayerEntity) );
+        return ( (entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof TNTEntity || entity instanceof FallingBlockEntity) && !(entity instanceof PlayerEntity) );
     }
 
     public static boolean isAlly(LivingEntity owner, LivingEntity target) {
