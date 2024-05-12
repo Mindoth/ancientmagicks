@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spellrune;
 
+import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -15,11 +16,12 @@ public class SpellRuneItem extends RuneItem {
         super(pProperties, cooldown);
     }
 
-    public static boolean isPushable(Entity entity) {
-        return ( (entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof TNTEntity || entity instanceof FallingBlockEntity) && !(entity instanceof PlayerEntity) );
+    public static boolean isAlly(LivingEntity owner, LivingEntity target) {
+        if ( target instanceof PlayerEntity && !AncientMagicksCommonConfig.PVP.get() ) return true;
+        return target == owner || !target.canAttack(owner) || target.isAlliedTo(owner) || (target instanceof TameableEntity && ((TameableEntity)target).isOwnedBy(owner));
     }
 
-    public static boolean isAlly(LivingEntity owner, LivingEntity target) {
-        return target == owner || target.isAlliedTo(owner) || (target instanceof TameableEntity && ((TameableEntity)target).isOwnedBy(owner));
+    public static boolean isPushable(Entity entity) {
+        return ( entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof TNTEntity || entity instanceof FallingBlockEntity );
     }
 }

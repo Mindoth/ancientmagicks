@@ -29,7 +29,7 @@ public class SlimeballRune extends SpellRuneItem {
         for ( ModifierRuneItem rune : modifierList ) rune.addModifiersToSpellEntity(projectile);
         projectile.setColor(AbstractSpellEntity.getSpellColor("green"), 0.8F);
         projectile.setPos(center.x, center.y, center.z);
-        projectile.shootFromRotation(caster, xRot * adjuster, yRot * adjuster, 0F, projectile.speed, 1.0F);
+        projectile.shootFromRotation(caster, xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 1.0F);
         level.addFreshEntity(projectile);
     }
 }

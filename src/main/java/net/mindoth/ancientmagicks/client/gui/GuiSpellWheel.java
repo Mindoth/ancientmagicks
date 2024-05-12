@@ -182,7 +182,7 @@ public class GuiSpellWheel extends Screen {
             }
 
             //Show SpellTablet's name
-            String stackName = new TranslationTextComponent("tooltip.runicitems.empty").getString();
+            String stackName = new TranslationTextComponent("tooltip.ancientmagicks.empty").getString();
             int color = 16777215;
             if ( !this.itemList.get(mousedOverSlot).isEmpty() ) {
                 stackName = this.itemList.get(mousedOverSlot).getHoverName().getString();

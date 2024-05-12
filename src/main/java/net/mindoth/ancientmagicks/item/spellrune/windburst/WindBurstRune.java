@@ -46,6 +46,7 @@ public class WindBurstRune extends SpellRuneItem {
                 if ( SpellRuneItem.isPushable(listEntity) ) {
                     float power = valueMap.get("power");
                     listEntity.push((targetPoint.x - casterPos.x) * power, (targetPoint.y - casterPos.y + 0.5F) * power, (targetPoint.z - casterPos.z) * power);
+                    listEntity.hurtMarked = true;
                 }
             }
         }

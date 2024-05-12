@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item.spellrune.abstractspell;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleData;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
+import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.block.BlockState;
@@ -11,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -38,7 +40,7 @@ public class AbstractSpellEntity extends ThrowableEntity {
 
     @Override
     protected float getGravity() {
-        return 0.01F;
+        return 0.005F;
     }
 
     public float getDefaultPower() {
@@ -96,7 +98,8 @@ public class AbstractSpellEntity extends ThrowableEntity {
     public int blockPierce;
 
     protected boolean isAlly(LivingEntity target) {
-        return target == this.owner || target.isAlliedTo(this.owner) || (target instanceof TameableEntity && ((TameableEntity)target).isOwnedBy(this.owner));
+        if ( target instanceof PlayerEntity && !AncientMagicksCommonConfig.PVP.get() ) return true;
+        return target == this.owner || !target.canAttack(this.owner) || target.isAlliedTo(this.owner) || (target instanceof TameableEntity && ((TameableEntity)target).isOwnedBy(this.owner));
     }
 
     protected void dealDamage(LivingEntity target) {

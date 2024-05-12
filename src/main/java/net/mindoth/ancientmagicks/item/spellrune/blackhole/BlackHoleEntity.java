@@ -7,7 +7,6 @@ import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.FallingBlock;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -76,19 +75,20 @@ public class BlackHoleEntity extends AbstractSpellEntity {
             for ( int yPos = pos.getY() - size; yPos <= pos.getY() + size; yPos++ ) {
                 for ( int zPos = pos.getZ() - size; zPos <= pos.getZ() + size; zPos++ ) {
                     BlockPos blockPos = new BlockPos(xPos, yPos, zPos);
-                    BlockState blockState = level.getBlockState(blockPos);
+                    BlockState blockState = this.level.getBlockState(blockPos);
                     if ( blockState.getBlock() != Blocks.BEDROCK && blockState.getMaterial().isSolid() ) {
-                        FallingBlockEntity fallingBlock = new FallingBlockEntity(level, blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5D, blockState);
+                        FallingBlockEntity fallingBlock = new FallingBlockEntity(this.level, blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5D, blockState);
                         fallingBlock.time = 1;
-                        level.removeBlock(blockPos, false);
-                        level.addFreshEntity(fallingBlock);
+                        this.level.removeBlock(blockPos, false);
+                        this.level.addFreshEntity(fallingBlock);
                     }
                 }
             }
         }
         for ( Entity target : ShadowEvents.getEntitiesAround(this, this.size, this.size, this.size) ) {
-            if ( SpellRuneItem.isPushable(target) ) {
+            if ( SpellRuneItem.isPushable(target) && !(target instanceof LivingEntity && isAlly((LivingEntity)target)) ) {
                 target.push((point.x - target.getX()) / 6, (point.y - target.getY()) / 6, (point.z - target.getZ()) / 6);
+                target.hurtMarked = true;
                 if ( target.getBoundingBox().intersects(this.getBoundingBox().inflate(this.size, this.size, this.size)) && !(target instanceof LivingEntity) ) target.remove();
             }
         }

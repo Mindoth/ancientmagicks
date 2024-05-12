@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spellrune.abstractspell.summon;
 
+import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -17,7 +18,8 @@ public interface SummonedMinion {
         if ( getSummoner() == null ) return false;
         boolean isFellowSummon = entity == getSummoner() || entity.isAlliedTo(getSummoner());
         boolean hasCommonOwner = entity instanceof OwnableEntity && ((OwnableEntity)entity).getOwner() == getSummoner();
-        return isFellowSummon || hasCommonOwner;
+        boolean isAlly = entity instanceof LivingEntity && SpellRuneItem.isAlly(getSummoner(), (LivingEntity)entity);
+        return isFellowSummon || hasCommonOwner || isAlly;
     }
 
     default void onDeathHelper() {

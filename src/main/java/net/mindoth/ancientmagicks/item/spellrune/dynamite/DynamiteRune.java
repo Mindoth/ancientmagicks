@@ -45,6 +45,7 @@ public class DynamiteRune extends SpellRuneItem {
         //tnt.blockPierce = valueMap.get("blockPierce");
         if ( valueMap.get("homing") == 1.0F ) tnt.homing = true;
         tnt.setFuse(tnt.life);
+        tnt.speed = Math.max(0, tnt.speed);
 
         level.addFreshEntity(tnt);
     }

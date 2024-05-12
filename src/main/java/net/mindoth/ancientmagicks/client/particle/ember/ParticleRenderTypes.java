@@ -41,7 +41,7 @@ public class ParticleRenderTypes {
 
         @Override
         public String toString() {
-            return "runic_items:ri_rend";
+            return "ancientmagicks:am_rend";
         }
     };
 
@@ -65,7 +65,7 @@ public class ParticleRenderTypes {
 
         @Override
         public String toString() {
-            return "runic_items:ri_rend_dark";
+            return "ancientmagicks:am_rend_dark";
         }
     };
 }
