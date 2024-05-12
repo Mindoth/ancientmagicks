@@ -1,29 +1,21 @@
 package net.mindoth.ancientmagicks;
 
 import com.google.common.collect.Lists;
-<<<<<<< Updated upstream
-=======
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
->>>>>>> Stashed changes
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spellrune.raisedead.SkeletonMinionEntity;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-<<<<<<< Updated upstream
-import net.mindoth.ancientmagicks.registries.AncientMagicksContainers;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
-=======
 import net.mindoth.ancientmagicks.registries.*;
->>>>>>> Stashed changes
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
@@ -44,6 +36,7 @@ public class AncientMagicks {
             AncientMagicksClient.registerHandlers();
         }
         addRegistries(modEventBus);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AncientMagicksCommonConfig.SPEC, "ancientmagicks-common.toml");
     }
 
     private void addRegistries(final IEventBus modEventBus) {
@@ -53,8 +46,6 @@ public class AncientMagicks {
         AncientMagicksEffects.EFFECTS.register(modEventBus);
         AncientMagicksParticles.PARTICLES.register(modEventBus);
         AncientMagicksContainers.CONTAINERS.register(modEventBus);
-
-        modEventBus.addListener(this::addCreative);
 
         modEventBus.addListener(this::addCreative);
 

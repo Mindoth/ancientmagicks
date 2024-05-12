@@ -83,12 +83,9 @@ public class BlackHoleEntity extends AbstractSpellEntity {
             }
         }
         for ( Entity target : ShadowEvents.getEntitiesAround(this, this.size, this.size, this.size) ) {
-            if ( SpellRuneItem.isPushable(target) ) {
+            if ( SpellRuneItem.isPushable(target) && !(target instanceof LivingEntity && isAlly((LivingEntity)target)) ) {
                 target.push((point.x - target.getX()) / 6, (point.y - target.getY()) / 6, (point.z - target.getZ()) / 6);
-<<<<<<< Updated upstream
-=======
                 target.hurtMarked = true;
->>>>>>> Stashed changes
                 if ( target.getBoundingBox().intersects(this.getBoundingBox().inflate(this.size, this.size, this.size)) && !(target instanceof LivingEntity) ) target.discard();
             }
         }

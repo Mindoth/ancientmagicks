@@ -7,10 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-<<<<<<< Updated upstream
-=======
 import net.minecraft.world.entity.LivingEntity;
->>>>>>> Stashed changes
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -50,6 +47,7 @@ public class WindBurstRune extends SpellRuneItem {
                 if ( SpellRuneItem.isPushable(listEntity) ) {
                     float power = valueMap.get("power");
                     listEntity.push((targetPoint.x - casterPos.x) * power, (targetPoint.y - casterPos.y + 0.5F) * power, (targetPoint.z - casterPos.z) * power);
+                    listEntity.hurtMarked = true;
                 }
             }
         }

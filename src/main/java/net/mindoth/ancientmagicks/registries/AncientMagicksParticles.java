@@ -6,10 +6,7 @@ import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleType;
-<<<<<<< Updated upstream
-=======
 import net.minecraftforge.api.distmarker.Dist;
->>>>>>> Stashed changes
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

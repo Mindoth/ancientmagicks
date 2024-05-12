@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item.spellrune.abstractspell;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
+import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -19,10 +20,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
-<<<<<<< Updated upstream
-=======
 import net.minecraft.world.entity.player.Player;
->>>>>>> Stashed changes
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -100,12 +98,8 @@ public class AbstractSpellEntity extends ThrowableProjectile {
     public int blockPierce;
 
     protected boolean isAlly(LivingEntity target) {
-<<<<<<< Updated upstream
-        return target == this.owner || target.isAlliedTo(this.owner) || (target instanceof TamableAnimal && ((TamableAnimal)target).isOwnedBy(this.owner));
-=======
         if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) return true;
         return target == this.owner || !target.canAttack(this.owner) || target.isAlliedTo(this.owner) || (target instanceof TamableAnimal && ((TamableAnimal)target).isOwnedBy(this.owner));
->>>>>>> Stashed changes
     }
 
     protected void dealDamage(LivingEntity target) {
