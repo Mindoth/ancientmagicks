@@ -13,7 +13,13 @@ import net.mindoth.ancientmagicks.item.spellrune.witchspark.WitchSparkRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketOpenWandGui;
 import net.mindoth.ancientmagicks.network.PacketSendStaffData;
+<<<<<<< Updated upstream
 import net.mindoth.ancientmagicks.registries.*;
+=======
+import net.mindoth.ancientmagicks.registries.AncientMagicksContainers;
+import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
+import net.mindoth.ancientmagicks.registries.AncientMagicksKeyBinds;
+>>>>>>> Stashed changes
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.SkeletonRenderer;
@@ -35,6 +41,7 @@ public class AncientMagicksClient {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         modBus.addListener(AncientMagicksClient::clientSetup);
         modBus.addListener(AncientMagicksClient::registerEntityRenderers);
+<<<<<<< Updated upstream
         addClientRegistries(modBus);
     }
 
@@ -42,6 +49,10 @@ public class AncientMagicksClient {
         AncientMagicksParticles.PARTICLES.register(modBus);
     }
 
+=======
+    }
+
+>>>>>>> Stashed changes
     private static void clientSetup(final FMLClientSetupEvent event) {
         MenuScreens.register(AncientMagicksContainers.WAND_CONTAINER.get(), GuiWand::new);
     }

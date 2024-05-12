@@ -1,5 +1,9 @@
 package net.mindoth.ancientmagicks.item.spellrune.abstractspell.summon;
 
+<<<<<<< Updated upstream
+=======
+import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
+>>>>>>> Stashed changes
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -17,7 +21,12 @@ public interface SummonedMinion {
         if ( getSummoner() == null ) return false;
         boolean isFellowSummon = entity == getSummoner() || entity.isAlliedTo(getSummoner());
         boolean hasCommonOwner = entity instanceof OwnableEntity ownableEntity && ownableEntity.getOwner() == getSummoner();
+<<<<<<< Updated upstream
         return isFellowSummon || hasCommonOwner;
+=======
+        boolean isAlly = entity instanceof LivingEntity living && SpellRuneItem.isAlly(getSummoner(), living);
+        return isFellowSummon || hasCommonOwner || isAlly;
+>>>>>>> Stashed changes
     }
 
     default void onDeathHelper() {

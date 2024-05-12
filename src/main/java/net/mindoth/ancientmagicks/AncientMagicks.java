@@ -1,14 +1,22 @@
 package net.mindoth.ancientmagicks;
 
 import com.google.common.collect.Lists;
+<<<<<<< Updated upstream
+=======
+import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
+>>>>>>> Stashed changes
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spellrune.raisedead.SkeletonMinionEntity;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+<<<<<<< Updated upstream
 import net.mindoth.ancientmagicks.registries.AncientMagicksContainers;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+=======
+import net.mindoth.ancientmagicks.registries.*;
+>>>>>>> Stashed changes
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -42,8 +50,11 @@ public class AncientMagicks {
         AncientMagicksTab.register(modEventBus);
         AncientMagicksItems.ITEMS.register(modEventBus);
         AncientMagicksEntities.ENTITIES.register(modEventBus);
-        AncientMagicksContainers.CONTAINERS.register(modEventBus);
         AncientMagicksEffects.EFFECTS.register(modEventBus);
+        AncientMagicksParticles.PARTICLES.register(modEventBus);
+        AncientMagicksContainers.CONTAINERS.register(modEventBus);
+
+        modEventBus.addListener(this::addCreative);
 
         modEventBus.addListener(this::addCreative);
 
