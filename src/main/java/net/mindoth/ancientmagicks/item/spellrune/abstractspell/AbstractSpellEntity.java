@@ -99,7 +99,7 @@ public class AbstractSpellEntity extends ThrowableEntity {
 
     protected boolean isAlly(LivingEntity target) {
         if ( target instanceof PlayerEntity && !AncientMagicksCommonConfig.PVP.get() ) return true;
-        return target == this.owner || !target.canAttack(this.owner) || target.isAlliedTo(this.owner) || (target instanceof TameableEntity && ((TameableEntity)target).isOwnedBy(this.owner));
+        else return target == this.owner || !target.canAttack(this.owner) || target.isAlliedTo(this.owner) || (target instanceof TameableEntity && ((TameableEntity)target).isOwnedBy(this.owner));
     }
 
     protected void dealDamage(LivingEntity target) {
