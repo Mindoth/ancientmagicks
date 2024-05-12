@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.item.modifierrune;
 
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.AbstractSpellEntity;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.world.entity.Mob;
 
 import java.util.HashMap;
 
@@ -20,7 +20,7 @@ public class ModifierRuneItem extends RuneItem {
         return spell;
     }
 
-    public MobEntity addModifiersToMinionEntity(MobEntity minion) {
+    public Mob addModifiersToMinionEntity(Mob minion) {
         return minion;
     }
 }

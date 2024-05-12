@@ -1,8 +1,8 @@
 package net.mindoth.ancientmagicks.item.modifierrune;
 
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.AbstractSpellEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import java.util.HashMap;
 
@@ -25,7 +25,7 @@ public class QuickenRune extends ModifierRuneItem {
     }
 
     @Override
-    public MobEntity addModifiersToMinionEntity(MobEntity minion) {
+    public Mob addModifiersToMinionEntity(Mob minion) {
         if ( minion.getAttributes().hasAttribute(Attributes.MOVEMENT_SPEED) ) {
             minion.getAttributes().getInstance(Attributes.MOVEMENT_SPEED)
                     .setBaseValue(minion.getAttributes().getBaseValue(Attributes.MOVEMENT_SPEED) + 0.1F);

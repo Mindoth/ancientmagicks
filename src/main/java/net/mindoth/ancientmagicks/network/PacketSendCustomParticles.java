@@ -1,10 +1,10 @@
 package net.mindoth.ancientmagicks.network;
 
-import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleData;
+import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -40,7 +40,7 @@ public class PacketSendCustomParticles {
         this.vz = vz;
     }
 
-    public PacketSendCustomParticles(PacketBuffer buf) {
+    public PacketSendCustomParticles(FriendlyByteBuf buf) {
         this.r = buf.readInt();
         this.g = buf.readInt();
         this.b = buf.readInt();
@@ -56,7 +56,7 @@ public class PacketSendCustomParticles {
         this.vz = buf.readDouble();
     }
 
-    public void encode(PacketBuffer buf) {
+    public void encode(FriendlyByteBuf buf) {
         buf.writeInt(this.r);
         buf.writeInt(this.g);
         buf.writeInt(this.b);
@@ -75,7 +75,7 @@ public class PacketSendCustomParticles {
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         contextSupplier.get().enqueueWork(() -> {
             Minecraft minecraft = Minecraft.getInstance();
-            minecraft.level.addParticle(EmberParticleData.createData(new ParticleColor(this.r, this.g, this.b), this.size, this.age, this.fade, this.mask),
+            minecraft.level.addParticle(EmberParticleProvider.createData(new ParticleColor(this.r, this.g, this.b), this.size, this.age, this.fade, this.mask),
                     this.x, this.y, this.z, this.vx, this.vy, this.vz);
         });
         contextSupplier.get().setPacketHandled(true);

@@ -2,13 +2,13 @@ package net.mindoth.ancientmagicks.client.gui.inventory;
 
 import net.mindoth.ancientmagicks.item.castingitem.WandType;
 import net.mindoth.ancientmagicks.registries.AncientMagicksContainers;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.ClickType;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -16,18 +16,18 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 import java.util.UUID;
 
-public class WandContainer extends Container {
+public class WandContainer extends AbstractContainerMenu {
     public final IItemHandler handler;
     private final WandType tier;
     private final UUID uuid;
 
-    public static WandContainer fromNetwork(final int windowId, final PlayerInventory playerInventory, PacketBuffer data) {
+    public static WandContainer fromNetwork(final int windowId, final Inventory playerInventory, FriendlyByteBuf data) {
         UUID uuidIn = data.readUUID();
         WandType tier = WandType.values()[data.readInt()];
         return new WandContainer(windowId, playerInventory, uuidIn, tier, new ItemStackHandler(tier.slots));
     }
 
-    public WandContainer(final int windowId, final PlayerInventory playerInventory, UUID uuidIn, WandType tierIn, IItemHandler handler) {
+    public WandContainer(final int windowId, final Inventory playerInventory, UUID uuidIn, WandType tierIn, IItemHandler handler) {
         super(AncientMagicksContainers.WAND_CONTAINER.get(), windowId);
         this.uuid = uuidIn;
         this.handler = handler;
@@ -41,19 +41,19 @@ public class WandContainer extends Container {
     }
 
     @Override
-    public boolean stillValid(@Nonnull PlayerEntity playerIn) {
+    public boolean stillValid(@Nonnull Player playerIn) {
         return true;
     }
 
     @Override
     @Nonnull
-    public ItemStack clicked(int slot, int dragType, @Nonnull ClickType clickTypeIn, @Nonnull PlayerEntity player) {
-        if ( clickTypeIn == ClickType.SWAP ) return ItemStack.EMPTY;
+    public void clicked(int slot, int dragType, @Nonnull ClickType clickTypeIn, @Nonnull Player player) {
+        if ( clickTypeIn == ClickType.SWAP ) return;
         if ( slot >= 0 ) getSlot(slot).container.setChanged();
-        return super.clicked(slot, dragType, clickTypeIn, player);
+        super.clicked(slot, dragType, clickTypeIn, player);
     }
 
-    private void addPlayerSlots(PlayerInventory playerInventory) {
+    private void addPlayerSlots(Inventory playerInventory) {
         int originX = this.tier.slotXOffset;
         int originY = this.tier.slotYOffset;
 
@@ -99,17 +99,17 @@ public class WandContainer extends Container {
 
     @Override
     @Nonnull
-    public ItemStack quickMoveStack(@Nonnull PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(@Nonnull Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if ( slot != null && slot.hasItem() ) {
             int wandSlotCount = this.slots.size();
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
-            if ( index < playerIn.inventory.items.size() ) {
-                if ( !this.moveItemStackTo(itemstack1, playerIn.inventory.items.size(), wandSlotCount, false) ) return ItemStack.EMPTY;
+            if ( index < playerIn.getInventory().items.size() ) {
+                if ( !this.moveItemStackTo(itemstack1, playerIn.getInventory().items.size(), wandSlotCount, false) ) return ItemStack.EMPTY;
             }
-            else if ( !this.moveItemStackTo(itemstack1, 0, playerIn.inventory.items.size(), false) ) return ItemStack.EMPTY;
+            else if ( !this.moveItemStackTo(itemstack1, 0, playerIn.getInventory().items.size(), false) ) return ItemStack.EMPTY;
             if ( itemstack1.isEmpty() ) slot.set(ItemStack.EMPTY); else slot.setChanged();
         }
         return itemstack;

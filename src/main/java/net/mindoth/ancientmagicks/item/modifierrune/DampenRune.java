@@ -1,8 +1,8 @@
 package net.mindoth.ancientmagicks.item.modifierrune;
 
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.AbstractSpellEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import java.util.HashMap;
 
@@ -25,7 +25,7 @@ public class DampenRune extends ModifierRuneItem {
     }
 
     @Override
-    public MobEntity addModifiersToMinionEntity(MobEntity minion) {
+    public Mob addModifiersToMinionEntity(Mob minion) {
         if ( minion.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE) ) {
             minion.getAttributes().getInstance(Attributes.ATTACK_DAMAGE)
                     .setBaseValue(minion.getAttributes().getBaseValue(Attributes.ATTACK_DAMAGE) - 1);

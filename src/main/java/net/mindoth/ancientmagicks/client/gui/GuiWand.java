@@ -1,18 +1,17 @@
 package net.mindoth.ancientmagicks.client.gui;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandContainer;
 import net.mindoth.ancientmagicks.item.castingitem.WandType;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
 import javax.annotation.Nonnull;
 
-public class GuiWand extends ContainerScreen<WandContainer> {
-    public GuiWand(WandContainer container, PlayerInventory playerInventory, ITextComponent name) {
+public class GuiWand extends AbstractContainerScreen<WandContainer> {
+    public GuiWand(WandContainer container, Inventory playerInventory, Component name) {
         super(container, playerInventory, name);
 
         WandType tier = container.getTier();
@@ -29,21 +28,19 @@ public class GuiWand extends ContainerScreen<WandContainer> {
     }
 
     @Override
-    protected void renderBg(@Nonnull MatrixStack matrixStack, float partialTicks, int x, int y) {
-        RenderSystem.color4f(1.0f, 1.0f, 1.0f ,1.0f);
-        this.getMinecraft().textureManager.bind(GUI);
-        blit(matrixStack, leftPos, topPos, 0,0, imageWidth, imageHeight, imageWidth, imageHeight);
+    protected void renderBg(@Nonnull GuiGraphics gg, float partialTicks, int x, int y) {
+        gg.blit(GUI, this.leftPos, this.topPos, 0,0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
     }
 
     @Override
-    protected void renderLabels(@Nonnull MatrixStack matrixStack, int x, int y) {
-        this.font.draw(matrixStack, this.title.getString(), 7,6,0x404040);
+    protected void renderLabels(@Nonnull GuiGraphics gg, int x, int y) {
+        gg.drawString(font, this.title.getString(), 7,6,0x404040, false);
     }
 
     @Override
-    public void render(@Nonnull MatrixStack matrixStack, int p_render_1_, int p_render_2_, float p_render_3_) {
-        this.renderBackground(matrixStack);
-        super.render(matrixStack,p_render_1_, p_render_2_, p_render_3_);
-        this.renderTooltip(matrixStack, p_render_1_, p_render_2_);
+    public void render(@Nonnull GuiGraphics gg, int pMouseX, int pMouseY, float pPartialTicks) {
+        this.renderBackground(gg);
+        super.render(gg,pMouseX, pMouseY, pPartialTicks);
+        this.renderTooltip(gg, pMouseX, pMouseY);
     }
 }

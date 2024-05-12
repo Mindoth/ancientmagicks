@@ -1,9 +1,9 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
 
@@ -14,13 +14,12 @@ public class SpellTabletItem extends CastingItem {
     }
 
     @Override
-    public void onUseTick(World level, LivingEntity living, ItemStack tablet, int timeLeft) {
+    public void onUseTick(Level level, LivingEntity living, ItemStack tablet, int timeLeft) {
         if ( level.isClientSide ) return;
-        if ( living instanceof PlayerEntity ) {
-            PlayerEntity player = (PlayerEntity)living;
+        if ( living instanceof Player player ) {
             List<ItemStack> wandList = getWandList(tablet);
             if ( timeLeft % 2 == 0 ) doSpell(player, player, tablet, wandList, getUseDuration(tablet) - timeLeft);
-            if ( !((PlayerEntity)living).abilities.instabuild ) tablet.shrink(1);
+            if ( !player.getAbilities().instabuild ) tablet.shrink(1);
         }
     }
 }

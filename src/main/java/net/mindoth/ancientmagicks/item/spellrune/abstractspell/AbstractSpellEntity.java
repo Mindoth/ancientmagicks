@@ -1,44 +1,44 @@
 package net.mindoth.ancientmagicks.item.spellrune.abstractspell;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleData;
+import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 
-public class AbstractSpellEntity extends ThrowableEntity {
+public class AbstractSpellEntity extends ThrowableProjectile {
 
-    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, World level) {
+    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level level) {
         super(entityType, level);
     }
 
     @Override
     protected float getGravity() {
-        return 0.01F;
+        return 0.005F;
     }
 
     public float getDefaultPower() {
@@ -69,7 +69,7 @@ public class AbstractSpellEntity extends ThrowableEntity {
         return 0;
     }
 
-    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, World pLevel, LivingEntity owner, Entity caster, SpellRuneItem rune) {
+    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, SpellRuneItem rune) {
         super(entityType, owner, pLevel);
 
         this.owner = owner;
@@ -96,29 +96,29 @@ public class AbstractSpellEntity extends ThrowableEntity {
     public int blockPierce;
 
     protected boolean isAlly(LivingEntity target) {
-        return target == this.owner || target.isAlliedTo(this.owner) || (target instanceof TameableEntity && ((TameableEntity)target).isOwnedBy(this.owner));
+        return target == this.owner || target.isAlliedTo(this.owner) || (target instanceof TamableAnimal && ((TamableAnimal)target).isOwnedBy(this.owner));
     }
 
     protected void dealDamage(LivingEntity target) {
-        target.hurt(DamageSource.indirectMagic(this, this.owner), this.power);
+        target.hurt(target.damageSources().indirectMagic(this, this.owner), this.power);
     }
 
     @Override
-    protected void onHit(RayTraceResult result) {
-        if ( this.level.isClientSide ) {
+    protected void onHit(HitResult result) {
+        if ( this.level().isClientSide ) {
             doClientHitEffects();
         }
-        if ( !this.level.isClientSide ) {
-            if ( result.getType() == RayTraceResult.Type.ENTITY && ((EntityRayTraceResult)result).getEntity() instanceof LivingEntity ) {
-                doMobEffects((EntityRayTraceResult)result);
+        if ( !this.level().isClientSide ) {
+            if ( result.getType() == HitResult.Type.ENTITY && ((EntityHitResult)result).getEntity() instanceof LivingEntity ) {
+                doMobEffects((EntityHitResult)result);
                 if ( this.enemyPierce > 0 ) this.enemyPierce--;
                 else doDeathEffects();
             }
-            if ( result.getType() == RayTraceResult.Type.BLOCK ) {
-                doBlockEffects((BlockRayTraceResult)result);
-                BlockRayTraceResult traceResult = (BlockRayTraceResult)result;
-                BlockState blockState = this.level.getBlockState(traceResult.getBlockPos());
-                this.level.playSound(null, this.getX(), this.getY(), this.getZ(), blockState.getSoundType().getBreakSound(), SoundCategory.PLAYERS, 0.3F, 2);
+            if ( result.getType() == HitResult.Type.BLOCK ) {
+                doBlockEffects((BlockHitResult)result);
+                BlockHitResult traceResult = (BlockHitResult)result;
+                BlockState blockState = this.level().getBlockState(traceResult.getBlockPos());
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), blockState.getSoundType().getBreakSound(), SoundSource.PLAYERS, 0.3F, 2);
 
                 if ( this.blockPierce > 0 ) {
                     this.blockPierce--;
@@ -126,8 +126,8 @@ public class AbstractSpellEntity extends ThrowableEntity {
                 else if ( this.bounce > 0 ) {
                     this.bounce--;
                     Direction face = traceResult.getDirection();
-                    blockState.onProjectileHit(this.level, blockState, traceResult, this);
-                    Vector3d motion = this.getDeltaMovement();
+                    blockState.onProjectileHit(this.level(), blockState, traceResult, this);
+                    Vec3 motion = this.getDeltaMovement();
                     double motionX = motion.x();
                     double motionY = motion.y();
                     double motionZ = motion.z();
@@ -163,17 +163,17 @@ public class AbstractSpellEntity extends ThrowableEntity {
     @Override
     public void tick() {
         super.tick();
-        if ( level.isClientSide ) {
+        if ( level().isClientSide ) {
             doClientTickEffects();
         }
-        if ( !level.isClientSide ) {
+        if ( !level().isClientSide ) {
             doTickEffects();
             if ( this.tickCount > this.life ) {
                 doDeathEffects();
             }
             if ( this.homing ) {
                 int range = 3;
-                List<LivingEntity> entitiesAround = ShadowEvents.getEntitiesAround(this, this.level, range, null);
+                List<LivingEntity> entitiesAround = ShadowEvents.getEntitiesAround(this, this.level(), range, null);
 
                 //Need to do this haxxy way to still exclude targeting allies
                 List<LivingEntity> excludeList = Lists.newArrayList();
@@ -183,18 +183,18 @@ public class AbstractSpellEntity extends ThrowableEntity {
                     }
                 }
 
-                Entity nearest = ShadowEvents.getNearestEntity(this, this.level, range, excludeList);
+                Entity nearest = ShadowEvents.getNearestEntity(this, this.level(), range, excludeList);
                 if ( nearest != null && !this.getBoundingBox().inflate(1.5F).intersects(nearest.getBoundingBox()) ) {
                     if ( !this.isNoGravity() ) this.setNoGravity(true);
                     double mX = getDeltaMovement().x();
                     double mY = getDeltaMovement().y();
                     double mZ = getDeltaMovement().z();
-                    Vector3d spellPos = new Vector3d(getX(), getY(), getZ());
-                    Vector3d targetPos = new Vector3d(ShadowEvents.getEntityCenter(nearest).x, ShadowEvents.getEntityCenter(nearest).y, ShadowEvents.getEntityCenter(nearest).z);
-                    Vector3d lookVec = targetPos.subtract(spellPos);
-                    Vector3d spellMotion = new Vector3d(mX, mY, mZ);
+                    Vec3 spellPos = new Vec3(getX(), getY(), getZ());
+                    Vec3 targetPos = new Vec3(ShadowEvents.getEntityCenter(nearest).x, ShadowEvents.getEntityCenter(nearest).y, ShadowEvents.getEntityCenter(nearest).z);
+                    Vec3 lookVec = targetPos.subtract(spellPos);
+                    Vec3 spellMotion = new Vec3(mX, mY, mZ);
                     float arc = 1.0F;
-                    Vector3d lerpVec = lerpVector(arc, spellMotion, lookVec);
+                    Vec3 lerpVec = lerpVector(arc, spellMotion, lookVec);
                     float multiplier = this.speed * 0.25F;
                     this.setDeltaMovement(lerpVec.multiply(multiplier, multiplier, multiplier));
                 }
@@ -203,15 +203,15 @@ public class AbstractSpellEntity extends ThrowableEntity {
         }
     }
 
-    protected Vector3d lerpVector(float arc, Vector3d start, Vector3d end) {
-        return new Vector3d(MathHelper.lerp(arc, start.x, end.x), MathHelper.lerp(arc, start.y, end.y), MathHelper.lerp(arc, start.z, end.z));
+    protected Vec3 lerpVector(float arc, Vec3 start, Vec3 end) {
+        return new Vec3(Mth.lerp(arc, start.x, end.x), Mth.lerp(arc, start.y, end.y), Mth.lerp(arc, start.z, end.z));
     }
 
     protected void doClientTickEffects() {
-        if ( !this.level.isClientSide ) return;
-        ClientWorld world = (ClientWorld)this.level;
-        Vector3d center = ShadowEvents.getEntityCenter(this);
-        Vector3d pos = new Vector3d(center.x, this.getY(), center.z);
+        if ( !this.level().isClientSide ) return;
+        ClientLevel world = (ClientLevel)this.level();
+        Vec3 center = ShadowEvents.getEntityCenter(this);
+        Vec3 pos = new Vec3(center.x, this.getY(), center.z);
         
         //Main body
         for ( int i = 0; i < 4; i++ ) {
@@ -219,7 +219,7 @@ public class AbstractSpellEntity extends ThrowableEntity {
             float randX = (float)((Math.random() * (size - (-size))) + (-size));
             float randY = (float)((Math.random() * (size - (-size))) + (-size));
             float randZ = (float)((Math.random() * (size - (-size))) + (-size));
-            world.addParticle(EmberParticleData.createData(getParticleColor(), this.entityData.get(SIZE), 10, true, true), true,
+            world.addParticle(EmberParticleProvider.createData(getParticleColor(), this.entityData.get(SIZE), 10, true, true), true,
                     pos.x + randX, pos.y + randY, pos.z + randZ, 0, 0, 0);
         }
         //Trail twinkle
@@ -228,8 +228,8 @@ public class AbstractSpellEntity extends ThrowableEntity {
             float randX = (float)((Math.random() * (size - (-size))) + (-size));
             float randY = (float)((Math.random() * (size - (-size))) + (-size));
             float randZ = (float)((Math.random() * (size - (-size))) + (-size));
-            int life = 4 + level.random.nextInt(20);
-            world.addParticle(EmberParticleData.createData(getParticleColor(), size, life, true, true), true,
+            int life = 4 + level().random.nextInt(20);
+            world.addParticle(EmberParticleProvider.createData(getParticleColor(), size, life, true, true), true,
                     pos.x + randX, pos.y + randY, pos.z + randZ, 0, 0, 0);
         }
     }
@@ -237,10 +237,10 @@ public class AbstractSpellEntity extends ThrowableEntity {
     protected void doClientHitEffects() {
     }
 
-    protected void doMobEffects(EntityRayTraceResult result) {
+    protected void doMobEffects(EntityHitResult result) {
     }
 
-    protected void doBlockEffects(BlockRayTraceResult result) {
+    protected void doBlockEffects(BlockHitResult result) {
     }
 
     protected void playHitSound() {
@@ -250,7 +250,7 @@ public class AbstractSpellEntity extends ThrowableEntity {
     }
 
     protected void doDeathEffects() {
-        this.remove();
+        this.discard();
     }
 
     public static ParticleColor.IntWrapper getSpellColor(String element) {
@@ -274,10 +274,10 @@ public class AbstractSpellEntity extends ThrowableEntity {
         return returnColor;
     }
 
-    public static final DataParameter<Integer> RED = EntityDataManager.defineId(AbstractSpellEntity.class, DataSerializers.INT);
-    public static final DataParameter<Integer> GREEN = EntityDataManager.defineId(AbstractSpellEntity.class, DataSerializers.INT);
-    public static final DataParameter<Integer> BLUE = EntityDataManager.defineId(AbstractSpellEntity.class, DataSerializers.INT);
-    public static final DataParameter<Float> SIZE = EntityDataManager.defineId(AbstractSpellEntity.class, DataSerializers.FLOAT);
+    public static final EntityDataAccessor<Integer> RED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> GREEN = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> BLUE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
 
     public ParticleColor getParticleColor() {
         return new ParticleColor(this.entityData.get(RED), this.entityData.get(GREEN), this.entityData.get(BLUE));
@@ -291,7 +291,7 @@ public class AbstractSpellEntity extends ThrowableEntity {
     }
 
     @Override
-    public void load(CompoundNBT compound) {
+    public void load(CompoundTag compound) {
         super.load(compound);
         this.entityData.set(RED, compound.getInt("red"));
         this.entityData.set(GREEN, compound.getInt("green"));
@@ -300,7 +300,7 @@ public class AbstractSpellEntity extends ThrowableEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("red", this.entityData.get(RED));
         compound.putInt("green", this.entityData.get(GREEN));
@@ -317,7 +317,7 @@ public class AbstractSpellEntity extends ThrowableEntity {
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

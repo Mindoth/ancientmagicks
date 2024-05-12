@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ancientmagicks:items/black_hole_rune"
+    "layer0": "ancientmagicks:item/black_hole_rune"
   }
 }

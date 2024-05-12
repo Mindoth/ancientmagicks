@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.client.particle.ember;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.core.particles.ParticleType;
 
 public class EmberParticleType extends ParticleType<ColoredDynamicTypeData> {
     public EmberParticleType() {

@@ -1,18 +1,16 @@
 package net.mindoth.ancientmagicks.item.spellrune.witchspark;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 
 public class WitchSparkRenderer extends EntityRenderer<WitchSparkEntity> {
 
-    public WitchSparkRenderer(EntityRendererManager renderManager) {
-        super(renderManager);
+    public WitchSparkRenderer(EntityRendererProvider.Context context) {
+        super(context);
     }
 
     @Override
@@ -21,12 +19,6 @@ public class WitchSparkRenderer extends EntityRenderer<WitchSparkEntity> {
     }
 
     @Override
-    public void render(WitchSparkEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        matrixStackIn.pushPose();
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.yRotO, entityIn.yRot) - 90.0F));
-        matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.xRotO, entityIn.xRot)));
-        matrixStackIn.scale(1.0F, 1.0F, 1.0F);
-        matrixStackIn.translate(0, 0, 0);
-        matrixStackIn.popPose();
+    public void render(WitchSparkEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
     }
 }

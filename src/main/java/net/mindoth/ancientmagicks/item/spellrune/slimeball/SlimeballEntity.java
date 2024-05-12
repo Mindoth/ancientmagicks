@@ -4,35 +4,35 @@ import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PlayMessages;
 
 public class SlimeballEntity extends AbstractSpellEntity {
 
-    public SlimeballEntity(FMLPlayMessages.SpawnEntity spawnEntity, World level) {
+    public SlimeballEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
         this(AncientMagicksEntities.SLIMEBALL.get(), level);
     }
 
-    public SlimeballEntity(EntityType<SlimeballEntity> entityType, World level) {
+    public SlimeballEntity(EntityType<SlimeballEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public SlimeballEntity(World level, LivingEntity owner, Entity caster, SpellRuneItem rune) {
+    public SlimeballEntity(Level level, LivingEntity owner, Entity caster, SpellRuneItem rune) {
         super(AncientMagicksEntities.SLIMEBALL.get(), level, owner, caster, rune);
     }
 
     @Override
     protected float getGravity() {
-        return 0.02F;
+        return 0.01F;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class SlimeballEntity extends AbstractSpellEntity {
     }
 
     @Override
-    protected void doMobEffects(EntityRayTraceResult result) {
+    protected void doMobEffects(EntityHitResult result) {
         if ( this.power > 0 && !isAlly((LivingEntity)result.getEntity()) ) {
             dealDamage((LivingEntity)result.getEntity());
         }
@@ -64,10 +64,10 @@ public class SlimeballEntity extends AbstractSpellEntity {
 
     @Override
     protected void doClientTickEffects() {
-        if ( !this.level.isClientSide ) return;
-        ClientWorld world = (ClientWorld)this.level;
-        Vector3d center = ShadowEvents.getEntityCenter(this);
-        Vector3d pos = new Vector3d(center.x, this.getY(), center.z);
+        if ( !this.level().isClientSide ) return;
+        ClientLevel world = (ClientLevel)this.level();
+        Vec3 center = ShadowEvents.getEntityCenter(this);
+        Vec3 pos = new Vec3(center.x, this.getY(), center.z);
 
         //Trail twinkle
         if ( this.tickCount % 4 == 0 ) {
@@ -80,20 +80,20 @@ public class SlimeballEntity extends AbstractSpellEntity {
     }
 
     @Override
-    protected void doBlockEffects(BlockRayTraceResult result) {
+    protected void doBlockEffects(BlockHitResult result) {
         if ( this.blockPierce == 0 ) particleSplash();
     }
 
     @Override
     protected void doDeathEffects() {
         particleSplash();
-        this.remove();
+        this.discard();
     }
 
     protected void particleSplash() {
-        ServerWorld world = (ServerWorld)this.level;
-        Vector3d center = ShadowEvents.getEntityCenter(this);
-        Vector3d pos = new Vector3d(center.x, this.getY(), center.z);
+        ServerLevel world = (ServerLevel)this.level();
+        Vec3 center = ShadowEvents.getEntityCenter(this);
+        Vec3 pos = new Vec3(center.x, this.getY(), center.z);
         for ( int r = 0; r < 360; r++ ) {
             if ( r % 60 == 0 ) {
                 world.sendParticles(ParticleTypes.ITEM_SLIME, pos.x, pos.y, pos.z,

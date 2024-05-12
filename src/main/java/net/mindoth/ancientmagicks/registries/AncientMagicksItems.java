@@ -16,13 +16,12 @@ import net.mindoth.ancientmagicks.item.spellrune.flight.FlightRune;
 import net.mindoth.ancientmagicks.item.spellrune.raisedead.RaiseDeadRune;
 import net.mindoth.ancientmagicks.item.spellrune.slimeball.SlimeballRune;
 import net.mindoth.ancientmagicks.item.spellrune.telekineticgrab.TelekineticGrabRune;
-import net.mindoth.ancientmagicks.item.spellrune.tornado.TornadoRune;
 import net.mindoth.ancientmagicks.item.spellrune.windburst.WindBurstRune;
 import net.mindoth.ancientmagicks.item.spellrune.witchspark.WitchSparkRune;
-import net.minecraft.item.Item;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class AncientMagicksItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, AncientMagicks.MOD_ID);

@@ -5,47 +5,44 @@ import net.mindoth.ancientmagicks.item.spellrune.abstractspell.summon.SummonerHe
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.summon.goal.*;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.monster.SkeletonEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.DamageSource;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class SkeletonMinionEntity extends SkeletonEntity implements SummonedMinion {
+public class SkeletonMinionEntity extends Skeleton implements SummonedMinion {
 
     protected LivingEntity cachedSummoner;
     protected UUID summonerUUID;
 
-    public SkeletonMinionEntity(EntityType<? extends SkeletonEntity> pEntityType, World pLevel) {
+    public SkeletonMinionEntity(EntityType<? extends Skeleton> pEntityType, Level pLevel) {
         super(AncientMagicksEntities.SKELETON_MINION.get(), pLevel);
         xpReward = 0;
     }
 
-    public SkeletonMinionEntity(World pLevel, LivingEntity owner) {
+    public SkeletonMinionEntity(Level pLevel, LivingEntity owner) {
         this(AncientMagicksEntities.SKELETON_MINION.get(), pLevel);
         setSummoner(owner);
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-        this.goalSelector.addGoal(7, new LookAtGoal(this, MobEntity.class, 8.0F));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Mob.class, 8.0F));
 
         this.targetSelector.addGoal(1, new GenericSummonerHurtByTargetGoal(this, this::getSummoner));
         this.targetSelector.addGoal(2, new GenericSummonerHurtTargetGoal(this, this::getSummoner));
@@ -54,18 +51,18 @@ public class SkeletonMinionEntity extends SkeletonEntity implements SummonedMini
         this.goalSelector.addGoal(5, new GenericFollowSummonerGoal(this, this::getSummoner, 0.9f, 15, 5, false, 25));
     }
 
-    public static AttributeModifierMap setAttributes() {
-        return MonsterEntity.createMonsterAttributes().build();
+    public static AttributeSupplier setAttributes() {
+        return Monster.createMonsterAttributes().build();
     }
 
     @Override
-    public boolean isPreventingPlayerRest(PlayerEntity pPlayer) {
+    public boolean isPreventingPlayerRest(Player pPlayer) {
         return !this.isAlliedTo(pPlayer);
     }
 
     @Override
     public LivingEntity getSummoner() {
-        return SummonerHelper.getAndCacheOwner(level, cachedSummoner, summonerUUID);
+        return SummonerHelper.getAndCacheOwner(level(), cachedSummoner, summonerUUID);
     }
 
     public void setSummoner(@Nullable LivingEntity owner) {
@@ -88,13 +85,13 @@ public class SkeletonMinionEntity extends SkeletonEntity implements SummonedMini
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compoundTag) {
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         this.summonerUUID = SummonerHelper.deserializeOwner(compoundTag);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT compoundTag) {
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         SummonerHelper.serializeOwner(compoundTag, summonerUUID);
     }
@@ -106,19 +103,19 @@ public class SkeletonMinionEntity extends SkeletonEntity implements SummonedMini
 
     @Override
     public void onUnSummon() {
-        if ( !level.isClientSide ) {
+        if ( !level().isClientSide ) {
             for ( int i = 0; i < 6; i++ ) {
                 ItemStack itemstack;
-                if ( i == 0 ) itemstack = this.getItemBySlot(EquipmentSlotType.MAINHAND);
-                else if ( i == 1 ) itemstack = this.getItemBySlot(EquipmentSlotType.OFFHAND);
-                else if ( i == 2 ) itemstack = this.getItemBySlot(EquipmentSlotType.HEAD);
-                else if ( i == 3 ) itemstack = this.getItemBySlot(EquipmentSlotType.CHEST);
-                else if ( i == 4 ) itemstack = this.getItemBySlot(EquipmentSlotType.LEGS);
-                else itemstack = this.getItemBySlot(EquipmentSlotType.FEET);
+                if ( i == 0 ) itemstack = this.getItemBySlot(EquipmentSlot.MAINHAND);
+                else if ( i == 1 ) itemstack = this.getItemBySlot(EquipmentSlot.OFFHAND);
+                else if ( i == 2 ) itemstack = this.getItemBySlot(EquipmentSlot.HEAD);
+                else if ( i == 3 ) itemstack = this.getItemBySlot(EquipmentSlot.CHEST);
+                else if ( i == 4 ) itemstack = this.getItemBySlot(EquipmentSlot.LEGS);
+                else itemstack = this.getItemBySlot(EquipmentSlot.FEET);
                 if ( !itemstack.isEmpty() ) this.spawnAtLocation(itemstack);
             }
             this.spawnAnim();
-            remove();
+            discard();
         }
     }
 
@@ -128,9 +125,9 @@ public class SkeletonMinionEntity extends SkeletonEntity implements SummonedMini
     }
 
     @Override
-    protected void populateDefaultEquipmentSlots(DifficultyInstance pDifficulty) {
-        super.populateDefaultEquipmentSlots(pDifficulty);
-        this.setItemSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
+    protected void populateDefaultEquipmentSlots(RandomSource pRandom, DifficultyInstance pDifficulty) {
+        super.populateDefaultEquipmentSlots(pRandom, pDifficulty);
+        this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
     }
 
     @Override

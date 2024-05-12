@@ -1,11 +1,14 @@
 package net.mindoth.ancientmagicks.client.particle.ember;
 
-import net.minecraft.client.particle.IAnimatedSprite;
-import net.minecraft.client.particle.IParticleRenderType;
-import net.minecraft.client.particle.SpriteTexturedParticle;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ParticleEmber extends SpriteTexturedParticle {
+@OnlyIn(Dist.CLIENT)
+public class ParticleEmber extends TextureSheetParticle {
     public boolean fade;
     public float colorR;
     public float colorG;
@@ -19,7 +22,7 @@ public class ParticleEmber extends SpriteTexturedParticle {
     public float destZ;
     public boolean disableDepthTest;
 
-    protected ParticleEmber(ClientWorld level, double x, double y, double z, double xd, double yd, double zd, float r, float g, float b, float scale, int lifetime, boolean fade, boolean mask, IAnimatedSprite sprite) {
+    protected ParticleEmber(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, float r, float g, float b, float scale, int lifetime, boolean fade, boolean mask, SpriteSet sprite) {
         super(level, x, y, z, xd, yd, zd);
         this.colorR = r;
         this.colorG = g;
@@ -70,7 +73,7 @@ public class ParticleEmber extends SpriteTexturedParticle {
     }
 
     @Override
-    public IParticleRenderType getRenderType() {
+    public ParticleRenderType getRenderType() {
         return this.disableDepthTest ? ParticleRenderTypes.AMAGICKS_RENDER : ParticleRenderTypes.AMAGICKS_RENDER_DARK;
     }
 

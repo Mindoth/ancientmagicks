@@ -2,31 +2,26 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.client.particle.ember.ColoredDynamicTypeData;
-import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleData;
+import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.particles.ParticleType;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AncientMagicksParticles {
 
-    @ObjectHolder(AncientMagicks.MOD_ID + ":" + EmberParticleData.NAME) public static ParticleType<ColoredDynamicTypeData> EMBER_TYPE;
+    public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, AncientMagicks.MOD_ID);
+
+    public static final RegistryObject<ParticleType<ColoredDynamicTypeData>> EMBER_TYPE = PARTICLES.register(EmberParticleProvider.NAME, EmberParticleType::new);
 
     @SubscribeEvent
-    public static void registerParticles(RegistryEvent.Register<ParticleType<?>> event) {
-        IForgeRegistry<ParticleType<?>> r = event.getRegistry();
-        r.register(new EmberParticleType().setRegistryName(EmberParticleData.NAME));
-    }
-
-    @SuppressWarnings("resource")
-    @SubscribeEvent
-    public static void registerFactories(ParticleFactoryRegisterEvent event) {
-        Minecraft.getInstance().particleEngine.register(EMBER_TYPE, EmberParticleData::new);
+    public static void registerFactories(RegisterParticleProvidersEvent evt) {
+        Minecraft.getInstance().particleEngine.register(EMBER_TYPE.get(), EmberParticleProvider::new);
     }
 }

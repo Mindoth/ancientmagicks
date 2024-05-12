@@ -3,24 +3,24 @@ package net.mindoth.ancientmagicks.item.spellrune.witchspark;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.FMLPlayMessages;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraftforge.network.PlayMessages;
 
 public class WitchSparkEntity extends AbstractSpellEntity {
 
-    public WitchSparkEntity(FMLPlayMessages.SpawnEntity spawnEntity, World level) {
+    public WitchSparkEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
         this(AncientMagicksEntities.WITCH_SPARK.get(), level);
     }
 
-    public WitchSparkEntity(EntityType<WitchSparkEntity> entityType, World level) {
+    public WitchSparkEntity(EntityType<WitchSparkEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public WitchSparkEntity(World level, LivingEntity owner, Entity caster, SpellRuneItem rune) {
+    public WitchSparkEntity(Level level, LivingEntity owner, Entity caster, SpellRuneItem rune) {
         super(AncientMagicksEntities.WITCH_SPARK.get(), level, owner, caster, rune);
     }
 
@@ -40,7 +40,7 @@ public class WitchSparkEntity extends AbstractSpellEntity {
     }
 
     @Override
-    protected void doMobEffects(EntityRayTraceResult result) {
+    protected void doMobEffects(EntityHitResult result) {
         if ( this.power > 0 && !isAlly((LivingEntity)result.getEntity()) ) {
             dealDamage((LivingEntity)result.getEntity());
         }

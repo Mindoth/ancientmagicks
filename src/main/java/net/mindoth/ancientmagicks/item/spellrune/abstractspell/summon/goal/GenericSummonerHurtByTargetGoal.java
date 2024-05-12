@@ -2,22 +2,22 @@ package net.mindoth.ancientmagicks.item.spellrune.abstractspell.summon.goal;
 
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.summon.SummonedMinion;
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.summon.SummonerGetter;
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.brain.memory.MemoryModuleType;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.TargetGoal;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 
 import java.util.EnumSet;
 
 public class GenericSummonerHurtByTargetGoal extends TargetGoal {
-    private final MobEntity entity;
+    private final Mob entity;
     private final SummonerGetter summoner;
     private LivingEntity summonerLastHurtBy;
     private int timestamp;
 
-    public GenericSummonerHurtByTargetGoal(MobEntity entity, SummonerGetter getSummoner) {
+    public GenericSummonerHurtByTargetGoal(Mob entity, SummonerGetter getSummoner) {
         super(entity, false);
         this.entity = entity;
         this.summoner = getSummoner;
@@ -37,7 +37,7 @@ public class GenericSummonerHurtByTargetGoal extends TargetGoal {
             if (summonerLastHurtBy == null || summonerLastHurtBy.isAlliedTo(mob))
                 return false;
             int i = summoner.getLastHurtByMobTimestamp();
-            return i != this.timestamp && this.canAttack(this.summonerLastHurtBy, EntityPredicate.DEFAULT) && !(this.summonerLastHurtBy instanceof SummonedMinion && ((SummonedMinion)this.summonerLastHurtBy).getSummoner() == summoner);
+            return i != this.timestamp && this.canAttack(this.summonerLastHurtBy, TargetingConditions.DEFAULT) && !(this.summonerLastHurtBy instanceof SummonedMinion summon && summon.getSummoner() == summoner);
         }
     }
 

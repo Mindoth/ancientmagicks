@@ -5,11 +5,12 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.mindoth.ancientmagicks.registries.AncientMagicksParticles;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.registries.ForgeRegistries;
 
-public class ColoredDynamicTypeData implements IParticleData {
+public class ColoredDynamicTypeData implements ParticleOptions {
 
     private ParticleType<ColoredDynamicTypeData> type;
     public ParticleColor color;
@@ -34,7 +35,7 @@ public class ColoredDynamicTypeData implements IParticleData {
         return type;
     }
 
-    static final IDeserializer<ColoredDynamicTypeData> DESERIALIZER = new IDeserializer<ColoredDynamicTypeData>() {
+    static final Deserializer<ColoredDynamicTypeData> DESERIALIZER = new Deserializer<>() {
         @Override
         public ColoredDynamicTypeData fromCommand(ParticleType<ColoredDynamicTypeData> type, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
@@ -42,13 +43,13 @@ public class ColoredDynamicTypeData implements IParticleData {
         }
 
         @Override
-        public ColoredDynamicTypeData fromNetwork(ParticleType<ColoredDynamicTypeData> type, PacketBuffer buffer) {
+        public ColoredDynamicTypeData fromNetwork(ParticleType<ColoredDynamicTypeData> type, FriendlyByteBuf buffer) {
             return new ColoredDynamicTypeData(type, ParticleColor.deserialize(buffer.readUtf()), buffer.readFloat(), buffer.readInt(), buffer.readBoolean(), buffer.readBoolean());
         }
     };
 
     public ColoredDynamicTypeData(float r, float g, float b, float scale, int age, boolean fade, boolean mask) {
-        this.type = AncientMagicksParticles.EMBER_TYPE;
+        this.type = AncientMagicksParticles.EMBER_TYPE.get();
         this.color = new ParticleColor(r, g, b);
         this.scale = scale;
         this.age = age;
@@ -66,7 +67,7 @@ public class ColoredDynamicTypeData implements IParticleData {
     }
 
     @Override
-    public void writeToNetwork(PacketBuffer buffer) {
+    public void writeToNetwork(FriendlyByteBuf buffer) {
         buffer.writeUtf(color.serialize());
         buffer.writeFloat(scale);
         buffer.writeInt(age);
@@ -76,6 +77,6 @@ public class ColoredDynamicTypeData implements IParticleData {
 
     @Override
     public String writeToString() {
-        return type.getRegistryName().toString() + " " + color.serialize() + " " + scale + " " + age + " " + fade + " " + mask;
+        return ForgeRegistries.PARTICLE_TYPES.getKey(type).toString() + " " + color.serialize() + " " + scale + " " + age + " " + fade + " " + mask;
     }
 }

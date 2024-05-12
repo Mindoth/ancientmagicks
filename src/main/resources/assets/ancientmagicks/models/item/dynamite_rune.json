@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ancientmagicks:items/dynamite_rune"
+    "layer0": "ancientmagicks:item/dynamite_rune"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ancientmagicks:items/slacken_rune"
+    "layer0": "ancientmagicks:item/slacken_rune"
   }
 }

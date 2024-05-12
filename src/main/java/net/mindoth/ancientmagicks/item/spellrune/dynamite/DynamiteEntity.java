@@ -3,27 +3,27 @@ package net.mindoth.ancientmagicks.item.spellrune.dynamite;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
-import net.minecraft.entity.*;
-import net.minecraft.entity.item.TNTEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.FMLPlayMessages;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.item.PrimedTnt;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class DynamiteEntity extends TNTEntity {
-    private static final DataParameter<Integer> DATA_FUSE_ID = EntityDataManager.defineId(DynamiteEntity.class, DataSerializers.INT);
+public class DynamiteEntity extends PrimedTnt implements TraceableEntity {
+    private static final EntityDataAccessor<Integer> DATA_FUSE_ID = SynchedEntityData.defineId(DynamiteEntity.class, EntityDataSerializers.INT);
+    private static final int DEFAULT_FUSE_TIME = 80;
     @Nullable
     public LivingEntity owner;
     public float power;
@@ -53,16 +53,16 @@ public class DynamiteEntity extends TNTEntity {
         return 0;
     }
 
-    public DynamiteEntity(FMLPlayMessages.SpawnEntity spawnEntity, World level) {
+    public DynamiteEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
         this(AncientMagicksEntities.DYNAMITE.get(), level);
     }
 
-    public DynamiteEntity(EntityType<? extends DynamiteEntity> entityType, World level) {
+    public DynamiteEntity(EntityType<? extends DynamiteEntity> entityType, Level level) {
         super(entityType, level);
         this.blocksBuilding = true;
     }
 
-    public DynamiteEntity(World pLevel, double pX, double pY, double pZ, @Nullable LivingEntity pOwner) {
+    public DynamiteEntity(Level pLevel, double pX, double pY, double pZ, @Nullable LivingEntity pOwner) {
         this(AncientMagicksEntities.DYNAMITE.get(), pLevel);
         this.setPos(pX, pY, pZ);
         //double d0 = pLevel.random.nextDouble() * (double)((float)Math.PI * 2F);
@@ -86,21 +86,21 @@ public class DynamiteEntity extends TNTEntity {
     }
 
     @Override
-    protected boolean isMovementNoisy() {
-        return false;
+    protected Entity.MovementEmission getMovementEmission() {
+        return Entity.MovementEmission.NONE;
     }
 
     @Override
     public boolean isPickable() {
-        return !this.removed;
+        return !this.isRemoved();
     }
 
     @Override
     protected void explode() {
         float f = 4 + this.power + this.size;
-        Explosion.Mode mode = Explosion.Mode.BREAK;
-        if ( f <= 0 ) mode = Explosion.Mode.NONE;
-        this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), f, mode);
+        Level.ExplosionInteraction mode = Level.ExplosionInteraction.TNT;
+        if ( f <= 0 ) mode = Level.ExplosionInteraction.NONE;
+        this.level().explode(this, this.getX(), this.getY(0.0625D), this.getZ(), f, mode);
     }
 
     @Override
@@ -110,24 +110,25 @@ public class DynamiteEntity extends TNTEntity {
         }
         this.move(MoverType.SELF, this.getDeltaMovement());
         this.setDeltaMovement(this.getDeltaMovement().scale(0.98D));
-        if ( this.onGround ) {
+        if ( this.onGround() ) {
             this.setDeltaMovement(this.getDeltaMovement().multiply(0.7D, -0.5D, 0.7D));
         }
-        --this.life;
-        if ( this.life <= 0 ) {
-            this.remove();
-            if ( !this.level.isClientSide ) this.explode();
+        int i = this.getFuse() - 1;
+        this.setFuse(i);
+        if ( i <= 0 ) {
+            this.discard();
+            if ( !this.level().isClientSide ) this.explode();
         }
         else {
             this.updateInWaterStateAndDoFluidPushing();
-            if ( this.level.isClientSide ) {
-                this.level.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.5D, this.getZ(), 0.0D, 0.0D, 0.0D);
+            if ( this.level().isClientSide ) {
+                this.level().addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.5D, this.getZ(), 0.0D, 0.0D, 0.0D);
             }
         }
 
-        if ( !this.level.isClientSide && this.homing ) {
+        if ( !this.level().isClientSide && this.homing ) {
             int range = 3;
-            List<LivingEntity> entitiesAround = ShadowEvents.getEntitiesAround(this, this.level, range, null);
+            List<LivingEntity> entitiesAround = ShadowEvents.getEntitiesAround(this, this.level(), range, null);
 
             //Need to do this haxxy way to still exclude targeting allies
             List<LivingEntity> excludeList = Lists.newArrayList();
@@ -137,18 +138,18 @@ public class DynamiteEntity extends TNTEntity {
                 }
             }
 
-            Entity nearest = ShadowEvents.getNearestEntity(this, this.level, range, excludeList);
+            Entity nearest = ShadowEvents.getNearestEntity(this, this.level(), range, excludeList);
             if ( nearest != null ) {
                 if ( !this.isNoGravity() ) this.setNoGravity(true);
                 double mX = getDeltaMovement().x();
                 double mY = getDeltaMovement().y();
                 double mZ = getDeltaMovement().z();
-                Vector3d spellPos = new Vector3d(getX(), getY(), getZ());
-                Vector3d targetPos = new Vector3d(ShadowEvents.getEntityCenter(nearest).x, ShadowEvents.getEntityCenter(nearest).y, ShadowEvents.getEntityCenter(nearest).z);
-                Vector3d lookVec = targetPos.subtract(spellPos);
-                Vector3d spellMotion = new Vector3d(mX, mY, mZ);
+                Vec3 spellPos = new Vec3(getX(), getY(), getZ());
+                Vec3 targetPos = new Vec3(ShadowEvents.getEntityCenter(nearest).x, ShadowEvents.getEntityCenter(nearest).y, ShadowEvents.getEntityCenter(nearest).z);
+                Vec3 lookVec = targetPos.subtract(spellPos);
+                Vec3 spellMotion = new Vec3(mX, mY, mZ);
                 float arc = 1.0F;
-                Vector3d lerpVec = lerpVector(arc, spellMotion, lookVec);
+                Vec3 lerpVec = lerpVector(arc, spellMotion, lookVec);
                 float multiplier = this.speed * 0.25F;
                 this.setDeltaMovement(lerpVec.multiply(multiplier, multiplier, multiplier));
             }
@@ -156,21 +157,21 @@ public class DynamiteEntity extends TNTEntity {
         }
     }
 
-    protected Vector3d lerpVector(float arc, Vector3d start, Vector3d end) {
-        return new Vector3d(MathHelper.lerp(arc, start.x, end.x), MathHelper.lerp(arc, start.y, end.y), MathHelper.lerp(arc, start.z, end.z));
+    protected Vec3 lerpVector(float arc, Vec3 start, Vec3 end) {
+        return new Vec3(Mth.lerp(arc, start.x, end.x), Mth.lerp(arc, start.y, end.y), Mth.lerp(arc, start.z, end.z));
     }
 
     protected boolean isAlly(LivingEntity target) {
-        return target == this.owner || (this.owner != null && target.isAlliedTo(this.owner)) || (target instanceof TameableEntity && ((TameableEntity)target).isOwnedBy(this.owner));
+        return target == this.owner || (this.owner != null && target.isAlliedTo(this.owner)) || (target instanceof TamableAnimal && ((TamableAnimal)target).isOwnedBy(this.owner));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT pCompound) {
-        pCompound.putShort("Fuse", (short)this.getLife());
+    protected void addAdditionalSaveData(CompoundTag pCompound) {
+        pCompound.putShort("Fuse", (short)this.getFuse());
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundNBT pCompound) {
+    protected void readAdditionalSaveData(CompoundTag pCompound) {
         this.setFuse(pCompound.getShort("Fuse"));
     }
 
@@ -181,7 +182,7 @@ public class DynamiteEntity extends TNTEntity {
     }
 
     @Override
-    protected float getEyeHeight(Pose pPose, EntitySize pSize) {
+    protected float getEyeHeight(Pose pPose, EntityDimensions pSize) {
         return 0.15F;
     }
 
@@ -192,24 +193,12 @@ public class DynamiteEntity extends TNTEntity {
     }
 
     @Override
-    public void onSyncedDataUpdated(DataParameter<?> pKey) {
-        if ( DATA_FUSE_ID.equals(pKey) ) {
-            this.life = this.getFuse();
-        }
-    }
-
-    @Override
     public int getFuse() {
         return this.entityData.get(DATA_FUSE_ID);
     }
 
     @Override
-    public int getLife() {
-        return this.life;
-    }
-
-    @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

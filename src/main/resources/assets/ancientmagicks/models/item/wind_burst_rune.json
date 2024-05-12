@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ancientmagicks:items/wind_burst_rune"
+    "layer0": "ancientmagicks:item/wind_burst_rune"
   }
 }

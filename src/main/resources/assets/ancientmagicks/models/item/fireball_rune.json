@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ancientmagicks:items/fireball_rune"
+    "layer0": "ancientmagicks:item/fireball_rune"
   }
 }

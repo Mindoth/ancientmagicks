@@ -1,8 +1,8 @@
 package net.mindoth.ancientmagicks.item.modifierrune;
 
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.AbstractSpellEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import java.util.HashMap;
 
@@ -24,7 +24,7 @@ public class CompactRune extends ModifierRuneItem {
     }
 
     @Override
-    public MobEntity addModifiersToMinionEntity(MobEntity minion) {
+    public Mob addModifiersToMinionEntity(Mob minion) {
         if ( minion.getAttributes().hasAttribute(Attributes.FOLLOW_RANGE) ) {
             minion.getAttributes().getInstance(Attributes.FOLLOW_RANGE)
                     .setBaseValue(minion.getAttributes().getBaseValue(Attributes.FOLLOW_RANGE) - 6);

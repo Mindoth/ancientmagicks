@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ancientmagicks:items/dampen_rune"
+    "layer0": "ancientmagicks:item/dampen_rune"
   }
 }

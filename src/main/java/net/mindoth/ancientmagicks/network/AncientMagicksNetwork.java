@@ -1,17 +1,17 @@
 package net.mindoth.ancientmagicks.network;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 public class AncientMagicksNetwork {
     private static SimpleChannel CHANNEL;
@@ -34,31 +34,31 @@ public class AncientMagicksNetwork {
         net.messageBuilder(PacketOpenWandGui.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(PacketOpenWandGui::new)
                 .encoder(PacketOpenWandGui::encode)
-                .consumer(PacketOpenWandGui::handle)
+                .consumerMainThread(PacketOpenWandGui::handle)
                 .add();
 
         net.messageBuilder(PacketSetStaffSlot.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(PacketSetStaffSlot::new)
                 .encoder(PacketSetStaffSlot::encode)
-                .consumer(PacketSetStaffSlot::handle)
+                .consumerMainThread(PacketSetStaffSlot::handle)
                 .add();
 
         net.messageBuilder(PacketSendStaffData.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(PacketSendStaffData::new)
                 .encoder(PacketSendStaffData::encode)
-                .consumer(PacketSendStaffData::handle)
+                .consumerMainThread(PacketSendStaffData::handle)
                 .add();
 
         net.messageBuilder(PacketReceiveStaffData.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(PacketReceiveStaffData::new)
                 .encoder(PacketReceiveStaffData::encode)
-                .consumer(PacketReceiveStaffData::handle)
+                .consumerMainThread(PacketReceiveStaffData::handle)
                 .add();
 
         net.messageBuilder(PacketSendCustomParticles.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(PacketSendCustomParticles::new)
                 .encoder(PacketSendCustomParticles::encode)
-                .consumer(PacketSendCustomParticles::handle)
+                .consumerMainThread(PacketSendCustomParticles::handle)
                 .add();
     }
 
@@ -66,20 +66,20 @@ public class AncientMagicksNetwork {
         CHANNEL.sendToServer(message);
     }
 
-    public static <MSG> void sendToPlayer(MSG message, ServerPlayerEntity player) {
+    public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {
         CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), message);
     }
 
-    public static void sendToNearby(World world, BlockPos pos, Object msg){
-        if ( world instanceof ServerWorld ) {
-            ServerWorld serverWorld = (ServerWorld)world;
-            serverWorld.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false)
+    public static void sendToNearby(Level world, BlockPos pos, Object msg){
+        if ( world instanceof ServerLevel ) {
+            ServerLevel serverWorld = (ServerLevel)world;
+            serverWorld.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).stream()
                     .filter(p -> p.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64 * 64)
                     .forEach(p -> CHANNEL.send(PacketDistributor.PLAYER.with(() -> p), msg));
         }
     }
 
-    public static void sendToNearby(World world, Entity caster, Object msg) {
+    public static void sendToNearby(Level world, Entity caster, Object msg) {
         sendToNearby(world, caster.blockPosition(), msg);
     }
 }

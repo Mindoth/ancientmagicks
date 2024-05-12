@@ -2,16 +2,15 @@ package net.mindoth.ancientmagicks.item.spellrune.flight;
 
 import net.mindoth.ancientmagicks.item.modifierrune.ModifierRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
-import net.mindoth.ancientmagicks.item.spellrune.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +22,9 @@ public class FlightRune extends SpellRuneItem {
     }
 
     @Override
-    public void shootMagic(PlayerEntity owner, Entity caster, Vector3d center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
-        World level = caster.level;
-        Vector3d casterPos = caster.getEyePosition(1.0F);
+    public void shootMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
+        Level level = caster.level();
+        Vec3 casterPos = caster.getEyePosition(1.0F);
         playMagicSound(level, casterPos);
         HashMap<String, Float> valueMap = new HashMap<>();
 
@@ -41,17 +40,17 @@ public class FlightRune extends SpellRuneItem {
         LivingEntity target;
         if ( caster == owner ) {
             if ( (float)casterPos.distanceTo(center) != 0 ) {
-                target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, (float)casterPos.distanceTo(center), 0.25F, caster == owner, valueMap.get("blockPierce") == 0);
+                target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, (float)casterPos.distanceTo(center), 0.25F, caster == owner, valueMap.get("blockPierce") == 0);
             }
             else target = owner;
         }
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, valueMap.get("size"), null);
 
-        if ( target instanceof PlayerEntity && isAlly(owner, target)) {
-            target.addEffect(new EffectInstance(AncientMagicksEffects.FLIGHT.get(), life, 0, false, false));
+        if ( target instanceof Player && isAlly(owner, target)) {
+            target.addEffect(new MobEffectInstance(AncientMagicksEffects.FLIGHT.get(), life, 0, false, false));
         }
         else {
-            target.addEffect(new EffectInstance(Effects.LEVITATION, life, 0, false, false));
+            target.addEffect(new MobEffectInstance(MobEffects.LEVITATION, life, 0, false, false));
         }
     }
 }

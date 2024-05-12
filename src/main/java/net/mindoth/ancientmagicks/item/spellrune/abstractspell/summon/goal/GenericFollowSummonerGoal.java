@@ -1,25 +1,29 @@
 package net.mindoth.ancientmagicks.item.spellrune.abstractspell.summon.goal;
 
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.summon.SummonerGetter;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.pathfinding.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
 public class GenericFollowSummonerGoal extends Goal {
 
-    private final CreatureEntity entity;
+    private final PathfinderMob entity;
     private LivingEntity summoner;
-    private final IWorldReader level;
+    private final LevelReader level;
     private final double speedModifier;
-    private final PathNavigator navigation;
+    private final PathNavigation navigation;
     private int timeToRecalcPath;
     private final float stopDistance;
     private final float startDistance;
@@ -28,10 +32,10 @@ public class GenericFollowSummonerGoal extends Goal {
     private final SummonerGetter summonerGetter;
     private final float teleportDistance;
 
-    public GenericFollowSummonerGoal(CreatureEntity entity, SummonerGetter summonerGetter, double pSpeedModifier, float pStartDistance, float pStopDistance, boolean pCanFly, float teleportDistance) {
+    public GenericFollowSummonerGoal(PathfinderMob entity, SummonerGetter summonerGetter, double pSpeedModifier, float pStartDistance, float pStopDistance, boolean pCanFly, float teleportDistance) {
         this.entity = entity;
         this.summonerGetter = summonerGetter;
-        this.level = entity.level;
+        this.level = entity.level();
         this.speedModifier = pSpeedModifier;
         this.navigation = entity.getNavigation();
         this.startDistance = pStartDistance;
@@ -39,7 +43,7 @@ public class GenericFollowSummonerGoal extends Goal {
         this.canFly = pCanFly;
         this.teleportDistance = teleportDistance * teleportDistance;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-        if (!(entity.getNavigation() instanceof GroundPathNavigator) && !(entity.getNavigation() instanceof FlyingPathNavigator)) {
+        if (!(entity.getNavigation() instanceof GroundPathNavigation) && !(entity.getNavigation() instanceof FlyingPathNavigation)) {
             throw new IllegalArgumentException("Unsupported mob type for FollowSummonerGoal");
         }
     }
@@ -78,8 +82,8 @@ public class GenericFollowSummonerGoal extends Goal {
      */
     public void start() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.entity.getPathfindingMalus(PathNodeType.WATER);
-        this.entity.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+        this.oldWaterCost = this.entity.getPathfindingMalus(BlockPathTypes.WATER);
+        this.entity.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     /**
@@ -88,7 +92,7 @@ public class GenericFollowSummonerGoal extends Goal {
     public void stop() {
         this.summoner = null;
         this.navigation.stop();
-        this.entity.setPathfindingMalus(PathNodeType.WATER, this.oldWaterCost);
+        this.entity.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
     }
 
     /**
@@ -97,13 +101,13 @@ public class GenericFollowSummonerGoal extends Goal {
     public void tick() {
         this.entity.getLookControl().setLookAt(this.summoner, 10.0F, (float) this.entity.getMaxHeadXRot());
         if (--this.timeToRecalcPath <= 0) {
-            this.timeToRecalcPath = 10;
+            this.timeToRecalcPath = this.adjustedTickDelay(10);
             if (!this.entity.isLeashed() && !this.entity.isPassenger()) {
                 if (this.entity.distanceToSqr(this.summoner) >= teleportDistance) {
                     this.teleportToSummoner();
                 } else {
-                    if(canFly && !entity.isOnGround()){
-                        Vector3d vec3 = summoner.position();
+                    if(canFly && !entity.onGround()){
+                        Vec3 vec3 = summoner.position();
                         this.entity.getMoveControl().setWantedPosition(vec3.x, vec3.y + 2, vec3.z, this.speedModifier);
 
                     }else{
@@ -137,15 +141,15 @@ public class GenericFollowSummonerGoal extends Goal {
         } else if (!this.canTeleportTo(new BlockPos(pX, pY, pZ))) {
             return false;
         } else {
-            this.entity.moveTo((double) pX + 0.5D, (double) pY + (canFly && !entity.isOnGround() ? 3 : 0), (double) pZ + 0.5D, this.entity.yRot, this.entity.xRot);
+            this.entity.moveTo((double) pX + 0.5D, (double) pY + (canFly && !entity.onGround() ? 3 : 0), (double) pZ + 0.5D, this.entity.getYRot(), this.entity.getXRot());
             this.navigation.stop();
             return true;
         }
     }
 
     private boolean canTeleportTo(BlockPos pPos) {
-        PathNodeType pathnodetype = WalkNodeProcessor.getBlockPathTypeStatic(this.level, pPos.mutable());
-        if (pathnodetype != PathNodeType.WALKABLE) {
+        BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, pPos.mutable());
+        if (blockpathtypes != BlockPathTypes.WALKABLE) {
             return false;
         } else {
             BlockState blockstate = this.level.getBlockState(pPos.below());

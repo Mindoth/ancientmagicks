@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ancientmagicks:items/spell_tablet"
+    "layer0": "ancientmagicks:item/spell_tablet"
   },
   "overrides": [
     { "predicate": { "custom_model_data": 1}, "model": "ancientmagicks:item/spell_tablet_active" }

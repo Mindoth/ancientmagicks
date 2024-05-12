@@ -1,8 +1,8 @@
 package net.mindoth.ancientmagicks.client.gui.inventory;
 
 import net.mindoth.ancientmagicks.item.castingitem.WandType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
@@ -49,7 +49,7 @@ public class WandData {
         this.optional = LazyOptional.of(() -> this.inventory);
     }
 
-    public WandData(UUID uuid, CompoundNBT incomingNBT) {
+    public WandData(UUID uuid, CompoundTag incomingNBT) {
         this.uuid = uuid;
         this.tier = WandType.values()[Math.min(incomingNBT.getInt("Tier"), WandType.BEGINNER_WAND.ordinal())];
 
@@ -70,7 +70,7 @@ public class WandData {
         return this.uuid;
     }
 
-    public static Optional<WandData> fromNBT(CompoundNBT nbt) {
+    public static Optional<WandData> fromNBT(CompoundTag nbt) {
         if ( nbt.contains("UUID") ) {
             UUID uuid = nbt.getUUID("UUID");
             return Optional.of(new WandData(uuid, nbt));
@@ -78,8 +78,8 @@ public class WandData {
         return Optional.empty();
     }
 
-    public INBT toNBT() {
-        CompoundNBT nbt = new CompoundNBT();
+    public Tag toNBT() {
+        CompoundTag nbt = new CompoundTag();
 
         nbt.putUUID("UUID", this.uuid);
         nbt.putInt("Tier", this.tier.ordinal());
@@ -93,7 +93,7 @@ public class WandData {
 
 
 
-    public static class Metadata implements INBTSerializable<CompoundNBT> {
+    public static class Metadata implements INBTSerializable<CompoundTag> {
         private String firstAccessedPlayer = "";
 
         private long firstAccessedTime = 0;
@@ -113,8 +113,8 @@ public class WandData {
         }
 
         @Override
-        public CompoundNBT serializeNBT() {
-            CompoundNBT nbt = new CompoundNBT();
+        public CompoundTag serializeNBT() {
+            CompoundTag nbt = new CompoundTag();
 
             nbt.putString("firstPlayer", this.firstAccessedPlayer);
             nbt.putLong("firstTime", this.firstAccessedTime);
@@ -125,7 +125,7 @@ public class WandData {
         }
 
         @Override
-        public void deserializeNBT(CompoundNBT nbt) {
+        public void deserializeNBT(CompoundTag nbt) {
             this.firstAccessedPlayer = nbt.getString("firstPlayer");
             this.firstAccessedTime = nbt.getLong("firstTime");
             this.lastAccessedPlayer = nbt.getString("lastPlayer");

@@ -1,12 +1,12 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.client.gui.inventory.WandData;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -18,10 +18,9 @@ public class StaffItem extends CastingItem {
     }
 
     @Override
-    public void onUseTick(World level, LivingEntity living, ItemStack staff, int timeLeft) {
+    public void onUseTick(Level level, LivingEntity living, ItemStack staff, int timeLeft) {
         if ( level.isClientSide ) return;
-        if ( living instanceof PlayerEntity ) {
-            PlayerEntity player = (PlayerEntity)living;
+        if ( living instanceof Player player ) {
             WandData data = CastingItem.getData(staff);
             List<ItemStack> wandList = getWandList(data.getHandler().getStackInSlot(staff.getTag().getInt("staffslot")));
             if ( timeLeft % 2 == 0 ) doSpell(player, player, staff, wandList, getUseDuration(staff) - timeLeft);
@@ -30,8 +29,8 @@ public class StaffItem extends CastingItem {
 
     @Override
     @Nonnull
-    public ActionResult<ItemStack> use(World level, PlayerEntity player, @Nonnull Hand handIn) {
-        ActionResult<ItemStack> result = ActionResult.fail(player.getItemInHand(handIn));
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
+        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide ) {
             ItemStack staff = player.getItemInHand(handIn);
             if ( isValidCastingItem(staff) && staff.getTag().contains("staffslot") ) {

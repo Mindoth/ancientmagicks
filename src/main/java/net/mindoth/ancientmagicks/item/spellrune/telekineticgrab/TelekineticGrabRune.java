@@ -3,12 +3,12 @@ package net.mindoth.ancientmagicks.item.spellrune.telekineticgrab;
 import net.mindoth.ancientmagicks.item.modifierrune.ModifierRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -22,9 +22,9 @@ public class TelekineticGrabRune extends SpellRuneItem {
     }
 
     @Override
-    public void shootMagic(PlayerEntity owner, Entity caster, Vector3d center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
-        World level = caster.level;
-        Vector3d casterPos = caster.getEyePosition(1.0F);
+    public void shootMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
+        Level level = caster.level();
+        Vec3 casterPos = caster.getEyePosition(1.0F);
         playMagicShootSound(level, casterPos);
         HashMap<String, Float> valueMap = new HashMap<>();
 
@@ -34,7 +34,7 @@ public class TelekineticGrabRune extends SpellRuneItem {
         if ( valueMap.get("size") <= 0 ) valueMap.put("size", 1.0F);
 
         Entity target = getPointedItemEntity(level, caster, range, valueMap.get("size") * 0.5F, caster == owner);
-        if ( target instanceof ItemEntity ) {
+        if ( target instanceof ItemEntity) {
             ArrayList<ItemEntity> itemPile = getItemEntitiesAround(target, level, valueMap.get("size"), null);
             for ( ItemEntity itemEntity : itemPile ) {
                 itemEntity.push((casterPos.x - itemEntity.getX()) / 6, (casterPos.y - itemEntity.getY() + 1) / 6, (casterPos.z - itemEntity.getZ()) / 6);
@@ -43,18 +43,18 @@ public class TelekineticGrabRune extends SpellRuneItem {
         }
     }
 
-    private static ArrayList<ItemEntity> getItemEntitiesAround(Entity caster, World pLevel, double size, @Nullable List<ItemEntity> exceptions) {
+    private static ArrayList<ItemEntity> getItemEntitiesAround(Entity caster, Level pLevel, double size, @Nullable List<ItemEntity> exceptions) {
         ArrayList<ItemEntity> targets = (ArrayList<ItemEntity>) pLevel.getEntitiesOfClass(ItemEntity.class, caster.getBoundingBox().inflate(size));
         if ( exceptions != null && !exceptions.isEmpty() ) targets.removeIf(exceptions::contains);
         return targets;
     }
 
-    private static Entity getPointedItemEntity(World level, Entity caster, float range, float error, boolean isPlayer) {
+    private static Entity getPointedItemEntity(Level level, Entity caster, float range, float error, boolean isPlayer) {
         int adjuster = 1;
         if ( !isPlayer ) adjuster = -1;
-        Vector3d direction = ShadowEvents.calculateViewVector(caster.xRot * adjuster, caster.yRot * adjuster).normalize();
+        Vec3 direction = ShadowEvents.calculateViewVector(caster.getXRot() * adjuster, caster.getYRot() * adjuster).normalize();
         direction = direction.multiply(range, range, range);
-        Vector3d center = caster.getEyePosition(0).add(direction);
+        Vec3 center = caster.getEyePosition(0).add(direction);
         Entity returnEntity = caster;
         double playerX = ShadowEvents.getEntityCenter(caster).x;
         double playerY = caster.getEyePosition(1.0F).y;
@@ -68,9 +68,9 @@ public class TelekineticGrabRune extends SpellRuneItem {
             double lineY = playerY * (1 - ((double) k / particleInterval)) + listedEntityY * ((double) k / particleInterval);
             double lineZ = playerZ * (1 - ((double) k / particleInterval)) + listedEntityZ * ((double) k / particleInterval);
             //float error = 0.25F;
-            Vector3d start = new Vector3d(lineX + error, lineY + error, lineZ + error);
-            Vector3d end = new Vector3d(lineX - error, lineY - error, lineZ - error);
-            AxisAlignedBB area = new AxisAlignedBB(start, end);
+            Vec3 start = new Vec3(lineX + error, lineY + error, lineZ + error);
+            Vec3 end = new Vec3(lineX - error, lineY - error, lineZ - error);
+            AABB area = new AABB(start, end);
             List<Entity> targets = level.getEntities(caster, area);
             Entity target = null;
             double lowestSoFar = Double.MAX_VALUE;

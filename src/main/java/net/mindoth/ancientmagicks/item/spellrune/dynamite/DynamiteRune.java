@@ -3,12 +3,12 @@ package net.mindoth.ancientmagicks.item.spellrune.dynamite;
 import net.mindoth.ancientmagicks.item.modifierrune.ModifierRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,13 +20,13 @@ public class DynamiteRune extends SpellRuneItem {
     }
 
     @Override
-    public void shootMagic(PlayerEntity owner, Entity caster, Vector3d center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
-        World level = caster.level;
+    public void shootMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
+        Level level = caster.level();
         playMagicSummonSound(level, center);
         level.playSound(null, center.x, center.y, center.z,
-                SoundEvents.TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
         HashMap<String, Float> valueMap = new HashMap<>();
-        Vector3d point = ShadowEvents.getPoint(level, caster, (float)caster.getEyePosition(1.0F).distanceTo(center),
+        Vec3 point = ShadowEvents.getPoint(level, caster, (float)caster.getEyePosition(1.0F).distanceTo(center),
                 0, caster == owner, false, true, true);
         DynamiteEntity tnt = new DynamiteEntity(level, point.x, point.y, point.z, owner);
 
@@ -45,6 +45,7 @@ public class DynamiteRune extends SpellRuneItem {
         //tnt.blockPierce = valueMap.get("blockPierce");
         if ( valueMap.get("homing") == 1.0F ) tnt.homing = true;
         tnt.setFuse(tnt.life);
+        tnt.speed = Math.max(0, tnt.speed);
 
         level.addFreshEntity(tnt);
     }

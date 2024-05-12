@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "ancientmagicks:items/beginner_staff"
+    "layer0": "ancientmagicks:item/beginner_staff"
   }
 }

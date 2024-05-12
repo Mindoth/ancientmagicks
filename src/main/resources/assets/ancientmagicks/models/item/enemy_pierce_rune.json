@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ancientmagicks:items/enemy_pierce_rune"
+    "layer0": "ancientmagicks:item/enemy_pierce_rune"
   }
 }

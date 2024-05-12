@@ -1,37 +1,35 @@
 package net.mindoth.ancientmagicks.client.gui;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandData;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
+import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketOpenWandGui;
 import net.mindoth.ancientmagicks.network.PacketSetStaffSlot;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.MovementInput;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.Options;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.player.Input;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputUpdateEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
@@ -45,23 +43,25 @@ public class GuiSpellWheel extends Screen {
     private float totalTime;
     private float prevTick;
     private float extraTick;
-    public CompoundNBT nbt;
+    public CompoundTag nbt;
     private int selectedItem;
     private final List<ItemStack> itemList;
+    public ItemRenderer itemRenderer;
 
-    public GuiSpellWheel(List<ItemStack> stackList, CompoundNBT nbt) {
-        super(new StringTextComponent(""));
+    public GuiSpellWheel(List<ItemStack> stackList, CompoundTag nbt) {
+        super(Component.literal(""));
         this.nbt = nbt;
         this.closing = false;
         this.minecraft = Minecraft.getInstance();
         this.selectedItem = -1;
         this.itemList = stackList;
         this.itemList.add(0, ItemStack.EMPTY);
+        this.itemRenderer = Minecraft.getInstance().getItemRenderer();
     }
 
-    public static void open(List<ItemStack> itemList, CompoundNBT nbt) {
+    public static void open(List<ItemStack> itemList, CompoundTag nbt) {
         Minecraft MINECRAFT = Minecraft.getInstance();
-        PlayerEntity player = MINECRAFT.player;
+        Player player = MINECRAFT.player;
         if ( MINECRAFT.screen instanceof GuiSpellWheel ) {
             player.closeContainer();
             return;
@@ -75,7 +75,7 @@ public class GuiSpellWheel extends Screen {
     public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
         if ( this.selectedItem != -1 ) {
             ItemStack clickedItem = this.itemList.get(this.selectedItem);
-            PlayerEntity player = MINECRAFT.player;
+            Player player = MINECRAFT.player;
             if ( CastingItem.getHeldCastingItem(player).getItem() instanceof StaffItem ) {
                 ItemStack staff = CastingItem.getHeldCastingItem(player);
                 staff.setTag(this.nbt);
@@ -83,7 +83,7 @@ public class GuiSpellWheel extends Screen {
                     if ( clickedItem.isEmpty() ) AncientMagicksNetwork.sendToServer(new PacketOpenWandGui() );
                     else {
                         WandData data = CastingItem.getData(staff);
-                        List<CompoundNBT> list = Lists.newArrayList();
+                        List<CompoundTag> list = Lists.newArrayList();
                         for ( int i = 0; i < data.getHandler().getSlots(); i++ ) list.add(data.getHandler().getStackInSlot(i).getOrCreateTag());
                         AncientMagicksNetwork.sendToServer(new PacketSetStaffSlot(clickedItem.getTag()));
                         player.closeContainer();
@@ -95,15 +95,16 @@ public class GuiSpellWheel extends Screen {
     }
 
     @Override
-    public void render(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
-        super.render(ms, mouseX, mouseY, partialTicks);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        super.render(graphics, mouseX, mouseY, partialTicks);
+        PoseStack ms = graphics.pose();
         float openAnimation = closing ? 1.0F - totalTime / OPEN_ANIMATION_LENGTH : totalTime / OPEN_ANIMATION_LENGTH;
         float currTick = minecraft.getFrameTime();
         totalTime += (currTick + extraTick - prevTick) / 20F;
         extraTick = 0;
         prevTick = currTick;
 
-        float animProgress = MathHelper.clamp(openAnimation, 0, 1);
+        float animProgress = Mth.clamp(openAnimation, 0, 1);
         animProgress = (float) (1 - Math.pow(1 - animProgress, 3));
         float radiusIn = Math.max(0.1F, 45 * animProgress);
         float radiusOut = radiusIn * 2;
@@ -120,15 +121,15 @@ public class GuiSpellWheel extends Screen {
             a += 360;
         }
 
-        RenderSystem.pushMatrix();
-        RenderSystem.disableAlphaTest();
+        ms.pushPose();
         RenderSystem.enableBlend();
-        RenderSystem.disableTexture();
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        Tessellator tessellator = Tessellator.getInstance();
+        Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder buffer = tessellator.getBuilder();
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         boolean hasMouseOver = false;
         int mousedOverSlot = -1;
 
@@ -157,7 +158,7 @@ public class GuiSpellWheel extends Screen {
         }
 
         tessellator.end();
-        RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
 
         int comboX = (this.minecraft.getWindow().getGuiScaledWidth() / 2) - 91;
         int comboY = this.minecraft.getWindow().getGuiScaledHeight() - 22;
@@ -166,8 +167,8 @@ public class GuiSpellWheel extends Screen {
         if ( hasMouseOver && mousedOverSlot != -1 ) {
 
             //Show SpellTablet's rune list on new Hotbar
-            GuiSpellWheel.drawItemTexture(new ResourceLocation("minecraft", "textures/gui/widgets.png"),
-                    comboX, comboY, 0, 0, 182, 22, 256, 256, ms);
+            /*GuiSpellWheel.drawItemTexture(new ResourceLocation("minecraft", "textures/gui/widgets.png"),
+                    comboX, comboY, 0, 0, 182, 22, 256, 256, ms);*/
             if ( this.itemList.get(mousedOverSlot).getItem() instanceof SpellTabletItem
                     && this.itemList.get(mousedOverSlot).hasTag()
                     && this.itemList.get(mousedOverSlot).getTag().contains("UUID") ) {
@@ -176,23 +177,22 @@ public class GuiSpellWheel extends Screen {
                     int ingX = comboX + 3 + (i * 20);
                     int ingY = comboY + 3;
                     ItemStack tabletSlot = tabletList.get(i);
-                    this.itemRenderer.renderAndDecorateFakeItem(tabletSlot, ingX, ingY);
-                    this.itemRenderer.renderGuiItemDecorations(this.font, tabletSlot, ingX, ingY);
+                    //this.itemRenderer.renderAndDecorateFakeItem(tabletSlot, ingX, ingY);
+                    //this.itemRenderer.renderGuiItemDecorations(this.font, tabletSlot, ingX, ingY);
                 }
             }
 
             //Show SpellTablet's name
-            String stackName = new TranslationTextComponent("tooltip.runicitems.empty").getString();
+            String stackName = Component.translatable("tooltip.ancientmagicks.empty").getString();
             int color = 16777215;
             if ( !this.itemList.get(mousedOverSlot).isEmpty() ) {
                 stackName = this.itemList.get(mousedOverSlot).getHoverName().getString();
                 color = 5635925;
             }
-            drawCenteredString(ms, font, stackName, width / 2, ((height - font.lineHeight) / 16), color);
+            graphics.drawCenteredString(font, stackName, width / 2, ((height - font.lineHeight) / 16), color);
         }
 
-        RenderHelper.turnBackOn();
-        RenderSystem.popMatrix();
+        ms.popPose();
 
         for ( int i = 0; i < numberOfSlices; i++ ) {
             int magnifier = 24;
@@ -200,21 +200,18 @@ public class GuiSpellWheel extends Screen {
             float posX = x - ((float)magnifier / 2) + itemRadius * (float)Math.cos(middle);
             float posY = y - ((float)magnifier / 2) + itemRadius * (float)Math.sin(middle);
 
-            RenderSystem.disableRescaleNormal();
-            RenderHelper.turnOff();
-            RenderSystem.disableLighting();
             RenderSystem.disableDepthTest();
 
             //Spell Item icons and slot borders on radial wheel
             int slotX = (int)posX + 4;
             int slotY = (int)posY + 4;
             ItemStack slot = this.itemList.get(i);
-             if ( !slot.isEmpty() ) {
+             /*if ( !slot.isEmpty() ) {
                  GuiSpellWheel.drawItemTexture(new ResourceLocation("minecraft", "textures/gui/widgets.png"),
                          slotX - 3, slotY - 3, 24, 23, 22, 22, 256, 256, ms);
              }
             this.itemRenderer.renderAndDecorateFakeItem(slot, slotX, slotY);
-            this.itemRenderer.renderGuiItemDecorations(this.font, slot, slotX, slotY);
+            this.itemRenderer.renderGuiItemDecorations(this.font, slot, slotX, slotY);*/
         }
     }
 
@@ -228,7 +225,7 @@ public class GuiSpellWheel extends Screen {
     private void drawSlice(BufferBuilder buffer, float x, float y, float z, float radiusIn, float radiusOut, float startAngle, float endAngle,
                            int r, int g, int b, int a) {
         float angle = endAngle - startAngle;
-        int sections = Math.max(1, MathHelper.ceil(angle / this.PRECISION));
+        int sections = Math.max(1, Mth.ceil(angle / this.PRECISION));
 
         startAngle = (float)Math.toRadians(startAngle);
         endAngle = (float)Math.toRadians(endAngle);
@@ -266,28 +263,28 @@ public class GuiSpellWheel extends Screen {
     }
 
     @SubscribeEvent
-    public static void overlayEvent(RenderGameOverlayEvent.Pre event) {
-        if ( Minecraft.getInstance().screen instanceof GuiSpellWheel) {
-            if ( event.getType() == RenderGameOverlayEvent.ElementType.ALL ) {
+    public static void overlayEvent(RenderGuiOverlayEvent.Pre event) {
+        if ( Minecraft.getInstance().screen instanceof GuiSpellWheel ) {
+            if ( event.getOverlay() == VanillaGuiOverlay.HOTBAR.type() ) {
                 event.setCanceled(true);
             }
         }
     }
 
     @SubscribeEvent
-    public static void updateInputEvent(InputUpdateEvent event) {
+    public static void updateInputEvent(MovementInputUpdateEvent event) {
         if ( Minecraft.getInstance().screen instanceof GuiSpellWheel) {
-            GameSettings settings = Minecraft.getInstance().options;
-            MovementInput eInput = event.getMovementInput();
-            eInput.up = InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), settings.keyUp.getKey().getValue());
-            eInput.down = InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), settings.keyDown.getKey().getValue());
-            eInput.left = InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), settings.keyLeft.getKey().getValue());
-            eInput.right = InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), settings.keyRight.getKey().getValue());
+            Options settings = Minecraft.getInstance().options;
+            Input eInput = event.getInput();
+            eInput.up = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), settings.keyUp.getKey().getValue());
+            eInput.down = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), settings.keyDown.getKey().getValue());
+            eInput.left = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), settings.keyLeft.getKey().getValue());
+            eInput.right = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), settings.keyRight.getKey().getValue());
 
             eInput.forwardImpulse = eInput.up == eInput.down ? 0.0F : (eInput.up ? 1.0F : -1.0F);
             eInput.leftImpulse = eInput.left == eInput.right ? 0.0F : (eInput.left ? 1.0F : -1.0F);
-            eInput.jumping = InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), settings.keyJump.getKey().getValue());
-            eInput.shiftKeyDown = InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), settings.keyShift.getKey().getValue());
+            eInput.jumping = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), settings.keyJump.getKey().getValue());
+            eInput.shiftKeyDown = InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), settings.keyShift.getKey().getValue());
             if ( Minecraft.getInstance().player.isMovingSlowly() ) {
                 eInput.leftImpulse = (float)((double)eInput.leftImpulse * 0.3D);
                 eInput.forwardImpulse = (float)((double)eInput.forwardImpulse * 0.3D);
@@ -295,10 +292,10 @@ public class GuiSpellWheel extends Screen {
         }
     }
 
-    public static void drawItemTexture(ResourceLocation resourceLocation, int x, int y, int u, int v, int w, int h, int fileWidth, int fileHeight, MatrixStack stack) {
+    /*public static void drawItemTexture(ResourceLocation resourceLocation, int x, int y, int u, int v, int w, int h, int fileWidth, int fileHeight, PoseStack stack) {
         Minecraft.getInstance().textureManager.bind(resourceLocation);
         blit(stack,x, y, u, v, w, h, fileWidth, fileHeight);
-    }
+    }*/
 
     @Override
     public boolean isPauseScreen() {

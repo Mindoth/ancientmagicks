@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ancientmagicks:items/raise_dead_rune"
+    "layer0": "ancientmagicks:item/raise_dead_rune"
   }
 }

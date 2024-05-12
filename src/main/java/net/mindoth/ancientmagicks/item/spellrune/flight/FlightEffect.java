@@ -1,14 +1,14 @@
 package net.mindoth.ancientmagicks.item.spellrune.flight;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierManager;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.player.Player;
 
-public class FlightEffect extends Effect {
+public class FlightEffect extends MobEffect {
 
-    public FlightEffect(EffectType pCategory, int pColor) {
+    public FlightEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
     }
 
@@ -24,22 +24,20 @@ public class FlightEffect extends Effect {
 
     @Override
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
-        if ( pLivingEntity.level.isClientSide ) return;
-        if ( !(pLivingEntity instanceof PlayerEntity) ) return;
-        PlayerEntity player = (PlayerEntity)pLivingEntity;
-        if ( player.isCreative() || player.abilities.mayfly ) return;
-        player.abilities.mayfly = true;
+        if ( pLivingEntity.level().isClientSide ) return;
+        if ( !(pLivingEntity instanceof Player player) ) return;
+        if ( player.isCreative() || player.getAbilities().mayfly ) return;
+        player.getAbilities().mayfly = true;
         player.onUpdateAbilities();
     }
 
     @Override
-    public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeModifierManager pAttributeMap, int pAmplifier) {
-        if ( pLivingEntity.level.isClientSide ) return;
-        if ( !(pLivingEntity instanceof PlayerEntity) ) return;
-        PlayerEntity player = (PlayerEntity)pLivingEntity;
-        if ( player.isCreative() || !player.abilities.mayfly ) return;
-        player.abilities.mayfly = false;
-        player.abilities.flying = false;
+    public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
+        if ( pLivingEntity.level().isClientSide ) return;
+        if ( !(pLivingEntity instanceof Player player) ) return;
+        if ( player.isCreative() || !player.getAbilities().mayfly ) return;
+        player.getAbilities().mayfly = false;
+        player.getAbilities().flying = false;
         player.onUpdateAbilities();
     }
 }
