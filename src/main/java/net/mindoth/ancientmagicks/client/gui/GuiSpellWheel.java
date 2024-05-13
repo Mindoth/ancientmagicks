@@ -46,7 +46,6 @@ public class GuiSpellWheel extends Screen {
     public CompoundTag nbt;
     private int selectedItem;
     private final List<ItemStack> itemList;
-    public ItemRenderer itemRenderer;
 
     public GuiSpellWheel(List<ItemStack> stackList, CompoundTag nbt) {
         super(Component.literal(""));
@@ -56,7 +55,6 @@ public class GuiSpellWheel extends Screen {
         this.selectedItem = -1;
         this.itemList = stackList;
         this.itemList.add(0, ItemStack.EMPTY);
-        this.itemRenderer = Minecraft.getInstance().getItemRenderer();
     }
 
     public static void open(List<ItemStack> itemList, CompoundTag nbt) {
@@ -167,8 +165,8 @@ public class GuiSpellWheel extends Screen {
         if ( hasMouseOver && mousedOverSlot != -1 ) {
 
             //Show SpellTablet's rune list on new Hotbar
-            /*GuiSpellWheel.drawItemTexture(new ResourceLocation("minecraft", "textures/gui/widgets.png"),
-                    comboX, comboY, 0, 0, 182, 22, 256, 256, ms);*/
+            GuiSpellWheel.drawItemTexture(new ResourceLocation("minecraft", "textures/gui/widgets.png"),
+                    comboX, comboY, 0, 0, 182, 22, 256, 256, graphics);
             if ( this.itemList.get(mousedOverSlot).getItem() instanceof SpellTabletItem
                     && this.itemList.get(mousedOverSlot).hasTag()
                     && this.itemList.get(mousedOverSlot).getTag().contains("UUID") ) {
@@ -177,8 +175,8 @@ public class GuiSpellWheel extends Screen {
                     int ingX = comboX + 3 + (i * 20);
                     int ingY = comboY + 3;
                     ItemStack tabletSlot = tabletList.get(i);
-                    //this.itemRenderer.renderAndDecorateFakeItem(tabletSlot, ingX, ingY);
-                    //this.itemRenderer.renderGuiItemDecorations(this.font, tabletSlot, ingX, ingY);
+                    graphics.renderItem(tabletSlot, ingX, ingY);
+                    graphics.renderItemDecorations(this.font, tabletSlot, ingX, ingY);
                 }
             }
 
@@ -187,7 +185,8 @@ public class GuiSpellWheel extends Screen {
             int color = 16777215;
             if ( !this.itemList.get(mousedOverSlot).isEmpty() ) {
                 stackName = this.itemList.get(mousedOverSlot).getHoverName().getString();
-                color = 5635925;
+                //Green color code is: 5635925;
+                color = 5636095;
             }
             graphics.drawCenteredString(font, stackName, width / 2, ((height - font.lineHeight) / 16), color);
         }
@@ -206,12 +205,12 @@ public class GuiSpellWheel extends Screen {
             int slotX = (int)posX + 4;
             int slotY = (int)posY + 4;
             ItemStack slot = this.itemList.get(i);
-             /*if ( !slot.isEmpty() ) {
+             if ( !slot.isEmpty() ) {
                  GuiSpellWheel.drawItemTexture(new ResourceLocation("minecraft", "textures/gui/widgets.png"),
-                         slotX - 3, slotY - 3, 24, 23, 22, 22, 256, 256, ms);
+                         slotX - 3, slotY - 3, 24, 23, 22, 22, 256, 256, graphics);
              }
-            this.itemRenderer.renderAndDecorateFakeItem(slot, slotX, slotY);
-            this.itemRenderer.renderGuiItemDecorations(this.font, slot, slotX, slotY);*/
+            graphics.renderItem(slot, slotX, slotY);
+            graphics.renderItemDecorations(this.font, slot, slotX, slotY);
         }
     }
 
@@ -292,10 +291,10 @@ public class GuiSpellWheel extends Screen {
         }
     }
 
-    /*public static void drawItemTexture(ResourceLocation resourceLocation, int x, int y, int u, int v, int w, int h, int fileWidth, int fileHeight, PoseStack stack) {
-        Minecraft.getInstance().textureManager.bind(resourceLocation);
-        blit(stack,x, y, u, v, w, h, fileWidth, fileHeight);
-    }*/
+    public static void drawItemTexture(ResourceLocation resourceLocation, int x, int y, int u, int v, int w, int h, int fileWidth, int fileHeight, GuiGraphics stack) {
+        Minecraft.getInstance().textureManager.bindForSetup(resourceLocation);
+        stack.blit(resourceLocation, x, y, u, v, w, h, fileWidth, fileHeight);
+    }
 
     @Override
     public boolean isPauseScreen() {

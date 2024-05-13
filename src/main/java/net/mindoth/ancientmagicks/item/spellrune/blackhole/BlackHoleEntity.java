@@ -77,7 +77,12 @@ public class BlackHoleEntity extends AbstractSpellEntity {
                     BlockPos blockPos = new BlockPos(xPos, yPos, zPos);
                     BlockState blockState = this.level().getBlockState(blockPos);
                     if ( blockState.getBlock() != Blocks.BEDROCK && blockState.isSolid() ) {
-                        FallingBlockEntity.fall(this.level(), blockPos, blockState);
+                        //Mojang really screwed this up. They done and made the default constructor private for FallingBlockEntity
+                        //This method for spawning them they gave is bad...
+                        //FallingBlockEntity.fall(this.level(), blockPos, blockState);
+
+                        //Just destroy the blocks as a placeholder
+                        this.level().removeBlock(blockPos, false);
                     }
                 }
             }

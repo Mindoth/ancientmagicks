@@ -157,7 +157,7 @@ public class CastingItem extends Item {
                     }
                 }
                 spellTablet.setHoverName(Component.literal(
-                        owner.getScoreboardName() + "'s " + spellName).withStyle(ChatFormatting.GREEN));
+                        owner.getScoreboardName() + "'s " + spellName).withStyle(ChatFormatting.AQUA));
                 spellTablet.getTag().putInt("CustomModelData", 1);
                 owner.drop(spellTablet, false);
                 owner.stopUsingItem();
