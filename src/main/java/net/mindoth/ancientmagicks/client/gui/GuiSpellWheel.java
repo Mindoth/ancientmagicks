@@ -17,7 +17,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -161,11 +160,9 @@ public class GuiSpellWheel extends Screen {
         int comboX = (this.minecraft.getWindow().getGuiScaledWidth() / 2) - 91;
         int comboY = this.minecraft.getWindow().getGuiScaledHeight() - 22;
 
-
+        //Show SpellTablet's rune list on new Hotbar
         if ( hasMouseOver && mousedOverSlot != -1 ) {
-
-            //Show SpellTablet's rune list on new Hotbar
-            GuiSpellWheel.drawItemTexture(new ResourceLocation("minecraft", "textures/gui/widgets.png"),
+            GuiSpellWheel.drawSlotTexture(new ResourceLocation("minecraft", "textures/gui/widgets.png"),
                     comboX, comboY, 0, 0, 182, 22, 256, 256, graphics);
             if ( this.itemList.get(mousedOverSlot).getItem() instanceof SpellTabletItem
                     && this.itemList.get(mousedOverSlot).hasTag()
@@ -179,20 +176,27 @@ public class GuiSpellWheel extends Screen {
                     graphics.renderItemDecorations(this.font, tabletSlot, ingX, ingY);
                 }
             }
+        }
 
-            //Show SpellTablet's name
-            String stackName = Component.translatable("tooltip.ancientmagicks.empty").getString();
-            int color = 16777215;
-            if ( !this.itemList.get(mousedOverSlot).isEmpty() ) {
-                stackName = this.itemList.get(mousedOverSlot).getHoverName().getString();
-                //Green color code is: 5635925;
-                color = 5636095;
+        //Spell Slot borders on radial wheel
+        for ( int i = 0; i < numberOfSlices; i++ ) {
+            int magnifier = 24;
+            float middle = ((i / (float)numberOfSlices) + 0.25F) * 2 * (float)Math.PI;
+            float posX = x - ((float)magnifier / 2) + itemRadius * (float)Math.cos(middle);
+            float posY = y - ((float)magnifier / 2) + itemRadius * (float)Math.sin(middle);
+
+            int slotX = (int)posX + 4;
+            int slotY = (int)posY + 4;
+            ItemStack slot = this.itemList.get(i);
+            if ( !slot.isEmpty() ) {
+                GuiSpellWheel.drawSlotTexture(new ResourceLocation("minecraft", "textures/gui/widgets.png"),
+                        slotX - 3, slotY - 3, 24, 23, 22, 22, 256, 256, graphics);
             }
-            graphics.drawCenteredString(font, stackName, width / 2, ((height - font.lineHeight) / 16), color);
         }
 
         ms.popPose();
 
+        //Spell Item icons and hover tooltip on radial wheel
         for ( int i = 0; i < numberOfSlices; i++ ) {
             int magnifier = 24;
             float middle = ((i / (float)numberOfSlices) + 0.25F) * 2 * (float)Math.PI;
@@ -201,16 +205,17 @@ public class GuiSpellWheel extends Screen {
 
             RenderSystem.disableDepthTest();
 
-            //Spell Item icons and slot borders on radial wheel
             int slotX = (int)posX + 4;
             int slotY = (int)posY + 4;
             ItemStack slot = this.itemList.get(i);
-             if ( !slot.isEmpty() ) {
-                 GuiSpellWheel.drawItemTexture(new ResourceLocation("minecraft", "textures/gui/widgets.png"),
-                         slotX - 3, slotY - 3, 24, 23, 22, 22, 256, 256, graphics);
-             }
+
             graphics.renderItem(slot, slotX, slotY);
             graphics.renderItemDecorations(this.font, slot, slotX, slotY);
+            if ( hasMouseOver && mousedOverSlot != -1 ) {
+                if ( !this.itemList.get(mousedOverSlot).isEmpty() && slot.equals(this.itemList.get(mousedOverSlot)) ) {
+                    graphics.renderTooltip(this.font, this.itemList.get(mousedOverSlot), mouseX, mouseY);
+                }
+            }
         }
     }
 
@@ -291,9 +296,9 @@ public class GuiSpellWheel extends Screen {
         }
     }
 
-    public static void drawItemTexture(ResourceLocation resourceLocation, int x, int y, int u, int v, int w, int h, int fileWidth, int fileHeight, GuiGraphics stack) {
+    public static void drawSlotTexture(ResourceLocation resourceLocation, int x, int y, int u, int v, int w, int h, int fileWidth, int fileHeight, GuiGraphics graphics) {
         Minecraft.getInstance().textureManager.bindForSetup(resourceLocation);
-        stack.blit(resourceLocation, x, y, u, v, w, h, fileWidth, fileHeight);
+        graphics.blit(resourceLocation, x, y, u, v, w, h, fileWidth, fileHeight);
     }
 
     @Override
