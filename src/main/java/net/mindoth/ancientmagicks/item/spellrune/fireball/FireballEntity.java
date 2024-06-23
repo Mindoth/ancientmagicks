@@ -55,17 +55,19 @@ public class FireballEntity extends AbstractSpellEntity {
         return 0.8F;
     }
 
+    private void causeDamage(LivingEntity target) {
+        if ( !isAlly(target) ) {
+            dealDamage(target);
+            target.setSecondsOnFire(8);
+        }
+    }
+
     @Override
     protected void doMobEffects(EntityHitResult result) {
         LivingEntity target = (LivingEntity)result.getEntity();
         if ( this.power > 0 ) {
-            if ( this.enemyPierce == 0 ) {
-                doSplashDamage(target);
-            }
-            else {
-                dealDamage(target);
-                target.setSecondsOnFire(8);
-            }
+            if ( this.enemyPierce == 0 ) doSplashDamage(target);
+            else causeDamage(target);
         }
     }
 
@@ -82,16 +84,12 @@ public class FireballEntity extends AbstractSpellEntity {
         if ( this.level().isClientSide ) return;
         List<LivingEntity> exceptions = Lists.newArrayList();
         if ( hitTarget != null ) {
-            dealDamage(hitTarget);
-            hitTarget.setSecondsOnFire(8);
+            causeDamage(hitTarget);
             exceptions.add(hitTarget);
         }
-        ArrayList<LivingEntity> list = ShadowEvents.getEntitiesAround(this, this.level(), Math.max(0, this.size), exceptions);
+        ArrayList<LivingEntity> list = ShadowEvents.getEntitiesAround(this, this.level(), Math.max(0, this.size + 1), exceptions);
         for ( LivingEntity target : list ) {
-            if ( !isAlly(target) ) {
-                dealDamage(target);
-                target.setSecondsOnFire(8);
-            }
+            causeDamage(target);
         }
     }
 
