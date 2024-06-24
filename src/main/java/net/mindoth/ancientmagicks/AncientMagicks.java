@@ -3,7 +3,9 @@ package net.mindoth.ancientmagicks;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.raisedead.SkeletonMinionEntity;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
@@ -63,7 +65,8 @@ public class AncientMagicks {
     public void commonSetup(final FMLCommonSetupEvent event) {
         ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
         AncientMagicksNetwork.init();
-        CastingItem.init();
+        SpellRuneItem.init();
+        ColorRuneItem.init();
     }
 
     @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

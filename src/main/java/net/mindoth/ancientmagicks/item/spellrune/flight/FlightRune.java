@@ -3,15 +3,18 @@ package net.mindoth.ancientmagicks.item.spellrune.flight;
 import net.mindoth.ancientmagicks.item.modifierrune.ModifierRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 

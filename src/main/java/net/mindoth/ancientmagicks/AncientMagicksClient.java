@@ -68,9 +68,9 @@ public class AncientMagicksClient {
             if ( key == AncientMagicksKeyBinds.SPELLSELECTOR.getKey().getValue() && wand.getItem() instanceof CastingItem) {
                 if ( keyAction == 1 && MINECRAFT.screen == null ) {
                     if ( wand.getItem() instanceof WandItem ) AncientMagicksNetwork.sendToServer(new PacketOpenWandGui());
-                    if ( wand.getItem() instanceof StaffItem) AncientMagicksNetwork.sendToServer(new PacketSendStaffData());
+                    if ( wand.getItem() instanceof StaffItem ) AncientMagicksNetwork.sendToServer(new PacketSendStaffData());
                 }
-                else if ( keyAction == 0 && MINECRAFT.screen instanceof GuiSpellWheel) MINECRAFT.player.closeContainer();
+                else if ( keyAction == 0 && MINECRAFT.screen instanceof GuiSpellWheel ) MINECRAFT.player.closeContainer();
             }
         }
     }

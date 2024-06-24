@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandData;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandManager;
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.modifierrune.AbridgeRune;
 import net.mindoth.ancientmagicks.item.modifierrune.ModifierRuneItem;
@@ -40,11 +41,6 @@ import java.util.UUID;
 public class CastingItem extends Item {
     public WandType tier;
     public int cooldown;
-    protected static List<CastingItem> CASTING_ITEMS = Lists.newArrayList();
-
-    public static void init() {
-        for ( Item item : AncientMagicks.ITEM_LIST ) if ( item instanceof CastingItem ) CASTING_ITEMS.add((CastingItem)item);
-    }
 
     public CastingItem(WandType tier, int cooldown) {
         super(new Item.Properties().stacksTo(1));
@@ -75,7 +71,7 @@ public class CastingItem extends Item {
     }
 
     public static void doSpell(Player owner, Entity caster, ItemStack wand, List<ItemStack> wandList, int useTime) {
-        if ( caster == owner && owner.getCooldowns().isOnCooldown(wand.getItem()) && !owner.isUsingItem() ) return;
+        if ( caster == owner && owner.getCooldowns().isOnCooldown(wandList.get(0).getItem()) && !owner.isUsingItem() ) return;
         boolean hasTablet = false;
         ItemStack tabletItem = null;
 
@@ -125,7 +121,7 @@ public class CastingItem extends Item {
                     rune.shootMagic(owner, caster, center, xRot, yRot, useTime, modifierList);
 
                     //These are cooldown and channeling related handling
-                    if ( caster == owner ) addCastingCooldown(owner, spellCooldown);
+                    if ( caster == owner ) addCastingCooldown(owner, rune, spellCooldown);
                     modifierList.clear();
                     if ( spellCooldown > 2 ) owner.stopUsingItem();
                 }
@@ -161,13 +157,13 @@ public class CastingItem extends Item {
                 spellTablet.getTag().putInt("CustomModelData", 1);
                 owner.drop(spellTablet, false);
                 owner.stopUsingItem();
-                addCastingCooldown(owner, 20);
+                //addCastingCooldown(owner, 20);
             }
         }
     }
 
-    public static void addCastingCooldown(Player player, int runeCooldown) {
-        CASTING_ITEMS.forEach((castingItem) -> player.getCooldowns().addCooldown(castingItem, runeCooldown));
+    public static void addCastingCooldown(Player player, SpellRuneItem spell, int runeCooldown) {
+        player.getCooldowns().addCooldown(spell, runeCooldown);
     }
 
     public static List<ItemStack> getWandList(ItemStack wand) {
@@ -183,15 +179,15 @@ public class CastingItem extends Item {
     }
 
     public static List<ItemStack> getStaffList(ItemStack staff) {
-        List<ItemStack> tabletList = Lists.newArrayList();
+        List<ItemStack> staffList = Lists.newArrayList();
         if ( isValidCastingItem(staff) ) {
             WandData data = CastingItem.getData(staff);
             for ( int i = 0; i < data.getHandler().getSlots(); i++ ) {
-                ItemStack tablet = data.getHandler().getStackInSlot(i);
-                if ( tablet.getItem() instanceof SpellTabletItem && isValidCastingItem(tablet) ) tabletList.add(tablet);
+                ItemStack rune = data.getHandler().getStackInSlot(i);
+                if ( rune.getItem() instanceof ColorRuneItem ) staffList.add(rune);
             }
         }
-        return tabletList;
+        return staffList;
     }
 
     public static @Nonnull ItemStack getHeldCastingItem(Player playerEntity) {

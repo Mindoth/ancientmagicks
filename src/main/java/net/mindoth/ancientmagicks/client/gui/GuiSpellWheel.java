@@ -4,13 +4,13 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.mindoth.ancientmagicks.client.gui.inventory.WandData;
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
+import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketOpenWandGui;
-import net.mindoth.ancientmagicks.network.PacketSetStaffSlot;
+import net.mindoth.ancientmagicks.network.PacketSetSpellRune;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
@@ -22,6 +22,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
@@ -29,6 +30,7 @@ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
@@ -45,6 +47,8 @@ public class GuiSpellWheel extends Screen {
     public CompoundTag nbt;
     private int selectedItem;
     private final List<ItemStack> itemList;
+    private List<ColorRuneItem> comboList = Lists.newArrayList();
+    private SpellRuneItem comboResult;
 
     public GuiSpellWheel(List<ItemStack> stackList, CompoundTag nbt) {
         super(Component.literal(""));
@@ -77,13 +81,22 @@ public class GuiSpellWheel extends Screen {
                 ItemStack staff = CastingItem.getHeldCastingItem(player);
                 staff.setTag(this.nbt);
                 if ( CastingItem.isValidCastingItem(staff) ) {
-                    if ( clickedItem.isEmpty() ) AncientMagicksNetwork.sendToServer(new PacketOpenWandGui() );
+                    if ( clickedItem.isEmpty() ) AncientMagicksNetwork.sendToServer(new PacketOpenWandGui());
                     else {
-                        WandData data = CastingItem.getData(staff);
-                        List<CompoundTag> list = Lists.newArrayList();
-                        for ( int i = 0; i < data.getHandler().getSlots(); i++ ) list.add(data.getHandler().getStackInSlot(i).getOrCreateTag());
-                        AncientMagicksNetwork.sendToServer(new PacketSetStaffSlot(clickedItem.getTag()));
-                        player.closeContainer();
+                        if ( clickedItem.getItem() instanceof ColorRuneItem ) {
+                            if ( this.comboList.size() < 9 ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
+                            else {
+                                this.comboList.remove(0);
+                                this.comboList.add((ColorRuneItem)clickedItem.getItem());
+                            }
+                        }
+                        if ( ColorRuneItem.checkForSpellCombo(this.comboList) != null ) {
+                            SpellRuneItem spell = ColorRuneItem.checkForSpellCombo(this.comboList);
+                            staff.getTag().putString("spellRune", String.valueOf(ForgeRegistries.ITEMS.getKey(spell)));
+                            this.comboResult = spell;
+                            AncientMagicksNetwork.sendToServer(new PacketSetSpellRune(staff.getTag()));
+                        }
+                        else this.comboResult = null;
                     }
                 }
             }
@@ -157,66 +170,68 @@ public class GuiSpellWheel extends Screen {
         tessellator.end();
         RenderSystem.disableBlend();
 
+        //Show comboList on new Hotbar
         int comboX = (this.minecraft.getWindow().getGuiScaledWidth() / 2) - 91;
         int comboY = this.minecraft.getWindow().getGuiScaledHeight() - 22;
 
-        //Show SpellTablet's rune list on new Hotbar
-        if ( hasMouseOver && mousedOverSlot != -1 ) {
-            GuiSpellWheel.drawSlotTexture(new ResourceLocation("minecraft", "textures/gui/widgets.png"),
-                    comboX, comboY, 0, 0, 182, 22, 256, 256, graphics);
-            if ( this.itemList.get(mousedOverSlot).getItem() instanceof SpellTabletItem
-                    && this.itemList.get(mousedOverSlot).hasTag()
-                    && this.itemList.get(mousedOverSlot).getTag().contains("UUID") ) {
-                List<ItemStack> tabletList = CastingItem.getWandList(this.itemList.get(mousedOverSlot));
-                for ( int i = 0; i < tabletList.size(); ++i ) {
-                    int ingX = comboX + 3 + (i * 20);
-                    int ingY = comboY + 3;
-                    ItemStack tabletSlot = tabletList.get(i);
-                    graphics.renderItem(tabletSlot, ingX, ingY);
-                    graphics.renderItemDecorations(this.font, tabletSlot, ingX, ingY);
-                }
+        GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/gui/hotbar.png"),
+                comboX, comboY, 0, 0, 182, 22, 182, 22, graphics);
+        if ( !this.comboList.isEmpty() ) {
+            for ( int i = 0; i < this.comboList.size(); ++i ) {
+                int ingX = comboX + 3 + (i * 20);
+                int ingY = comboY + 3;
+                ItemStack comboRune = new ItemStack(this.comboList.get(i));
+                graphics.renderItem(comboRune, ingX, ingY);
+                graphics.renderItemDecorations(this.font, comboRune, ingX, ingY);
             }
         }
 
-        //Spell Slot borders on radial wheel
-        for ( int i = 0; i < numberOfSlices; i++ ) {
-            int magnifier = 24;
-            float middle = ((i / (float)numberOfSlices) + 0.25F) * 2 * (float)Math.PI;
-            float posX = x - ((float)magnifier / 2) + itemRadius * (float)Math.cos(middle);
-            float posY = y - ((float)magnifier / 2) + itemRadius * (float)Math.sin(middle);
+        //Show comboResult square in the middle
+        int resultSlotX = this.minecraft.getWindow().getGuiScaledWidth() / 2 - 11;
+        int resultSlotY = this.minecraft.getWindow().getGuiScaledHeight() / 2 - 11;
 
-            int slotX = (int)posX + 4;
-            int slotY = (int)posY + 4;
-            ItemStack slot = this.itemList.get(i);
-            if ( !slot.isEmpty() ) {
-                GuiSpellWheel.drawSlotTexture(new ResourceLocation("minecraft", "textures/gui/widgets.png"),
-                        slotX - 3, slotY - 3, 24, 23, 22, 22, 256, 256, graphics);
-            }
+        //Combo result item in the middle if found
+        if ( this.comboResult != null ) {
+            int posX = resultSlotX + 3;
+            int posY = resultSlotY + 3;
+            ItemStack slot = new ItemStack(this.comboResult);
+
+            graphics.renderItem(slot, posX, posY);
+            graphics.renderItemDecorations(this.font, slot, posX, posY);
+
+            graphics.drawCenteredString(font, slot.getHoverName(), width / 2, (height - font.lineHeight) / 2 - 16, 16777215);
         }
 
-        ms.popPose();
-
-        //Spell Item icons and hover tooltip on radial wheel
+        //Spell item and hover tooltip on radial wheel
         for ( int i = 0; i < numberOfSlices; i++ ) {
+            if ( i == 0 ) {
+                GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/gui/square.png"),
+                        resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
+            }
             int magnifier = 24;
             float middle = ((i / (float)numberOfSlices) + 0.25F) * 2 * (float)Math.PI;
-            float posX = x - ((float)magnifier / 2) + itemRadius * (float)Math.cos(middle);
-            float posY = y - ((float)magnifier / 2) + itemRadius * (float)Math.sin(middle);
-
-            RenderSystem.disableDepthTest();
-
-            int slotX = (int)posX + 4;
-            int slotY = (int)posY + 4;
+            int posX = (int)(x - ((float)magnifier / 2) + itemRadius * (float)Math.cos(middle)) + 4;
+            int posY = (int)(y - ((float)magnifier / 2) + itemRadius * (float)Math.sin(middle)) + 4;
             ItemStack slot = this.itemList.get(i);
 
-            graphics.renderItem(slot, slotX, slotY);
-            graphics.renderItemDecorations(this.font, slot, slotX, slotY);
+            graphics.renderItem(slot, posX, posY);
+            graphics.renderItemDecorations(this.font, slot, posX, posY);
+
             if ( hasMouseOver && mousedOverSlot != -1 ) {
                 if ( !this.itemList.get(mousedOverSlot).isEmpty() && slot.equals(this.itemList.get(mousedOverSlot)) ) {
                     graphics.renderTooltip(this.font, this.itemList.get(mousedOverSlot), mouseX, mouseY);
                 }
             }
+
+            if ( !slot.isEmpty() ) {
+                GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/gui/square.png"),
+                        posX - 3, posY - 3, 0, 0, 22, 22, 22, 22, graphics);
+            }
+
+            RenderSystem.disableDepthTest();
         }
+
+        ms.popPose();
     }
 
     @Override
@@ -269,7 +284,7 @@ public class GuiSpellWheel extends Screen {
     @SubscribeEvent
     public static void overlayEvent(RenderGuiOverlayEvent.Pre event) {
         if ( Minecraft.getInstance().screen instanceof GuiSpellWheel ) {
-            if ( event.getOverlay() == VanillaGuiOverlay.HOTBAR.type() ) {
+            if ( event.getOverlay() == VanillaGuiOverlay.HOTBAR.type() || event.getOverlay() == VanillaGuiOverlay.CHAT_PANEL.type() ) {
                 event.setCanceled(true);
             }
         }

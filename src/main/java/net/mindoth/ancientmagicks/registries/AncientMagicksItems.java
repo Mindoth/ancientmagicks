@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
@@ -44,29 +45,37 @@ public class AncientMagicksItems {
             () -> new RuneItem(new Item.Properties(), 0));
 
 
+    public static final RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune",
+            () -> new ColorRuneItem(new Item.Properties(), 0));
+
+    public static final RegistryObject<Item> PURPLE_RUNE = ITEMS.register("purple_rune",
+            () -> new ColorRuneItem(new Item.Properties(), 0));
+
+    public static final RegistryObject<Item> YELLOW_RUNE = ITEMS.register("yellow_rune",
+            () -> new ColorRuneItem(new Item.Properties(), 0));
+
+    public static final RegistryObject<Item> GREEN_RUNE = ITEMS.register("green_rune",
+            () -> new ColorRuneItem(new Item.Properties(), 0));
+
+
     public static final RegistryObject<Item> WITCH_SPARK_RUNE = ITEMS.register("witch_spark_rune",
             () -> new WitchSparkRune(new Item.Properties(), 20));
 
     public static final RegistryObject<Item> FIREBALL_RUNE = ITEMS.register("fireball_rune",
             () -> new FireballRune(new Item.Properties(), 40));
 
-    //TODO: Implement strength runes into this, maybe?
-    //TODO: Maybe disarm weakened enemies?
     public static final RegistryObject<Item> TELEKINETIC_GRAB_RUNE = ITEMS.register("telekinetic_grab_rune",
             () -> new TelekineticGrabRune(new Item.Properties(), 20));
 
-    //TODO: Recolor the earth on the rune texture
     public static final RegistryObject<Item> COLLAPSE_RUNE = ITEMS.register("collapse_rune",
             () -> new CollapseRune(new Item.Properties(), 120));
 
     public static final RegistryObject<Item> FLIGHT_RUNE = ITEMS.register("flight_rune",
             () -> new FlightRune(new Item.Properties(), 120));
 
-    //TODO: Implement blockPierce rune for DynamiteEntity to go through ground?
     public static final RegistryObject<Item> DYNAMITE_RUNE = ITEMS.register("dynamite_rune",
             () -> new DynamiteRune(new Item.Properties(), 80));
 
-    //TODO: Re-balance health and damage added by runes
     public static final RegistryObject<Item> RAISE_DEAD_RUNE = ITEMS.register("raise_dead_rune",
             () -> new RaiseDeadRune(new Item.Properties(), 120));
 

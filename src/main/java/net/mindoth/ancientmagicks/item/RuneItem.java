@@ -29,7 +29,7 @@ public class RuneItem extends Item {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
-        if ( this.cooldown >= 0 ) tooltip.add(Component.literal("+" + this.cooldown + " ").withStyle(ChatFormatting.BLUE)
+        if ( this.cooldown != 0 ) tooltip.add(Component.literal("+" + this.cooldown + " ").withStyle(ChatFormatting.BLUE)
                 .append(Component.translatable("tooltip.ancientmagicks.rune_cooldown")));
         else tooltip.add(Component.literal(this.cooldown + " ").withStyle(ChatFormatting.BLUE)
                 .append(Component.translatable("tooltip.ancientmagicks.rune_cooldown")));
