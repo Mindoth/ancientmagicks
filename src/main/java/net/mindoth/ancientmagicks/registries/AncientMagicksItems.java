@@ -5,16 +5,18 @@ import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.WandType;
-import net.mindoth.ancientmagicks.item.spellrune.collapse.CollapseRune;
-import net.mindoth.ancientmagicks.item.spellrune.dynamite.DynamiteRune;
-import net.mindoth.ancientmagicks.item.spellrune.blink.BlinkRune;
-import net.mindoth.ancientmagicks.item.spellrune.fireball.FireballRune;
-import net.mindoth.ancientmagicks.item.spellrune.flight.FlightRune;
-import net.mindoth.ancientmagicks.item.spellrune.raisedead.RaiseDeadRune;
-import net.mindoth.ancientmagicks.item.spellrune.slimeball.SlimeballRune;
-import net.mindoth.ancientmagicks.item.spellrune.telekineticgrab.TelekineticGrabRune;
-import net.mindoth.ancientmagicks.item.spellrune.windburst.WindBurstRune;
-import net.mindoth.ancientmagicks.item.spellrune.witchspark.WitchSparkRune;
+import net.mindoth.ancientmagicks.item.spellrune.collapse.CollapseSpell;
+import net.mindoth.ancientmagicks.item.spellrune.dynamite.DynamiteSpell;
+import net.mindoth.ancientmagicks.item.spellrune.blink.BlinkSpell;
+import net.mindoth.ancientmagicks.item.spellrune.fireball.FireballSpell;
+import net.mindoth.ancientmagicks.item.spellrune.flight.FlightSpell;
+import net.mindoth.ancientmagicks.item.spellrune.lightning.CallLightningSpell;
+import net.mindoth.ancientmagicks.item.spellrune.raisedead.RaiseDeadSpell;
+import net.mindoth.ancientmagicks.item.spellrune.slimeball.SlimeballSpell;
+import net.mindoth.ancientmagicks.item.spellrune.telekineticgrab.TelekineticGrabSpell;
+import net.mindoth.ancientmagicks.item.spellrune.ward.WardSpell;
+import net.mindoth.ancientmagicks.item.spellrune.windburst.WindBurstSpell;
+import net.mindoth.ancientmagicks.item.spellrune.witchspark.WitchSparkSpell;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -47,33 +49,39 @@ public class AncientMagicksItems {
             () -> new ColorRuneItem(new Item.Properties(), 0));
 
 
-    public static final RegistryObject<Item> WITCH_SPARK_RUNE = ITEMS.register("witch_spark_rune",
-            () -> new WitchSparkRune(new Item.Properties(), 1));
+    public static final RegistryObject<Item> WITCH_SPARK_RUNE = ITEMS.register("witch_spark_spell",
+            () -> new WitchSparkSpell(new Item.Properties(), 1));
 
-    public static final RegistryObject<Item> FIREBALL_RUNE = ITEMS.register("fireball_rune",
-            () -> new FireballRune(new Item.Properties(), 3));
+    public static final RegistryObject<Item> FIREBALL_RUNE = ITEMS.register("fireball_spell",
+            () -> new FireballSpell(new Item.Properties(), 3));
 
-    public static final RegistryObject<Item> TELEKINETIC_GRAB_RUNE = ITEMS.register("telekinetic_grab_rune",
-            () -> new TelekineticGrabRune(new Item.Properties(), 2));
+    public static final RegistryObject<Item> TELEKINETIC_GRAB_RUNE = ITEMS.register("telekinetic_grab_spell",
+            () -> new TelekineticGrabSpell(new Item.Properties(), 2));
 
-    public static final RegistryObject<Item> COLLAPSE_RUNE = ITEMS.register("collapse_rune",
-            () -> new CollapseRune(new Item.Properties(), 4));
+    public static final RegistryObject<Item> COLLAPSE_RUNE = ITEMS.register("collapse_spell",
+            () -> new CollapseSpell(new Item.Properties(), 4));
 
-    public static final RegistryObject<Item> FLIGHT_RUNE = ITEMS.register("flight_rune",
-            () -> new FlightRune(new Item.Properties(), 4));
+    public static final RegistryObject<Item> FLIGHT_RUNE = ITEMS.register("flight_spell",
+            () -> new FlightSpell(new Item.Properties(), 4));
 
-    public static final RegistryObject<Item> DYNAMITE_RUNE = ITEMS.register("dynamite_rune",
-            () -> new DynamiteRune(new Item.Properties(), 3));
+    public static final RegistryObject<Item> DYNAMITE_RUNE = ITEMS.register("dynamite_spell",
+            () -> new DynamiteSpell(new Item.Properties(), 3));
 
-    public static final RegistryObject<Item> RAISE_DEAD_RUNE = ITEMS.register("raise_dead_rune",
-            () -> new RaiseDeadRune(new Item.Properties(), 4));
+    public static final RegistryObject<Item> RAISE_DEAD_RUNE = ITEMS.register("raise_dead_spell",
+            () -> new RaiseDeadSpell(new Item.Properties(), 4));
 
-    public static final RegistryObject<Item> BLINK_RUNE = ITEMS.register("blink_rune",
-            () -> new BlinkRune(new Item.Properties(), 3));
+    public static final RegistryObject<Item> BLINK_RUNE = ITEMS.register("blink_spell",
+            () -> new BlinkSpell(new Item.Properties(), 3));
 
-    public static final RegistryObject<Item> WIND_BURST_RUNE = ITEMS.register("wind_burst_rune",
-            () -> new WindBurstRune(new Item.Properties(), 2));
+    public static final RegistryObject<Item> WIND_BURST_RUNE = ITEMS.register("wind_burst_spell",
+            () -> new WindBurstSpell(new Item.Properties(), 2));
 
-    public static final RegistryObject<Item> SLIMEBALL_RUNE = ITEMS.register("slimeball_rune",
-            () -> new SlimeballRune(new Item.Properties(), 1));
+    public static final RegistryObject<Item> SLIMEBALL_RUNE = ITEMS.register("slimeball_spell",
+            () -> new SlimeballSpell(new Item.Properties(), 1));
+
+    public static final RegistryObject<Item> WARD_RUNE = ITEMS.register("ward_spell",
+            () -> new WardSpell(new Item.Properties(), 1));
+
+    public static final RegistryObject<Item> CALL_LIGHTNING_RUNE = ITEMS.register("call_lightning_spell",
+            () -> new CallLightningSpell(new Item.Properties(), 3));
 }

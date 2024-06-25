@@ -37,6 +37,11 @@ public class RuneItem extends Item {
     public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
     }
 
+    public static void playWhiffSound(Level level, Vec3 center) {
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS, 0.5F, 1.0F);
+    }
+
     public static void playMagicSound(Level level, Vec3 center) {
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 0.25F, 2.0F);
@@ -85,6 +90,13 @@ public class RuneItem extends Item {
     public static void playEvilShootSound(Level level, Vec3 center) {
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.WITHER_SHOOT, SoundSource.PLAYERS, 0.5F, 1.0F);
+    }
+
+    public static void playLightningSummonSound(Level level, Vec3 center) {
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.PLAYERS, 1.0F, 1.0F);
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1.0F, 1.0F);
     }
 
     public static void playWindSound(Level level, Vec3 center) {

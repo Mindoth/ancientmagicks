@@ -287,7 +287,12 @@ public class GuiSpellWheel extends Screen {
                     || event.getOverlay() == VanillaGuiOverlay.CHAT_PANEL.type()
                     || event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type()
                     || event.getOverlay() == VanillaGuiOverlay.ITEM_NAME.type()
-                    || event.getOverlay() == VanillaGuiOverlay.RECORD_OVERLAY.type() ) {
+                    || event.getOverlay() == VanillaGuiOverlay.RECORD_OVERLAY.type()
+                    || event.getOverlay() == VanillaGuiOverlay.FOOD_LEVEL.type()
+                    || event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type()
+                    || event.getOverlay() == VanillaGuiOverlay.MOUNT_HEALTH.type()
+                    || event.getOverlay() == VanillaGuiOverlay.EXPERIENCE_BAR.type()
+                    || event.getOverlay() == VanillaGuiOverlay.ARMOR_LEVEL.type() ) {
                 event.setCanceled(true);
             }
         }
