@@ -1,21 +1,16 @@
 package net.mindoth.ancientmagicks.item.spellrune.telekineticgrab;
 
-import net.mindoth.ancientmagicks.item.modifierrune.ModifierRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class TelekineticGrabRune extends SpellRuneItem {
@@ -25,20 +20,17 @@ public class TelekineticGrabRune extends SpellRuneItem {
     }
 
     @Override
-    public void shootMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
+    public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);
         playMagicShootSound(level, casterPos);
-        HashMap<String, Float> valueMap = new HashMap<>();
 
-        valueMap.put("size", 1.0F);
-        float range = 3.5F + (float)casterPos.distanceTo(center);
-        for ( ModifierRuneItem rune : modifierList ) rune.addModifiersToValues(valueMap);
-        if ( valueMap.get("size") <= 0 ) valueMap.put("size", 1.0F);
+        float range = 3.5F;
+        float size = 0.5F;
 
-        Entity target = getPointedItemEntity(level, caster, range, valueMap.get("size") * 0.5F, caster == owner);
+        Entity target = getPointedItemEntity(level, caster, range, size, caster == owner);
         if ( target instanceof ItemEntity) {
-            ArrayList<ItemEntity> itemPile = getItemEntitiesAround(target, level, valueMap.get("size"), null);
+            ArrayList<ItemEntity> itemPile = getItemEntitiesAround(target, level, size, null);
             for ( ItemEntity itemEntity : itemPile ) {
                 itemEntity.push((casterPos.x - itemEntity.getX()) / 6, (casterPos.y - itemEntity.getY() + 1) / 6, (casterPos.z - itemEntity.getZ()) / 6);
                 itemEntity.setNoPickUpDelay();

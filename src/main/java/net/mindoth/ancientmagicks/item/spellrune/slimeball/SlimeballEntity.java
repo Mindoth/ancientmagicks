@@ -42,7 +42,7 @@ public class SlimeballEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultSpeed() {
-        return 0.8F;
+        return 1.2F;
     }
 
     @Override

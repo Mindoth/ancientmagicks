@@ -24,7 +24,7 @@ public class ColorRuneItem extends RuneItem {
             String value = entry.getValue();
             if ( stringCombo.equals(value) ) {
                 //TODO MAKE IT WORK WITH ADDON MODS (MODID NEEDS TO BE INCLUDED IN KEY)
-                spell = (SpellRuneItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation("ancientmagicks:" + key));
+                spell = (SpellRuneItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
             }
         }
         return spell;

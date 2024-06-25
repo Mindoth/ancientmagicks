@@ -26,17 +26,17 @@ public class WitchSparkEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultPower() {
-        return 4.0F;
+        return 6.0F;
     }
 
     @Override
     public float getDefaultSpeed() {
-        return 0.8F;
+        return 1.2F;
     }
 
     @Override
     public float getDefaultLife() {
-        return 40.0F;
+        return 120.0F;
     }
 
     @Override

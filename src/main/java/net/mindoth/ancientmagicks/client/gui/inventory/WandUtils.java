@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.client.gui.inventory;
 
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.WandItem;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;

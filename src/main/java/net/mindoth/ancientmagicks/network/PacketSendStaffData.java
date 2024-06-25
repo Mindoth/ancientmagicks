@@ -2,7 +2,6 @@ package net.mindoth.ancientmagicks.network;
 
 import net.mindoth.ancientmagicks.client.gui.inventory.WandData;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.WandItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -27,7 +26,7 @@ public class PacketSendStaffData {
         context.enqueueWork(() -> {
             if ( context.getSender() != null ) {
                 ServerPlayer player = context.getSender();
-                ItemStack staff = WandItem.getHeldCastingItem(player);
+                ItemStack staff = CastingItem.getHeldCastingItem(player);
                 WandData data = CastingItem.getData(staff);
                 if ( data.getUuid() != null ) {
                     player.stopUsingItem();

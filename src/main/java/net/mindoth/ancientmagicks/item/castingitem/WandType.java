@@ -8,9 +8,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.RegistryObject;
 
 public enum WandType {
-    BEGINNER_WAND("beginner_wand", Rarity.COMMON, 9, 7, 1, 9, "tier3_gui.png", 176, 132, 7, 49, AncientMagicksItems.BEGINNER_WAND),
-    BEGINNER_STAFF("beginner_staff", Rarity.COMMON, 9, 7, 1, 9, "tier3_gui.png", 176, 132, 7, 49, AncientMagicksItems.BEGINNER_STAFF),
-    SPELL_TABLET("spell_tablet", Rarity.COMMON, 9, 7, 1, 9, "tier3_gui.png", 176, 132, 7, 49, AncientMagicksItems.SPELL_TABLET)/*,
+    BEGINNER_STAFF("beginner_staff", Rarity.COMMON, 9, 7, 1, 9, "tier3_gui.png", 176, 132, 7, 49, AncientMagicksItems.BEGINNER_STAFF)/*,
     SPELLBOOK("beginner_wand", Rarity.COMMON, 3, 61, 1, 3, "tier1_gui.png", 176, 132, 7, 49, RunicItemsItems.SPELLBOOK),
     SPELLBOOK("spell_book", Rarity.COMMON, 6, 34, 1, 6, "tier2_gui.png", 176, 132, 7, 49, RunicItemsItems.SPELLBOOK),
     SPELLBOOK("spell_book", Rarity.COMMON, 9, 7, 1, 9, "tier3_gui.png", 176, 132, 7, 49, RunicItemsItems.SPELLBOOK),

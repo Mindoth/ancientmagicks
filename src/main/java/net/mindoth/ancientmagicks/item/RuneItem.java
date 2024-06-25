@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item;
 
-import net.mindoth.ancientmagicks.item.modifierrune.ModifierRuneItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -35,7 +34,7 @@ public class RuneItem extends Item {
         super.appendHoverText(stack, level, tooltip, flagIn);
     }
 
-    public void shootMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
+    public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
     }
 
     public static void playMagicSound(Level level, Vec3 center) {
@@ -76,6 +75,11 @@ public class RuneItem extends Item {
                 SoundEvents.ENDER_PEARL_THROW, SoundSource.PLAYERS, 0.5F, 1.0F);
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.PLAYERS, 0.35F, 2.0F);
+    }
+
+    public static void playEnderSound(Level level, Vec3 center) {
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
     }
 
     public static void playEvilShootSound(Level level, Vec3 center) {

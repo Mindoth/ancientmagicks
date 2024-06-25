@@ -14,6 +14,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -39,7 +40,7 @@ public class RandomizeSpellCombos {
 
                 //TODO MAKE FILE NOT BE LINE OR WHITESPACE SENSITIVE
                 for ( Map.Entry<SpellRuneItem, List<ColorRuneItem>> m : AncientMagicks.COMBO_MAP.entrySet() ) {
-                    pw.print(m.getKey().toString() + "=" + m.getValue().toString() + ";");
+                    pw.print(ForgeRegistries.ITEMS.getKey(m.getKey()) + "=" + m.getValue() + ";");
                 }
 
                 pw.flush();
@@ -57,11 +58,10 @@ public class RandomizeSpellCombos {
             File file = new File(filepath);
             if ( file.isFile() ) {
                 FileInputStream fis = new FileInputStream(file);
-                HashMap<String,String> mapInFile = new HashMap<String,String>();
                 String comboString = Files.readString(savePath.resolve("ancientmagicks.json"));
-                ColorRuneItem.CURRENT_COMBO_TAG.putString("combostring", comboString.replaceAll(".$", ""));
+                ColorRuneItem.CURRENT_COMBO_TAG.putString("am_combostring", comboString.replaceAll(".$", ""));
 
-                ColorRuneItem.CURRENT_COMBO_MAP = Splitter.on(";").withKeyValueSeparator("=").split(ColorRuneItem.CURRENT_COMBO_TAG.getString("combostring"));
+                ColorRuneItem.CURRENT_COMBO_MAP = Splitter.on(";").withKeyValueSeparator("=").split(ColorRuneItem.CURRENT_COMBO_TAG.getString("am_combostring"));
 
                 fis.close();
                 System.out.println("Successfully read spell combo recipes for Ancient Magicks.");

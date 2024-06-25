@@ -92,7 +92,7 @@ public class GuiSpellWheel extends Screen {
                         }
                         if ( ColorRuneItem.checkForSpellCombo(this.comboList) != null ) {
                             SpellRuneItem spell = ColorRuneItem.checkForSpellCombo(this.comboList);
-                            staff.getTag().putString("spellRune", String.valueOf(ForgeRegistries.ITEMS.getKey(spell)));
+                            staff.getTag().putString("am_spellrune", String.valueOf(ForgeRegistries.ITEMS.getKey(spell)));
                             this.comboResult = spell;
                             AncientMagicksNetwork.sendToServer(new PacketSetSpellRune(staff.getTag()));
                         }
@@ -164,7 +164,7 @@ public class GuiSpellWheel extends Screen {
                 hasMouseOver = true;
                 mousedOverSlot = this.selectedItem;
             }
-            else drawSlice(buffer, x, y, 10, radiusIn, radiusOut, s, e, 55, 55, 55, 93);
+            else drawSlice(buffer, x, y, 10, radiusIn, radiusOut, s, e, 55, 55, 55, 120);
         }
 
         tessellator.end();
@@ -188,34 +188,31 @@ public class GuiSpellWheel extends Screen {
 
         //Show comboResult square in the middle
         int resultSlotX = this.minecraft.getWindow().getGuiScaledWidth() / 2 - 11;
-        int resultSlotY = this.minecraft.getWindow().getGuiScaledHeight() / 2 - 11;
-
-        //Combo result item in the middle if found
+        int resultSlotY = (this.minecraft.getWindow().getGuiScaledHeight() / 2 - 11) + 10;
         if ( this.comboResult != null ) {
             int posX = resultSlotX + 3;
             int posY = resultSlotY + 3;
             ItemStack slot = new ItemStack(this.comboResult);
 
+            //Item and its decorations
             graphics.renderItem(slot, posX, posY);
             graphics.renderItemDecorations(this.font, slot, posX, posY);
 
-            graphics.drawCenteredString(font, slot.getHoverName(), width / 2, (height - font.lineHeight) / 2 - 24, 16777215);
+            //Square slot
+            GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/gui/square.png"),
+                    resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
+
+            //Spell name
+            graphics.drawCenteredString(font, slot.getHoverName(), width / 2, (height - font.lineHeight) / 2 - 8, 16777215);
         }
 
         //Spell item and hover tooltip on radial wheel
         for ( int i = 0; i < numberOfSlices; i++ ) {
-            if ( i == 0 ) {
-                GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/gui/square.png"),
-                        resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
-            }
             int magnifier = 24;
             float middle = ((i / (float)numberOfSlices) + 0.25F) * 2 * (float)Math.PI;
             int posX = (int)(x - ((float)magnifier / 2) + itemRadius * (float)Math.cos(middle)) + 4;
             int posY = (int)(y - ((float)magnifier / 2) + itemRadius * (float)Math.sin(middle)) + 4;
             ItemStack slot = this.itemList.get(i);
-
-            graphics.renderItem(slot, posX, posY);
-            graphics.renderItemDecorations(this.font, slot, posX, posY);
 
             if ( hasMouseOver && mousedOverSlot != -1 ) {
                 if ( !this.itemList.get(mousedOverSlot).isEmpty() && slot.equals(this.itemList.get(mousedOverSlot)) ) {
@@ -228,10 +225,12 @@ public class GuiSpellWheel extends Screen {
                         posX - 3, posY - 3, 0, 0, 22, 22, 22, 22, graphics);
             }
 
-            RenderSystem.disableDepthTest();
+            graphics.renderItem(slot, posX, posY);
+            graphics.renderItemDecorations(this.font, slot, posX, posY);
         }
 
-        ms.popPose();
+        //RenderSystem.disableDepthTest();
+        //ms.popPose();
     }
 
     @Override
@@ -284,7 +283,11 @@ public class GuiSpellWheel extends Screen {
     @SubscribeEvent
     public static void overlayEvent(RenderGuiOverlayEvent.Pre event) {
         if ( Minecraft.getInstance().screen instanceof GuiSpellWheel ) {
-            if ( event.getOverlay() == VanillaGuiOverlay.HOTBAR.type() || event.getOverlay() == VanillaGuiOverlay.CHAT_PANEL.type() ) {
+            if ( event.getOverlay() == VanillaGuiOverlay.HOTBAR.type()
+                    || event.getOverlay() == VanillaGuiOverlay.CHAT_PANEL.type()
+                    || event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type()
+                    || event.getOverlay() == VanillaGuiOverlay.ITEM_NAME.type()
+                    || event.getOverlay() == VanillaGuiOverlay.RECORD_OVERLAY.type() ) {
                 event.setCanceled(true);
             }
         }

@@ -1,23 +1,16 @@
 package net.mindoth.ancientmagicks.item.spellrune.collapse;
 
-import net.mindoth.ancientmagicks.item.modifierrune.ModifierRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 public class CollapseRune extends SpellRuneItem {
 
@@ -26,19 +19,13 @@ public class CollapseRune extends SpellRuneItem {
     }
 
     @Override
-    public void shootMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
+    public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);
         playMagicSummonSound(level, casterPos);
-        HashMap<String, Float> valueMap = new HashMap<>();
 
-        valueMap.put("size", 1.0F);
-        for ( ModifierRuneItem rune : modifierList ) rune.addModifiersToValues(valueMap);
-
-        if ( valueMap.get("size") < 0 ) valueMap.put("size", 1.0F);
-        float sizeF = valueMap.get("size");
-        int size = (int)sizeF;
-        float range = 3.5F + (float)casterPos.distanceTo(center);
+        int size = 3;
+        float range = 3.5F;
 
         Vec3 point = getBlockPoint(caster, range, 0, caster == owner);
         BlockPos pos = new BlockPos((int)point.x, (int)point.y, (int)point.z);

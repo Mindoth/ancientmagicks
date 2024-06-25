@@ -4,14 +4,10 @@ import net.mindoth.ancientmagicks.client.gui.GuiSpellWheel;
 import net.mindoth.ancientmagicks.client.gui.GuiWand;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
-import net.mindoth.ancientmagicks.item.castingitem.WandItem;
-import net.mindoth.ancientmagicks.item.spellrune.blackhole.BlackHoleRenderer;
-import net.mindoth.ancientmagicks.item.spellrune.enderbolt.EnderBoltRenderer;
 import net.mindoth.ancientmagicks.item.spellrune.fireball.FireballRenderer;
 import net.mindoth.ancientmagicks.item.spellrune.slimeball.SlimeballRenderer;
 import net.mindoth.ancientmagicks.item.spellrune.witchspark.WitchSparkRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketOpenWandGui;
 import net.mindoth.ancientmagicks.network.PacketSendStaffData;
 import net.mindoth.ancientmagicks.registries.AncientMagicksContainers;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
@@ -48,8 +44,6 @@ public class AncientMagicksClient {
         event.registerEntityRenderer(AncientMagicksEntities.WITCH_SPARK.get(), WitchSparkRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.DYNAMITE.get(), TntRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.SKELETON_MINION.get(), SkeletonRenderer::new);
-        event.registerEntityRenderer(AncientMagicksEntities.ENDER_BOLT.get(), EnderBoltRenderer::new);
-        event.registerEntityRenderer(AncientMagicksEntities.BLACK_HOLE.get(), BlackHoleRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.SLIMEBALL.get(), SlimeballRenderer::new);
     }
 
@@ -64,10 +58,9 @@ public class AncientMagicksClient {
         }
 
         private static void onInput(Minecraft MINECRAFT, int key, int keyAction) {
-            ItemStack wand = WandItem.getHeldCastingItem(MINECRAFT.player);
+            ItemStack wand = CastingItem.getHeldCastingItem(MINECRAFT.player);
             if ( key == AncientMagicksKeyBinds.SPELLSELECTOR.getKey().getValue() && wand.getItem() instanceof CastingItem) {
                 if ( keyAction == 1 && MINECRAFT.screen == null ) {
-                    if ( wand.getItem() instanceof WandItem ) AncientMagicksNetwork.sendToServer(new PacketOpenWandGui());
                     if ( wand.getItem() instanceof StaffItem ) AncientMagicksNetwork.sendToServer(new PacketSendStaffData());
                 }
                 else if ( keyAction == 0 && MINECRAFT.screen instanceof GuiSpellWheel ) MINECRAFT.player.closeContainer();

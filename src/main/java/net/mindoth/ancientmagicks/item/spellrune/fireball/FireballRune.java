@@ -1,14 +1,11 @@
 package net.mindoth.ancientmagicks.item.spellrune.fireball;
 
-import net.mindoth.ancientmagicks.item.modifierrune.ModifierRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.abstractspell.AbstractSpellEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.List;
 
 public class FireballRune extends SpellRuneItem {
 
@@ -17,7 +14,7 @@ public class FireballRune extends SpellRuneItem {
     }
 
     @Override
-    public void shootMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
+    public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         Level level = caster.level();
         int adjuster;
         if ( caster != owner ) adjuster = -1;
@@ -25,7 +22,6 @@ public class FireballRune extends SpellRuneItem {
         playFireShootSound(level, center);
         AbstractSpellEntity projectile = new FireballEntity(level, owner, caster, this);
 
-        for ( ModifierRuneItem rune : modifierList ) rune.addModifiersToSpellEntity(projectile);
         projectile.setColor(AbstractSpellEntity.getSpellColor("gold"), 0.8F);
         projectile.setPos(center.x, center.y, center.z);
         projectile.shootFromRotation(caster, xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 1.0F);

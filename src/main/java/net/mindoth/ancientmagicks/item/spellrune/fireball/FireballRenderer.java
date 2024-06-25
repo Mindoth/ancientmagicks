@@ -2,7 +2,6 @@ package net.mindoth.ancientmagicks.item.spellrune.fireball;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.spellrune.enderbolt.EnderBoltEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

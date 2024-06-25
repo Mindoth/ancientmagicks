@@ -1,9 +1,7 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.spellrune.blackhole.BlackHoleEntity;
 import net.mindoth.ancientmagicks.item.spellrune.dynamite.DynamiteEntity;
-import net.mindoth.ancientmagicks.item.spellrune.enderbolt.EnderBoltEntity;
 import net.mindoth.ancientmagicks.item.spellrune.fireball.FireballEntity;
 import net.mindoth.ancientmagicks.item.spellrune.raisedead.SkeletonMinionEntity;
 import net.mindoth.ancientmagicks.item.spellrune.slimeball.SlimeballEntity;
@@ -30,14 +28,6 @@ public class AncientMagicksEntities {
     public static final RegistryObject<EntityType<DynamiteEntity>> DYNAMITE
             = registerEntity(EntityType.Builder.<DynamiteEntity>of(DynamiteEntity::new,
             MobCategory.MISC).sized(1.0F, 1.0F).setCustomClientFactory(DynamiteEntity::new), "dynamite");
-
-    public static final RegistryObject<EntityType<EnderBoltEntity>> ENDER_BOLT
-            = registerEntity(EntityType.Builder.<EnderBoltEntity>of(EnderBoltEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(EnderBoltEntity::new), "ender_bolt");
-
-    public static final RegistryObject<EntityType<BlackHoleEntity>> BLACK_HOLE
-            = registerEntity(EntityType.Builder.<BlackHoleEntity>of(BlackHoleEntity::new,
-            MobCategory.MISC).sized(1.0F, 1.0F).setCustomClientFactory(BlackHoleEntity::new), "black_hole");
 
     public static final RegistryObject<EntityType<SlimeballEntity>> SLIMEBALL
             = registerEntity(EntityType.Builder.<SlimeballEntity>of(SlimeballEntity::new,

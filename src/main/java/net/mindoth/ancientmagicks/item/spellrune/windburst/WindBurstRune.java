@@ -1,22 +1,16 @@
 package net.mindoth.ancientmagicks.item.spellrune.windburst;
 
-import net.mindoth.ancientmagicks.item.modifierrune.ModifierRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class WindBurstRune extends SpellRuneItem {
@@ -26,35 +20,29 @@ public class WindBurstRune extends SpellRuneItem {
     }
 
     @Override
-    public void shootMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime, List<ModifierRuneItem> modifierList) {
+    public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);
         playWindSound(level, center);
-        HashMap<String, Float> valueMap = new HashMap<>();
 
-        valueMap.put("size", 1.0F);
-        valueMap.put("power", 1.0F);
-        valueMap.put("blockPierce", 0.0F);
-        float range = 3.5F + (float)casterPos.distanceTo(center);
-        for ( ModifierRuneItem rune : modifierList ) rune.addModifiersToValues(valueMap);
-        if ( valueMap.get("size") <= 0 ) valueMap.put("size", 1.0F);
-        float size = 0.5F * valueMap.get("size");
+        float range = 3.5F;
+        float size = 0.25F;
+        float power = 2;
 
-        Entity target = getPointedPushableEntity(level, caster, range, 0.25F, caster == owner, valueMap.get("blockPierce") == 0);
-        Vec3 targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, caster == owner, false, true, valueMap.get("blockPierce") == 0);
+        Entity target = getPointedPushableEntity(level, caster, range, 0.25F, caster == owner, true);
+        Vec3 targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, caster == owner, false, true, true);
         if ( target != caster && isPushable(target) ) {
             List<Entity> pushEntity = ShadowEvents.getEntitiesAround(target, size * 0.25F, size * 0.25F, size * 0.25F);
             pushEntity.add(target);
             pushEntity.remove(caster);
             for ( Entity listEntity : pushEntity ) {
                 if ( SpellRuneItem.isPushable(listEntity) ) {
-                    float power = valueMap.get("power");
                     listEntity.push((targetPoint.x - casterPos.x) * power, (targetPoint.y - casterPos.y + 0.5F) * power, (targetPoint.z - casterPos.z) * power);
                     listEntity.hurtMarked = true;
                 }
             }
         }
-        Vec3 particlePoint = ShadowEvents.getPoint(level, caster, range, 0.25F, caster == owner, false, true, valueMap.get("blockPierce") == 0);
+        Vec3 particlePoint = ShadowEvents.getPoint(level, caster, range, 0.25F, caster == owner, false, true, true);
         addParticles(level, casterPos, particlePoint);
     }
 
