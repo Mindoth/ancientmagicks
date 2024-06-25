@@ -203,7 +203,7 @@ public class GuiSpellWheel extends Screen {
                     resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
 
             //Spell name
-            graphics.drawCenteredString(font, slot.getHoverName(), width / 2, (height - font.lineHeight) / 2 - 8, 16777215);
+            graphics.drawCenteredString(this.font, slot.getHoverName(), width / 2, (height - this.font.lineHeight) / 2 - 8, 16777215);
         }
 
         //Spell item and hover tooltip on radial wheel

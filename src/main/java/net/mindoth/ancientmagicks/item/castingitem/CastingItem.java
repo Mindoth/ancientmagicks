@@ -45,7 +45,7 @@ public class CastingItem extends Item {
     public void onUseTick(Level level, LivingEntity living, ItemStack wand, int timeLeft) {
         if ( level.isClientSide ) return;
         if ( living instanceof Player player ) {
-            if ( wand.hasTag() && wand.getTag().contains("am_spellrune") ) {
+            if ( isValidCastingItem(wand) && wand.getTag().contains("am_spellrune") ) {
                 Item spellRune = ForgeRegistries.ITEMS.getValue(new ResourceLocation(wand.getTag().getString("am_spellrune")));
                 if ( spellRune instanceof SpellRuneItem ) {
                     if ( timeLeft % 2 == 0 ) doSpell(player, player, wand, (SpellRuneItem)spellRune, getUseDuration(wand) - timeLeft);
@@ -60,12 +60,10 @@ public class CastingItem extends Item {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide ) {
             ItemStack wand = player.getItemInHand(handIn);
-            if ( isValidCastingItem(wand) ) {
-                if ( wand.hasTag() && wand.getTag().contains("spellRune") ) {
-                    Item spellRune = ForgeRegistries.ITEMS.getValue(new ResourceLocation(wand.getTag().getString("am_spellrune")));
-                    if ( spellRune instanceof SpellRuneItem spellRuneItem && !player.getCooldowns().isOnCooldown(spellRuneItem) ) {
-                        player.startUsingItem(handIn);
-                    }
+            if ( isValidCastingItem(wand) && wand.getTag().contains("am_spellrune") ) {
+                Item spellRune = ForgeRegistries.ITEMS.getValue(new ResourceLocation(wand.getTag().getString("am_spellrune")));
+                if ( spellRune instanceof SpellRuneItem spellRuneItem && !player.getCooldowns().isOnCooldown(spellRuneItem) ) {
+                    player.startUsingItem(handIn);
                 }
             }
         }
