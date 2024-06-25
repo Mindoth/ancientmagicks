@@ -59,37 +59,37 @@ public class AncientMagicksItems {
 
 
     public static final RegistryObject<Item> WITCH_SPARK_RUNE = ITEMS.register("witch_spark_rune",
-            () -> new WitchSparkRune(new Item.Properties(), 20));
+            () -> new WitchSparkRune(new Item.Properties(), 1));
 
     public static final RegistryObject<Item> FIREBALL_RUNE = ITEMS.register("fireball_rune",
-            () -> new FireballRune(new Item.Properties(), 40));
+            () -> new FireballRune(new Item.Properties(), 3));
 
     public static final RegistryObject<Item> TELEKINETIC_GRAB_RUNE = ITEMS.register("telekinetic_grab_rune",
-            () -> new TelekineticGrabRune(new Item.Properties(), 20));
+            () -> new TelekineticGrabRune(new Item.Properties(), 2));
 
     public static final RegistryObject<Item> COLLAPSE_RUNE = ITEMS.register("collapse_rune",
-            () -> new CollapseRune(new Item.Properties(), 120));
+            () -> new CollapseRune(new Item.Properties(), 4));
 
     public static final RegistryObject<Item> FLIGHT_RUNE = ITEMS.register("flight_rune",
-            () -> new FlightRune(new Item.Properties(), 120));
+            () -> new FlightRune(new Item.Properties(), 4));
 
     public static final RegistryObject<Item> DYNAMITE_RUNE = ITEMS.register("dynamite_rune",
-            () -> new DynamiteRune(new Item.Properties(), 80));
+            () -> new DynamiteRune(new Item.Properties(), 3));
 
     public static final RegistryObject<Item> RAISE_DEAD_RUNE = ITEMS.register("raise_dead_rune",
-            () -> new RaiseDeadRune(new Item.Properties(), 120));
+            () -> new RaiseDeadRune(new Item.Properties(), 4));
 
     public static final RegistryObject<Item> ENDER_BOLT_RUNE = ITEMS.register("ender_bolt_rune",
-            () -> new EnderBoltRune(new Item.Properties(), 60));
+            () -> new EnderBoltRune(new Item.Properties(), 3));
 
     public static final RegistryObject<Item> BLACK_HOLE_RUNE = ITEMS.register("black_hole_rune",
-            () -> new BlackHoleRune(new Item.Properties(), 120));
+            () -> new BlackHoleRune(new Item.Properties(), 4));
 
     public static final RegistryObject<Item> WIND_BURST_RUNE = ITEMS.register("wind_burst_rune",
-            () -> new WindBurstRune(new Item.Properties(), 20));
+            () -> new WindBurstRune(new Item.Properties(), 2));
 
     public static final RegistryObject<Item> SLIMEBALL_RUNE = ITEMS.register("slimeball_rune",
-            () -> new SlimeballRune(new Item.Properties(), 20));
+            () -> new SlimeballRune(new Item.Properties(), 1));
 
 
     public static final RegistryObject<Item> AMPLIFY_RUNE = ITEMS.register("amplify_rune",

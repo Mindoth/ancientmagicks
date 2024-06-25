@@ -60,6 +60,12 @@ public class AncientMagicksNetwork {
                 .encoder(PacketSendCustomParticles::encode)
                 .consumerMainThread(PacketSendCustomParticles::handle)
                 .add();
+
+        net.messageBuilder(PacketSyncSpellCombos.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketSyncSpellCombos::new)
+                .encoder(PacketSyncSpellCombos::encode)
+                .consumerMainThread(PacketSyncSpellCombos::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

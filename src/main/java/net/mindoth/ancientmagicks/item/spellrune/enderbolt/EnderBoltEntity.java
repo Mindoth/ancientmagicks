@@ -57,7 +57,7 @@ public class EnderBoltEntity extends AbstractSpellEntity {
     @Override
     protected void doDeathEffects() {
         Vec3 centerPos = ShadowEvents.getEntityCenter(this);
-        if ( this.caster.level() == this.level() ) {
+        if ( this.caster != null && this.caster.level() == this.level() ) {
             this.caster.teleportTo(centerPos.x, this.position().y, centerPos.z);
             this.level().playSound(null, centerPos.x, centerPos.y, centerPos.z,
                     SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);

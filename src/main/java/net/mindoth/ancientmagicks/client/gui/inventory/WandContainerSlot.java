@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.client.gui.inventory;
 
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +26,6 @@ public class WandContainerSlot extends SlotItemHandler {
 
     @Override
     public boolean mayPlace(@Nonnull ItemStack stack) {
-        return super.mayPlace(stack) && (stack.getItem() instanceof RuneItem || stack.getItem() instanceof SpellTabletItem);
+        return super.mayPlace(stack) && stack.getItem() instanceof ColorRuneItem;
     }
 }

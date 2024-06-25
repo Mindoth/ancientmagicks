@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.client.gui.inventory;
 
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.minecraft.world.item.ItemStack;
@@ -19,6 +20,6 @@ public class WandItemHandler extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-        return (stack.getItem() instanceof RuneItem || (stack.getItem() instanceof RuneItem || stack.getItem() instanceof SpellTabletItem));
+        return stack.getItem() instanceof ColorRuneItem;
     }
 }

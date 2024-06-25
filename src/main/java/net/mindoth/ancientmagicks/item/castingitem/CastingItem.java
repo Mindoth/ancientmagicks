@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandData;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandManager;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
@@ -96,7 +95,7 @@ public class CastingItem extends Item {
                 if ( itemStack.getItem() instanceof SpellRuneItem ) spellRunesToCast -= 1;
                 if ( itemStack.getItem() instanceof SpellRuneItem ) {
                     SpellRuneItem rune = (SpellRuneItem)itemStack.getItem();
-                    spellCooldown += rune.cooldown;
+                    spellCooldown += rune.tier;
                     float xRot = caster.getXRot();
                     float yRot = caster.getYRot();
                     Vec3 center;
@@ -128,7 +127,7 @@ public class CastingItem extends Item {
                 else if ( itemStack.getItem() instanceof ModifierRuneItem ) {
                     ModifierRuneItem rune = (ModifierRuneItem)itemStack.getItem();
                     modifierList.add(rune);
-                    spellCooldown += rune.cooldown;
+                    spellCooldown += rune.tier;
                 }
             }
         }

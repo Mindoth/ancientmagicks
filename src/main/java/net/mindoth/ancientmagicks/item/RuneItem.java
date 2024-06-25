@@ -19,20 +19,18 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class RuneItem extends Item {
-    public int cooldown;
+    public int tier;
 
-    public RuneItem(Properties pProperties, int cooldown) {
+    public RuneItem(Properties pProperties, int tier) {
         super(pProperties);
-        this.cooldown = cooldown;
+        this.tier = tier;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
-        if ( this.cooldown != 0 ) tooltip.add(Component.literal("+" + this.cooldown + " ").withStyle(ChatFormatting.BLUE)
-                .append(Component.translatable("tooltip.ancientmagicks.rune_cooldown")));
-        else tooltip.add(Component.literal(this.cooldown + " ").withStyle(ChatFormatting.BLUE)
-                .append(Component.translatable("tooltip.ancientmagicks.rune_cooldown")));
+        if ( this.tier != 0 ) tooltip.add(Component.translatable("tooltip.ancientmagicks.rune_tier")
+                .append(Component.literal(" " + this.tier).withStyle(ChatFormatting.BLUE)));
 
         super.appendHoverText(stack, level, tooltip, flagIn);
     }
