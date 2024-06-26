@@ -33,10 +33,11 @@ public class CallLightningSpell extends SpellRuneItem {
                 lightningbolt.moveTo(point);
                 lightningbolt.setCause(caster instanceof ServerPlayer ? (ServerPlayer)caster : null);
                 level.addFreshEntity(lightningbolt);
-                playLightningSummonSound(level, point);
                 state = true;
             }
         }
+
+        if ( state ) playLightningSummonSound(level, point);
         else playWhiffSound(level, center);
 
         return state;

@@ -19,7 +19,6 @@ public class DynamiteSpell extends SpellRuneItem {
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        playMagicSummonSound(level, center);
         float range = 14.0F;
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -31,6 +30,9 @@ public class DynamiteSpell extends SpellRuneItem {
 
         level.addFreshEntity(tnt);
         state = true;
+
+        if ( state ) playMagicSummonSound(level, center);
+        else playWhiffSound(level, center);
 
         return state;
     }

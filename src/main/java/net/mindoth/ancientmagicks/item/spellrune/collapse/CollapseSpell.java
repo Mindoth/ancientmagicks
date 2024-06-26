@@ -22,8 +22,6 @@ public class CollapseSpell extends SpellRuneItem {
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        Vec3 casterPos = caster.getEyePosition(1.0F);
-        playMagicSummonSound(level, casterPos);
 
         int size = 3;
         float range = 14.0F;
@@ -43,6 +41,10 @@ public class CollapseSpell extends SpellRuneItem {
                 }
             }
         }
+
+        if ( state ) playMagicSummonSound(level, center);
+        else playWhiffSound(level, center);
+
         return state;
     }
 

@@ -24,7 +24,6 @@ public class WindBurstSpell extends SpellRuneItem {
         boolean state = false;
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);
-        playWindSound(level, center);
 
         float range = 3.5F;
         float size = 0.25F;
@@ -46,6 +45,9 @@ public class WindBurstSpell extends SpellRuneItem {
         Vec3 particlePoint = ShadowEvents.getPoint(level, caster, range, 0.25F, caster == owner, false, true, true);
         addParticles(level, casterPos, particlePoint);
         state = true;
+
+        if ( state ) playWindSound(level, center);
+        else playWhiffSound(level, center);
 
         return state;
     }

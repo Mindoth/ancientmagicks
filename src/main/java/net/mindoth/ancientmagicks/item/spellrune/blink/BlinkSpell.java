@@ -18,9 +18,11 @@ public class BlinkSpell extends SpellRuneItem {
         boolean state = false;
         Level level = caster.level();
         Vec3 point = ShadowEvents.getPoint(level, caster, 14.0F, 0, caster == owner, false, false, false);
-        playEnderSound(level, point);
         caster.teleportTo(point.x, point.y, point.z);
         state = true;
+
+        if ( state ) playEnderSound(level, point);
+        else playWhiffSound(level, center);
 
         return state;
     }

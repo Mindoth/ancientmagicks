@@ -24,7 +24,6 @@ public class TelekineticGrabSpell extends SpellRuneItem {
         boolean state = false;
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);
-        playMagicShootSound(level, casterPos);
 
         float range = 7.0F;
         float size = 0.5F;
@@ -38,6 +37,9 @@ public class TelekineticGrabSpell extends SpellRuneItem {
                 state = true;
             }
         }
+
+        if ( state ) playMagicShootSound(level, center);
+        else playWhiffSound(level, center);
 
         return state;
     }

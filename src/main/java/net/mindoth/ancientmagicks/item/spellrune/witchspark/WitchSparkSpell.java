@@ -20,7 +20,6 @@ public class WitchSparkSpell extends SpellRuneItem {
         int adjuster;
         if ( caster != owner ) adjuster = -1;
         else adjuster = 1;
-        playMagicShootSound(level, center);
         AbstractSpellEntity projectile = new WitchSparkEntity(level, owner, caster, this);
 
         projectile.setColor(AbstractSpellEntity.getSpellColor("dark_purple"), 0.3F);
@@ -28,6 +27,9 @@ public class WitchSparkSpell extends SpellRuneItem {
         projectile.shootFromRotation(caster, xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 1.0F);
         level.addFreshEntity(projectile);
         state = true;
+
+        if ( state ) playMagicShootSound(level, center);
+        else playWhiffSound(level, center);
 
         return state;
     }

@@ -23,7 +23,6 @@ public class RaiseDeadSpell extends SpellRuneItem {
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        playMagicSummonSound(level, center);
         Mob minion = new SkeletonMinionEntity(level, owner);
 
         float life = 600.0F;
@@ -40,6 +39,9 @@ public class RaiseDeadSpell extends SpellRuneItem {
         level.addFreshEntity(minion);
         minion.spawnAnim();
         state = true;
+
+        if ( state ) playMagicSummonSound(level, center);
+        else playWhiffSound(level, center);
 
         return state;
     }

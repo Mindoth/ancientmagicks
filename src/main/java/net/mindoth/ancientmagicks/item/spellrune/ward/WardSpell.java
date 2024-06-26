@@ -20,8 +20,6 @@ public class WardSpell extends SpellRuneItem {
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        Vec3 casterPos = caster.getEyePosition(1.0F);
-        playMagicSound(level, casterPos);
 
         int life = 1200;
         float range = 14.0F;
@@ -39,6 +37,9 @@ public class WardSpell extends SpellRuneItem {
             else target.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, life, 0, false, false));
             state = true;
         }
+
+        if ( state ) playMagicSound(level, center);
+        else playWhiffSound(level, center);
 
         return state;
     }

@@ -20,7 +20,6 @@ public class FireballSpell extends SpellRuneItem {
         int adjuster;
         if ( caster != owner ) adjuster = -1;
         else adjuster = 1;
-        playFireShootSound(level, center);
         AbstractSpellEntity projectile = new FireballEntity(level, owner, caster, this);
 
         projectile.setColor(AbstractSpellEntity.getSpellColor("gold"), 0.8F);
@@ -28,6 +27,9 @@ public class FireballSpell extends SpellRuneItem {
         projectile.shootFromRotation(caster, xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 1.0F);
         level.addFreshEntity(projectile);
         state = true;
+
+        if ( state ) playFireShootSound(level, center);
+        else playWhiffSound(level, center);
 
         return state;
     }
