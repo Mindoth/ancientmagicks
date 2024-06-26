@@ -17,21 +17,18 @@ public class WardSpell extends SpellRuneItem {
     }
 
     @Override
-    public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+        boolean state = false;
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);
         playMagicSound(level, casterPos);
 
         int life = 1200;
+        float range = 14.0F;
         float size = 1.0F;
 
         LivingEntity target;
-        if ( caster == owner ) {
-            if ( (float)casterPos.distanceTo(center) != 0 ) {
-                target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, (float)casterPos.distanceTo(center), 0.25F, caster == owner, true);
-            }
-            else target = owner;
-        }
+        if ( caster == owner ) target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
 
         if ( isAlly(owner, target)) {
@@ -40,6 +37,9 @@ public class WardSpell extends SpellRuneItem {
                 target.heal(4);
             }
             else target.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, life, 0, false, false));
+            state = true;
         }
+
+        return state;
     }
 }

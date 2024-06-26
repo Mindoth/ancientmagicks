@@ -93,13 +93,16 @@ public class CastingItem extends Item {
         spell.castMagic(owner, caster, center, xRot, yRot, useTime);
 
         //These are cooldown and channeling related handling
-        if ( caster == owner ) addCastingCooldown(owner, spell);
+        if ( caster == owner ) {
+            if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) ) addCastingCooldown(owner, spell, spell.tier * 20);
+            else addCastingCooldown(owner, spell, 10);
+        }
         owner.stopUsingItem();
         //if ( !spell.isChannel ) owner.stopUsingItem();
     }
 
-    public static void addCastingCooldown(Player player, SpellRuneItem spell) {
-        player.getCooldowns().addCooldown(spell, spell.tier * 20);
+    public static void addCastingCooldown(Player player, SpellRuneItem spell, int cooldown) {
+        player.getCooldowns().addCooldown(spell, cooldown);
     }
 
     public static List<ItemStack> getStaffList(ItemStack staff) {

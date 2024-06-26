@@ -19,13 +19,14 @@ public class CollapseSpell extends SpellRuneItem {
     }
 
     @Override
-    public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+        boolean state = false;
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);
         playMagicSummonSound(level, casterPos);
 
         int size = 3;
-        float range = 3.5F;
+        float range = 14.0F;
 
         Vec3 point = getBlockPoint(caster, range, 0, caster == owner);
         BlockPos pos = new BlockPos((int)point.x, (int)point.y, (int)point.z);
@@ -37,10 +38,12 @@ public class CollapseSpell extends SpellRuneItem {
                     if ( blockState.getBlock() != Blocks.BEDROCK && blockState.isSolid()
                             && (level.isEmptyBlock(blockPos.below()) || FallingBlock.isFree(level.getBlockState(blockPos.below()))) ) {
                         FallingBlockEntity.fall(level, blockPos, blockState);
+                        state = true;
                     }
                 }
             }
         }
+        return state;
     }
 
     private static Vec3 getBlockPoint(Entity caster, float range, float error, boolean isPlayer) {

@@ -34,12 +34,13 @@ public class RuneItem extends Item {
         super.appendHoverText(stack, level, tooltip, flagIn);
     }
 
-    public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+        return true;
     }
 
     public static void playWhiffSound(Level level, Vec3 center) {
         level.playSound(null, center.x, center.y, center.z,
-                SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS, 0.5F, 1.0F);
+                SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS, 0.25F, 1.0F);
     }
 
     public static void playMagicSound(Level level, Vec3 center) {

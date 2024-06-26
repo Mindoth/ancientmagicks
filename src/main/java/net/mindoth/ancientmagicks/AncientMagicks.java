@@ -59,7 +59,7 @@ public class AncientMagicks {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if ( event.getTab() == AncientMagicksTab.ANCIENTMAGICKS_TAB.get() ) {
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
-                event.accept(item);
+                if ( !(item.get() instanceof SpellRuneItem) ) event.accept(item);
             }
         }
     }

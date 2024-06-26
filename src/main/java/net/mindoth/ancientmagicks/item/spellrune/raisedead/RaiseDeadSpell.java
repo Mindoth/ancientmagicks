@@ -20,13 +20,14 @@ public class RaiseDeadSpell extends SpellRuneItem {
     }
 
     @Override
-    public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+        boolean state = false;
         Level level = caster.level();
         playMagicSummonSound(level, center);
         Mob minion = new SkeletonMinionEntity(level, owner);
 
         float life = 600.0F;
-        float range = 3.5F;
+        float range = 14.0F;
 
         minion.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(4.0F * 1);
         minion.getAttributes().getInstance(Attributes.MAX_HEALTH).setBaseValue(4.0F * 5);
@@ -38,5 +39,8 @@ public class RaiseDeadSpell extends SpellRuneItem {
         minion.finalizeSpawn((ServerLevel)level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
         level.addFreshEntity(minion);
         minion.spawnAnim();
+        state = true;
+
+        return state;
     }
 }

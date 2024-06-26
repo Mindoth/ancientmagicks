@@ -20,7 +20,8 @@ public class WindBurstSpell extends SpellRuneItem {
     }
 
     @Override
-    public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+        boolean state = false;
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);
         playWindSound(level, center);
@@ -44,6 +45,9 @@ public class WindBurstSpell extends SpellRuneItem {
         }
         Vec3 particlePoint = ShadowEvents.getPoint(level, caster, range, 0.25F, caster == owner, false, true, true);
         addParticles(level, casterPos, particlePoint);
+        state = true;
+
+        return state;
     }
 
     private static void addParticles(Level level, Vec3 casterPos, Vec3 center) {

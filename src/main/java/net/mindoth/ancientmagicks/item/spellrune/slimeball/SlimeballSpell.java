@@ -14,7 +14,8 @@ public class SlimeballSpell extends SpellRuneItem {
     }
 
     @Override
-    public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+        boolean state = false;
         Level level = caster.level();
         int adjuster;
         if ( caster != owner ) adjuster = -1;
@@ -26,5 +27,8 @@ public class SlimeballSpell extends SpellRuneItem {
         projectile.setPos(center.x, center.y, center.z);
         projectile.shootFromRotation(caster, xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 1.0F);
         level.addFreshEntity(projectile);
+        state = true;
+
+        return state;
     }
 }

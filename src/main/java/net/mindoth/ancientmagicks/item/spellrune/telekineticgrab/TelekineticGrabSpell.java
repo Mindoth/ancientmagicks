@@ -20,7 +20,8 @@ public class TelekineticGrabSpell extends SpellRuneItem {
     }
 
     @Override
-    public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+        boolean state = false;
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);
         playMagicShootSound(level, casterPos);
@@ -32,10 +33,13 @@ public class TelekineticGrabSpell extends SpellRuneItem {
         if ( target instanceof ItemEntity) {
             ArrayList<ItemEntity> itemPile = getItemEntitiesAround(target, level, size, null);
             for ( ItemEntity itemEntity : itemPile ) {
-                itemEntity.push((casterPos.x - itemEntity.getX()) / 6, (casterPos.y - itemEntity.getY() + 1) / 6, (casterPos.z - itemEntity.getZ()) / 6);
+                itemEntity.push((casterPos.x - itemEntity.getX()) / 6, (casterPos.y - itemEntity.getY()) / 6, (casterPos.z - itemEntity.getZ()) / 6);
                 itemEntity.setNoPickUpDelay();
+                state = true;
             }
         }
+
+        return state;
     }
 
     private static ArrayList<ItemEntity> getItemEntitiesAround(Entity caster, Level pLevel, double size, @Nullable List<ItemEntity> exceptions) {

@@ -16,17 +16,22 @@ public class DynamiteSpell extends SpellRuneItem {
     }
 
     @Override
-    public void castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+        boolean state = false;
         Level level = caster.level();
         playMagicSummonSound(level, center);
+        float range = 14.0F;
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
-        Vec3 point = ShadowEvents.getPoint(level, caster, 3.5F, 0, caster == owner, false, true, true);
+        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true);
         DynamiteEntity tnt = new DynamiteEntity(level, point.x, point.y, point.z, owner);
 
         tnt.setFuse(tnt.life);
         tnt.speed = Math.max(0, tnt.speed);
 
         level.addFreshEntity(tnt);
+        state = true;
+
+        return state;
     }
 }
