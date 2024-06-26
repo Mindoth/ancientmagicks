@@ -1,8 +1,6 @@
 package net.mindoth.ancientmagicks;
 
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
@@ -10,6 +8,10 @@ import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.raisedead.SkeletonMinionEntity;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -65,11 +67,19 @@ public class AncientMagicks {
     }
 
     public static List<Item> ITEM_LIST = Lists.newArrayList();
+    public static List<Mob> MOB_LIST = Lists.newArrayList();
 
     public void commonSetup(final FMLCommonSetupEvent event) {
         ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
         AncientMagicksNetwork.init();
         //randomizeSpells();
+    }
+
+    public static void createMobList(ServerLevel serverLevel) {
+        for ( EntityType<?> entityType : ForgeRegistries.ENTITY_TYPES.getValues() ) {
+            Entity tempEntity = entityType.create(serverLevel);
+            if ( tempEntity instanceof Mob mob ) MOB_LIST.add(mob);
+        }
     }
 
     public static void randomizeSpells() {
@@ -91,6 +101,7 @@ public class AncientMagicks {
             if ( spellRuneItem.tier == 2 ) TIER2_SPELL_RUNES.add(spellRuneItem);
             if ( spellRuneItem.tier == 3 ) TIER3_SPELL_RUNES.add(spellRuneItem);
             if ( spellRuneItem.tier == 4 ) TIER4_SPELL_RUNES.add(spellRuneItem);
+            if ( spellRuneItem.tier == 5 ) TIER5_SPELL_RUNES.add(spellRuneItem);
         }
     }
 
@@ -98,6 +109,7 @@ public class AncientMagicks {
     public static List<SpellRuneItem> TIER2_SPELL_RUNES = Lists.newArrayList();
     public static List<SpellRuneItem> TIER3_SPELL_RUNES = Lists.newArrayList();
     public static List<SpellRuneItem> TIER4_SPELL_RUNES = Lists.newArrayList();
+    public static List<SpellRuneItem> TIER5_SPELL_RUNES = Lists.newArrayList();
 
     public static HashMap<SpellRuneItem, List<ColorRuneItem>> COMBO_MAP = new HashMap<>();
 
@@ -108,6 +120,7 @@ public class AncientMagicks {
         List<List<ColorRuneItem>> comboList2 = Lists.newArrayList();
         List<List<ColorRuneItem>> comboList3 = Lists.newArrayList();
         List<List<ColorRuneItem>> comboList4 = Lists.newArrayList();
+        List<List<ColorRuneItem>> comboList5 = Lists.newArrayList();
 
         for ( int i = 0; i < COLOR_RUNES.size(); i++ ) {
             for ( int j = 0; j < COLOR_RUNES.size(); j++ ) {
@@ -136,6 +149,16 @@ public class AncientMagicks {
                             tempList4.add(COLOR_RUNES.get(l));
                             tempList4.add(COLOR_RUNES.get(m));
                             comboList4.add(tempList4);
+                            for ( int n = 0; n < COLOR_RUNES.size(); n++ ) {
+                                List<ColorRuneItem> tempList5 = Lists.newArrayList();
+                                tempList5.add(COLOR_RUNES.get(i));
+                                tempList5.add(COLOR_RUNES.get(j));
+                                tempList5.add(COLOR_RUNES.get(k));
+                                tempList5.add(COLOR_RUNES.get(l));
+                                tempList5.add(COLOR_RUNES.get(m));
+                                tempList5.add(COLOR_RUNES.get(n));
+                                comboList5.add(tempList5);
+                            }
                         }
                     }
                 }
@@ -153,11 +176,15 @@ public class AncientMagicks {
         else if ( comboList4.size() < TIER4_SPELL_RUNES.size() ) {
             System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 4 SPELL. CONSIDER ADDING MORE COLOR RUNES.");
         }
+        else if ( comboList5.size() < TIER5_SPELL_RUNES.size() ) {
+            System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 5 SPELL. CONSIDER ADDING MORE COLOR RUNES.");
+        }
         else {
             Collections.shuffle(comboList1);
             Collections.shuffle(comboList2);
             Collections.shuffle(comboList3);
             Collections.shuffle(comboList4);
+            Collections.shuffle(comboList5);
             for ( int i = 0; i < comboList1.size(); i++ ) {
                 if ( i < TIER1_SPELL_RUNES.size() ) {
                     COMBO_MAP.put(TIER1_SPELL_RUNES.get(i), comboList1.get(i));
@@ -179,6 +206,12 @@ public class AncientMagicks {
             for ( int i = 0; i < comboList4.size(); i++ ) {
                 if ( i < TIER4_SPELL_RUNES.size() ) {
                     COMBO_MAP.put(TIER4_SPELL_RUNES.get(i), comboList4.get(i));
+                }
+                else break;
+            }
+            for ( int i = 0; i < comboList5.size(); i++ ) {
+                if ( i < TIER5_SPELL_RUNES.size() ) {
+                    COMBO_MAP.put(TIER5_SPELL_RUNES.get(i), comboList5.get(i));
                 }
                 else break;
             }

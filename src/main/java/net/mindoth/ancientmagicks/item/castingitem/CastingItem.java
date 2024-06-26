@@ -90,13 +90,9 @@ public class CastingItem extends Item {
         else center = caster.getEyePosition(1.0F);
 
         //This actually casts the given Spell
-        spell.castMagic(owner, caster, center, xRot, yRot, useTime);
-
-        //These are cooldown and channeling related handling
-        if ( caster == owner ) {
-            if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) ) addCastingCooldown(owner, spell, spell.tier * 20);
-            else addCastingCooldown(owner, spell, 10);
-        }
+        //These are cooldown and channelling related handling
+        if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) && caster == owner ) addCastingCooldown(owner, spell, spell.tier * 20);
+        else if ( caster == owner ) addCastingCooldown(owner, spell, 10);
         owner.stopUsingItem();
         //if ( !spell.isChannel ) owner.stopUsingItem();
     }

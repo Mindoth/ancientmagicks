@@ -36,9 +36,10 @@ public class CurrentSpellHud {
             if ( mainHandItem.getItem() instanceof CastingItem && CastingItem.isValidCastingItem(mainHandItem) && mainHandItem.getTag().contains("am_spellrune") ) castingItem = mainHandItem;
             else if ( offHandItem.getItem() instanceof CastingItem && CastingItem.isValidCastingItem(offHandItem) && offHandItem.getTag().contains("am_spellrune") ) castingItem = offHandItem;
 
-            Item spellRune = ForgeRegistries.ITEMS.getValue(new ResourceLocation(castingItem.getTag().getString("am_spellrune")));
-
-            if ( spellRune instanceof SpellRuneItem ) state = new ItemStack(spellRune);
+            if ( castingItem != null ) {
+                Item spellRune = ForgeRegistries.ITEMS.getValue(new ResourceLocation(castingItem.getTag().getString("am_spellrune")));
+                if ( spellRune instanceof SpellRuneItem ) state = new ItemStack(spellRune);
+            }
         }
 
         return state;

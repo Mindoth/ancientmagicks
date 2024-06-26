@@ -5,6 +5,7 @@ import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.WandType;
+import net.mindoth.ancientmagicks.item.spellrune.chaoticpolymorph.ChaoticPolymorphSpell;
 import net.mindoth.ancientmagicks.item.spellrune.collapse.CollapseSpell;
 import net.mindoth.ancientmagicks.item.spellrune.dynamite.DynamiteSpell;
 import net.mindoth.ancientmagicks.item.spellrune.blink.BlinkSpell;
@@ -88,4 +89,7 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> POLYMORPH_SPELL = ITEMS.register("polymorph_spell",
             () -> new PolymorphSpell(new Item.Properties(), 4));
+
+    public static final RegistryObject<Item> CHAOTIC_POLYMORPH_SPELL = ITEMS.register("chaotic_polymorph_spell",
+            () -> new ChaoticPolymorphSpell(new Item.Properties(), 5));
 }
