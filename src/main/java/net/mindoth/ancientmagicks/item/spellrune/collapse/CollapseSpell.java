@@ -23,7 +23,7 @@ public class CollapseSpell extends SpellRuneItem {
         boolean state = false;
         Level level = caster.level();
 
-        int size = 3;
+        int size = 4;
         float range = 14.0F;
 
         Vec3 point = getBlockPoint(caster, range, 0, caster == owner);

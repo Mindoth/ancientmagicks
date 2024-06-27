@@ -40,5 +40,6 @@
 
 
   "tooltip.ancientmagicks.empty": "Open",
-  "tooltip.ancientmagicks.rune_tier": "\u00A79Spell Tier\u00A7r"
+  "tooltip.ancientmagicks.rune_tier": "\u00A79Spell Tier\u00A7r",
+  "tooltip.ancientmagicks.shift": "\u00A77Hold SHIFT to see recipe\u00A7r"
 }

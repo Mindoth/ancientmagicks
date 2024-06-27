@@ -17,7 +17,7 @@ public class ColorRuneItem extends RuneItem {
 
     //Serverside string to send in packets. It being a CompoundTag is just a workaround...
     public static CompoundTag CURRENT_COMBO_TAG = new CompoundTag();
-    //Map to be used in GUI checks
+    //Server- AND Client-sided Map used in GUI checks
     public static HashMap<SpellRuneItem, List<ColorRuneItem>> CURRENT_COMBO_MAP = new HashMap<>();
 
     public static SpellRuneItem checkForSpellCombo(List<ColorRuneItem> comboToCheck) {
