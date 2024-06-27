@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spellrune.windburst;
 
-import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
+import net.mindoth.ancientmagicks.item.SpellRuneItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spellrune.polymorph;
 
-import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
+import net.mindoth.ancientmagicks.item.SpellRuneItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -25,7 +25,7 @@ public class PolymorphSpell extends SpellRuneItem {
         float size = 1.0F;
 
         LivingEntity target;
-        if ( caster == owner ) target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
+        if ( caster == owner ) target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
 
         if ( level instanceof ServerLevel serverLevel ) {

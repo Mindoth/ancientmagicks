@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
+import net.mindoth.ancientmagicks.item.SpellRuneItem;
 import net.mindoth.ancientmagicks.item.spellrune.raisedead.SkeletonMinionEntity;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
@@ -72,7 +72,6 @@ public class AncientMagicks {
     public void commonSetup(final FMLCommonSetupEvent event) {
         ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
         AncientMagicksNetwork.init();
-        //randomizeSpells();
     }
 
     public static void createMobList(ServerLevel serverLevel) {
@@ -83,27 +82,13 @@ public class AncientMagicks {
     }
 
     public static void randomizeSpells() {
-        spellRuneInit();
+        clearLists();
         createSpellLists();
         comboRuneInit();
     }
 
-    public static void spellRuneInit() {
-        for ( Item item : ITEM_LIST ) if ( item instanceof SpellRuneItem ) SPELL_RUNES.add((SpellRuneItem)item);
-    }
-
     public static List<SpellRuneItem> SPELL_RUNES = Lists.newArrayList();
     public static List<ColorRuneItem> COLOR_RUNES = Lists.newArrayList();
-
-    public static void createSpellLists() {
-        for ( SpellRuneItem spellRuneItem : SPELL_RUNES ) {
-            if ( spellRuneItem.tier == 1 ) TIER1_SPELL_RUNES.add(spellRuneItem);
-            if ( spellRuneItem.tier == 2 ) TIER2_SPELL_RUNES.add(spellRuneItem);
-            if ( spellRuneItem.tier == 3 ) TIER3_SPELL_RUNES.add(spellRuneItem);
-            if ( spellRuneItem.tier == 4 ) TIER4_SPELL_RUNES.add(spellRuneItem);
-            if ( spellRuneItem.tier == 5 ) TIER5_SPELL_RUNES.add(spellRuneItem);
-        }
-    }
 
     public static List<SpellRuneItem> TIER1_SPELL_RUNES = Lists.newArrayList();
     public static List<SpellRuneItem> TIER2_SPELL_RUNES = Lists.newArrayList();
@@ -112,6 +97,28 @@ public class AncientMagicks {
     public static List<SpellRuneItem> TIER5_SPELL_RUNES = Lists.newArrayList();
 
     public static HashMap<SpellRuneItem, List<ColorRuneItem>> COMBO_MAP = new HashMap<>();
+
+    public static void clearLists() {
+        if ( !SPELL_RUNES.isEmpty() ) SPELL_RUNES.clear();
+        if ( !COLOR_RUNES.isEmpty() ) COLOR_RUNES.clear();
+        if ( !TIER1_SPELL_RUNES.isEmpty() ) TIER1_SPELL_RUNES.clear();
+        if ( !TIER2_SPELL_RUNES.isEmpty() ) TIER2_SPELL_RUNES.clear();
+        if ( !TIER3_SPELL_RUNES.isEmpty() ) TIER3_SPELL_RUNES.clear();
+        if ( !TIER4_SPELL_RUNES.isEmpty() ) TIER4_SPELL_RUNES.clear();
+        if ( !TIER5_SPELL_RUNES.isEmpty() ) TIER5_SPELL_RUNES.clear();
+        if ( !COMBO_MAP.isEmpty() ) COMBO_MAP.clear();
+    }
+
+    public static void createSpellLists() {
+        for ( Item item : ITEM_LIST ) if ( item instanceof SpellRuneItem ) SPELL_RUNES.add((SpellRuneItem)item);
+        for ( SpellRuneItem spellRuneItem : SPELL_RUNES ) {
+            if ( spellRuneItem.tier == 1 ) TIER1_SPELL_RUNES.add(spellRuneItem);
+            if ( spellRuneItem.tier == 2 ) TIER2_SPELL_RUNES.add(spellRuneItem);
+            if ( spellRuneItem.tier == 3 ) TIER3_SPELL_RUNES.add(spellRuneItem);
+            if ( spellRuneItem.tier == 4 ) TIER4_SPELL_RUNES.add(spellRuneItem);
+            if ( spellRuneItem.tier == 5 ) TIER5_SPELL_RUNES.add(spellRuneItem);
+        }
+    }
 
     public static void comboRuneInit() {
         for ( Item item : ITEM_LIST ) if ( item instanceof ColorRuneItem ) COLOR_RUNES.add((ColorRuneItem)item);
@@ -127,20 +134,20 @@ public class AncientMagicks {
                 List<ColorRuneItem> tempList1 = Lists.newArrayList();
                 tempList1.add(COLOR_RUNES.get(i));
                 tempList1.add(COLOR_RUNES.get(j));
-                comboList1.add(tempList1);
+                if ( !hasDupeInList(comboList1, tempList1) ) comboList1.add(tempList1);
                 for ( int k = 0; k < COLOR_RUNES.size(); k++ ) {
                     List<ColorRuneItem> tempList2 = Lists.newArrayList();
                     tempList2.add(COLOR_RUNES.get(i));
                     tempList2.add(COLOR_RUNES.get(j));
                     tempList2.add(COLOR_RUNES.get(k));
-                    comboList2.add(tempList2);
+                    if ( !hasDupeInList(comboList2, tempList2) ) comboList2.add(tempList2);
                     for ( int l = 0; l < COLOR_RUNES.size(); l++ ) {
                         List<ColorRuneItem> tempList3 = Lists.newArrayList();
                         tempList3.add(COLOR_RUNES.get(i));
                         tempList3.add(COLOR_RUNES.get(j));
                         tempList3.add(COLOR_RUNES.get(k));
                         tempList3.add(COLOR_RUNES.get(l));
-                        comboList3.add(tempList3);
+                        if ( !hasDupeInList(comboList3, tempList3) ) comboList3.add(tempList3);
                         for ( int m = 0; m < COLOR_RUNES.size(); m++ ) {
                             List<ColorRuneItem> tempList4 = Lists.newArrayList();
                             tempList4.add(COLOR_RUNES.get(i));
@@ -148,7 +155,7 @@ public class AncientMagicks {
                             tempList4.add(COLOR_RUNES.get(k));
                             tempList4.add(COLOR_RUNES.get(l));
                             tempList4.add(COLOR_RUNES.get(m));
-                            comboList4.add(tempList4);
+                            if ( !hasDupeInList(comboList4, tempList4) ) comboList4.add(tempList4);
                             for ( int n = 0; n < COLOR_RUNES.size(); n++ ) {
                                 List<ColorRuneItem> tempList5 = Lists.newArrayList();
                                 tempList5.add(COLOR_RUNES.get(i));
@@ -157,28 +164,19 @@ public class AncientMagicks {
                                 tempList5.add(COLOR_RUNES.get(l));
                                 tempList5.add(COLOR_RUNES.get(m));
                                 tempList5.add(COLOR_RUNES.get(n));
-                                comboList5.add(tempList5);
+                                if ( !hasDupeInList(comboList5, tempList5) ) comboList5.add(tempList5);
                             }
                         }
                     }
                 }
             }
         }
-        if ( comboList1.size() < TIER1_SPELL_RUNES.size() ) {
-            System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 1 SPELL. CONSIDER ADDING MORE COLOR RUNES.");
-        }
-        else if ( comboList2.size() < TIER2_SPELL_RUNES.size() ) {
-            System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 2 SPELL. CONSIDER ADDING MORE COLOR RUNES.");
-        }
-        else if ( comboList3.size() < TIER3_SPELL_RUNES.size() ) {
-            System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 3 SPELL. CONSIDER ADDING MORE COLOR RUNES.");
-        }
-        else if ( comboList4.size() < TIER4_SPELL_RUNES.size() ) {
-            System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 4 SPELL. CONSIDER ADDING MORE COLOR RUNES.");
-        }
-        else if ( comboList5.size() < TIER5_SPELL_RUNES.size() ) {
-            System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 5 SPELL. CONSIDER ADDING MORE COLOR RUNES.");
-        }
+
+        if ( comboList1.size() < TIER1_SPELL_RUNES.size() ) System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 1 SPELL.");
+        else if ( comboList2.size() < TIER2_SPELL_RUNES.size() ) System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 2 SPELL.");
+        else if ( comboList3.size() < TIER3_SPELL_RUNES.size() ) System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 3 SPELL.");
+        else if ( comboList4.size() < TIER4_SPELL_RUNES.size() ) System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 4 SPELL.");
+        else if ( comboList5.size() < TIER5_SPELL_RUNES.size() ) System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 5 SPELL.");
         else {
             Collections.shuffle(comboList1);
             Collections.shuffle(comboList2);
@@ -216,6 +214,20 @@ public class AncientMagicks {
                 else break;
             }
         }
+    }
+
+    public static boolean hasDupeInList(List<List<ColorRuneItem>> comboList, List<ColorRuneItem> tempList) {
+        boolean state = false;
+
+        //TODO FIND A BETTER WAY TO DO THIS SINCE THIS METHOD IS SLOW
+        for ( List<ColorRuneItem> list : comboList ) {
+            if ( list.containsAll(tempList) && tempList.containsAll(list) ) {
+                state = true;
+                break;
+            }
+        }
+
+        return state;
     }
 
     @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

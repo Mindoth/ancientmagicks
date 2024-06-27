@@ -3,11 +3,9 @@ package net.mindoth.ancientmagicks.event;
 import com.google.common.base.Splitter;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
+import net.mindoth.ancientmagicks.item.SpellRuneItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketSetSpellRune;
 import net.mindoth.ancientmagicks.network.PacketSyncSpellCombos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -16,12 +14,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
 import java.util.List;
+import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class RandomizeSpellCombos {
@@ -40,9 +37,9 @@ public class RandomizeSpellCombos {
                 FileOutputStream fos = new FileOutputStream(file);
                 PrintWriter pw = new PrintWriter(fos);
 
-                //TODO MAKE FILE NOT BE LINE OR WHITESPACE SENSITIVE
-                for ( Map.Entry<SpellRuneItem, List<ColorRuneItem>> m : AncientMagicks.COMBO_MAP.entrySet() ) {
-                    pw.print(ForgeRegistries.ITEMS.getKey(m.getKey()) + "=" + m.getValue() + ";" + "\n");
+                //TODO MAKE FILE NOT BE WHITESPACE SENSITIVE
+                for ( Map.Entry<SpellRuneItem, List<ColorRuneItem>> entry : AncientMagicks.COMBO_MAP.entrySet() ) {
+                    pw.print(ForgeRegistries.ITEMS.getKey(entry.getKey()) + "=" + entry.getValue() + ";" + "\n");
                 }
 
                 pw.flush();
@@ -52,7 +49,7 @@ public class RandomizeSpellCombos {
             }
         }
         catch ( IOException exception ) {
-            System.out.println("ERROR! CREATING SPELL COMBO RECIPES FOR ANCIENT MAGICKS. CONTACT THE MOD AUTHOR OR DOUBLE CHECK YOUR MOD-LIST.");
+            System.out.println("ERROR! CREATING SPELL COMBO RECIPES FOR ANCIENT MAGICKS.");
         }
 
         //Reading file
@@ -63,15 +60,17 @@ public class RandomizeSpellCombos {
                 String comboString = Files.readString(savePath.resolve("ancientmagicks.json")).replaceAll("\n", "").replaceAll(".$", "");
                 ColorRuneItem.CURRENT_COMBO_TAG.putString("am_combostring", comboString);
 
-                ColorRuneItem.CURRENT_COMBO_MAP = Splitter.on(";").withKeyValueSeparator("=").split(ColorRuneItem.CURRENT_COMBO_TAG.getString("am_combostring"));
+                ColorRuneItem.CURRENT_COMBO_MAP = ColorRuneItem.buildComboMap(ColorRuneItem.CURRENT_COMBO_TAG.getString("am_combostring"));
+                //Splitter.on(";").withKeyValueSeparator("=").split(ColorRuneItem.CURRENT_COMBO_TAG.getString("am_combostring"))
 
                 fis.close();
                 System.out.println("Successfully read spell combo recipes for Ancient Magicks.");
             }
-            else System.out.println("ERROR! SPELL COMBO RECIPE FILE NOT FOUND. CONTACT THE MOD AUTHOR OR DOUBLE CHECK YOUR MOD-LIST.");
+            else System.out.println("ERROR! SPELL COMBO RECIPE FILE NOT FOUND.");
         }
         catch ( Exception exception ) {
-            System.out.println("ERROR! READING SPELL COMBO RECIPES FOR ANCIENT MAGICKS. CONTACT THE MOD AUTHOR OR DOUBLE CHECK YOUR MOD-LIST.");
+            exception.printStackTrace();
+            System.out.println("ERROR! READING SPELL COMBO RECIPES FOR ANCIENT MAGICKS.");
         }
     }
 

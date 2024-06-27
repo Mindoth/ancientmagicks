@@ -1,14 +1,13 @@
 package net.mindoth.ancientmagicks.item;
 
 import com.google.common.base.Splitter;
-import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
+import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.AncientMagicks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ColorRuneItem extends RuneItem {
 
@@ -16,27 +15,37 @@ public class ColorRuneItem extends RuneItem {
         super(pProperties, cooldown);
     }
 
+    //Serverside string to send in packets. It being a CompoundTag is just a workaround...
+    public static CompoundTag CURRENT_COMBO_TAG = new CompoundTag();
+    //Map to be used in GUI checks
+    public static HashMap<SpellRuneItem, List<ColorRuneItem>> CURRENT_COMBO_MAP = new HashMap<>();
+
     public static SpellRuneItem checkForSpellCombo(List<ColorRuneItem> comboToCheck) {
-        String stringCombo = comboToCheck.toString();
         SpellRuneItem spell = null;
-        for ( Map.Entry<String, String> entry : CURRENT_COMBO_MAP.entrySet() ) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            if ( stringCombo.equals(value) ) {
-                //TODO MAKE IT WORK WITH ADDON MODS (MODID NEEDS TO BE INCLUDED IN KEY)
-                spell = (SpellRuneItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
-            }
+        for ( Map.Entry<SpellRuneItem, List<ColorRuneItem>> entry : CURRENT_COMBO_MAP.entrySet() ) {
+            SpellRuneItem key = entry.getKey();
+            List<ColorRuneItem> value = entry.getValue();
+
+            //TODO FIND A BETTER WAY TO DO THIS SINCE THIS METHOD IS SLOW
+            if ( comboToCheck.containsAll(value) && value.containsAll(comboToCheck) && comboToCheck.size() == value.size() ) spell = key;
         }
         return spell;
     }
 
-    //Serverside string to send in packets. It being a CompoundTag is just a workaround...
-    public static CompoundTag CURRENT_COMBO_TAG = new CompoundTag();
+    //This is some REALLY delicate String parsing. I'm no expert...
+    public static HashMap<SpellRuneItem, List<ColorRuneItem>> buildComboMap(String comboString) {
+        HashMap<SpellRuneItem, List<ColorRuneItem>> returnMap = new HashMap<>();
 
-    //Clientside map to be used in GUI checks
-    public static Map<String, String> CURRENT_COMBO_MAP = new HashMap<>();
+        Map<String, String> tempMap = Splitter.on(";").withKeyValueSeparator("=").split(comboString);
+        for ( Map.Entry<String, String> entry : tempMap.entrySet() ) {
+            SpellRuneItem key = (SpellRuneItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()));
+            List<ColorRuneItem> tempList = Lists.newArrayList();
+            for ( String string : List.of(entry.getValue().replaceAll("[\\[\\]]", "").split(",")) ) {
+                tempList.add((ColorRuneItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(AncientMagicks.MOD_ID, string.replaceAll(" ", ""))));
+            }
+            returnMap.put(key, tempList);
+        }
 
-    public static void buildClientComboMap(String comboString) {
-        CURRENT_COMBO_MAP = Splitter.on(";").withKeyValueSeparator("=").split(comboString);
+        return returnMap;
     }
 }

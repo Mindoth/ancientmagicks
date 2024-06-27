@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandData;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandManager;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.spellrune.SpellRuneItem;
+import net.mindoth.ancientmagicks.item.SpellRuneItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -76,7 +76,7 @@ public class CastingItem extends Item {
         float xRot = caster.getXRot();
         float yRot = caster.getYRot();
         Vec3 center;
-        float distance = 0;
+        float distance = 0.5F;
 
         if ( distance > 0 ) {
 
@@ -85,9 +85,9 @@ public class CastingItem extends Item {
             if ( caster != owner ) adjuster = -1;
             Vec3 direction = ShadowEvents.calculateViewVector(xRot * adjuster, yRot * adjuster).normalize();
             direction = direction.multiply(distance, distance, distance);
-            center = caster.getEyePosition(1).add(direction);
+            center = caster.getEyePosition().add(direction);
         }
-        else center = caster.getEyePosition(1.0F);
+        else center = caster.getEyePosition();
 
         //This actually casts the given Spell
         //These are cooldown and channelling related handling

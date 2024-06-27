@@ -117,12 +117,6 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     maven {
-        url = "https://maven.theillusivec4.top/"
-    }
-    maven {
-        url "https://maven.moddinglegacy.com/artifactory/modding-legacy/"
-    }
-    maven {
         url "https://cursemaven.com"
     }
 }
@@ -133,8 +127,7 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.20.1-47.1.29'
 
-    //Use newer version when maven works: 5477477
-    implementation fg.deobf("curse.maven:shadowizardlib-887125:5337670")
+    implementation fg.deobf("curse.maven:shadowizardlib-887125:5477477")
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency

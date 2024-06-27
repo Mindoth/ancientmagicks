@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spellrune;
+package net.mindoth.ancientmagicks.item;
 
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.RuneItem;
