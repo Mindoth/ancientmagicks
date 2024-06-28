@@ -1,8 +1,8 @@
-package net.mindoth.ancientmagicks.item;
+package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.shadowizardlib.event.ShadowEvents;
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
+import net.mindoth.ancientmagicks.item.RuneItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;

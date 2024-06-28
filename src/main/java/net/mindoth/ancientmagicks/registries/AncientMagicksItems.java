@@ -9,6 +9,7 @@ import net.mindoth.ancientmagicks.item.spell.blink.BlinkTablet;
 import net.mindoth.ancientmagicks.item.spell.calllightning.CallLightningTablet;
 import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphTablet;
 import net.mindoth.ancientmagicks.item.spell.collapse.CollapseTablet;
+import net.mindoth.ancientmagicks.item.spell.deafeningblast.DeafeningBlastTablet;
 import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteTablet;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballTablet;
 import net.mindoth.ancientmagicks.item.spell.flight.FlightTablet;
@@ -102,4 +103,7 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> SLOW_FALL_TABLET = ITEMS.register("slow_fall_tablet",
             () -> new SlowFallTablet(new Item.Properties(), 1));
+
+    public static final RegistryObject<Item> DEAFENING_BLAST_TABLET = ITEMS.register("deafening_blast_tablet",
+            () -> new DeafeningBlastTablet(new Item.Properties(), 5));
 }

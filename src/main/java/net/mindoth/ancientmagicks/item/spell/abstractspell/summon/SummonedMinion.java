@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell.summon;
 
-import net.mindoth.ancientmagicks.item.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;

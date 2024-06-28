@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.slimeball;
 
-import net.mindoth.ancientmagicks.item.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;

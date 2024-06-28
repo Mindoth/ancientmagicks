@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.witchspark;
 
-import net.mindoth.ancientmagicks.item.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.minecraft.world.entity.Entity;
@@ -31,7 +31,7 @@ public class WitchSparkEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultSpeed() {
-        return 1.2F;
+        return 1.6F;
     }
 
     @Override

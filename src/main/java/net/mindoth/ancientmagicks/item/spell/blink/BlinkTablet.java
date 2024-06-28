@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.blink;
 
-import net.mindoth.ancientmagicks.item.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;

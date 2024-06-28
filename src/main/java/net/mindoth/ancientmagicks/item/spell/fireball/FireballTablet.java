@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.fireball;
 
-import net.mindoth.ancientmagicks.item.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;

@@ -5,7 +5,6 @@ import net.mindoth.ancientmagicks.client.gui.inventory.WandData;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandManager;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
-import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -125,7 +124,7 @@ public class CastingItem extends Item {
             else {
                 //This actually casts the given Spell
                 if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) ) {
-                    if ( wand.getItem() instanceof TabletItem ) wand.shrink(1);
+                    if ( wand.getItem() instanceof TabletItem && !owner.isCreative() ) wand.shrink(1);
                     //These are cost, cooldown and channelling related handling
                     addCastingCooldown(owner, spell, spell.tier * 20);
                     if ( !isFree ) owner.giveExperiencePoints(-spell.tier);

@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Direction;
@@ -212,6 +212,7 @@ public class AbstractSpellEntity extends ThrowableProjectile {
     }
 
     protected void doClientTickEffects() {
+        if ( this.isRemoved() ) return;
         if ( !this.level().isClientSide ) return;
         ClientLevel world = (ClientLevel)this.level();
         Vec3 center = ShadowEvents.getEntityCenter(this);

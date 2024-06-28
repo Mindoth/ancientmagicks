@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.windburst;
 
-import net.mindoth.ancientmagicks.item.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,26 +25,24 @@ public class WindBurstTablet extends TabletItem {
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);
 
-        float range = 3.5F;
-        float size = 0.25F;
+        float range = 2.0F;
         float power = 2;
 
-        Entity target = getPointedPushableEntity(level, caster, range, 0.25F, caster == owner, true);
-        Vec3 targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, caster == owner, false, true, true);
-        if ( target != caster && isPushable(target) ) {
-            List<Entity> pushEntity = ShadowEvents.getEntitiesAround(target, size * 0.25F, size * 0.25F, size * 0.25F);
-            pushEntity.add(target);
-            pushEntity.remove(caster);
-            for ( Entity listEntity : pushEntity ) {
-                if ( TabletItem.isPushable(listEntity) ) {
-                    listEntity.push((targetPoint.x - casterPos.x) * power, (targetPoint.y - casterPos.y + 0.5F) * power, (targetPoint.z - casterPos.z) * power);
-                    listEntity.hurtMarked = true;
+        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true);
+        List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + 2, point.y + 2, point.z + 2),
+                new Vec3(point.x - range, point.y - range, point.z - 2)));
+        for ( Entity target : targets ) {
+            Vec3 targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, caster == owner, false, true, true);
+            if ( target != caster && isPushable(target) ) {
+                if ( TabletItem.isPushable(target) ) {
+                    target.push((targetPoint.x - casterPos.x) * power, (targetPoint.y - casterPos.y + 0.5F) * power, (targetPoint.z - casterPos.z) * power);
+                    target.hurtMarked = true;
                 }
             }
+            Vec3 particlePoint = ShadowEvents.getPoint(level, caster, range, 0.25F, caster == owner, false, true, true);
+            addParticles(level, casterPos, particlePoint);
+            state = true;
         }
-        Vec3 particlePoint = ShadowEvents.getPoint(level, caster, range, 0.25F, caster == owner, false, true, true);
-        addParticles(level, casterPos, particlePoint);
-        state = true;
 
         if ( state ) playWindSound(level, center);
 

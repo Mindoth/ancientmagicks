@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.client.gui;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.network.capabilities.ClientSpellData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

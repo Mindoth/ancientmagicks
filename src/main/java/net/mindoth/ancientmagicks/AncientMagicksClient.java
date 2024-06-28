@@ -4,6 +4,7 @@ import net.mindoth.ancientmagicks.client.gui.CurrentSpellHud;
 import net.mindoth.ancientmagicks.client.gui.GuiSpellWheel;
 import net.mindoth.ancientmagicks.client.gui.GuiWand;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.spell.deafeningblast.DeafeningBlastRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballRenderer;
 import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkRenderer;
@@ -46,6 +47,7 @@ public class AncientMagicksClient {
         event.registerEntityRenderer(AncientMagicksEntities.DYNAMITE.get(), TntRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.SKELETON_MINION.get(), SkeletonRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.SLIMEBALL.get(), SlimeballRenderer::new);
+        event.registerEntityRenderer(AncientMagicksEntities.DEAFENING_BLAST.get(), DeafeningBlastRenderer::new);
     }
 
     @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID, value = Dist.CLIENT)

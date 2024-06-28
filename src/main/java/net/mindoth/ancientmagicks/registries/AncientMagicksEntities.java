@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.spell.deafeningblast.DeafeningBlastEntity;
 import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteEntity;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
 import net.mindoth.ancientmagicks.item.spell.raisedead.SkeletonMinionEntity;
@@ -32,6 +33,10 @@ public class AncientMagicksEntities {
     public static final RegistryObject<EntityType<SlimeballEntity>> SLIMEBALL
             = registerEntity(EntityType.Builder.<SlimeballEntity>of(SlimeballEntity::new,
             MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(SlimeballEntity::new), "slimeball");
+
+    public static final RegistryObject<EntityType<DeafeningBlastEntity>> DEAFENING_BLAST
+            = registerEntity(EntityType.Builder.<DeafeningBlastEntity>of(DeafeningBlastEntity::new,
+            MobCategory.MISC).sized(2.0F, 0.4F).setCustomClientFactory(DeafeningBlastEntity::new), "deafening_blast");
 
 
     public static final RegistryObject<EntityType<SkeletonMinionEntity>> SKELETON_MINION =

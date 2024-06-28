@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.witchspark;
+package net.mindoth.ancientmagicks.item.spell.deafeningblast;
 
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
@@ -7,9 +7,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class WitchSparkTablet extends TabletItem {
+public class DeafeningBlastTablet extends TabletItem {
 
-    public WitchSparkTablet(Properties pProperties, int cooldown) {
+    public DeafeningBlastTablet(Properties pProperties, int cooldown) {
         super(pProperties, cooldown);
     }
 
@@ -20,11 +20,11 @@ public class WitchSparkTablet extends TabletItem {
         int adjuster;
         if ( caster != owner ) adjuster = -1;
         else adjuster = 1;
-        AbstractSpellEntity projectile = new WitchSparkEntity(level, owner, caster, this);
+        AbstractSpellEntity projectile = new DeafeningBlastEntity(level, owner, caster, this);
 
-        projectile.setColor(AbstractSpellEntity.getSpellColor("dark_purple"), 0.3F);
+        projectile.setColor(AbstractSpellEntity.getSpellColor("aqua"), 0.3F);
         projectile.setPos(center.x, center.y, center.z);
-        projectile.shootFromRotation(caster, xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 1.0F);
+        projectile.shootFromRotation(caster, xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
         level.addFreshEntity(projectile);
         state = true;
 
