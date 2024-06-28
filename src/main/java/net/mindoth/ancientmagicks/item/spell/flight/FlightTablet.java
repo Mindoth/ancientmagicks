@@ -31,9 +31,9 @@ public class FlightTablet extends TabletItem {
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
 
         if ( target instanceof Player && isAlly(owner, target)) {
-            target.addEffect(new MobEffectInstance(AncientMagicksEffects.FLIGHT.get(), life, 0, false, false));
+            target.addEffect(new MobEffectInstance(AncientMagicksEffects.FLIGHT.get(), life, 0));
         }
-        else target.addEffect(new MobEffectInstance(MobEffects.LEVITATION, life, 0, false, false));
+        else target.addEffect(new MobEffectInstance(MobEffects.LEVITATION, life, 0));
 
         state = true;
 

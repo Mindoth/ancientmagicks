@@ -5,21 +5,21 @@ import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.WandType;
+import net.mindoth.ancientmagicks.item.spell.blink.BlinkTablet;
+import net.mindoth.ancientmagicks.item.spell.calllightning.CallLightningTablet;
 import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphTablet;
 import net.mindoth.ancientmagicks.item.spell.collapse.CollapseTablet;
 import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteTablet;
-import net.mindoth.ancientmagicks.item.spell.blink.BlinkTablet;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballTablet;
 import net.mindoth.ancientmagicks.item.spell.flight.FlightTablet;
-import net.mindoth.ancientmagicks.item.spell.calllightning.CallLightningTablet;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphTablet;
 import net.mindoth.ancientmagicks.item.spell.raisedead.RaiseDeadTablet;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballTablet;
+import net.mindoth.ancientmagicks.item.spell.slowfall.SlowFallTablet;
 import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabTablet;
 import net.mindoth.ancientmagicks.item.spell.ward.WardTablet;
 import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstTablet;
 import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkTablet;
-import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -99,4 +99,7 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> CHAOTIC_POLYMORPH_TABLET = ITEMS.register("chaotic_polymorph_tablet",
             () -> new ChaoticPolymorphTablet(new Item.Properties(), 5));
+
+    public static final RegistryObject<Item> SLOW_FALL_TABLET = ITEMS.register("slow_fall_tablet",
+            () -> new SlowFallTablet(new Item.Properties(), 1));
 }
