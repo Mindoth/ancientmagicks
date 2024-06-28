@@ -18,12 +18,12 @@ public class ColorRuneItem extends RuneItem {
     //Serverside string to send in packets. It being a CompoundTag is just a workaround...
     public static CompoundTag CURRENT_COMBO_TAG = new CompoundTag();
     //Server- AND Client-sided Map used in GUI checks
-    public static HashMap<SpellRuneItem, List<ColorRuneItem>> CURRENT_COMBO_MAP = new HashMap<>();
+    public static HashMap<SpellItem, List<ColorRuneItem>> CURRENT_COMBO_MAP = new HashMap<>();
 
-    public static SpellRuneItem checkForSpellCombo(List<ColorRuneItem> comboToCheck) {
-        SpellRuneItem spell = null;
-        for ( Map.Entry<SpellRuneItem, List<ColorRuneItem>> entry : CURRENT_COMBO_MAP.entrySet() ) {
-            SpellRuneItem key = entry.getKey();
+    public static SpellItem checkForSpellCombo(List<ColorRuneItem> comboToCheck) {
+        SpellItem spell = null;
+        for ( Map.Entry<SpellItem, List<ColorRuneItem>> entry : CURRENT_COMBO_MAP.entrySet() ) {
+            SpellItem key = entry.getKey();
             List<ColorRuneItem> value = entry.getValue();
 
             //TODO FIND A BETTER WAY TO DO THIS SINCE THIS METHOD IS SLOW
@@ -33,12 +33,12 @@ public class ColorRuneItem extends RuneItem {
     }
 
     //This is some REALLY delicate String parsing. I'm no expert...
-    public static HashMap<SpellRuneItem, List<ColorRuneItem>> buildComboMap(String comboString) {
-        HashMap<SpellRuneItem, List<ColorRuneItem>> returnMap = new HashMap<>();
+    public static HashMap<SpellItem, List<ColorRuneItem>> buildComboMap(String comboString) {
+        HashMap<SpellItem, List<ColorRuneItem>> returnMap = new HashMap<>();
 
         Map<String, String> tempMap = Splitter.on(";").withKeyValueSeparator("=").split(comboString);
         for ( Map.Entry<String, String> entry : tempMap.entrySet() ) {
-            SpellRuneItem key = (SpellRuneItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()));
+            SpellItem key = (SpellItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()));
             List<ColorRuneItem> tempList = Lists.newArrayList();
             for ( String string : List.of(entry.getValue().replaceAll("[\\[\\]]", "").split(",")) ) {
                 tempList.add((ColorRuneItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(AncientMagicks.MOD_ID, string.replaceAll(" ", ""))));

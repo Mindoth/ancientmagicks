@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandData;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandManager;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.SpellRuneItem;
+import net.mindoth.ancientmagicks.item.RuneItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -45,11 +47,11 @@ public class CastingItem extends Item {
     public void onUseTick(Level level, LivingEntity living, ItemStack wand, int timeLeft) {
         if ( level.isClientSide ) return;
         if ( living instanceof Player player ) {
-            if ( isValidCastingItem(wand) && wand.getTag().contains("am_spellrune") ) {
-                Item spellRune = ForgeRegistries.ITEMS.getValue(new ResourceLocation(wand.getTag().getString("am_spellrune")));
-                if ( spellRune instanceof SpellRuneItem ) {
-                    if ( timeLeft % 2 == 0 ) doSpell(player, player, wand, (SpellRuneItem)spellRune, getUseDuration(wand) - timeLeft);
-                }
+            if ( isValidCastingItem(wand) ) {
+                player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
+                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getSpell()));
+                    if ( item instanceof SpellItem spellItem ) doSpell(player, player, wand, spellItem, getUseDuration(wand) - timeLeft);
+                });
             }
         }
     }
@@ -60,19 +62,23 @@ public class CastingItem extends Item {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide ) {
             ItemStack wand = player.getItemInHand(handIn);
-            if ( isValidCastingItem(wand) && wand.getTag().contains("am_spellrune") ) {
-                Item spellRune = ForgeRegistries.ITEMS.getValue(new ResourceLocation(wand.getTag().getString("am_spellrune")));
-                if ( spellRune instanceof SpellRuneItem spellRuneItem && !player.getCooldowns().isOnCooldown(spellRuneItem) ) {
-                    player.startUsingItem(handIn);
-                }
+            if ( isValidCastingItem(wand) ) {
+                player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
+                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getSpell()));
+                    if ( item instanceof SpellItem spellItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellItem) ) {
+                        if ( player.totalExperience >= spellItem.tier || player.isCreative() ) player.startUsingItem(handIn);
+                        else {
+                            addCastingCooldown(player, spellItem, 20);
+                            RuneItem.playWhiffSound(level, ShadowEvents.getEntityCenter(player));
+                        }
+                    }
+                });
             }
         }
         return result;
     }
 
-    public static void doSpell(Player owner, Entity caster, ItemStack wand, SpellRuneItem spell, int useTime) {
-        if ( caster == owner && owner.getCooldowns().isOnCooldown(spell) ) return;
-
+    public static void doSpell(Player owner, Entity caster, ItemStack wand, SpellItem spell, int useTime) {
         float xRot = caster.getXRot();
         float yRot = caster.getYRot();
         Vec3 center;
@@ -91,26 +97,29 @@ public class CastingItem extends Item {
 
         //This actually casts the given Spell
         //These are cooldown and channelling related handling
-        if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) && caster == owner ) addCastingCooldown(owner, spell, spell.tier * 20);
-        else if ( caster == owner ) addCastingCooldown(owner, spell, 10);
+        if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) && caster == owner ) {
+            addCastingCooldown(owner, spell, spell.tier * 20);
+            owner.giveExperiencePoints(-spell.tier);
+        }
+        else if ( caster == owner ) addCastingCooldown(owner, spell, 20);
         owner.stopUsingItem();
         //if ( !spell.isChannel ) owner.stopUsingItem();
     }
 
-    public static void addCastingCooldown(Player player, SpellRuneItem spell, int cooldown) {
+    public static void addCastingCooldown(Player player, SpellItem spell, int cooldown) {
         player.getCooldowns().addCooldown(spell, cooldown);
     }
 
-    public static List<ItemStack> getStaffList(ItemStack staff) {
-        List<ItemStack> staffList = Lists.newArrayList();
-        if ( isValidCastingItem(staff) ) {
-            WandData data = CastingItem.getData(staff);
+    public static List<ItemStack> getWandList(ItemStack wand) {
+        List<ItemStack> wandList = Lists.newArrayList();
+        if ( isValidCastingItem(wand) ) {
+            WandData data = CastingItem.getData(wand);
             for ( int i = 0; i < data.getHandler().getSlots(); i++ ) {
                 ItemStack rune = data.getHandler().getStackInSlot(i);
-                if ( rune.getItem() instanceof ColorRuneItem ) staffList.add(rune);
+                if ( rune.getItem() instanceof ColorRuneItem ) wandList.add(rune);
             }
         }
-        return staffList;
+        return wandList;
     }
 
     public static @Nonnull ItemStack getHeldCastingItem(Player playerEntity) {

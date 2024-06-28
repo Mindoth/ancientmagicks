@@ -1,11 +1,11 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.spellrune.dynamite.DynamiteEntity;
-import net.mindoth.ancientmagicks.item.spellrune.fireball.FireballEntity;
-import net.mindoth.ancientmagicks.item.spellrune.raisedead.SkeletonMinionEntity;
-import net.mindoth.ancientmagicks.item.spellrune.slimeball.SlimeballEntity;
-import net.mindoth.ancientmagicks.item.spellrune.witchspark.WitchSparkEntity;
+import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteEntity;
+import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
+import net.mindoth.ancientmagicks.item.spell.raisedead.SkeletonMinionEntity;
+import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballEntity;
+import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

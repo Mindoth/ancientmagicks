@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.SpellRuneItem;
-import net.mindoth.ancientmagicks.item.spellrune.raisedead.SkeletonMinionEntity;
+import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.raisedead.SkeletonMinionEntity;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
 import net.minecraft.server.level.ServerLevel;
@@ -61,7 +61,7 @@ public class AncientMagicks {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if ( event.getTab() == AncientMagicksTab.ANCIENTMAGICKS_TAB.get() ) {
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
-                if ( !(item.get() instanceof SpellRuneItem) ) event.accept(item);
+                if ( !(item.get() instanceof SpellItem) ) event.accept(item);
             }
         }
     }
@@ -87,16 +87,16 @@ public class AncientMagicks {
         comboRuneInit();
     }
 
-    public static List<SpellRuneItem> SPELL_RUNES = Lists.newArrayList();
+    public static List<SpellItem> SPELL_RUNES = Lists.newArrayList();
     public static List<ColorRuneItem> COLOR_RUNES = Lists.newArrayList();
 
-    public static List<SpellRuneItem> TIER1_SPELL_RUNES = Lists.newArrayList();
-    public static List<SpellRuneItem> TIER2_SPELL_RUNES = Lists.newArrayList();
-    public static List<SpellRuneItem> TIER3_SPELL_RUNES = Lists.newArrayList();
-    public static List<SpellRuneItem> TIER4_SPELL_RUNES = Lists.newArrayList();
-    public static List<SpellRuneItem> TIER5_SPELL_RUNES = Lists.newArrayList();
+    public static List<SpellItem> TIER1_SPELL_RUNES = Lists.newArrayList();
+    public static List<SpellItem> TIER2_SPELL_RUNES = Lists.newArrayList();
+    public static List<SpellItem> TIER3_SPELL_RUNES = Lists.newArrayList();
+    public static List<SpellItem> TIER4_SPELL_RUNES = Lists.newArrayList();
+    public static List<SpellItem> TIER5_SPELL_RUNES = Lists.newArrayList();
 
-    public static HashMap<SpellRuneItem, List<ColorRuneItem>> COMBO_MAP = new HashMap<>();
+    public static HashMap<SpellItem, List<ColorRuneItem>> COMBO_MAP = new HashMap<>();
 
     public static void clearLists() {
         if ( !SPELL_RUNES.isEmpty() ) SPELL_RUNES.clear();
@@ -110,13 +110,13 @@ public class AncientMagicks {
     }
 
     public static void createSpellLists() {
-        for ( Item item : ITEM_LIST ) if ( item instanceof SpellRuneItem ) SPELL_RUNES.add((SpellRuneItem)item);
-        for ( SpellRuneItem spellRuneItem : SPELL_RUNES ) {
-            if ( spellRuneItem.tier == 1 ) TIER1_SPELL_RUNES.add(spellRuneItem);
-            if ( spellRuneItem.tier == 2 ) TIER2_SPELL_RUNES.add(spellRuneItem);
-            if ( spellRuneItem.tier == 3 ) TIER3_SPELL_RUNES.add(spellRuneItem);
-            if ( spellRuneItem.tier == 4 ) TIER4_SPELL_RUNES.add(spellRuneItem);
-            if ( spellRuneItem.tier == 5 ) TIER5_SPELL_RUNES.add(spellRuneItem);
+        for ( Item item : ITEM_LIST ) if ( item instanceof SpellItem) SPELL_RUNES.add((SpellItem)item);
+        for ( SpellItem spellItem : SPELL_RUNES ) {
+            if ( spellItem.tier == 1 ) TIER1_SPELL_RUNES.add(spellItem);
+            if ( spellItem.tier == 2 ) TIER2_SPELL_RUNES.add(spellItem);
+            if ( spellItem.tier == 3 ) TIER3_SPELL_RUNES.add(spellItem);
+            if ( spellItem.tier == 4 ) TIER4_SPELL_RUNES.add(spellItem);
+            if ( spellItem.tier == 5 ) TIER5_SPELL_RUNES.add(spellItem);
         }
     }
 

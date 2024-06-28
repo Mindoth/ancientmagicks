@@ -9,22 +9,24 @@ import java.util.function.Supplier;
 
 public class PacketSyncSpellCombos {
 
-    public CompoundTag tag;
+    public CompoundTag comboTag;
 
-    public PacketSyncSpellCombos(CompoundTag tag) {
-        this.tag = tag;
+    public PacketSyncSpellCombos(CompoundTag comboTag) {
+        this.comboTag = comboTag;
     }
 
     public PacketSyncSpellCombos(FriendlyByteBuf buf) {
-        this.tag = buf.readNbt();
+        this.comboTag = buf.readNbt();
     }
 
     public void encode(FriendlyByteBuf buf) {
-        buf.writeNbt(this.tag);
+        buf.writeNbt(this.comboTag);
     }
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
-        contextSupplier.get().enqueueWork(() -> ColorRuneItem.CURRENT_COMBO_MAP = ColorRuneItem.buildComboMap(this.tag.getString("am_combostring")));
+        contextSupplier.get().enqueueWork(() -> {
+            ColorRuneItem.CURRENT_COMBO_MAP = ColorRuneItem.buildComboMap(this.comboTag.getString("am_combostring"));
+        });
         contextSupplier.get().setPacketHandled(true);
     }
 }

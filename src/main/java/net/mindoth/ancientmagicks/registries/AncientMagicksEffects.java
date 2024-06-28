@@ -1,8 +1,8 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.spellrune.abstractspell.summon.SummonTimer;
-import net.mindoth.ancientmagicks.item.spellrune.flight.FlightEffect;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.summon.SummonTimer;
+import net.mindoth.ancientmagicks.item.spell.flight.FlightEffect;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;

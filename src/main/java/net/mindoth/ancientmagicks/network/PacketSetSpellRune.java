@@ -1,7 +1,8 @@
 package net.mindoth.ancientmagicks.network;
 
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
+import net.mindoth.ancientmagicks.network.capabilities.ClientSpellData;
+import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,9 +30,12 @@ public class PacketSetSpellRune {
         context.get().enqueueWork(() -> {
             if ( context.get().getSender() != null ) {
                 ServerPlayer player = context.get().getSender();
-                if ( CastingItem.getHeldCastingItem(player).getItem() instanceof StaffItem) {
-                    ItemStack staff = CastingItem.getHeldCastingItem(player);
-                    if ( CastingItem.isValidCastingItem(staff) ) staff.setTag(this.selectedItem);
+                if ( CastingItem.getHeldCastingItem(player).getItem() instanceof CastingItem ) {
+                    ItemStack wand = CastingItem.getHeldCastingItem(player);
+                    if ( CastingItem.isValidCastingItem(wand) ) {
+                        String spellString = this.selectedItem.getString("am_spell");
+                        player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> spell.setSpell(spellString));
+                    }
                 }
             }
         });

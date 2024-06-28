@@ -4,12 +4,11 @@ import net.mindoth.ancientmagicks.client.gui.CurrentSpellHud;
 import net.mindoth.ancientmagicks.client.gui.GuiSpellWheel;
 import net.mindoth.ancientmagicks.client.gui.GuiWand;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
-import net.mindoth.ancientmagicks.item.spellrune.fireball.FireballRenderer;
-import net.mindoth.ancientmagicks.item.spellrune.slimeball.SlimeballRenderer;
-import net.mindoth.ancientmagicks.item.spellrune.witchspark.WitchSparkRenderer;
+import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
+import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballRenderer;
+import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketSendStaffData;
+import net.mindoth.ancientmagicks.network.PacketSendWandData;
 import net.mindoth.ancientmagicks.registries.AncientMagicksContainers;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.ancientmagicks.registries.AncientMagicksKeyBinds;
@@ -61,9 +60,9 @@ public class AncientMagicksClient {
 
         private static void onInput(Minecraft MINECRAFT, int key, int keyAction) {
             ItemStack wand = CastingItem.getHeldCastingItem(MINECRAFT.player);
-            if ( key == AncientMagicksKeyBinds.SPELLSELECTOR.getKey().getValue() && wand.getItem() instanceof CastingItem) {
+            if ( key == AncientMagicksKeyBinds.SPELLSELECTOR.getKey().getValue() && wand.getItem() instanceof CastingItem ) {
                 if ( keyAction == 1 && MINECRAFT.screen == null ) {
-                    if ( wand.getItem() instanceof StaffItem ) AncientMagicksNetwork.sendToServer(new PacketSendStaffData());
+                    if ( wand.getItem() instanceof CastingItem ) AncientMagicksNetwork.sendToServer(new PacketSendWandData());
                 }
                 else if ( keyAction == 0 && MINECRAFT.screen instanceof GuiSpellWheel ) MINECRAFT.player.closeContainer();
             }

@@ -2,10 +2,14 @@ package net.mindoth.ancientmagicks.client.gui;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.SpellRuneItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.network.capabilities.ClientSpellData;
+import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -33,12 +37,12 @@ public class CurrentSpellHud {
 
         if ( shouldDisplaySlot() ) {
             ItemStack castingItem = null;
-            if ( mainHandItem.getItem() instanceof CastingItem && CastingItem.isValidCastingItem(mainHandItem) && mainHandItem.getTag().contains("am_spellrune") ) castingItem = mainHandItem;
-            else if ( offHandItem.getItem() instanceof CastingItem && CastingItem.isValidCastingItem(offHandItem) && offHandItem.getTag().contains("am_spellrune") ) castingItem = offHandItem;
+            if ( mainHandItem.getItem() instanceof CastingItem && CastingItem.isValidCastingItem(mainHandItem) ) castingItem = mainHandItem;
+            else if ( offHandItem.getItem() instanceof CastingItem && CastingItem.isValidCastingItem(offHandItem) ) castingItem = offHandItem;
 
-            if ( castingItem != null ) {
-                Item spellRune = ForgeRegistries.ITEMS.getValue(new ResourceLocation(castingItem.getTag().getString("am_spellrune")));
-                if ( spellRune instanceof SpellRuneItem ) state = new ItemStack(spellRune);
+            if ( castingItem != null && ClientSpellData.getPlayerSpell() != null ) {
+                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ClientSpellData.getPlayerSpell()));
+                if ( item instanceof SpellItem ) state = new ItemStack(item);
             }
         }
 

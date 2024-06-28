@@ -3,22 +3,22 @@ package net.mindoth.ancientmagicks.registries;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
-import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
+import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.WandType;
-import net.mindoth.ancientmagicks.item.spellrune.chaoticpolymorph.ChaoticPolymorphSpell;
-import net.mindoth.ancientmagicks.item.spellrune.collapse.CollapseSpell;
-import net.mindoth.ancientmagicks.item.spellrune.dynamite.DynamiteSpell;
-import net.mindoth.ancientmagicks.item.spellrune.blink.BlinkSpell;
-import net.mindoth.ancientmagicks.item.spellrune.fireball.FireballSpell;
-import net.mindoth.ancientmagicks.item.spellrune.flight.FlightSpell;
-import net.mindoth.ancientmagicks.item.spellrune.calllightning.CallLightningSpell;
-import net.mindoth.ancientmagicks.item.spellrune.polymorph.PolymorphSpell;
-import net.mindoth.ancientmagicks.item.spellrune.raisedead.RaiseDeadSpell;
-import net.mindoth.ancientmagicks.item.spellrune.slimeball.SlimeballSpell;
-import net.mindoth.ancientmagicks.item.spellrune.telekineticgrab.TelekineticGrabSpell;
-import net.mindoth.ancientmagicks.item.spellrune.ward.WardSpell;
-import net.mindoth.ancientmagicks.item.spellrune.windburst.WindBurstSpell;
-import net.mindoth.ancientmagicks.item.spellrune.witchspark.WitchSparkSpell;
+import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphSpell;
+import net.mindoth.ancientmagicks.item.spell.collapse.CollapseSpell;
+import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteSpell;
+import net.mindoth.ancientmagicks.item.spell.blink.BlinkSpell;
+import net.mindoth.ancientmagicks.item.spell.fireball.FireballSpell;
+import net.mindoth.ancientmagicks.item.spell.flight.FlightSpell;
+import net.mindoth.ancientmagicks.item.spell.calllightning.CallLightningSpell;
+import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphSpell;
+import net.mindoth.ancientmagicks.item.spell.raisedead.RaiseDeadSpell;
+import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballSpell;
+import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabSpell;
+import net.mindoth.ancientmagicks.item.spell.ward.WardSpell;
+import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstSpell;
+import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkSpell;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,8 +28,8 @@ public class AncientMagicksItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, AncientMagicks.MOD_ID);
 
     //Casting items
-    public static final RegistryObject<Item> BEGINNER_STAFF = ITEMS.register("beginner_staff",
-            () -> new StaffItem(WandType.BEGINNER_STAFF));
+    public static final RegistryObject<Item> CASTING_ITEM = ITEMS.register("casting_item",
+            () -> new CastingItem(WandType.CASTING_ITEM));
 
 
 

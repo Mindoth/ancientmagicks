@@ -43,16 +43,16 @@ public class AncientMagicksNetwork {
                 .consumerMainThread(PacketSetSpellRune::handle)
                 .add();
 
-        net.messageBuilder(PacketSendStaffData.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(PacketSendStaffData::new)
-                .encoder(PacketSendStaffData::encode)
-                .consumerMainThread(PacketSendStaffData::handle)
+        net.messageBuilder(PacketSendWandData.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketSendWandData::new)
+                .encoder(PacketSendWandData::encode)
+                .consumerMainThread(PacketSendWandData::handle)
                 .add();
 
-        net.messageBuilder(PacketReceiveStaffData.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketReceiveStaffData::new)
-                .encoder(PacketReceiveStaffData::encode)
-                .consumerMainThread(PacketReceiveStaffData::handle)
+        net.messageBuilder(PacketReceiveWandData.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketReceiveWandData::new)
+                .encoder(PacketReceiveWandData::encode)
+                .consumerMainThread(PacketReceiveWandData::handle)
                 .add();
 
         net.messageBuilder(PacketSendCustomParticles.class, id(), NetworkDirection.PLAY_TO_CLIENT)
@@ -65,6 +65,18 @@ public class AncientMagicksNetwork {
                 .decoder(PacketSyncSpellCombos::new)
                 .encoder(PacketSyncSpellCombos::encode)
                 .consumerMainThread(PacketSyncSpellCombos::handle)
+                .add();
+
+        net.messageBuilder(PacketSyncSpellCombos.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketSyncSpellCombos::new)
+                .encoder(PacketSyncSpellCombos::encode)
+                .consumerMainThread(PacketSyncSpellCombos::handle)
+                .add();
+
+        net.messageBuilder(PacketSyncClientSpell.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketSyncClientSpell::new)
+                .encoder(PacketSyncClientSpell::encode)
+                .consumerMainThread(PacketSyncClientSpell::handle)
                 .add();
     }
 

@@ -15,7 +15,7 @@ public class AncientMagicksTab {
             AncientMagicks.MOD_ID);
 
     public static final RegistryObject<CreativeModeTab> ANCIENTMAGICKS_TAB = CREATIVE_MODE_TABS.register("ancientmagicks_tab", () ->
-            CreativeModeTab.builder().icon(() -> new ItemStack(AncientMagicksItems.BEGINNER_STAFF.get())).title(Component.translatable("itemGroup.ancientmagicks_tab")).build());
+            CreativeModeTab.builder().icon(() -> new ItemStack(AncientMagicksItems.CASTING_ITEM.get())).title(Component.translatable("itemGroup.ancientmagicks_tab")).build());
 
     public static void register(IEventBus eventBus) {
         CREATIVE_MODE_TABS.register(eventBus);
