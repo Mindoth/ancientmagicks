@@ -1,15 +1,15 @@
 package net.mindoth.ancientmagicks.item.spell.slimeball;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class SlimeballSpell extends SpellItem {
+public class SlimeballTablet extends TabletItem {
 
-    public SlimeballSpell(Properties pProperties, int cooldown) {
+    public SlimeballTablet(Properties pProperties, int cooldown) {
         super(pProperties, cooldown);
     }
 

@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.dynamite;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -9,9 +9,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class DynamiteSpell extends SpellItem {
+public class DynamiteTablet extends TabletItem {
 
-    public DynamiteSpell(Properties pProperties, int cooldown) {
+    public DynamiteTablet(Properties pProperties, int cooldown) {
         super(pProperties, cooldown);
     }
 

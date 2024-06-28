@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ancientmagicks:item/dynamite_spell"
+    "layer0": "ancientmagicks:item/ward_tablet"
   }
 }

@@ -6,18 +6,18 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketOpenWandGui;
-import net.mindoth.ancientmagicks.network.PacketSetSpellRune;
+import net.mindoth.ancientmagicks.network.PacketSetSpell;
 import net.mindoth.ancientmagicks.network.capabilities.ClientSpellData;
-import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -48,7 +48,7 @@ public class GuiSpellWheel extends Screen {
     private int selectedItem;
     private final List<ItemStack> itemList;
     private final List<ColorRuneItem> comboList = Lists.newArrayList();
-    private SpellItem comboResult;
+    private TabletItem comboResult;
 
     public GuiSpellWheel(List<ItemStack> stackList, CompoundTag wandNbt) {
         super(Component.literal(""));
@@ -96,7 +96,7 @@ public class GuiSpellWheel extends Screen {
                             //player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> spell.setSpell(spellString));
                             CompoundTag tag = new CompoundTag();
                             tag.putString("am_spell", spellString);
-                            AncientMagicksNetwork.sendToServer(new PacketSetSpellRune(tag));
+                            AncientMagicksNetwork.sendToServer(new PacketSetSpell(tag));
                             ClientSpellData.set(spellString);
                         }
                         else this.comboResult = null;
@@ -206,7 +206,9 @@ public class GuiSpellWheel extends Screen {
                     resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
 
             //Spell name
-            graphics.drawCenteredString(this.font, slot.getHoverName(), width / 2, (height - this.font.lineHeight) / 2 - 8, 16777215);
+            String tabletComponent = I18n.get("key.ancientmagicks.tablet_component");
+            String name = slot.getHoverName().getString().replace(tabletComponent, "");
+            graphics.drawCenteredString(this.font, name, width / 2, (height - this.font.lineHeight) / 2 - 8, 16777215);
         }
 
         //Spell item and hover tooltip on radial wheel

@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.chaoticpolymorph;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -16,9 +16,9 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import java.util.Random;
 
-public class ChaoticPolymorphSpell extends SpellItem {
+public class ChaoticPolymorphTablet extends TabletItem {
 
-    public ChaoticPolymorphSpell(Properties pProperties, int tier) {
+    public ChaoticPolymorphTablet(Properties pProperties, int tier) {
         super(pProperties, tier);
     }
 

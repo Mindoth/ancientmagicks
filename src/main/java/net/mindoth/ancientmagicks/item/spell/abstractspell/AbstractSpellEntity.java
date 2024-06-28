@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Direction;
@@ -71,7 +71,7 @@ public class AbstractSpellEntity extends ThrowableProjectile {
         return 0;
     }
 
-    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, SpellItem rune) {
+    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, TabletItem rune) {
         super(entityType, owner, pLevel);
 
         this.setNoGravity(true);
@@ -216,25 +216,34 @@ public class AbstractSpellEntity extends ThrowableProjectile {
         ClientLevel world = (ClientLevel)this.level();
         Vec3 center = ShadowEvents.getEntityCenter(this);
         Vec3 pos = new Vec3(center.x, this.getY(), center.z);
-        
-        //Main body
-        for ( int i = 0; i < 4; i++ ) {
-            float size = this.entityData.get(SIZE) / 4;
-            float randX = (float)((Math.random() * (size - (-size))) + (-size));
-            float randY = (float)((Math.random() * (size - (-size))) + (-size));
-            float randZ = (float)((Math.random() * (size - (-size))) + (-size));
-            world.addParticle(EmberParticleProvider.createData(getParticleColor(), this.entityData.get(SIZE), 10, true, true), true,
-                    pos.x + randX, pos.y + randY, pos.z + randZ, 0, 0, 0);
-        }
-        //Trail twinkle
-        for ( int i = 0; i < 8; i++ ) {
-            float size = this.entityData.get(SIZE) / 3;
-            float randX = (float)((Math.random() * (size - (-size))) + (-size));
-            float randY = (float)((Math.random() * (size - (-size))) + (-size));
-            float randZ = (float)((Math.random() * (size - (-size))) + (-size));
-            int life = 4 + level().random.nextInt(20);
-            world.addParticle(EmberParticleProvider.createData(getParticleColor(), size, life, true, true), true,
-                    pos.x + randX, pos.y + randY, pos.z + randZ, 0, 0, 0);
+
+        if ( this.isRemoved() ) return;
+        Vec3 vec3 = this.getDeltaMovement();
+        double d5 = vec3.x;
+        double d6 = vec3.y;
+        double d1 = vec3.z;
+        for ( int j = -4; j < 0; ++j ) {
+            //Main body
+            for ( int i = 0; i < 2; i++ ) {
+                float size = this.entityData.get(SIZE) / 4;
+                float randX = (float)((Math.random() * (size - (-size))) + (-size));
+                float randY = (float)((Math.random() * (size - (-size))) + (-size));
+                float randZ = (float)((Math.random() * (size - (-size))) + (-size));
+                world.addParticle(EmberParticleProvider.createData(getParticleColor(), this.entityData.get(SIZE), 10, true, true), true,
+                        pos.x + randX + d5 * (double)j / 4.0D, pos.y + randY + d6 * (double)j / 4.0D, pos.z + randZ + d1 * (double)j / 4.0D, 0, 0, 0);
+            }
+            //Trail twinkle
+            if ( j == -1 ) {
+                for ( int i = 0; i < 8; i++ ) {
+                    float size = this.entityData.get(SIZE) / 3;
+                    float randX = (float)((Math.random() * (size - (-size))) + (-size));
+                    float randY = (float)((Math.random() * (size - (-size))) + (-size));
+                    float randZ = (float)((Math.random() * (size - (-size))) + (-size));
+                    int life = 4 + level().random.nextInt(20);
+                    world.addParticle(EmberParticleProvider.createData(getParticleColor(), size, life, true, true), true,
+                            pos.x + randX, pos.y + randY, pos.z + randZ, 0, 0, 0);
+                }
+            }
         }
     }
 

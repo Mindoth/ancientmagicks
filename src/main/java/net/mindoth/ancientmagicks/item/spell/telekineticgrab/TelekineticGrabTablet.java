@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.telekineticgrab;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -13,9 +13,9 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TelekineticGrabSpell extends SpellItem {
+public class TelekineticGrabTablet extends TabletItem {
 
-    public TelekineticGrabSpell(Properties pProperties, int cooldown) {
+    public TelekineticGrabTablet(Properties pProperties, int cooldown) {
         super(pProperties, cooldown);
     }
 

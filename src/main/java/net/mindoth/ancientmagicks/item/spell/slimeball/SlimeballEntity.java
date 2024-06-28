@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.slimeball;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -26,8 +26,9 @@ public class SlimeballEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public SlimeballEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
+    public SlimeballEntity(Level level, LivingEntity owner, Entity caster, TabletItem rune) {
         super(AncientMagicksEntities.SLIMEBALL.get(), level, owner, caster, rune);
+        this.setNoGravity(false);
     }
 
     @Override

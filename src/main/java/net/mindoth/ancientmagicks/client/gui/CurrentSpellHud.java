@@ -2,14 +2,11 @@ package net.mindoth.ancientmagicks.client.gui;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.ancientmagicks.network.capabilities.ClientSpellData;
-import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -42,7 +39,7 @@ public class CurrentSpellHud {
 
             if ( castingItem != null && ClientSpellData.getPlayerSpell() != null ) {
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ClientSpellData.getPlayerSpell()));
-                if ( item instanceof SpellItem ) state = new ItemStack(item);
+                if ( item instanceof TabletItem) state = new ItemStack(item);
             }
         }
 

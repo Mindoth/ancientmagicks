@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.flight;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -11,9 +11,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class FlightSpell extends SpellItem {
+public class FlightTablet extends TabletItem {
 
-    public FlightSpell(Properties pProperties, int cooldown) {
+    public FlightTablet(Properties pProperties, int cooldown) {
         super(pProperties, cooldown);
     }
 

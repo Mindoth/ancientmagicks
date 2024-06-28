@@ -27,7 +27,6 @@ public class PacketSyncClientSpell {
         contextSupplier.get().enqueueWork(() -> {
             if ( this.spellTag.contains("am_spell") ) ClientSpellData.set(this.spellTag.getString("am_spell"));
             else ClientSpellData.set("minecraft:air");
-            System.out.println("CLIENT SPELL IS NOW: " + this.spellTag.getString("am_spell"));
         });
         contextSupplier.get().setPacketHandled(true);
     }

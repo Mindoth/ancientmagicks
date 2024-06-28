@@ -8,7 +8,7 @@
 
   "item.ancientmagicks.casting_item": "Magic Staff",
 
-  "item.ancientmagicks.empty_rune": "Empty Rune",
+  "item.ancientmagicks.empty_rune": "Stone Slate",
 
   "item.ancientmagicks.blue_rune": "Blue Rune",
   "item.ancientmagicks.purple_rune": "Purple Rune",
@@ -17,20 +17,20 @@
   "item.ancientmagicks.white_rune": "White Rune",
   "item.ancientmagicks.black_rune": "Black Rune",
 
-  "item.ancientmagicks.witch_spark_spell": "Witch Spark",
-  "item.ancientmagicks.fireball_spell": "Fireball",
-  "item.ancientmagicks.telekinetic_grab_spell": "Telekinetic Grab",
-  "item.ancientmagicks.collapse_spell": "Collapse",
-  "item.ancientmagicks.flight_spell": "Flight",
-  "item.ancientmagicks.dynamite_spell": "Dynamite",
-  "item.ancientmagicks.raise_dead_spell": "Raise Dead",
-  "item.ancientmagicks.blink_spell": "Blink",
-  "item.ancientmagicks.wind_burst_spell": "Wind Burst",
-  "item.ancientmagicks.slimeball_spell": "Slimeball",
-  "item.ancientmagicks.ward_spell": "Ward",
-  "item.ancientmagicks.call_lightning_spell": "Call Lightning",
-  "item.ancientmagicks.polymorph_spell": "Polymorph",
-  "item.ancientmagicks.chaotic_polymorph_spell": "Chaotic Polymorph",
+  "item.ancientmagicks.witch_spark_tablet": "Witch Spark Tablet",
+  "item.ancientmagicks.fireball_tablet": "Fireball Tablet",
+  "item.ancientmagicks.telekinetic_grab_tablet": "Telekinetic Grab Tablet",
+  "item.ancientmagicks.collapse_tablet": "Collapse Tablet",
+  "item.ancientmagicks.flight_tablet": "Flight Tablet",
+  "item.ancientmagicks.dynamite_tablet": "Dynamite Tablet",
+  "item.ancientmagicks.raise_dead_tablet": "Raise Dead Tablet",
+  "item.ancientmagicks.blink_tablet": "Blink Tablet",
+  "item.ancientmagicks.wind_burst_tablet": "Wind Burst Tablet",
+  "item.ancientmagicks.slimeball_tablet": "Slimeball Tablet",
+  "item.ancientmagicks.ward_tablet": "Ward Tablet",
+  "item.ancientmagicks.call_lightning_tablet": "Call Lightning Tablet",
+  "item.ancientmagicks.polymorph_tablet": "Polymorph Tablet",
+  "item.ancientmagicks.chaotic_polymorph_tablet": "Chaotic Polymorph Tablet",
 
 
   "effect.ancientmagicks.flight": "Flight",
@@ -40,6 +40,6 @@
 
 
   "tooltip.ancientmagicks.empty": "Open",
-  "tooltip.ancientmagicks.rune_tier": "\u00A79Spell Tier\u00A7r",
-  "tooltip.ancientmagicks.shift": "\u00A77Hold SHIFT to see recipe\u00A7r"
+  "key.ancientmagicks.tablet_component": " Tablet",
+  "tooltip.ancientmagicks.rune_tier": "\u00A79Spell Tier\u00A7r"
 }

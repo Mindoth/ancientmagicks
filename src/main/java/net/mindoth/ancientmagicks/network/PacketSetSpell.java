@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.network;
 
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.network.capabilities.ClientSpellData;
 import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,14 +10,14 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PacketSetSpellRune {
+public class PacketSetSpell {
     public CompoundTag selectedItem;
 
-    public PacketSetSpellRune(CompoundTag spellRune) {
+    public PacketSetSpell(CompoundTag spellRune) {
         this.selectedItem = spellRune;
     }
 
-    public PacketSetSpellRune(FriendlyByteBuf buf) {
+    public PacketSetSpell(FriendlyByteBuf buf) {
         this.selectedItem = buf.readNbt();
     }
 

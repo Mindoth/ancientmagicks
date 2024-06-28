@@ -1,15 +1,15 @@
 package net.mindoth.ancientmagicks.item.spell.blink;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class BlinkSpell extends SpellItem {
+public class BlinkTablet extends TabletItem {
 
-    public BlinkSpell(Properties pProperties, int cooldown) {
+    public BlinkTablet(Properties pProperties, int cooldown) {
         super(pProperties, cooldown);
     }
 

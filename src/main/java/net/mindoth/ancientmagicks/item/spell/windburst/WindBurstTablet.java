@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.windburst;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -13,9 +13,9 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class WindBurstSpell extends SpellItem {
+public class WindBurstTablet extends TabletItem {
 
-    public WindBurstSpell(Properties pProperties, int cooldown) {
+    public WindBurstTablet(Properties pProperties, int cooldown) {
         super(pProperties, cooldown);
     }
 
@@ -36,7 +36,7 @@ public class WindBurstSpell extends SpellItem {
             pushEntity.add(target);
             pushEntity.remove(caster);
             for ( Entity listEntity : pushEntity ) {
-                if ( SpellItem.isPushable(listEntity) ) {
+                if ( TabletItem.isPushable(listEntity) ) {
                     listEntity.push((targetPoint.x - casterPos.x) * power, (targetPoint.y - casterPos.y + 0.5F) * power, (targetPoint.z - casterPos.z) * power);
                     listEntity.hurtMarked = true;
                 }
@@ -88,7 +88,7 @@ public class WindBurstSpell extends SpellItem {
             Entity target = null;
             double lowestSoFar = Double.MAX_VALUE;
             for ( Entity closestSoFar : targets ) {
-                if ( SpellItem.isPushable(closestSoFar) ) {
+                if ( TabletItem.isPushable(closestSoFar) ) {
                     double testDistance = closestSoFar.distanceToSqr(center);
                     if ( testDistance < lowestSoFar ) {
                         target = closestSoFar;

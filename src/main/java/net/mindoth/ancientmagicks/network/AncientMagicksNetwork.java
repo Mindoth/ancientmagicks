@@ -37,10 +37,10 @@ public class AncientMagicksNetwork {
                 .consumerMainThread(PacketOpenWandGui::handle)
                 .add();
 
-        net.messageBuilder(PacketSetSpellRune.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(PacketSetSpellRune::new)
-                .encoder(PacketSetSpellRune::encode)
-                .consumerMainThread(PacketSetSpellRune::handle)
+        net.messageBuilder(PacketSetSpell.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketSetSpell::new)
+                .encoder(PacketSetSpell::encode)
+                .consumerMainThread(PacketSetSpell::handle)
                 .add();
 
         net.messageBuilder(PacketSendWandData.class, id(), NetworkDirection.PLAY_TO_SERVER)

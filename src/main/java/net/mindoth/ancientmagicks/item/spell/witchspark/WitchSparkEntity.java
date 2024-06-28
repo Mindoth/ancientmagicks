@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.witchspark;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.minecraft.world.entity.Entity;
@@ -20,7 +20,7 @@ public class WitchSparkEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public WitchSparkEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
+    public WitchSparkEntity(Level level, LivingEntity owner, Entity caster, TabletItem rune) {
         super(AncientMagicksEntities.WITCH_SPARK.get(), level, owner, caster, rune);
     }
 

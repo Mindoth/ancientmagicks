@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.calllightning;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,9 +12,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class CallLightningSpell extends SpellItem {
+public class CallLightningTablet extends TabletItem {
 
-    public CallLightningSpell(Item.Properties pProperties, int cooldown) {
+    public CallLightningTablet(Item.Properties pProperties, int cooldown) {
         super(pProperties, cooldown);
     }
 

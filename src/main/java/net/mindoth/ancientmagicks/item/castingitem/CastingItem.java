@@ -5,7 +5,7 @@ import net.mindoth.ancientmagicks.client.gui.inventory.WandData;
 import net.mindoth.ancientmagicks.client.gui.inventory.WandManager;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.Direction;
@@ -50,7 +50,7 @@ public class CastingItem extends Item {
             if ( isValidCastingItem(wand) ) {
                 player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getSpell()));
-                    if ( item instanceof SpellItem spellItem ) doSpell(player, player, wand, spellItem, getUseDuration(wand) - timeLeft);
+                    if ( item instanceof TabletItem tabletItem) doSpell(player, player, wand, tabletItem, getUseDuration(wand) - timeLeft);
                 });
             }
         }
@@ -65,10 +65,10 @@ public class CastingItem extends Item {
             if ( isValidCastingItem(wand) ) {
                 player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getSpell()));
-                    if ( item instanceof SpellItem spellItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellItem) ) {
-                        if ( player.totalExperience >= spellItem.tier || player.isCreative() ) player.startUsingItem(handIn);
+                    if ( item instanceof TabletItem tabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(tabletItem) ) {
+                        if ( player.totalExperience >= tabletItem.tier || player.isCreative() ) player.startUsingItem(handIn);
                         else {
-                            addCastingCooldown(player, spellItem, 20);
+                            addCastingCooldown(player, tabletItem, 20);
                             RuneItem.playWhiffSound(level, ShadowEvents.getEntityCenter(player));
                         }
                     }
@@ -78,7 +78,7 @@ public class CastingItem extends Item {
         return result;
     }
 
-    public static void doSpell(Player owner, Entity caster, ItemStack wand, SpellItem spell, int useTime) {
+    public static void doSpell(Player owner, Entity caster, ItemStack wand, TabletItem spell, int useTime) {
         float xRot = caster.getXRot();
         float yRot = caster.getYRot();
         Vec3 center;
@@ -106,7 +106,7 @@ public class CastingItem extends Item {
         //if ( !spell.isChannel ) owner.stopUsingItem();
     }
 
-    public static void addCastingCooldown(Player player, SpellItem spell, int cooldown) {
+    public static void addCastingCooldown(Player player, TabletItem spell, int cooldown) {
         player.getCooldowns().addCooldown(spell, cooldown);
     }
 

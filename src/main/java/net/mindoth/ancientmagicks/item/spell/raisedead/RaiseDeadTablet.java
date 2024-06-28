@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.raisedead;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.server.level.ServerLevel;
@@ -13,9 +13,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class RaiseDeadSpell extends SpellItem {
+public class RaiseDeadTablet extends TabletItem {
 
-    public RaiseDeadSpell(Properties pProperties, int cooldown) {
+    public RaiseDeadTablet(Properties pProperties, int cooldown) {
         super(pProperties, cooldown);
     }
 

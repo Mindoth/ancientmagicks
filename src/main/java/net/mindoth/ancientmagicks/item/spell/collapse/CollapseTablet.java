@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.collapse;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -12,9 +12,9 @@ import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class CollapseSpell extends SpellItem {
+public class CollapseTablet extends TabletItem {
 
-    public CollapseSpell(Properties pProperties, int cooldown) {
+    public CollapseTablet(Properties pProperties, int cooldown) {
         super(pProperties, cooldown);
     }
 

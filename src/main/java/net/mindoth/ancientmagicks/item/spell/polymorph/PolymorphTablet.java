@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.polymorph;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -10,9 +10,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class PolymorphSpell extends SpellItem {
+public class PolymorphTablet extends TabletItem {
 
-    public PolymorphSpell(Properties pProperties, int tier) {
+    public PolymorphTablet(Properties pProperties, int tier) {
         super(pProperties, tier);
     }
 
