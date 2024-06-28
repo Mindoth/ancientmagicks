@@ -38,7 +38,6 @@ public class FlightTablet extends TabletItem {
         state = true;
 
         if ( state ) playMagicSound(level, center);
-        else playWhiffSound(level, center);
 
         return state;
     }

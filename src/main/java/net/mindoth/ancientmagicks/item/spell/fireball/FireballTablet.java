@@ -29,7 +29,6 @@ public class FireballTablet extends TabletItem {
         state = true;
 
         if ( state ) playFireShootSound(level, center);
-        else playWhiffSound(level, center);
 
         return state;
     }

@@ -43,7 +43,6 @@ public class CollapseTablet extends TabletItem {
         }
 
         if ( state ) playMagicSummonSound(level, center);
-        else playWhiffSound(level, center);
 
         return state;
     }

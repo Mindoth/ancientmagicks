@@ -38,7 +38,6 @@ public class CallLightningTablet extends TabletItem {
         }
 
         if ( state ) playLightningSummonSound(level, point);
-        else playWhiffSound(level, center);
 
         return state;
     }

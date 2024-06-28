@@ -38,7 +38,6 @@ public class AncientMagicksCapabilities {
                     CompoundTag tag = new CompoundTag();
                     tag.putString("am_spell", oldStore.getSpell());
                     AncientMagicksNetwork.sendToPlayer(new PacketSyncClientSpell(tag), serverPlayer);
-                    System.out.println("SERVER SPELL IS NOW: " + newStore.getSpell());
                 });
             });
             event.getOriginal().invalidateCaps();

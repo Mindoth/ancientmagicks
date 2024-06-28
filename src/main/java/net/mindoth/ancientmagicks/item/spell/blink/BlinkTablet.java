@@ -23,7 +23,6 @@ public class BlinkTablet extends TabletItem {
         state = true;
 
         if ( state ) playEnderSound(level, point);
-        else playWhiffSound(level, center);
 
         return state;
     }

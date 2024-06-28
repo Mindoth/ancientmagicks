@@ -32,7 +32,6 @@ public class DynamiteTablet extends TabletItem {
         state = true;
 
         if ( state ) playMagicSummonSound(level, center);
-        else playWhiffSound(level, center);
 
         return state;
     }

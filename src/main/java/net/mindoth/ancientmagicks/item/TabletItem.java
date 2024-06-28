@@ -56,29 +56,24 @@ public class TabletItem extends RuneItem {
     }
 
     @Override
-    public void onUseTick(Level level, LivingEntity living, ItemStack tablet, int timeLeft) {
-        if ( level.isClientSide ) return;
-        if ( living instanceof Player player && tablet.getItem() instanceof TabletItem tabletItem ) {
-            CastingItem.doSpell(player, player, tablet, tabletItem, getUseDuration(tablet) - timeLeft);
-            tablet.shrink(1);
-        }
-    }
-
-    @Override
     @Nonnull
     public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide ) {
             ItemStack tablet = player.getItemInHand(handIn);
             if ( tablet.getItem() instanceof TabletItem tabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(tabletItem) ) {
-                if ( player.totalExperience >= tabletItem.tier || player.isCreative() ) player.startUsingItem(handIn);
-                else {
-                    CastingItem.addCastingCooldown(player, tabletItem, 20);
-                    RuneItem.playWhiffSound(level, ShadowEvents.getEntityCenter(player));
-                }
+                player.startUsingItem(handIn);
             }
         }
         return result;
+    }
+
+    @Override
+    public void onUseTick(Level level, LivingEntity living, ItemStack tablet, int timeLeft) {
+        if ( level.isClientSide ) return;
+        if ( living instanceof Player player && tablet.getItem() instanceof TabletItem tabletItem ) {
+            CastingItem.doSpell(player, player, tablet, tabletItem, getUseDuration(tablet) - timeLeft, true);
+        }
     }
 
     @Override

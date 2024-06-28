@@ -39,7 +39,6 @@ public class TelekineticGrabTablet extends TabletItem {
         }
 
         if ( state ) playMagicShootSound(level, center);
-        else playWhiffSound(level, center);
 
         return state;
     }

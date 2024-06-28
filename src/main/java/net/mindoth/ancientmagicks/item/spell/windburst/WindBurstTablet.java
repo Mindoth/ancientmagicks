@@ -47,7 +47,6 @@ public class WindBurstTablet extends TabletItem {
         state = true;
 
         if ( state ) playWindSound(level, center);
-        else playWhiffSound(level, center);
 
         return state;
     }

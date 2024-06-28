@@ -29,7 +29,6 @@ public class WitchSparkTablet extends TabletItem {
         state = true;
 
         if ( state ) playMagicShootSound(level, center);
-        else playWhiffSound(level, center);
 
         return state;
     }

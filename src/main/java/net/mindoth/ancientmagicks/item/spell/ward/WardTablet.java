@@ -35,7 +35,6 @@ public class WardTablet extends TabletItem {
         }
 
         if ( state ) playMagicSound(level, center);
-        else playWhiffSound(level, center);
 
         return state;
     }
