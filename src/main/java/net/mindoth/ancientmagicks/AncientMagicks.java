@@ -26,6 +26,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +37,10 @@ import java.util.List;
 @Mod(AncientMagicks.MOD_ID)
 public class AncientMagicks {
     public static final String MOD_ID = "ancientmagicks";
+    public static Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    protected static Logger getLogger() {
+        return LOGGER;
+    }
 
     public AncientMagicks() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -122,6 +128,7 @@ public class AncientMagicks {
     }
 
     public static void comboRuneInit() {
+        Logger logger = LOGGER;
         for ( Item item : ITEM_LIST ) if ( item instanceof ColorRuneItem ) COLOR_RUNES.add((ColorRuneItem)item);
 
         List<List<ColorRuneItem>> comboList1 = Lists.newArrayList();
@@ -172,12 +179,11 @@ public class AncientMagicks {
                 }
             }
         }
-
-        if ( comboList1.size() < TIER1_SPELL_RUNES.size() ) System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 1 SPELL.");
-        else if ( comboList2.size() < TIER2_SPELL_RUNES.size() ) System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 2 SPELL.");
-        else if ( comboList3.size() < TIER3_SPELL_RUNES.size() ) System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 3 SPELL.");
-        else if ( comboList4.size() < TIER4_SPELL_RUNES.size() ) System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 4 SPELL.");
-        else if ( comboList5.size() < TIER5_SPELL_RUNES.size() ) System.out.println("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 5 SPELL.");
+        if ( comboList1.size() < TIER1_SPELL_RUNES.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 1 SPELL.");
+        else if ( comboList2.size() < TIER2_SPELL_RUNES.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 2 SPELL.");
+        else if ( comboList3.size() < TIER3_SPELL_RUNES.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 3 SPELL.");
+        else if ( comboList4.size() < TIER4_SPELL_RUNES.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 4 SPELL.");
+        else if ( comboList5.size() < TIER5_SPELL_RUNES.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 5 SPELL.");
         else {
             Collections.shuffle(comboList1);
             Collections.shuffle(comboList2);

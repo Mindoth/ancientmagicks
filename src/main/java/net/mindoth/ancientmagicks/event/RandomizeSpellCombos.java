@@ -15,6 +15,7 @@ import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.slf4j.Logger;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -27,6 +28,7 @@ public class RandomizeSpellCombos {
 
     @SubscribeEvent
     public static void onServerStart(final ServerAboutToStartEvent event) {
+        Logger logger = AncientMagicks.LOGGER;
         Path savePath = event.getServer().getWorldPath(LevelResource.ROOT).normalize().toAbsolutePath();
         String filepath = savePath + "/ancientmagicks.json";
 
@@ -47,11 +49,11 @@ public class RandomizeSpellCombos {
                 pw.flush();
                 pw.close();
                 fos.close();
-                System.out.println("Successfully created spell combo recipes for Ancient Magicks.");
+                logger.info("Successfully created spell combo recipes for Ancient Magicks.");
             }
         }
         catch ( IOException exception ) {
-            System.out.println("ERROR! CREATING SPELL COMBO RECIPES FOR ANCIENT MAGICKS.");
+            logger.error("ERROR! CREATING SPELL COMBO RECIPES FOR ANCIENT MAGICKS.");
         }
 
         //Reading file
@@ -66,13 +68,13 @@ public class RandomizeSpellCombos {
                 //Splitter.on(";").withKeyValueSeparator("=").split(ColorRuneItem.CURRENT_COMBO_TAG.getString("am_combostring"))
 
                 fis.close();
-                System.out.println("Successfully read spell combo recipes for Ancient Magicks.");
+                logger.info("Successfully read spell combo recipes for Ancient Magicks.");
             }
-            else System.out.println("ERROR! SPELL COMBO RECIPE FILE NOT FOUND.");
+            else logger.error("ERROR! SPELL COMBO RECIPE FILE NOT FOUND.");
         }
         catch ( Exception exception ) {
             exception.printStackTrace();
-            System.out.println("ERROR! READING SPELL COMBO RECIPES FOR ANCIENT MAGICKS.");
+            logger.error("ERROR! READING SPELL COMBO RECIPES FOR ANCIENT MAGICKS.");
         }
     }
 
