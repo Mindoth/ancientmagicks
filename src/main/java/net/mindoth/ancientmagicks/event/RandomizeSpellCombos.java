@@ -77,18 +77,4 @@ public class RandomizeSpellCombos {
             logger.error("ERROR! READING SPELL COMBO RECIPES FOR ANCIENT MAGICKS.");
         }
     }
-
-    @SubscribeEvent
-    public static void onPlayerJoin(final PlayerEvent.PlayerLoggedInEvent event) {
-        if ( event.getEntity() instanceof ServerPlayer player ) {
-            AncientMagicksNetwork.sendToPlayer(new PacketSyncSpellCombos(ColorRuneItem.CURRENT_COMBO_TAG), player);
-            player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
-                CompoundTag tag = new CompoundTag();
-
-                if ( spell.getSpell() != null ) tag.putString("am_spell", spell.getSpell());
-                else spell.setSpell("minecraft:air");
-                AncientMagicksNetwork.sendToPlayer(new PacketSyncClientSpell(tag), player);
-            });
-        }
-    }
 }

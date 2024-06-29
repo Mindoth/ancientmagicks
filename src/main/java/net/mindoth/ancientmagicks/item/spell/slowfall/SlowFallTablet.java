@@ -23,7 +23,7 @@ public class SlowFallTablet extends TabletItem {
         boolean state = false;
         Level level = caster.level();
 
-        int life = 600;
+        int life = 400;
         float size = 5.0F;
 
         List<Entity> list = ShadowEvents.getEntitiesAround(caster, size, size, size);

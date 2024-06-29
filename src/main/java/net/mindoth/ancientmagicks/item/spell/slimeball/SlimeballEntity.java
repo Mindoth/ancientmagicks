@@ -33,7 +33,7 @@ public class SlimeballEntity extends AbstractSpellEntity {
 
     @Override
     protected float getGravity() {
-        return 0.01F;
+        return 0.02F;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SlimeballEntity extends AbstractSpellEntity {
 
     @Override
     public int getDefaultBounce() {
-        return 3;
+        return Integer.MAX_VALUE;
     }
 
     @Override

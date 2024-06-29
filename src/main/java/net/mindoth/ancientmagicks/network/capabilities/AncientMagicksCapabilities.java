@@ -37,6 +37,12 @@ public class AncientMagicksCapabilities {
                     newStore.copyFrom(oldStore);
                     CompoundTag tag = new CompoundTag();
                     tag.putString("am_spell", oldStore.getSpell());
+                    tag.putBoolean("am_blue_rune", oldStore.getBlue());
+                    tag.putBoolean("am_purple_rune", oldStore.getPurple());
+                    tag.putBoolean("am_yellow_rune", oldStore.getYellow());
+                    tag.putBoolean("am_green_rune", oldStore.getGreen());
+                    tag.putBoolean("am_white_rune", oldStore.getWhite());
+                    tag.putBoolean("am_black_rune", oldStore.getBlack());
                     AncientMagicksNetwork.sendToPlayer(new PacketSyncClientSpell(tag), serverPlayer);
                 });
             });

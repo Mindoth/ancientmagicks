@@ -35,7 +35,7 @@ public class TabletItem extends RuneItem {
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(this) ) {
             StringBuilder tooltipString = new StringBuilder();
-            List<ColorRuneItem> list = ColorRuneItem.stringListToActualyList(ColorRuneItem.CURRENT_COMBO_MAP.get(this).toString());
+            List<ColorRuneItem> list = ColorRuneItem.stringListToActualList(ColorRuneItem.CURRENT_COMBO_MAP.get(this).toString());
             for ( ColorRuneItem rune : list ) {
                 String color = rune.color + "0" + "\u00A7r";
                 tooltipString.append(color);
