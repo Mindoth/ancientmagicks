@@ -8,7 +8,6 @@ import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketOpenWandGui;
 import net.mindoth.ancientmagicks.network.PacketSetSpell;
 import net.mindoth.ancientmagicks.network.capabilities.ClientSpellData;
 import net.minecraft.client.Minecraft;
@@ -44,23 +43,20 @@ public class GuiSpellWheel extends Screen {
     private float totalTime;
     private float prevTick;
     private float extraTick;
-    public CompoundTag wandNbt;
     private int selectedItem;
     private final List<ItemStack> itemList;
     private final List<ColorRuneItem> comboList = Lists.newArrayList();
     private TabletItem comboResult;
 
-    public GuiSpellWheel(List<ItemStack> stackList, CompoundTag wandNbt) {
+    public GuiSpellWheel(List<ItemStack> stackList) {
         super(Component.literal(""));
-        this.wandNbt = wandNbt;
         this.closing = false;
         this.minecraft = Minecraft.getInstance();
         this.selectedItem = -1;
         this.itemList = stackList;
-        this.itemList.add(0, ItemStack.EMPTY);
     }
 
-    public static void open(List<ItemStack> itemList, CompoundTag wandNbt) {
+    public static void open(List<ItemStack> itemList) {
         Minecraft MINECRAFT = Minecraft.getInstance();
         Player player = MINECRAFT.player;
         if ( MINECRAFT.screen instanceof GuiSpellWheel ) {
@@ -68,7 +64,7 @@ public class GuiSpellWheel extends Screen {
             return;
         }
         if ( CastingItem.getHeldCastingItem(player).getItem() instanceof CastingItem && MINECRAFT.screen == null ) {
-            Minecraft.getInstance().setScreen(new GuiSpellWheel(itemList, wandNbt));
+            Minecraft.getInstance().setScreen(new GuiSpellWheel(itemList));
         }
     }
 
@@ -78,30 +74,22 @@ public class GuiSpellWheel extends Screen {
             ItemStack clickedItem = this.itemList.get(this.selectedItem);
             Player player = MINECRAFT.player;
             if ( CastingItem.getHeldCastingItem(player).getItem() instanceof CastingItem ) {
-                ItemStack wand = CastingItem.getHeldCastingItem(player);
-                wand.setTag(this.wandNbt);
-                if ( this.wandNbt.contains("UUID") ) {
-                    if ( clickedItem.isEmpty() ) AncientMagicksNetwork.sendToServer(new PacketOpenWandGui());
+                if ( clickedItem.getItem() instanceof ColorRuneItem ) {
+                    if ( this.comboList.size() < 9 ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
                     else {
-                        if ( clickedItem.getItem() instanceof ColorRuneItem ) {
-                            if ( this.comboList.size() < 9 ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
-                            else {
-                                this.comboList.remove(0);
-                                this.comboList.add((ColorRuneItem)clickedItem.getItem());
-                            }
-                        }
-                        if ( ColorRuneItem.checkForSpellCombo(this.comboList) != null ) {
-                            this.comboResult = ColorRuneItem.checkForSpellCombo(this.comboList);
-                            String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
-                            //player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> spell.setSpell(spellString));
-                            CompoundTag tag = new CompoundTag();
-                            tag.putString("am_spell", spellString);
-                            AncientMagicksNetwork.sendToServer(new PacketSetSpell(tag));
-                            ClientSpellData.set(spellString);
-                        }
-                        else this.comboResult = null;
+                        this.comboList.remove(0);
+                        this.comboList.add((ColorRuneItem)clickedItem.getItem());
                     }
                 }
+                if ( ColorRuneItem.checkForSpellCombo(this.comboList) != null ) {
+                    this.comboResult = ColorRuneItem.checkForSpellCombo(this.comboList);
+                    String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
+                    CompoundTag tag = new CompoundTag();
+                    tag.putString("am_spell", spellString);
+                    AncientMagicksNetwork.sendToServer(new PacketSetSpell(tag));
+                    ClientSpellData.set(spellString);
+                }
+                else this.comboResult = null;
             }
         }
         return true;

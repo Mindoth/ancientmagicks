@@ -34,7 +34,7 @@ public class RaiseDeadTablet extends TabletItem {
         minion.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(6.0F * 2);
         minion.addEffect(new MobEffectInstance(AncientMagicksEffects.SKELETON_TIMER.get(), (int)life, 0, false, false, true));
 
-        minion.moveTo(ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, true, true, true));
+        minion.moveTo(ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, true, true, true, false));
         minion.finalizeSpawn((ServerLevel)level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
         level.addFreshEntity(minion);
         minion.spawnAnim();

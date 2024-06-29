@@ -6,7 +6,8 @@
   "key.ancientmagicks.spellselector": "Spell Selector",
 
 
-  "item.ancientmagicks.casting_item": "Magic Staff",
+  "item.ancientmagicks.tablet_bag": "Tablet Bag",
+  "item.ancientmagicks.casting_item": "Invocation Staff",
 
   "item.ancientmagicks.empty_rune": "Stone Slate",
 
@@ -41,7 +42,6 @@
   "entity.ancientmagicks.skeleton_minion": "Skeleton Minion",
 
 
-  "tooltip.ancientmagicks.empty": "Open",
   "key.ancientmagicks.tablet_component": " Tablet",
   "tooltip.ancientmagicks.rune_tier": "\u00A79Spell Tier\u00A7r"
 }

@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.client.gui;
 
-import net.mindoth.ancientmagicks.client.gui.inventory.WandContainer;
-import net.mindoth.ancientmagicks.item.castingitem.WandType;
+import net.mindoth.ancientmagicks.client.gui.inventory.AMBagContainer;
+import net.mindoth.ancientmagicks.item.castingitem.AMBagType;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -10,11 +10,11 @@ import net.minecraft.world.entity.player.Inventory;
 
 import javax.annotation.Nonnull;
 
-public class GuiWand extends AbstractContainerScreen<WandContainer> {
-    public GuiWand(WandContainer container, Inventory playerInventory, Component name) {
+public class GuiAMBag extends AbstractContainerScreen<AMBagContainer> {
+    public GuiAMBag(AMBagContainer container, Inventory playerInventory, Component name) {
         super(container, playerInventory, name);
 
-        WandType tier = container.getTier();
+        AMBagType tier = container.getTier();
         this.GUI = tier.texture;
         this.imageWidth = tier.xSize;
         this.imageHeight = tier.ySize;

@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks;
 
 import net.mindoth.ancientmagicks.client.gui.CurrentSpellHud;
 import net.mindoth.ancientmagicks.client.gui.GuiSpellWheel;
-import net.mindoth.ancientmagicks.client.gui.GuiWand;
+import net.mindoth.ancientmagicks.client.gui.GuiAMBag;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spell.deafeningblast.DeafeningBlastRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
@@ -38,7 +38,7 @@ public class AncientMagicksClient {
     }
 
     private static void clientSetup(final FMLClientSetupEvent event) {
-        MenuScreens.register(AncientMagicksContainers.WAND_CONTAINER.get(), GuiWand::new);
+        MenuScreens.register(AncientMagicksContainers.AMBAG_CONTAINER.get(), GuiAMBag::new);
     }
 
     private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {

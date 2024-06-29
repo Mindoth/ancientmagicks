@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.client.gui.inventory;
 
-import net.mindoth.ancientmagicks.item.castingitem.WandType;
+import net.mindoth.ancientmagicks.item.castingitem.AMBagType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -10,10 +10,10 @@ import net.minecraftforge.items.IItemHandler;
 import java.util.Optional;
 import java.util.UUID;
 
-public class WandData {
+public class AMBagData {
     private final UUID uuid;
-    private WandType tier;
-    private final WandItemHandler inventory;
+    private AMBagType tier;
+    private final AMBagItemHandler inventory;
     private final LazyOptional<IItemHandler> optional;
     public final Metadata meta = new Metadata();
 
@@ -25,14 +25,14 @@ public class WandData {
         return this.inventory;
     }
 
-    public WandType getTier() {
+    public AMBagType getTier() {
         return this.tier;
     }
 
     public void updateAccessRecords(String player, long time) {
         if ( this.meta.firstAccessedTime == 0 ) {
 
-            //New wand, set creation data
+            //New bag, set creation data
             this.meta.firstAccessedTime = time;
             this.meta.firstAccessedPlayer = player;
         }
@@ -41,19 +41,19 @@ public class WandData {
         this.meta.setLastAccessedPlayer(player);
     }
 
-    public WandData(UUID uuid, WandType tier) {
+    public AMBagData(UUID uuid, AMBagType tier) {
         this.uuid = uuid;
         this.tier = tier;
 
-        this.inventory = new WandItemHandler(tier.slots);
+        this.inventory = new AMBagItemHandler(tier.slots);
         this.optional = LazyOptional.of(() -> this.inventory);
     }
 
-    public WandData(UUID uuid, CompoundTag incomingNBT) {
+    public AMBagData(UUID uuid, CompoundTag incomingNBT) {
         this.uuid = uuid;
-        this.tier = WandType.values()[Math.min(incomingNBT.getInt("Tier"), WandType.CASTING_ITEM.ordinal())];
+        this.tier = AMBagType.values()[Math.min(incomingNBT.getInt("Tier"), AMBagType.TABLET_BAG.ordinal())];
 
-        this.inventory = new WandItemHandler(this.tier.slots);
+        this.inventory = new AMBagItemHandler(this.tier.slots);
 
         if ( incomingNBT.getCompound("Inventory").contains("Size") ) {
             if (incomingNBT.getCompound("Inventory").getInt("Size") != tier.slots)
@@ -70,10 +70,10 @@ public class WandData {
         return this.uuid;
     }
 
-    public static Optional<WandData> fromNBT(CompoundTag nbt) {
+    public static Optional<AMBagData> fromNBT(CompoundTag nbt) {
         if ( nbt.contains("UUID") ) {
             UUID uuid = nbt.getUUID("UUID");
-            return Optional.of(new WandData(uuid, nbt));
+            return Optional.of(new AMBagData(uuid, nbt));
         }
         return Optional.empty();
     }

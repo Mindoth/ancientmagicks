@@ -11,7 +11,7 @@ public class AncientMagicksCommonConfig {
     static {
         BUILDER.push("Configs for Skillcloaks");
 
-        PVP = BUILDER.comment("true = Spells can hurt and target other players. false = Harmful spells will ignore players (Default = true)")
+        PVP = BUILDER.comment("true = Harmful spells can hurt and target other players. false = Harmful spells will ignore players (Default = true)")
                 .define("PvP", true);
 
         BUILDER.pop();

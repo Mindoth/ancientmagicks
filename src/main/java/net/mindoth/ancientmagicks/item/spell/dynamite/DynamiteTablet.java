@@ -22,7 +22,7 @@ public class DynamiteTablet extends TabletItem {
         float range = 14.0F;
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.0F);
-        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true);
+        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true, false);
         DynamiteEntity tnt = new DynamiteEntity(level, point.x, point.y, point.z, owner);
 
         tnt.setFuse(tnt.life);

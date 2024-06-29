@@ -31,12 +31,6 @@ public class AncientMagicksNetwork {
 
         CHANNEL = net;
 
-        net.messageBuilder(PacketOpenWandGui.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(PacketOpenWandGui::new)
-                .encoder(PacketOpenWandGui::encode)
-                .consumerMainThread(PacketOpenWandGui::handle)
-                .add();
-
         net.messageBuilder(PacketSetSpell.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(PacketSetSpell::new)
                 .encoder(PacketSetSpell::encode)

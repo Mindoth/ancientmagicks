@@ -25,8 +25,8 @@ public class TelekineticGrabTablet extends TabletItem {
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);
 
-        float range = 7.0F;
-        float size = 0.5F;
+        float range = 14.0F;
+        float size = 1.0F;
 
         Entity target = getPointedItemEntity(level, caster, range, size, caster == owner);
         if ( target instanceof ItemEntity) {

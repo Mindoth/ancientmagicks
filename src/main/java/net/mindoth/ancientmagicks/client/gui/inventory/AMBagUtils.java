@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 import java.util.UUID;
 
-public class WandUtils {
+public class AMBagUtils {
 
     @SuppressWarnings("ConstantConditions")
     @Nonnull

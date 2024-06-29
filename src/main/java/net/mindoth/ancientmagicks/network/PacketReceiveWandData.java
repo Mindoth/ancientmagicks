@@ -15,12 +15,10 @@ public class PacketReceiveWandData {
     public int size;
     public List<ItemStack> oldList = Lists.newArrayList();
     public List<ItemStack> itemList = Lists.newArrayList();
-    public CompoundTag wandNbt;
 
-    public PacketReceiveWandData(List<ItemStack> oldList, CompoundTag wandNbt) {
+    public PacketReceiveWandData(List<ItemStack> oldList) {
         this.size = oldList.size();
         this.oldList = oldList;
-        this.wandNbt = wandNbt;
     }
 
     public PacketReceiveWandData(FriendlyByteBuf buf) {
@@ -28,7 +26,6 @@ public class PacketReceiveWandData {
         for ( int i = 0; i < size; i++ ) {
             this.itemList.add(buf.readItem());
         }
-        this.wandNbt = buf.readNbt();
     }
 
     public void encode(FriendlyByteBuf buf) {
@@ -36,11 +33,10 @@ public class PacketReceiveWandData {
         for ( ItemStack itemStack : this.oldList ) {
             buf.writeItem(itemStack);
         }
-        buf.writeNbt(this.wandNbt);
     }
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
-        contextSupplier.get().enqueueWork(() -> GuiSpellWheel.open(this.itemList, this.wandNbt));
+        contextSupplier.get().enqueueWork(() -> GuiSpellWheel.open(this.itemList));
         contextSupplier.get().setPacketHandled(true);
     }
 }

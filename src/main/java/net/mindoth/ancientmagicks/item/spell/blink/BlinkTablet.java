@@ -17,7 +17,7 @@ public class BlinkTablet extends TabletItem {
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        Vec3 point = ShadowEvents.getPoint(level, caster, 14.0F, 0, caster == owner, false, false, true);
+        Vec3 point = ShadowEvents.getPoint(level, caster, 14.0F, 0, caster == owner, false, false, true, false);
         //TODO maybe try teleportToWithTicket?
         caster.teleportTo(point.x, point.y, point.z);
         state = true;

@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.client.gui.inventory;
 
-import net.mindoth.ancientmagicks.item.castingitem.WandType;
+import net.mindoth.ancientmagicks.item.castingitem.AMBagType;
 import net.mindoth.ancientmagicks.registries.AncientMagicksContainers;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,19 +16,19 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 import java.util.UUID;
 
-public class WandContainer extends AbstractContainerMenu {
+public class AMBagContainer extends AbstractContainerMenu {
     public final IItemHandler handler;
-    private final WandType tier;
+    private final AMBagType tier;
     private final UUID uuid;
 
-    public static WandContainer fromNetwork(final int windowId, final Inventory playerInventory, FriendlyByteBuf data) {
+    public static AMBagContainer fromNetwork(final int windowId, final Inventory playerInventory, FriendlyByteBuf data) {
         UUID uuidIn = data.readUUID();
-        WandType tier = WandType.values()[data.readInt()];
-        return new WandContainer(windowId, playerInventory, uuidIn, tier, new ItemStackHandler(tier.slots));
+        AMBagType tier = AMBagType.values()[data.readInt()];
+        return new AMBagContainer(windowId, playerInventory, uuidIn, tier, new ItemStackHandler(tier.slots));
     }
 
-    public WandContainer(final int windowId, final Inventory playerInventory, UUID uuidIn, WandType tierIn, IItemHandler handler) {
-        super(AncientMagicksContainers.WAND_CONTAINER.get(), windowId);
+    public AMBagContainer(final int windowId, final Inventory playerInventory, UUID uuidIn, AMBagType tierIn, IItemHandler handler) {
+        super(AncientMagicksContainers.AMBAG_CONTAINER.get(), windowId);
         this.uuid = uuidIn;
         this.handler = handler;
         this.tier = tierIn;
@@ -36,7 +36,7 @@ public class WandContainer extends AbstractContainerMenu {
         addMySlots();
     }
 
-    public WandType getTier() {
+    public AMBagType getTier() {
         return this.tier;
     }
 
@@ -61,7 +61,7 @@ public class WandContainer extends AbstractContainerMenu {
         for ( int col = 0; col < 9; col++ ) {
             int x = originX + col * 18;
             int y = originY + 58;
-            Optional<UUID> uuidOptional = WandUtils.getUUID(playerInventory.items.get(col));
+            Optional<UUID> uuidOptional = AMBagUtils.getUUID(playerInventory.items.get(col));
             boolean lockMe = uuidOptional.map(id -> id.compareTo(this.uuid) == 0).orElse(false);
             this.addSlot(new LockableSlot(playerInventory, col, x+1, y+1, lockMe));
         }
@@ -72,7 +72,7 @@ public class WandContainer extends AbstractContainerMenu {
                 int x = originX + col * 18;
                 int y = originY + row * 18;
                 int index = (col + row * 9) + 9;
-                Optional<UUID> uuidOptional = WandUtils.getUUID(playerInventory.items.get(index));
+                Optional<UUID> uuidOptional = AMBagUtils.getUUID(playerInventory.items.get(index));
                 boolean lockMe = uuidOptional.map(id -> id.compareTo(this.uuid) == 0).orElse(false);
                 this.addSlot(new LockableSlot(playerInventory, index, x+1, y+1, lockMe));
             }
@@ -89,7 +89,7 @@ public class WandContainer extends AbstractContainerMenu {
             for ( int col = 0; col < cols; col++ ) {
                 int x = originX + col * 18;
                 int y = 17 + row * 18;
-                this.addSlot(new WandContainerSlot(this.handler, slot_index, x + 1, y + 1));
+                this.addSlot(new AMBagContainerSlot(this.handler, slot_index, x + 1, y + 1));
                 slot_index++;
                 if (slot_index >= this.tier.slots)
                     break;
@@ -103,11 +103,11 @@ public class WandContainer extends AbstractContainerMenu {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if ( slot != null && slot.hasItem() ) {
-            int wandSlotCount = this.slots.size();
+            int ambagSlotCount = this.slots.size();
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
             if ( index < playerIn.getInventory().items.size() ) {
-                if ( !this.moveItemStackTo(itemstack1, playerIn.getInventory().items.size(), wandSlotCount, false) ) return ItemStack.EMPTY;
+                if ( !this.moveItemStackTo(itemstack1, playerIn.getInventory().items.size(), ambagSlotCount, false) ) return ItemStack.EMPTY;
             }
             else if ( !this.moveItemStackTo(itemstack1, 0, playerIn.getInventory().items.size(), false) ) return ItemStack.EMPTY;
             if ( itemstack1.isEmpty() ) slot.set(ItemStack.EMPTY); else slot.setChanged();

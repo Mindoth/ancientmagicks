@@ -4,13 +4,20 @@ import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
 
 public class CallLightningTablet extends TabletItem {
 
@@ -22,35 +29,44 @@ public class CallLightningTablet extends TabletItem {
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        Vec3 point = ShadowEvents.getPoint(level, caster, 64.0F, 0, caster == owner, true, true, true);
-        BlockPos blockPos = new BlockPos((int)point.x, (int)point.y, (int)point.z);
-        if ( level.canSeeSky(blockPos) ) {
-            if ( !level.getBlockState(blockPos.below()).isSolid() ) {
-                point = getBlockBelow(level, blockPos);
-            }
+        float power = 10.0F;
+        float range = 64.0F;
+        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, true, true, true, true);
+        BlockPos blockPos = new BlockPos(Mth.floor(point.x), Mth.floor(point.y), Mth.floor(point.z));
+        BlockState blockState = level.getBlockState(blockPos.below());
+        if ( !blockState.isSolid() || !(blockState.getBlock() instanceof LiquidBlock) ) blockPos = getBlockBelow(level, blockPos);
+        if ( level.canSeeSkyFromBelowWater(blockPos) ) {
             LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(level);
             if ( lightningbolt != null && !level.isClientSide ) {
-                lightningbolt.moveTo(point);
+                lightningbolt.moveTo(blockPos.getCenter().x, blockPos.getCenter().y - 0.5D, blockPos.getCenter().z);
+                lightningbolt.setVisualOnly(true);
                 lightningbolt.setCause(caster instanceof ServerPlayer ? (ServerPlayer)caster : null);
+                List<Entity> targets = level.getEntities(null, new AABB(blockPos));
+                for ( Entity target : targets ) {
+                    if ( target instanceof LivingEntity living && !TabletItem.isAlly(owner, living) ) {
+                        float damage = power;
+                        if ( living.isInWaterOrRain() ) damage *= 2;
+                        living.hurt(living.damageSources().indirectMagic(lightningbolt, owner), damage);
+                    }
+                }
                 level.addFreshEntity(lightningbolt);
                 state = true;
             }
         }
 
-        if ( state ) playLightningSummonSound(level, point);
+        if ( state ) playLightningSummonSound(level, blockPos.getCenter());
 
         return state;
     }
 
-    private Vec3 getBlockBelow(Level level, BlockPos blockPos) {
-        Vec3 tempVec = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+    private BlockPos getBlockBelow(Level level, BlockPos blockPos) {
         for ( int i = blockPos.getY(); i > level.getMinBuildHeight(); i-- ) {
-            BlockPos tempPost = new BlockPos(blockPos.getX(), i, blockPos.getZ());
-            if ( level.getBlockState(tempPost.below()).isSolid() ) {
-                tempVec = new Vec3(blockPos.getX(), i, blockPos.getZ());
+            BlockPos tempPos = new BlockPos(blockPos.getX(), i, blockPos.getZ());
+            if ( level.getBlockState(tempPos.below()).isSolid() || level.getBlockState(tempPos).getBlock() instanceof LiquidBlock ) {
+                blockPos = tempPos;
                 break;
             }
         }
-        return tempVec;
+        return blockPos;
     }
 }

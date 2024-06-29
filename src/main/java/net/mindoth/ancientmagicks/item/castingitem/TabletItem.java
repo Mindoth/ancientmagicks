@@ -48,7 +48,7 @@ public class TabletItem extends RuneItem {
 
     public static boolean isAlly(LivingEntity owner, LivingEntity target) {
         if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) return true;
-        else return target == owner || !target.canAttack(owner) || target.isAlliedTo(owner) || (target instanceof TamableAnimal && ((TamableAnimal)target).isOwnedBy(owner));
+        else return target == owner || !owner.canAttack(target) || owner.isAlliedTo(target) || (target instanceof TamableAnimal && ((TamableAnimal)target).isOwnedBy(owner));
     }
 
     public static boolean isPushable(Entity entity) {
