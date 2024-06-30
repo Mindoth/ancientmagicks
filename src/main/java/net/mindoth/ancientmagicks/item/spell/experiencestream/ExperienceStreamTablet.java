@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.experiencebeam;
+package net.mindoth.ancientmagicks.item.spell.experiencestream;
 
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
@@ -24,7 +24,7 @@ public class ExperienceStreamTablet extends TabletItem {
             down = 0.0F;
         }
 
-        if ( owner.totalExperience > 0 ) {
+        if ( owner.totalExperience > 0 || owner.experienceLevel > 0 ) {
             state = true;
             if ( useTime % 2 == 0 ) {
                 AbstractSpellEntity projectile = new ExperienceStreamEntity(level, owner, caster, this, !owner.isCreative());

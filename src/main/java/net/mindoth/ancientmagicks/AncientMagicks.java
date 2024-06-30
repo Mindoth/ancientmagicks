@@ -326,17 +326,36 @@ public class AncientMagicks {
         }
     }
 
-    public static boolean hasDupeInList(List<List<ColorRuneItem>> comboList, List<ColorRuneItem> tempList) {
-        boolean state = false;
+    //Thank god for Stack Overflow (the website)
+    //https://stackoverflow.com/questions/1075656/simple-way-to-find-if-two-different-lists-contain-exactly-the-same-elements/67986292#67986292
+    public static boolean listsMatch(List<ColorRuneItem> firstList, List<ColorRuneItem> secondList) {
+        if ( firstList == secondList ) return true;
+        if ( firstList != null && secondList != null ) {
+            if ( firstList.isEmpty() && secondList.isEmpty() ) return true;
+            if ( firstList.size() != secondList.size() ) return false;
+            List<ColorRuneItem> tmpSecondList = new ArrayList<>(secondList);
+            Object currFirstObject;
+            for ( int i=1 ; i<=firstList.size() ; i++ ) {
+                currFirstObject = firstList.get(i-1);
+                boolean removed = tmpSecondList.remove(currFirstObject);
+                if ( !removed ) return false;
+                if ( i != firstList.size() ) {
+                    if ( tmpSecondList.isEmpty() ) return false;
+                }
+            }
+            return tmpSecondList.isEmpty();
+        }
+        return false;
+    }
 
-        //TODO FIND A BETTER WAY TO DO THIS SINCE THIS METHOD IS SLOW
+    private static boolean hasDupeInList(List<List<ColorRuneItem>> comboList, List<ColorRuneItem> tempList) {
+        boolean state = false;
         for ( List<ColorRuneItem> list : comboList ) {
-            if ( list.containsAll(tempList) && tempList.containsAll(list) ) {
+            if ( listsMatch(tempList, list) ) {
                 state = true;
                 break;
             }
         }
-
         return state;
     }
 

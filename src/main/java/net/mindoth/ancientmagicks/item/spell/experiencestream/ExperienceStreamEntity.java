@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.experiencebeam;
+package net.mindoth.ancientmagicks.item.spell.experiencestream;
 
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;

@@ -12,7 +12,7 @@ import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphTa
 import net.mindoth.ancientmagicks.item.spell.collapse.CollapseTablet;
 import net.mindoth.ancientmagicks.item.spell.deafeningblast.DeafeningBlastTablet;
 import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteTablet;
-import net.mindoth.ancientmagicks.item.spell.experiencebeam.ExperienceStreamTablet;
+import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamTablet;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballTablet;
 import net.mindoth.ancientmagicks.item.spell.flight.FlightTablet;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphTablet;

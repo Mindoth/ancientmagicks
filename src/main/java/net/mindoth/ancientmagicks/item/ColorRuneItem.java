@@ -49,9 +49,7 @@ public class ColorRuneItem extends RuneItem {
         for ( Map.Entry<TabletItem, List<ColorRuneItem>> entry : CURRENT_COMBO_MAP.entrySet() ) {
             TabletItem key = entry.getKey();
             List<ColorRuneItem> value = entry.getValue();
-
-            //TODO FIND A BETTER WAY TO DO THIS SINCE THIS METHOD IS SLOW
-            if ( comboToCheck.containsAll(value) && value.containsAll(comboToCheck) && comboToCheck.size() == value.size() ) spell = key;
+            if ( AncientMagicks.listsMatch(comboToCheck, value) ) spell = key;
         }
         return spell;
     }
@@ -108,16 +106,15 @@ public class ColorRuneItem extends RuneItem {
                 ItemStack stack = event.getItem();
                 if ( stack.getItem() instanceof ColorRuneItem ) {
                     LazyOptional<PlayerSpell> cap = player.getCapability(PlayerSpellProvider.PLAYER_SPELL);
-                    if ( stack.getItem() == AncientMagicksItems.BLUE_RUNE.get() ) cap.ifPresent(rune -> rune.setBlue(true));
-                    if ( stack.getItem() == AncientMagicksItems.PURPLE_RUNE.get() ) cap.ifPresent(rune -> rune.setPurple(true));
-                    if ( stack.getItem() == AncientMagicksItems.YELLOW_RUNE.get() ) cap.ifPresent(rune -> rune.setYellow(true));
-                    if ( stack.getItem() == AncientMagicksItems.GREEN_RUNE.get() ) cap.ifPresent(rune -> rune.setGreen(true));
-                    if ( stack.getItem() == AncientMagicksItems.WHITE_RUNE.get() ) cap.ifPresent(rune -> rune.setWhite(true));
-                    if ( stack.getItem() == AncientMagicksItems.BLACK_RUNE.get() ) cap.ifPresent(rune -> rune.setBlack(true));
+                    if ( stack.getItem() == AncientMagicksItems.BLUE_RUNE.get() ) cap.ifPresent(rune -> rune.setBlue(!rune.getBlue()));
+                    if ( stack.getItem() == AncientMagicksItems.PURPLE_RUNE.get() ) cap.ifPresent(rune -> rune.setPurple(!rune.getPurple()));
+                    if ( stack.getItem() == AncientMagicksItems.YELLOW_RUNE.get() ) cap.ifPresent(rune -> rune.setYellow(!rune.getYellow()));
+                    if ( stack.getItem() == AncientMagicksItems.GREEN_RUNE.get() ) cap.ifPresent(rune -> rune.setGreen(!rune.getGreen()));
+                    if ( stack.getItem() == AncientMagicksItems.WHITE_RUNE.get() ) cap.ifPresent(rune -> rune.setWhite(!rune.getWhite()));
+                    if ( stack.getItem() == AncientMagicksItems.BLACK_RUNE.get() ) cap.ifPresent(rune -> rune.setBlack(!rune.getBlack()));
                     event.getResultStack().shrink(1);
                     Vec3 center = ShadowEvents.getEntityCenter(event.getEntity());
-                    event.getEntity().level().playSound(null, center.x, center.y, center.z,
-                            SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 1.0F, 2.0F);
+                    player.level().playSound(null, center.x, center.y, center.z, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5F, 0.25F);
                 }
             }
         }

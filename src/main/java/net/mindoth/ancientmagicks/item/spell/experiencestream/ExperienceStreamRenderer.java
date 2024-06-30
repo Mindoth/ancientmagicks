@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.experiencebeam;
+package net.mindoth.ancientmagicks.item.spell.experiencestream;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks.registries;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.spell.deafeningblast.DeafeningBlastEntity;
 import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteEntity;
-import net.mindoth.ancientmagicks.item.spell.experiencebeam.ExperienceStreamEntity;
+import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamEntity;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
 import net.mindoth.ancientmagicks.item.spell.raisedead.SkeletonMinionEntity;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballEntity;
