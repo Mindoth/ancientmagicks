@@ -58,11 +58,11 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> GREEN_RUNE = ITEMS.register("green_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A7a"));
 
-    public static final RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7f"));
-
     public static final RegistryObject<Item> BLACK_RUNE = ITEMS.register("black_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A78"));
+
+    public static final RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7f"));
 
 
     public static final RegistryObject<Item> WITCH_SPARK_TABLET = ITEMS.register("witch_spark_tablet",

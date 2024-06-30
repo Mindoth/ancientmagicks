@@ -112,7 +112,7 @@ public class ColorRuneItem extends RuneItem {
                     if ( stack.getItem() == AncientMagicksItems.GREEN_RUNE.get() ) cap.ifPresent(rune -> rune.setGreen(!rune.getGreen()));
                     if ( stack.getItem() == AncientMagicksItems.WHITE_RUNE.get() ) cap.ifPresent(rune -> rune.setWhite(!rune.getWhite()));
                     if ( stack.getItem() == AncientMagicksItems.BLACK_RUNE.get() ) cap.ifPresent(rune -> rune.setBlack(!rune.getBlack()));
-                    event.getResultStack().shrink(1);
+                    if ( !player.isCreative() ) event.getResultStack().shrink(1);
                     Vec3 center = ShadowEvents.getEntityCenter(event.getEntity());
                     player.level().playSound(null, center.x, center.y, center.z, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5F, 0.25F);
                 }

@@ -76,18 +76,13 @@ public class AncientMagicks {
 
     public static List<Item> ITEM_LIST = Lists.newArrayList();
     public static List<Mob> MOB_LIST = Lists.newArrayList();
+    public static List<EntityType<?>> DISABLED_POLYMOBS = Lists.newArrayList();
 
     public void commonSetup(final FMLCommonSetupEvent event) {
         ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
         AncientMagicksNetwork.init();
         createSpellDisableList();
-    }
-
-    public static void createMobList(ServerLevel serverLevel) {
-        for ( EntityType<?> entityType : ForgeRegistries.ENTITY_TYPES.getValues() ) {
-            Entity tempEntity = entityType.create(serverLevel);
-            if ( tempEntity instanceof Mob mob ) MOB_LIST.add(mob);
-        }
+        createPolymobDisableList();
     }
 
     private static void createSpellDisableList() {
@@ -95,6 +90,22 @@ public class AncientMagicks {
         for ( String string : List.of(configString.replaceAll("[\\[\\]]", "").replaceAll(" ", "").replaceAll("\n", "").split(",")) ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
             if ( item instanceof TabletItem tabletItem ) DISABLED_SPELLS.add(tabletItem);
+        }
+    }
+
+    private static void createPolymobDisableList() {
+        String configString = AncientMagicksCommonConfig.DISABLED_POLYMOBS.get();
+        for ( String string : List.of(configString.replaceAll("[\\[\\]]", "").replaceAll(" ", "").replaceAll("\n", "").split(",")) ) {
+            DISABLED_POLYMOBS.add(ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(string)));
+        }
+    }
+
+    public static void createMobList(ServerLevel serverLevel) {
+        for ( EntityType<?> entityType : ForgeRegistries.ENTITY_TYPES.getValues() ) {
+            if ( DISABLED_POLYMOBS.isEmpty() || !DISABLED_POLYMOBS.contains(entityType) ) {
+                Entity tempEntity = entityType.create(serverLevel);
+                if ( tempEntity instanceof Mob mob ) MOB_LIST.add(mob);
+            }
         }
     }
 

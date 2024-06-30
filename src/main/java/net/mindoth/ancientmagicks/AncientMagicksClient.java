@@ -10,7 +10,7 @@ import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballRenderer;
 import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketSendWandData;
+import net.mindoth.ancientmagicks.network.PacketSendRuneData;
 import net.mindoth.ancientmagicks.registries.AncientMagicksContainers;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.ancientmagicks.registries.AncientMagicksKeyBinds;
@@ -66,7 +66,7 @@ public class AncientMagicksClient {
             ItemStack wand = CastingItem.getHeldCastingItem(MINECRAFT.player);
             if ( key == AncientMagicksKeyBinds.SPELLSELECTOR.getKey().getValue() && wand.getItem() instanceof CastingItem ) {
                 if ( keyAction == 1 && MINECRAFT.screen == null ) {
-                    if ( wand.getItem() instanceof CastingItem ) AncientMagicksNetwork.sendToServer(new PacketSendWandData());
+                    if ( wand.getItem() instanceof CastingItem ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());
                 }
                 else if ( keyAction == 0 && MINECRAFT.screen instanceof GuiSpellWheel ) MINECRAFT.player.closeContainer();
             }

@@ -37,16 +37,16 @@ public class AncientMagicksNetwork {
                 .consumerMainThread(PacketSetSpell::handle)
                 .add();
 
-        net.messageBuilder(PacketSendWandData.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(PacketSendWandData::new)
-                .encoder(PacketSendWandData::encode)
-                .consumerMainThread(PacketSendWandData::handle)
+        net.messageBuilder(PacketSendRuneData.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketSendRuneData::new)
+                .encoder(PacketSendRuneData::encode)
+                .consumerMainThread(PacketSendRuneData::handle)
                 .add();
 
-        net.messageBuilder(PacketReceiveWandData.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketReceiveWandData::new)
-                .encoder(PacketReceiveWandData::encode)
-                .consumerMainThread(PacketReceiveWandData::handle)
+        net.messageBuilder(PacketReceiveRuneData.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketReceiveRuneData::new)
+                .encoder(PacketReceiveRuneData::encode)
+                .consumerMainThread(PacketReceiveRuneData::handle)
                 .add();
 
         net.messageBuilder(PacketSendCustomParticles.class, id(), NetworkDirection.PLAY_TO_CLIENT)

@@ -41,8 +41,8 @@ public class AncientMagicksCapabilities {
                     tag.putBoolean("am_purple_rune", oldStore.getPurple());
                     tag.putBoolean("am_yellow_rune", oldStore.getYellow());
                     tag.putBoolean("am_green_rune", oldStore.getGreen());
-                    tag.putBoolean("am_white_rune", oldStore.getWhite());
                     tag.putBoolean("am_black_rune", oldStore.getBlack());
+                    tag.putBoolean("am_white_rune", oldStore.getWhite());
                     AncientMagicksNetwork.sendToPlayer(new PacketSyncClientSpell(tag), serverPlayer);
                 });
             });

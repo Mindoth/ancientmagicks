@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.network;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,12 +11,12 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class PacketSendWandData {
+public class PacketSendRuneData {
 
-    public PacketSendWandData() {
+    public PacketSendRuneData() {
     }
 
-    public PacketSendWandData(FriendlyByteBuf buf) {
+    public PacketSendRuneData(FriendlyByteBuf buf) {
     }
 
     public void encode(FriendlyByteBuf buf) {
@@ -36,9 +35,9 @@ public class PacketSendWandData {
                     if ( spell.getPurple() ) runeList.add(new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()));
                     if ( spell.getYellow() ) runeList.add(new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
                     if ( spell.getGreen() ) runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
-                    if ( spell.getWhite() ) runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
                     if ( spell.getBlack() ) runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
-                    AncientMagicksNetwork.sendToPlayer(new PacketReceiveWandData(runeList), player);
+                    if ( spell.getWhite() ) runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
+                    AncientMagicksNetwork.sendToPlayer(new PacketReceiveRuneData(runeList), player);
                 });
             }
         });
