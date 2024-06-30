@@ -13,8 +13,10 @@ import net.mindoth.ancientmagicks.item.spell.collapse.CollapseTablet;
 import net.mindoth.ancientmagicks.item.spell.deafeningblast.DeafeningBlastTablet;
 import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteTablet;
 import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamTablet;
+import net.mindoth.ancientmagicks.item.spell.extinguish.ExtinguishTablet;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballTablet;
 import net.mindoth.ancientmagicks.item.spell.flight.FlightTablet;
+import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainTablet;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphTablet;
 import net.mindoth.ancientmagicks.item.spell.raisedead.RaiseDeadTablet;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballTablet;
@@ -80,6 +82,9 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> TELEKINETIC_GRAB_TABLET = ITEMS.register("telekinetic_grab_tablet",
             () -> new TelekineticGrabTablet(new Item.Properties(), 1, false, 20));
 
+    public static final RegistryObject<Item> EXTINGUISH_TABLET = ITEMS.register("extinguish_tablet",
+            () -> new ExtinguishTablet(new Item.Properties(), 1, false, 100));
+
     public static final RegistryObject<Item> WIND_BURST_TABLET = ITEMS.register("wind_burst_tablet",
             () -> new WindBurstTablet(new Item.Properties(), 2, false, 40));
 
@@ -94,6 +99,9 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> CALL_LIGHTNING_TABLET = ITEMS.register("call_lightning_tablet",
             () -> new CallLightningTablet(new Item.Properties(), 3, false, 60));
+
+    public static final RegistryObject<Item> NUMB_PAIN_TABLET = ITEMS.register("numb_pain_tablet",
+            () -> new NumbPainTablet(new Item.Properties(), 3, false, 200));
 
     public static final RegistryObject<Item> RAISE_DEAD_TABLET = ITEMS.register("raise_dead_tablet",
             () -> new RaiseDeadTablet(new Item.Properties(), 3, false, 200));

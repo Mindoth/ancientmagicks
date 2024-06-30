@@ -35,9 +35,12 @@
   "item.ancientmagicks.slow_fall_tablet": "Slow Fall Tablet",
   "item.ancientmagicks.deafening_blast_tablet": "Deafening Blast Tablet",
   "item.ancientmagicks.experience_stream_tablet": "Experience Stream Tablet",
+  "item.ancientmagicks.extinguish_tablet": "Extinguish Tablet",
+  "item.ancientmagicks.numb_pain_tablet": "Numb Pain Tablet",
 
 
   "effect.ancientmagicks.flight": "Flight",
+  "effect.ancientmagicks.numbness": "Numbness",
 
 
   "entity.ancientmagicks.skeleton_minion": "Skeleton Minion",
