@@ -34,7 +34,7 @@ public class NumbPainTablet extends TabletItem {
 
         if ( isAlly(owner, target) ) {
             state = true;
-            target.addEffect(new MobEffectInstance(AncientMagicksEffects.NUMBNESS.get(), life, 0, false, false));
+            target.addEffect(new MobEffectInstance(AncientMagicksEffects.NUMBNESS.get(), life, 0));
         }
 
         if ( state ) playMagicSound(level, center);
