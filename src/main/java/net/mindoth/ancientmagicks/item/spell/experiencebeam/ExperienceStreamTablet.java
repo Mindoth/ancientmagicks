@@ -9,8 +9,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class ExperienceStreamTablet extends TabletItem {
 
-    public ExperienceStreamTablet(Properties pProperties, int tier, boolean isChannel) {
-        super(pProperties, tier, isChannel);
+    public ExperienceStreamTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
+        super(pProperties, tier, isChannel, cooldown);
     }
 
     @Override
@@ -24,22 +24,24 @@ public class ExperienceStreamTablet extends TabletItem {
             down = 0.0F;
         }
 
-        if ( caster == owner && owner.experienceLevel >= 1 ) {
+        if ( owner.totalExperience > 0 ) {
             state = true;
             if ( useTime % 2 == 0 ) {
                 AbstractSpellEntity projectile = new ExperienceStreamEntity(level, owner, caster, this, !owner.isCreative());
-                int bonusDamage = owner.experienceLevel;
-                projectile.power += bonusDamage;
+                projectile.power += owner.experienceLevel;
                 projectile.setColor(AbstractSpellEntity.getSpellColor("green"), 0.3F);
                 float min = -0.1F;
                 float max = 0.1F;
                 projectile.setPos(center.x + (min + Math.random() * (max - min)), center.y + down + (min + Math.random() * (max - min)), center.z + (min + Math.random() * (max - min)));
                 projectile.shootFromRotation(caster, xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
                 level.addFreshEntity(projectile);
-                if ( !owner.isCreative() ) owner.giveExperiencePoints(-bonusDamage);
-                playXpSound(level, center);
-                playWindSound(level, center);
+                if ( !owner.isCreative() ) owner.giveExperiencePoints(-(int)projectile.power);
             }
+        }
+
+        if ( state ) {
+            playXpSound(level, center);
+            playWindSound(level, center);
         }
 
         return state;

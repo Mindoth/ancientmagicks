@@ -21,8 +21,8 @@ import java.util.List;
 
 public class CallLightningTablet extends TabletItem {
 
-    public CallLightningTablet(Item.Properties pProperties, int tier, boolean isChannel) {
-        super(pProperties, tier, isChannel);
+    public CallLightningTablet(Item.Properties pProperties, int tier, boolean isChannel, int cooldown) {
+        super(pProperties, tier, isChannel, cooldown);
     }
 
     @Override

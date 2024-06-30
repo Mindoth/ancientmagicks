@@ -80,7 +80,7 @@ public class CastingItem extends Item {
         }
     }
 
-    public static void doSpell(Player owner, Entity caster, ItemStack wand, TabletItem spell, int useTime) {
+    public static void doSpell(Player owner, Entity caster, ItemStack castingItem, TabletItem tablet, int useTime) {
         float xRot = caster.getXRot();
         float yRot = caster.getYRot();
         Vec3 center;
@@ -97,18 +97,23 @@ public class CastingItem extends Item {
         else center = caster.getEyePosition();
 
         //This actually casts the given Spell
-        if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) ) {
-            if ( !spell.isChannel ) {
-                if ( wand.getItem() instanceof TabletItem && !owner.isCreative() ) wand.shrink(1);
-                addCastingCooldown(owner, spell, spell.tier * 20);
-                owner.stopUsingItem();
+        if ( AncientMagicks.isSpellEnabled(tablet) ) {
+            if ( tablet.castMagic(owner, caster, center, xRot, yRot, useTime) ) {
+                if ( !tablet.isChannel ) {
+                    if ( castingItem.getItem() instanceof TabletItem && !owner.isCreative() ) castingItem.shrink(1);
+                    addCastingCooldown(owner, tablet, tablet.cooldown);
+                    owner.stopUsingItem();
+                }
             }
+            else whiffSpell(owner, caster, center, tablet);
         }
-        else {
-            RuneItem.playWhiffSound(caster.level(), center);
-            addCastingCooldown(owner, spell, 20);
-            owner.stopUsingItem();
-        }
+        else whiffSpell(owner, caster, center, tablet);
+    }
+
+    public static void whiffSpell(Player owner, Entity caster, Vec3 center, TabletItem tablet) {
+        RuneItem.playWhiffSound(caster.level(), center);
+        addCastingCooldown(owner, tablet, 20);
+        owner.stopUsingItem();
     }
 
     @SubscribeEvent
@@ -119,12 +124,12 @@ public class CastingItem extends Item {
                     player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getSpell()));
                         if ( item instanceof TabletItem tabletItem ) {
-                            player.getCooldowns().addCooldown(tabletItem, tabletItem.tier * 20);
+                            player.getCooldowns().addCooldown(tabletItem, tabletItem.cooldown);
                         }
                     });
                 }
                 else if ( event.getItem().getItem() instanceof TabletItem tabletItem ) {
-                    player.getCooldowns().addCooldown(tabletItem, tabletItem.tier * 20);
+                    player.getCooldowns().addCooldown(tabletItem, tabletItem.cooldown);
                 }
             }
         }

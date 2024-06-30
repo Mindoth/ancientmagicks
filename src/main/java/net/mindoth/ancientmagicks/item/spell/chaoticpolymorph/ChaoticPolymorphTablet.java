@@ -18,8 +18,8 @@ import java.util.Random;
 
 public class ChaoticPolymorphTablet extends TabletItem {
 
-    public ChaoticPolymorphTablet(Properties pProperties, int tier, boolean isChannel) {
-        super(pProperties, tier, isChannel);
+    public ChaoticPolymorphTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
+        super(pProperties, tier, isChannel, cooldown);
     }
 
     @Override

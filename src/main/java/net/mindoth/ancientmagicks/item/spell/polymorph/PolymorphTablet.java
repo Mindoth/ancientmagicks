@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class PolymorphTablet extends TabletItem {
 
-    public PolymorphTablet(Properties pProperties, int tier, boolean isChannel) {
-        super(pProperties, tier, isChannel);
+    public PolymorphTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
+        super(pProperties, tier, isChannel, cooldown);
     }
 
     @Override

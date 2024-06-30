@@ -15,8 +15,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class RaiseDeadTablet extends TabletItem {
 
-    public RaiseDeadTablet(Properties pProperties, int tier, boolean isChannel) {
-        super(pProperties, tier, isChannel);
+    public RaiseDeadTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
+        super(pProperties, tier, isChannel, cooldown);
     }
 
     @Override

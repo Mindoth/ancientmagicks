@@ -28,11 +28,13 @@ import java.util.List;
 public class TabletItem extends RuneItem {
     public int tier;
     public boolean isChannel;
+    public int cooldown;
 
-    public TabletItem(Properties pProperties, int tier, boolean isChannel) {
+    public TabletItem(Properties pProperties, int tier, boolean isChannel, int cooldown) {
         super(pProperties);
         this.tier = tier;
         this.isChannel = isChannel;
+        this.cooldown = cooldown;
     }
 
     @OnlyIn(Dist.CLIENT)

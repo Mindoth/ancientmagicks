@@ -7,12 +7,16 @@ public class AncientMagicksCommonConfig {
     public static final ForgeConfigSpec SPEC;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> PVP;
+    public static final ForgeConfigSpec.ConfigValue<String> DISABLED_SPELLS;
 
     static {
         BUILDER.push("Configs for Skillcloaks");
 
         PVP = BUILDER.comment("true = Harmful spells can hurt and target other players. false = Harmful spells will ignore players (Default = true)")
-                .define("PvP", true);
+                .define("pvp", true);
+
+        DISABLED_SPELLS = BUILDER.comment("Write any spells you wish to disable here in the way of: [ancientmagicks:ward_tablet, ancientmagicks:fireball_tablet] (Default = [])")
+                .define("disablelist", "[]");
 
         BUILDER.pop();
         SPEC = BUILDER.build();

@@ -9,8 +9,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class DeafeningBlastTablet extends TabletItem {
 
-    public DeafeningBlastTablet(Properties pProperties, int tier, boolean isChannel) {
-        super(pProperties, tier, isChannel);
+    public DeafeningBlastTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
+        super(pProperties, tier, isChannel, cooldown);
     }
 
     @Override
