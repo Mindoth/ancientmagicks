@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.raisedead;
+package net.mindoth.ancientmagicks.item.spell.summonskeleton;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.summon.SummonedMinion;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.summon.SummonerHelper;

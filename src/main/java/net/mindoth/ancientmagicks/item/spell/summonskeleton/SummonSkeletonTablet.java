@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.raisedead;
+package net.mindoth.ancientmagicks.item.spell.summonskeleton;
 
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
@@ -13,9 +13,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class RaiseDeadTablet extends TabletItem {
+public class SummonSkeletonTablet extends TabletItem {
 
-    public RaiseDeadTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
+    public SummonSkeletonTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
         super(pProperties, tier, isChannel, cooldown);
     }
 

@@ -18,7 +18,7 @@ import net.mindoth.ancientmagicks.item.spell.fireball.FireballTablet;
 import net.mindoth.ancientmagicks.item.spell.flight.FlightTablet;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainTablet;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphTablet;
-import net.mindoth.ancientmagicks.item.spell.raisedead.RaiseDeadTablet;
+import net.mindoth.ancientmagicks.item.spell.summonskeleton.SummonSkeletonTablet;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballTablet;
 import net.mindoth.ancientmagicks.item.spell.slowfall.SlowFallTablet;
 import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabTablet;
@@ -103,8 +103,8 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> NUMB_PAIN_TABLET = ITEMS.register("numb_pain_tablet",
             () -> new NumbPainTablet(new Item.Properties(), 3, false, 200));
 
-    public static final RegistryObject<Item> RAISE_DEAD_TABLET = ITEMS.register("raise_dead_tablet",
-            () -> new RaiseDeadTablet(new Item.Properties(), 3, false, 200));
+    public static final RegistryObject<Item> SUMMON_SKELETON_TABLET = ITEMS.register("summon_skeleton_tablet",
+            () -> new SummonSkeletonTablet(new Item.Properties(), 3, false, 200));
 
     public static final RegistryObject<Item> COLLAPSE_TABLET = ITEMS.register("collapse_tablet",
             () -> new CollapseTablet(new Item.Properties(), 3, false, 60));

@@ -5,7 +5,7 @@ import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
-import net.mindoth.ancientmagicks.item.spell.raisedead.SkeletonMinionEntity;
+import net.mindoth.ancientmagicks.item.spell.summonskeleton.SkeletonMinionEntity;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
 import net.minecraft.resources.ResourceLocation;
