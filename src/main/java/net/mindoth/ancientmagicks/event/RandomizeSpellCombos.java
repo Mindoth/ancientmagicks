@@ -3,14 +3,7 @@ package net.mindoth.ancientmagicks.event;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketSyncClientSpell;
-import net.mindoth.ancientmagicks.network.PacketSyncSpellCombos;
-import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.storage.LevelResource;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -28,7 +21,7 @@ public class RandomizeSpellCombos {
 
     @SubscribeEvent
     public static void onServerStart(final ServerAboutToStartEvent event) {
-        Logger logger = AncientMagicks.LOGGER;
+        Logger logger = AncientMagicks.getLogger();
         Path savePath = event.getServer().getWorldPath(LevelResource.ROOT).normalize().toAbsolutePath();
         String filepath = savePath + "/ancientmagicks.json";
 

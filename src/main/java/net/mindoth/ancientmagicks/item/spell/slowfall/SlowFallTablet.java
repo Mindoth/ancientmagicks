@@ -14,8 +14,8 @@ import java.util.List;
 
 public class SlowFallTablet extends TabletItem {
 
-    public SlowFallTablet(Properties pProperties, int cooldown) {
-        super(pProperties, cooldown);
+    public SlowFallTablet(Properties pProperties, int tier, boolean isChannel) {
+        super(pProperties, tier, isChannel);
     }
 
     @Override

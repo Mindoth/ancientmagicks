@@ -38,7 +38,7 @@ import java.util.List;
 public class AncientMagicks {
     public static final String MOD_ID = "ancientmagicks";
     public static Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    protected static Logger getLogger() {
+    public static Logger getLogger() {
         return LOGGER;
     }
 
@@ -102,6 +102,9 @@ public class AncientMagicks {
     public static List<TabletItem> TIER3_SPELL_RUNES = Lists.newArrayList();
     public static List<TabletItem> TIER4_SPELL_RUNES = Lists.newArrayList();
     public static List<TabletItem> TIER5_SPELL_RUNES = Lists.newArrayList();
+    public static List<TabletItem> TIER6_SPELL_RUNES = Lists.newArrayList();
+    public static List<TabletItem> TIER7_SPELL_RUNES = Lists.newArrayList();
+    public static List<TabletItem> TIER8_SPELL_RUNES = Lists.newArrayList();
 
     public static HashMap<TabletItem, List<ColorRuneItem>> COMBO_MAP = new HashMap<>();
 
@@ -113,6 +116,9 @@ public class AncientMagicks {
         if ( !TIER3_SPELL_RUNES.isEmpty() ) TIER3_SPELL_RUNES.clear();
         if ( !TIER4_SPELL_RUNES.isEmpty() ) TIER4_SPELL_RUNES.clear();
         if ( !TIER5_SPELL_RUNES.isEmpty() ) TIER5_SPELL_RUNES.clear();
+        if ( !TIER6_SPELL_RUNES.isEmpty() ) TIER6_SPELL_RUNES.clear();
+        if ( !TIER7_SPELL_RUNES.isEmpty() ) TIER7_SPELL_RUNES.clear();
+        if ( !TIER8_SPELL_RUNES.isEmpty() ) TIER8_SPELL_RUNES.clear();
         if ( !COMBO_MAP.isEmpty() ) COMBO_MAP.clear();
     }
 
@@ -124,11 +130,14 @@ public class AncientMagicks {
             if ( tabletItem.tier == 3 ) TIER3_SPELL_RUNES.add(tabletItem);
             if ( tabletItem.tier == 4 ) TIER4_SPELL_RUNES.add(tabletItem);
             if ( tabletItem.tier == 5 ) TIER5_SPELL_RUNES.add(tabletItem);
+            if ( tabletItem.tier == 6 ) TIER6_SPELL_RUNES.add(tabletItem);
+            if ( tabletItem.tier == 7 ) TIER7_SPELL_RUNES.add(tabletItem);
+            if ( tabletItem.tier == 8 ) TIER8_SPELL_RUNES.add(tabletItem);
         }
     }
 
     public static void comboRuneInit() {
-        Logger logger = LOGGER;
+        Logger logger = getLogger();
         for ( Item item : ITEM_LIST ) if ( item instanceof ColorRuneItem ) COLOR_RUNES.add((ColorRuneItem)item);
 
         List<List<ColorRuneItem>> comboList1 = Lists.newArrayList();
@@ -136,43 +145,98 @@ public class AncientMagicks {
         List<List<ColorRuneItem>> comboList3 = Lists.newArrayList();
         List<List<ColorRuneItem>> comboList4 = Lists.newArrayList();
         List<List<ColorRuneItem>> comboList5 = Lists.newArrayList();
+        List<List<ColorRuneItem>> comboList6 = Lists.newArrayList();
+        List<List<ColorRuneItem>> comboList7 = Lists.newArrayList();
+        List<List<ColorRuneItem>> comboList8 = Lists.newArrayList();
 
         for ( int i = 0; i < COLOR_RUNES.size(); i++ ) {
             for ( int j = 0; j < COLOR_RUNES.size(); j++ ) {
-                List<ColorRuneItem> tempList1 = Lists.newArrayList();
-                tempList1.add(COLOR_RUNES.get(i));
-                tempList1.add(COLOR_RUNES.get(j));
-                if ( !hasDupeInList(comboList1, tempList1) ) comboList1.add(tempList1);
+                if ( !TIER1_SPELL_RUNES.isEmpty() ) {
+                    List<ColorRuneItem> tempList1 = Lists.newArrayList();
+                    tempList1.add(COLOR_RUNES.get(i));
+                    tempList1.add(COLOR_RUNES.get(j));
+                    if ( !hasDupeInList(comboList1, tempList1) ) comboList1.add(tempList1);
+                }
                 for ( int k = 0; k < COLOR_RUNES.size(); k++ ) {
-                    List<ColorRuneItem> tempList2 = Lists.newArrayList();
-                    tempList2.add(COLOR_RUNES.get(i));
-                    tempList2.add(COLOR_RUNES.get(j));
-                    tempList2.add(COLOR_RUNES.get(k));
-                    if ( !hasDupeInList(comboList2, tempList2) ) comboList2.add(tempList2);
+                    if ( !TIER2_SPELL_RUNES.isEmpty() ) {
+                        List<ColorRuneItem> tempList2 = Lists.newArrayList();
+                        tempList2.add(COLOR_RUNES.get(i));
+                        tempList2.add(COLOR_RUNES.get(j));
+                        tempList2.add(COLOR_RUNES.get(k));
+                        if ( !hasDupeInList(comboList2, tempList2) ) comboList2.add(tempList2);
+                    }
                     for ( int l = 0; l < COLOR_RUNES.size(); l++ ) {
-                        List<ColorRuneItem> tempList3 = Lists.newArrayList();
-                        tempList3.add(COLOR_RUNES.get(i));
-                        tempList3.add(COLOR_RUNES.get(j));
-                        tempList3.add(COLOR_RUNES.get(k));
-                        tempList3.add(COLOR_RUNES.get(l));
-                        if ( !hasDupeInList(comboList3, tempList3) ) comboList3.add(tempList3);
+                        if ( !TIER3_SPELL_RUNES.isEmpty() ) {
+                            List<ColorRuneItem> tempList3 = Lists.newArrayList();
+                            tempList3.add(COLOR_RUNES.get(i));
+                            tempList3.add(COLOR_RUNES.get(j));
+                            tempList3.add(COLOR_RUNES.get(k));
+                            tempList3.add(COLOR_RUNES.get(l));
+                            if ( !hasDupeInList(comboList3, tempList3) ) comboList3.add(tempList3);
+                        }
                         for ( int m = 0; m < COLOR_RUNES.size(); m++ ) {
-                            List<ColorRuneItem> tempList4 = Lists.newArrayList();
-                            tempList4.add(COLOR_RUNES.get(i));
-                            tempList4.add(COLOR_RUNES.get(j));
-                            tempList4.add(COLOR_RUNES.get(k));
-                            tempList4.add(COLOR_RUNES.get(l));
-                            tempList4.add(COLOR_RUNES.get(m));
-                            if ( !hasDupeInList(comboList4, tempList4) ) comboList4.add(tempList4);
+                            if ( !TIER4_SPELL_RUNES.isEmpty() ) {
+                                List<ColorRuneItem> tempList4 = Lists.newArrayList();
+                                tempList4.add(COLOR_RUNES.get(i));
+                                tempList4.add(COLOR_RUNES.get(j));
+                                tempList4.add(COLOR_RUNES.get(k));
+                                tempList4.add(COLOR_RUNES.get(l));
+                                tempList4.add(COLOR_RUNES.get(m));
+                                if ( !hasDupeInList(comboList4, tempList4) ) comboList4.add(tempList4);
+                            }
                             for ( int n = 0; n < COLOR_RUNES.size(); n++ ) {
-                                List<ColorRuneItem> tempList5 = Lists.newArrayList();
-                                tempList5.add(COLOR_RUNES.get(i));
-                                tempList5.add(COLOR_RUNES.get(j));
-                                tempList5.add(COLOR_RUNES.get(k));
-                                tempList5.add(COLOR_RUNES.get(l));
-                                tempList5.add(COLOR_RUNES.get(m));
-                                tempList5.add(COLOR_RUNES.get(n));
-                                if ( !hasDupeInList(comboList5, tempList5) ) comboList5.add(tempList5);
+                                if ( !TIER5_SPELL_RUNES.isEmpty() ) {
+                                    List<ColorRuneItem> tempList5 = Lists.newArrayList();
+                                    tempList5.add(COLOR_RUNES.get(i));
+                                    tempList5.add(COLOR_RUNES.get(j));
+                                    tempList5.add(COLOR_RUNES.get(k));
+                                    tempList5.add(COLOR_RUNES.get(l));
+                                    tempList5.add(COLOR_RUNES.get(m));
+                                    tempList5.add(COLOR_RUNES.get(n));
+                                    if ( !hasDupeInList(comboList5, tempList5) ) comboList5.add(tempList5);
+                                }
+                                for ( int o = 0; o < COLOR_RUNES.size(); o++ ) {
+                                    if ( !TIER6_SPELL_RUNES.isEmpty() ) {
+                                        List<ColorRuneItem> tempList6 = Lists.newArrayList();
+                                        tempList6.add(COLOR_RUNES.get(i));
+                                        tempList6.add(COLOR_RUNES.get(j));
+                                        tempList6.add(COLOR_RUNES.get(k));
+                                        tempList6.add(COLOR_RUNES.get(l));
+                                        tempList6.add(COLOR_RUNES.get(m));
+                                        tempList6.add(COLOR_RUNES.get(n));
+                                        tempList6.add(COLOR_RUNES.get(o));
+                                        if ( !hasDupeInList(comboList6, tempList6) ) comboList6.add(tempList6);
+                                    }
+                                    for ( int p = 0; p < COLOR_RUNES.size(); p++ ) {
+                                        if ( !TIER7_SPELL_RUNES.isEmpty() ) {
+                                            List<ColorRuneItem> tempList7 = Lists.newArrayList();
+                                            tempList7.add(COLOR_RUNES.get(i));
+                                            tempList7.add(COLOR_RUNES.get(j));
+                                            tempList7.add(COLOR_RUNES.get(k));
+                                            tempList7.add(COLOR_RUNES.get(l));
+                                            tempList7.add(COLOR_RUNES.get(m));
+                                            tempList7.add(COLOR_RUNES.get(n));
+                                            tempList7.add(COLOR_RUNES.get(o));
+                                            tempList7.add(COLOR_RUNES.get(p));
+                                            if ( !hasDupeInList(comboList7, tempList7) ) comboList7.add(tempList7);
+                                        }
+                                        for ( int q = 0; q < COLOR_RUNES.size(); q++ ) {
+                                            if ( !TIER8_SPELL_RUNES.isEmpty() ) {
+                                                List<ColorRuneItem> tempList8 = Lists.newArrayList();
+                                                tempList8.add(COLOR_RUNES.get(i));
+                                                tempList8.add(COLOR_RUNES.get(j));
+                                                tempList8.add(COLOR_RUNES.get(k));
+                                                tempList8.add(COLOR_RUNES.get(l));
+                                                tempList8.add(COLOR_RUNES.get(m));
+                                                tempList8.add(COLOR_RUNES.get(n));
+                                                tempList8.add(COLOR_RUNES.get(o));
+                                                tempList8.add(COLOR_RUNES.get(p));
+                                                tempList8.add(COLOR_RUNES.get(q));
+                                                if ( !hasDupeInList(comboList8, tempList8) ) comboList8.add(tempList8);
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -184,41 +248,65 @@ public class AncientMagicks {
         else if ( comboList3.size() < TIER3_SPELL_RUNES.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 3 SPELL.");
         else if ( comboList4.size() < TIER4_SPELL_RUNES.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 4 SPELL.");
         else if ( comboList5.size() < TIER5_SPELL_RUNES.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 5 SPELL.");
+        else if ( comboList6.size() < TIER6_SPELL_RUNES.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 6 SPELL.");
+        else if ( comboList7.size() < TIER7_SPELL_RUNES.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 7 SPELL.");
+        else if ( comboList8.size() < TIER8_SPELL_RUNES.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 8 SPELL. THAT MEANS YOU HAVE OVER 2002 TIER 8 SPELLS. HOW DID YOU MANAGE THIS?");
         else {
-            Collections.shuffle(comboList1);
-            Collections.shuffle(comboList2);
-            Collections.shuffle(comboList3);
-            Collections.shuffle(comboList4);
-            Collections.shuffle(comboList5);
-            for ( int i = 0; i < comboList1.size(); i++ ) {
-                if ( i < TIER1_SPELL_RUNES.size() ) {
-                    COMBO_MAP.put(TIER1_SPELL_RUNES.get(i), comboList1.get(i));
+            if ( !TIER1_SPELL_RUNES.isEmpty() ) {
+                Collections.shuffle(comboList1);
+                for ( int i = 0; i < comboList1.size(); i++ ) {
+                    if ( i < TIER1_SPELL_RUNES.size() ) COMBO_MAP.put(TIER1_SPELL_RUNES.get(i), comboList1.get(i));
+                    else break;
                 }
-                else break;
             }
-            for ( int i = 0; i < comboList2.size(); i++ ) {
-                if ( i < TIER2_SPELL_RUNES.size() ) {
-                    COMBO_MAP.put(TIER2_SPELL_RUNES.get(i), comboList2.get(i));
+            if ( !TIER2_SPELL_RUNES.isEmpty() ) {
+                Collections.shuffle(comboList2);
+                for ( int i = 0; i < comboList2.size(); i++ ) {
+                    if ( i < TIER2_SPELL_RUNES.size() ) COMBO_MAP.put(TIER2_SPELL_RUNES.get(i), comboList2.get(i));
+                    else break;
                 }
-                else break;
             }
-            for ( int i = 0; i < comboList3.size(); i++ ) {
-                if ( i < TIER3_SPELL_RUNES.size() ) {
-                    COMBO_MAP.put(TIER3_SPELL_RUNES.get(i), comboList3.get(i));
+            if ( !TIER3_SPELL_RUNES.isEmpty() ) {
+                Collections.shuffle(comboList3);
+                for ( int i = 0; i < comboList3.size(); i++ ) {
+                    if ( i < TIER3_SPELL_RUNES.size() ) COMBO_MAP.put(TIER3_SPELL_RUNES.get(i), comboList3.get(i));
+                    else break;
                 }
-                else break;
             }
-            for ( int i = 0; i < comboList4.size(); i++ ) {
-                if ( i < TIER4_SPELL_RUNES.size() ) {
-                    COMBO_MAP.put(TIER4_SPELL_RUNES.get(i), comboList4.get(i));
+            if ( !TIER4_SPELL_RUNES.isEmpty() ) {
+                Collections.shuffle(comboList4);
+                for ( int i = 0; i < comboList4.size(); i++ ) {
+                    if ( i < TIER4_SPELL_RUNES.size() ) COMBO_MAP.put(TIER4_SPELL_RUNES.get(i), comboList4.get(i));
+                    else break;
                 }
-                else break;
             }
-            for ( int i = 0; i < comboList5.size(); i++ ) {
-                if ( i < TIER5_SPELL_RUNES.size() ) {
-                    COMBO_MAP.put(TIER5_SPELL_RUNES.get(i), comboList5.get(i));
+            if ( !TIER5_SPELL_RUNES.isEmpty() ) {
+                Collections.shuffle(comboList5);
+                for ( int i = 0; i < comboList5.size(); i++ ) {
+                    if ( i < TIER5_SPELL_RUNES.size() ) COMBO_MAP.put(TIER5_SPELL_RUNES.get(i), comboList5.get(i));
+                    else break;
                 }
-                else break;
+            }
+            if ( !TIER6_SPELL_RUNES.isEmpty() ) {
+                Collections.shuffle(comboList6);
+                for ( int i = 0; i < comboList6.size(); i++ ) {
+                    if ( i < TIER6_SPELL_RUNES.size() ) COMBO_MAP.put(TIER6_SPELL_RUNES.get(i), comboList6.get(i));
+                    else break;
+                }
+            }
+            if ( !TIER7_SPELL_RUNES.isEmpty() ) {
+                Collections.shuffle(comboList7);
+                for ( int i = 0; i < comboList7.size(); i++ ) {
+                    if ( i < TIER7_SPELL_RUNES.size() ) COMBO_MAP.put(TIER7_SPELL_RUNES.get(i), comboList7.get(i));
+                    else break;
+                }
+            }
+            if ( !TIER8_SPELL_RUNES.isEmpty() ) {
+                Collections.shuffle(comboList8);
+                for ( int i = 0; i < comboList8.size(); i++ ) {
+                    if ( i < TIER8_SPELL_RUNES.size() ) COMBO_MAP.put(TIER8_SPELL_RUNES.get(i), comboList8.get(i));
+                    else break;
+                }
             }
         }
     }

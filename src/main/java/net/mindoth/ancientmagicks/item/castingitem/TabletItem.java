@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item.castingitem;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -25,9 +26,13 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class TabletItem extends RuneItem {
+    public int tier;
+    public boolean isChannel;
 
-    public TabletItem(Properties pProperties, int tier) {
-        super(pProperties, tier);
+    public TabletItem(Properties pProperties, int tier, boolean isChannel) {
+        super(pProperties);
+        this.tier = tier;
+        this.isChannel = isChannel;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -41,6 +46,9 @@ public class TabletItem extends RuneItem {
                 tooltipString.append(color);
             }
             tooltip.add(Component.literal(String.valueOf(tooltipString)));
+
+            if ( this.tier != 0 ) tooltip.add(Component.translatable("tooltip.ancientmagicks.rune_tier")
+                    .append(Component.literal(" " + this.tier).withStyle(ChatFormatting.BLUE)));
         }
 
         super.appendHoverText(stack, world, tooltip, flagIn);
@@ -72,7 +80,7 @@ public class TabletItem extends RuneItem {
     public void onUseTick(Level level, LivingEntity living, ItemStack tablet, int timeLeft) {
         if ( level.isClientSide ) return;
         if ( living instanceof Player player && tablet.getItem() instanceof TabletItem tabletItem ) {
-            CastingItem.doSpell(player, player, tablet, tabletItem, getUseDuration(tablet) - timeLeft, true);
+            CastingItem.doSpell(player, player, tablet, tabletItem, getUseDuration(tablet) - timeLeft);
         }
     }
 

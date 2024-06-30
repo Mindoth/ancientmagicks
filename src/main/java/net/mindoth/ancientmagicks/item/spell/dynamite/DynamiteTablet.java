@@ -11,8 +11,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class DynamiteTablet extends TabletItem {
 
-    public DynamiteTablet(Properties pProperties, int cooldown) {
-        super(pProperties, cooldown);
+    public DynamiteTablet(Properties pProperties, int tier, boolean isChannel) {
+        super(pProperties, tier, isChannel);
     }
 
     @Override

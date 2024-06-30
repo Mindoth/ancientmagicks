@@ -15,8 +15,8 @@ import java.util.List;
 
 public class TelekineticGrabTablet extends TabletItem {
 
-    public TelekineticGrabTablet(Properties pProperties, int cooldown) {
-        super(pProperties, cooldown);
+    public TelekineticGrabTablet(Properties pProperties, int tier, boolean isChannel) {
+        super(pProperties, tier, isChannel);
     }
 
     @Override

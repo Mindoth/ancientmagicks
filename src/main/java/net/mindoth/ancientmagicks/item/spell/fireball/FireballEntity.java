@@ -103,7 +103,8 @@ public class FireballEntity extends AbstractSpellEntity {
                 float randY = (float)((Math.random() * (size - (-size))) + (-size));
                 float randZ = (float)((Math.random() * (size - (-size))) + (-size));
                 double randomValue = -2 + 4 * world.random.nextDouble();
-                world.sendParticles(ParticleTypes.LAVA, pos.x + randX, this.getY() + randY, pos.z + randZ, 0, Math.cos(i), randomValue * 0.5D, Math.sin(i), 0);
+                world.sendParticles(ParticleTypes.LAVA, pos.x + randX, this.getY() + randY, pos.z + randZ,
+                        0, Math.cos(i), randomValue * 0.5D, Math.sin(i), 0);
             }
         }
         Vec3 center = ShadowEvents.getEntityCenter(this);

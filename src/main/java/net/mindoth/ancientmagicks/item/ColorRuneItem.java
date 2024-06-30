@@ -34,8 +34,8 @@ import java.util.Map;
 public class ColorRuneItem extends RuneItem {
     public String color;
 
-    public ColorRuneItem(Properties pProperties, int cooldown, String color) {
-        super(pProperties, cooldown);
+    public ColorRuneItem(Properties pProperties, String color) {
+        super(pProperties);
         this.color = color;
     }
 

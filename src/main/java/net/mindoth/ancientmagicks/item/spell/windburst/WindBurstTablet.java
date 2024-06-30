@@ -15,8 +15,8 @@ import java.util.List;
 
 public class WindBurstTablet extends TabletItem {
 
-    public WindBurstTablet(Properties pProperties, int cooldown) {
-        super(pProperties, cooldown);
+    public WindBurstTablet(Properties pProperties, int tier, boolean isChannel) {
+        super(pProperties, tier, isChannel);
     }
 
     @Override

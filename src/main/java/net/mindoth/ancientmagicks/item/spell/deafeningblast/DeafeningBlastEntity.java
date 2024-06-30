@@ -6,6 +6,7 @@ import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,7 +43,7 @@ public class DeafeningBlastEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultLife() {
-        return 60.0F;
+        return 20.0F;
     }
 
     @Override
@@ -57,20 +58,23 @@ public class DeafeningBlastEntity extends AbstractSpellEntity {
             dealDamage(target);
             ItemStack mainHand = target.getMainHandItem();
             ItemStack offHand = target.getOffhandItem();
-            Vec3 pos = target.getEyePosition();
-            if ( !mainHand.isEmpty() ) {
-                ItemStack dropStack = mainHand.copyAndClear();
-                ItemEntity drop = new ItemEntity(target.level(), pos.x, pos.y, pos.z, dropStack);
-                drop.setDeltaMovement(target.getLookAngle().x * 0.25F, target.getLookAngle().y, target.getLookAngle().z * 0.25F);
-                target.level().addFreshEntity(drop);
-            }
-            if ( !offHand.isEmpty() ) {
-                ItemStack dropStack = offHand.copyAndClear();
-                ItemEntity drop = new ItemEntity(target.level(), pos.x, pos.y, pos.z, dropStack);
-                drop.setDeltaMovement(target.getLookAngle().x * 0.25F, target.getLookAngle().y, target.getLookAngle().z * 0.25F);
-                target.level().addFreshEntity(drop);
-            }
+            if ( !mainHand.isEmpty() ) dropItemEntity(mainHand.copyAndClear(), target);
+            if ( !offHand.isEmpty() ) dropItemEntity(offHand.copyAndClear(), target);
         }
+    }
+
+    private void dropItemEntity(ItemStack dropStack, LivingEntity target) {
+        Vec3 pos = target.getEyePosition();
+        ItemEntity drop = new ItemEntity(target.level(), pos.x, pos.y - 0.3D, pos.z, dropStack);
+        float f8 = Mth.sin(target.getXRot() * ((float)Math.PI / 180F));
+        float f2 = Mth.cos(target.getXRot() * ((float)Math.PI / 180F));
+        float f3 = Mth.sin(target.getYRot() * ((float)Math.PI / 180F));
+        float f4 = Mth.cos(target.getYRot() * ((float)Math.PI / 180F));
+        float f5 = this.random.nextFloat() * ((float)Math.PI * 2F);
+        float f6 = 0.02F * this.random.nextFloat();
+        drop.setDeltaMovement((double)(-f3 * f2 * 0.3F) + Math.cos((double)f5) * (double)f6, (double)(-f8 * 0.3F + 0.1F + (this.random.nextFloat() - this.random.nextFloat()) * 0.1F), (double)(f4 * f2 * 0.3F) + Math.sin((double)f5) * (double)f6);
+        drop.setPickUpDelay(40);
+        target.level().addFreshEntity(drop);
     }
 
     protected void doClientTickEffects() {
@@ -94,20 +98,5 @@ public class DeafeningBlastEntity extends AbstractSpellEntity {
             world.addParticle(EmberParticleProvider.createData(getParticleColor(), this.entityData.get(SIZE), 10, true, true), true,
                     vecLeft.x, vecLeft.y, vecLeft.z, 0, 0, 0);
         }
-        /*for ( int j = -4; j < 0; ++j ) {
-            //Main body
-            //Trail twinkle
-            if ( j == -1 ) {
-                for ( int i = 0; i < 8; i++ ) {
-                    float size = this.entityData.get(SIZE) / 3;
-                    float randX = (float)((Math.random() * (size - (-size))) + (-size));
-                    float randY = (float)((Math.random() * (size - (-size))) + (-size));
-                    float randZ = (float)((Math.random() * (size - (-size))) + (-size));
-                    int life = 4 + level().random.nextInt(20);
-                    world.addParticle(EmberParticleProvider.createData(getParticleColor(), size, life, true, true), true,
-                            pos.x + randX, pos.y + randY, pos.z + randZ, 0, 0, 0);
-                }
-            }
-        }*/
     }
 }

@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.registries;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.spell.deafeningblast.DeafeningBlastEntity;
 import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteEntity;
+import net.mindoth.ancientmagicks.item.spell.experiencebeam.ExperienceStreamEntity;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
 import net.mindoth.ancientmagicks.item.spell.raisedead.SkeletonMinionEntity;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballEntity;
@@ -36,7 +37,11 @@ public class AncientMagicksEntities {
 
     public static final RegistryObject<EntityType<DeafeningBlastEntity>> DEAFENING_BLAST
             = registerEntity(EntityType.Builder.<DeafeningBlastEntity>of(DeafeningBlastEntity::new,
-            MobCategory.MISC).sized(2.0F, 0.4F).setCustomClientFactory(DeafeningBlastEntity::new), "deafening_blast");
+            MobCategory.MISC).sized(1.0F, 0.4F).setCustomClientFactory(DeafeningBlastEntity::new), "deafening_blast");
+
+    public static final RegistryObject<EntityType<ExperienceStreamEntity>> EXPERIENCE_BEAM
+            = registerEntity(EntityType.Builder.<ExperienceStreamEntity>of(ExperienceStreamEntity::new,
+            MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(ExperienceStreamEntity::new), "experience_beam");
 
 
     public static final RegistryObject<EntityType<SkeletonMinionEntity>> SKELETON_MINION =

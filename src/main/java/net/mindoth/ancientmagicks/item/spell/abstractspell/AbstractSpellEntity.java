@@ -167,13 +167,11 @@ public class AbstractSpellEntity extends ThrowableProjectile {
     @Override
     public void tick() {
         super.tick();
-        if ( level().isClientSide ) {
-            doClientTickEffects();
-        }
+        if ( level().isClientSide ) doClientTickEffects();
         if ( !level().isClientSide ) {
             doTickEffects();
             if ( this.tickCount > this.life ) {
-                doDeathEffects();
+                doExpirationEffects();
             }
             if ( this.homing ) {
                 int range = 3;
@@ -223,26 +221,29 @@ public class AbstractSpellEntity extends ThrowableProjectile {
         double d5 = vec3.x;
         double d6 = vec3.y;
         double d1 = vec3.z;
-        for ( int j = -4; j < 0; ++j ) {
-            //Main body
-            for ( int i = 0; i < 2; i++ ) {
-                float size = this.entityData.get(SIZE) / 4;
-                float randX = (float)((Math.random() * (size - (-size))) + (-size));
-                float randY = (float)((Math.random() * (size - (-size))) + (-size));
-                float randZ = (float)((Math.random() * (size - (-size))) + (-size));
-                world.addParticle(EmberParticleProvider.createData(getParticleColor(), this.entityData.get(SIZE), 10, true, true), true,
-                        pos.x + randX + d5 * (double)j / 4.0D, pos.y + randY + d6 * (double)j / 4.0D, pos.z + randZ + d1 * (double)j / 4.0D, 0, 0, 0);
-            }
-            //Trail twinkle
-            if ( j == -1 ) {
-                for ( int i = 0; i < 8; i++ ) {
-                    float size = this.entityData.get(SIZE) / 3;
-                    float randX = (float)((Math.random() * (size - (-size))) + (-size));
-                    float randY = (float)((Math.random() * (size - (-size))) + (-size));
-                    float randZ = (float)((Math.random() * (size - (-size))) + (-size));
-                    int life = 4 + level().random.nextInt(20);
-                    world.addParticle(EmberParticleProvider.createData(getParticleColor(), size, life, true, true), true,
-                            pos.x + randX, pos.y + randY, pos.z + randZ, 0, 0, 0);
+        for ( int j = -4; j < 0; j++ ) {
+            if ( -this.tickCount - 2 < j ) {
+                //Main body
+                float particleSize = Math.min(this.entityData.get(SIZE), (this.entityData.get(SIZE) * 0.1F) * this.tickCount);
+                for ( int i = 0; i < 2; i++ ) {
+                    float sphereSize = this.entityData.get(SIZE) / 4;
+                    float randX = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
+                    float randY = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
+                    float randZ = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
+                    world.addParticle(EmberParticleProvider.createData(getParticleColor(), particleSize, 10, true, true), true,
+                            pos.x + randX + d5 * (double)j / 4.0D, pos.y + randY + d6 * (double)j / 4.0D, pos.z + randZ + d1 * (double)j / 4.0D, 0, 0, 0);
+                }
+                //Trail twinkle
+                if ( j == -1 ) {
+                    for ( int i = 0; i < 8; i++ ) {
+                        float sphereSize = this.entityData.get(SIZE) / 3;
+                        float randX = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
+                        float randY = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
+                        float randZ = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
+                        int life = 4 + level().random.nextInt(20);
+                        world.addParticle(EmberParticleProvider.createData(getParticleColor(), sphereSize, life, true, true), true,
+                                pos.x + randX, pos.y + randY, pos.z + randZ, 0, 0, 0);
+                    }
                 }
             }
         }
@@ -265,6 +266,10 @@ public class AbstractSpellEntity extends ThrowableProjectile {
 
     protected void doDeathEffects() {
         this.discard();
+    }
+
+    protected void doExpirationEffects() {
+        doDeathEffects();
     }
 
     public static ParticleColor.IntWrapper getSpellColor(String element) {

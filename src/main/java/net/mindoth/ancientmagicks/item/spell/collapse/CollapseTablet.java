@@ -14,8 +14,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class CollapseTablet extends TabletItem {
 
-    public CollapseTablet(Properties pProperties, int cooldown) {
-        super(pProperties, cooldown);
+    public CollapseTablet(Properties pProperties, int tier, boolean isChannel) {
+        super(pProperties, tier, isChannel);
     }
 
     @Override
