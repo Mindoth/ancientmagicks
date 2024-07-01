@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.network.capabilities;
+package net.mindoth.ancientmagicks.network.capabilities.playerspell;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

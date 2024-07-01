@@ -37,9 +37,8 @@ public class ChaoticPolymorphTablet extends TabletItem {
         if ( level instanceof ServerLevel serverLevel && target instanceof Mob ) {
             if ( AncientMagicks.MOB_LIST.isEmpty() ) AncientMagicks.createMobList(serverLevel);
             Random rand = new Random();
-            Mob sheep = AncientMagicks.MOB_LIST.get(rand.nextInt(AncientMagicks.MOB_LIST.size()));
-            if ( sheep != null ) {
-                while ( sheep.isRemoved() ) sheep = AncientMagicks.MOB_LIST.get(rand.nextInt(AncientMagicks.MOB_LIST.size()));
+            Entity entity = AncientMagicks.MOB_LIST.get(rand.nextInt(AncientMagicks.MOB_LIST.size())).create(level);
+            if ( entity instanceof Mob sheep ) {
                 sheep.moveTo(target.position());
                 ForgeEventFactory.onFinalizeSpawn(sheep, serverLevel, serverLevel.getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
                 serverLevel.tryAddFreshEntityWithPassengers(sheep);

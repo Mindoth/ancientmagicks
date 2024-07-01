@@ -3,12 +3,15 @@ package net.mindoth.ancientmagicks.network.capabilities;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientSpell;
-import net.mindoth.ancientmagicks.network.capabilities.PlayerSpell;
-import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
+import net.mindoth.ancientmagicks.network.capabilities.numbnessdamage.NumbnessDamage;
+import net.mindoth.ancientmagicks.network.capabilities.numbnessdamage.NumbnessDamageProvider;
+import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpell;
+import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -23,7 +26,12 @@ public class AncientMagicksCapabilities {
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
         if ( event.getObject() instanceof Player player ) {
             if ( !player.getCapability(PlayerSpellProvider.PLAYER_SPELL).isPresent() ) {
-                event.addCapability(new ResourceLocation(AncientMagicks.MOD_ID, "properties"), new PlayerSpellProvider());
+                event.addCapability(new ResourceLocation(AncientMagicks.MOD_ID, "am_spell"), new PlayerSpellProvider());
+            }
+        }
+        if ( event.getObject() instanceof LivingEntity living ) {
+            if ( !living.getCapability(NumbnessDamageProvider.NUMBNESS_DAMAGE).isPresent() ) {
+                event.addCapability(new ResourceLocation(AncientMagicks.MOD_ID, "am_numbness_damage"), new NumbnessDamageProvider());
             }
         }
     }
@@ -53,5 +61,6 @@ public class AncientMagicksCapabilities {
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         event.register(PlayerSpell.class);
+        event.register(NumbnessDamage.class);
     }
 }

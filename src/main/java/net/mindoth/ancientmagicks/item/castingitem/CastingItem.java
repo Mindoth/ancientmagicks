@@ -1,15 +1,11 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
-import net.mindoth.ancientmagicks.network.capabilities.PlayerSpell;
-import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
+import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -21,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

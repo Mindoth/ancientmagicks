@@ -9,7 +9,7 @@ import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSetSpell;
-import net.mindoth.ancientmagicks.network.capabilities.ClientSpellData;
+import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
@@ -32,7 +32,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)

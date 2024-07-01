@@ -4,7 +4,6 @@ import net.mindoth.ancientmagicks.client.gui.CurrentSpellHud;
 import net.mindoth.ancientmagicks.client.gui.GuiAMBag;
 import net.mindoth.ancientmagicks.client.gui.GuiSpellWheel;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.spell.deafeningblast.DeafeningBlastRenderer;
 import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballRenderer;
@@ -48,7 +47,6 @@ public class AncientMagicksClient {
         event.registerEntityRenderer(AncientMagicksEntities.DYNAMITE.get(), TntRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.SKELETON_MINION.get(), SkeletonRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.SLIMEBALL.get(), SlimeballRenderer::new);
-        event.registerEntityRenderer(AncientMagicksEntities.DEAFENING_BLAST.get(), DeafeningBlastRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.EXPERIENCE_BEAM.get(), ExperienceStreamRenderer::new);
     }
 

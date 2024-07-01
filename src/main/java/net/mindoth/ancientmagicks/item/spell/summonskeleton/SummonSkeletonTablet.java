@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class SummonSkeletonTablet extends TabletItem {
 
@@ -34,8 +35,17 @@ public class SummonSkeletonTablet extends TabletItem {
         minion.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(6.0F * 2);
         minion.addEffect(new MobEffectInstance(AncientMagicksEffects.SKELETON_TIMER.get(), (int)life, 0, false, false, true));
 
-        minion.moveTo(ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, true, true, true, false));
-        minion.finalizeSpawn((ServerLevel)level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+        Vec3 pos;
+
+        Vec3 freePoint = ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, false, true, false, false);
+        Vec3 blockPoint = ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, false, true, true, false);
+        if ( freePoint == blockPoint ) pos = freePoint;
+        else pos = ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, true, true, true, false);
+
+        pos = new Vec3(pos.x, pos.y - 0.5D, pos.z);
+
+        minion.moveTo(pos);
+        ForgeEventFactory.onFinalizeSpawn(minion, (ServerLevel)level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
         level.addFreshEntity(minion);
         minion.spawnAnim();
         state = true;

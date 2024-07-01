@@ -17,12 +17,23 @@ public class BlinkTablet extends TabletItem {
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        Vec3 point = ShadowEvents.getPoint(level, caster, 14.0F, 0, caster == owner, false, false, true, false);
+
+        float range = 14.0F;
+
+        Vec3 pos;
+
+        Vec3 freePoint = ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, false, false, false, false);
+        Vec3 blockPoint = ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, false, false, true, false);
+        if ( freePoint == blockPoint ) pos = freePoint;
+        else pos = ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, true, false, true, false);
+
+        pos = new Vec3(pos.x, pos.y - 0.5D, pos.z);
+
         //TODO maybe try teleportToWithTicket?
-        caster.teleportTo(point.x, point.y, point.z);
+        caster.teleportTo(pos.x, pos.y, pos.z);
         state = true;
 
-        if ( state ) playEnderSound(level, point);
+        if ( state ) playEnderSound(level, pos);
 
         return state;
     }

@@ -5,7 +5,7 @@ import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientSpell;
 import net.mindoth.ancientmagicks.network.PacketSyncSpellCombos;
-import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
+import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.player.PlayerEvent;

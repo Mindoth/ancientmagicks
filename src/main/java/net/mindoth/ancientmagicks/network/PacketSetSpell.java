@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.network;
 
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
+import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;

@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.network;
 
-import net.mindoth.ancientmagicks.network.capabilities.ClientSpellData;
+import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;

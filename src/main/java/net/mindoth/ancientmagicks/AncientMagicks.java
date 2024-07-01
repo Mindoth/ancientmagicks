@@ -75,7 +75,7 @@ public class AncientMagicks {
     }
 
     public static List<Item> ITEM_LIST = Lists.newArrayList();
-    public static List<Mob> MOB_LIST = Lists.newArrayList();
+    public static List<EntityType<?>> MOB_LIST = Lists.newArrayList();
     public static List<EntityType<?>> DISABLED_POLYMOBS = Lists.newArrayList();
 
     public void commonSetup(final FMLCommonSetupEvent event) {
@@ -104,7 +104,7 @@ public class AncientMagicks {
         for ( EntityType<?> entityType : ForgeRegistries.ENTITY_TYPES.getValues() ) {
             if ( DISABLED_POLYMOBS.isEmpty() || !DISABLED_POLYMOBS.contains(entityType) ) {
                 Entity tempEntity = entityType.create(serverLevel);
-                if ( tempEntity instanceof Mob mob ) MOB_LIST.add(mob);
+                if ( tempEntity instanceof Mob ) MOB_LIST.add(entityType);
             }
         }
     }

@@ -1,12 +1,12 @@
 package net.mindoth.ancientmagicks.client.gui;
 
-import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
-import net.mindoth.ancientmagicks.network.capabilities.ClientSpellData;
+import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -18,7 +18,7 @@ public class CurrentSpellHud {
 
     public static final IGuiOverlay OVERLAY = CurrentSpellHud::renderOverlay;
     private static final Minecraft MINECRAFT = Minecraft.getInstance();
-    public static final ResourceLocation SLOT_TEXTURE = new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png");
+    public static final ResourceLocation SLOT_TEXTURE = new ResourceLocation("textures/gui/widgets.png");
 
     public static boolean shouldDisplaySlot() {
         ItemStack mainHandItem = MINECRAFT.player.getMainHandItem();
@@ -48,10 +48,10 @@ public class CurrentSpellHud {
 
     public static void renderOverlay(ForgeGui gui, GuiGraphics graphics, float pt, int width, int height) {
         if ( !shouldDisplaySlot() ) return;
-
-        int resultSlotX = (MINECRAFT.getWindow().getGuiScaledWidth() / 2) + 98;
+        int halfX = (MINECRAFT.getWindow().getGuiScaledWidth() / 2);
+        int resultSlotX = MINECRAFT.options.mainHand().get() == HumanoidArm.RIGHT ? halfX + 98 : halfX - 120;
         int resultSlotY = MINECRAFT.getWindow().getGuiScaledHeight() - 22;
-        GuiSpellWheel.drawSlotTexture(SLOT_TEXTURE, resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
+        GuiSpellWheel.drawSlotTexture(SLOT_TEXTURE, resultSlotX, resultSlotY - 1, 60, 22, 24, 24, 256, 256, graphics);
 
         if ( currentSpell() != null ) {
             graphics.renderItem(currentSpell(), resultSlotX + 3, resultSlotY + 3);

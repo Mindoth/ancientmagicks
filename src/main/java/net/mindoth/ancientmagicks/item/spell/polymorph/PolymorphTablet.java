@@ -34,15 +34,6 @@ public class PolymorphTablet extends TabletItem {
                 sheep.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
                 state = true;
                 summonParticleLine(caster, sheep);
-
-                /*Mob sheep = new Sheep(EntityType.SHEEP, serverLevel);
-                ForgeEventFactory.onFinalizeSpawn(sheep, serverLevel, serverLevel.getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
-                serverLevel.tryAddFreshEntityWithPassengers(sheep);
-                if ( sheep.isAddedToWorld() ) {
-                    sheep.moveTo(target.position());
-                    sheep.spawnAnim();
-                    target.discard();
-                }*/
             }
         }
 

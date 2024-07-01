@@ -4,7 +4,6 @@ import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -29,13 +28,8 @@ public class NumbPainTablet extends TabletItem {
         LivingEntity target;
         if ( caster == owner ) target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
-
-        if ( caster == owner && !isAlly(owner, target) ) target = owner;
-
-        if ( isAlly(owner, target) ) {
-            state = true;
-            target.addEffect(new MobEffectInstance(AncientMagicksEffects.NUMBNESS.get(), life, 0));
-        }
+        target.addEffect(new MobEffectInstance(AncientMagicksEffects.NUMBNESS.get(), life, 0));
+        state = true;
 
         if ( state ) playMagicSound(level, center);
 

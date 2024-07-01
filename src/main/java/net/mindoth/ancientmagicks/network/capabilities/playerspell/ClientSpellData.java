@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.network.capabilities;
+package net.mindoth.ancientmagicks.network.capabilities.playerspell;
 
 public class ClientSpellData {
     private static String PLAYER_SPELL;

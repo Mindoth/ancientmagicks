@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.network;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.network.capabilities.PlayerSpellProvider;
+import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;

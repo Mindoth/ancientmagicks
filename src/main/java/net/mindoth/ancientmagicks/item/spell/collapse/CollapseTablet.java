@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item.spell.collapse;
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
@@ -26,8 +27,8 @@ public class CollapseTablet extends TabletItem {
         int size = 4;
         float range = 14.0F;
 
-        Vec3 point = getBlockPoint(caster, range, 0, caster == owner);
-        BlockPos pos = new BlockPos((int)point.x, (int)point.y, (int)point.z);
+        Vec3 returnPoint = getBlockPoint(caster, range, caster == owner);
+        BlockPos pos = new BlockPos(Mth.floor(returnPoint.x), Mth.floor(returnPoint.y), Mth.floor(returnPoint.z));
         for ( int xPos = pos.getX() - size; xPos <= pos.getX() + size; xPos++ ) {
             for ( int yPos = pos.getY() - size; yPos <= pos.getY() + size; yPos++ ) {
                 for ( int zPos = pos.getZ() - size; zPos <= pos.getZ() + size; zPos++ ) {
@@ -47,7 +48,7 @@ public class CollapseTablet extends TabletItem {
         return state;
     }
 
-    private static Vec3 getBlockPoint(Entity caster, float range, float error, boolean isPlayer) {
+    public static Vec3 getBlockPoint(Entity caster, float range, boolean isPlayer) {
         int adjuster = 1;
         if ( !isPlayer ) adjuster = -1;
 
@@ -68,8 +69,9 @@ public class CollapseTablet extends TabletItem {
             double lineY = playerY * (1.0 - (double)k / (double)particleInterval) + listedEntityY * ((double)k / (double)particleInterval);
             double lineZ = playerZ * (1.0 - (double)k / (double)particleInterval) + listedEntityZ * ((double)k / (double)particleInterval);
 
-            returnPoint = new Vec3(lineX - (double)error, lineY - (double)error, lineZ - (double)error);
-            if ( caster.level().getBlockState(new BlockPos((int)lineX, (int)lineY, (int)lineZ)).isSolid() ) break;
+            returnPoint = new Vec3(lineX, lineY, lineZ);
+            BlockPos blockPos = new BlockPos(Mth.floor(returnPoint.x), Mth.floor(returnPoint.y), Mth.floor(returnPoint.z));
+            if ( caster.level().getBlockState(blockPos).isSolid() ) break;
         }
         return returnPoint;
     }
