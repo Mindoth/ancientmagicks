@@ -1,9 +1,8 @@
 package net.mindoth.ancientmagicks.item.spell.deafeningblast;
 
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -27,30 +26,27 @@ public class DeafeningBlastTablet extends TabletItem {
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        int adjuster = 1;
-        float down = -0.2F;
-        if ( caster != owner ) {
-            adjuster = -1;
-            down = 0.0F;
-        }
 
-        float range = 2.0F;
+        float range = 3.5F;
+        float size = 1.5F;
 
-        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true, true);
-        List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + 2, point.y + 2, point.z + 2),
-                new Vec3(point.x - range, point.y - range, point.z - 2)));
+        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true, false);
+        List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + size, point.y + size, point.z + size),
+                new Vec3(point.x - size, point.y - size, point.z - size)));
         for ( Entity target : targets ) {
             if ( target != caster && target instanceof LivingEntity living && !isAlly(owner, living) ) {
                 ItemStack mainHand = living.getMainHandItem();
                 ItemStack offHand = living.getOffhandItem();
                 if ( !mainHand.isEmpty() ) dropItemEntity(mainHand.copyAndClear(), living);
                 if ( !offHand.isEmpty() ) dropItemEntity(offHand.copyAndClear(), living);
-                addParticles(level, owner, caster, adjuster);
                 state = true;
             }
         }
 
-        if ( state ) playMagicShootSound(level, center);
+        if ( state ) {
+            addParticles(level, point);
+            playMagicShootSound(level, center);
+        }
 
         return state;
     }
@@ -69,33 +65,9 @@ public class DeafeningBlastTablet extends TabletItem {
         target.level().addFreshEntity(drop);
     }
 
-    private static void addParticles(Level world, Player owner, Entity caster, int adjuster) {
+    private static void addParticles(Level world, Vec3 center) {
         ServerLevel level = (ServerLevel)world;
-        Vec3 casterPos = caster.getEyePosition();
-        Vec3 lookPos = ShadowEvents.getPoint(world, caster, 1, 0, caster == owner, false, false, false, false);
-        final Vec3 pos = new Vec3(casterPos.x, casterPos.y, casterPos.z);
-        int r = 85;
-        int g = 255;
-        int b = 255;
-        float size = 0.3F;
-        int age = 10;
-        double vx = lookPos.x - casterPos.x;
-        double vy = lookPos.y - casterPos.y;
-        double vz = lookPos.z - casterPos.z;
-
-        AncientMagicksNetwork.sendToNearby(level, caster, new PacketSendCustomParticles(r, g, b, size, age, false, true,
-                pos.x, pos.y, pos.z, vx, vy, vz));
-        for ( int i = 1; i < 4; i++ ) {
-            float mult = i * 0.25F;
-            Vec3 right = Vec3.directionFromRotation(0, caster.getYRot() * adjuster + (90 + i * 5));
-            Vec3 vecRight = pos.add(right.x * mult, 0, right.z * mult);
-            AncientMagicksNetwork.sendToNearby(level, caster, new PacketSendCustomParticles(r, g, b, size, age, false, true,
-                    vecRight.x, vecRight.y, vecRight.z, vx, vy, vz));
-
-            Vec3 left = Vec3.directionFromRotation(0, caster.getYRot() * adjuster + (-90 - i * 5));
-            Vec3 vecLeft = pos.add(left.x * mult, 0, left.z * mult);
-            AncientMagicksNetwork.sendToNearby(level, caster, new PacketSendCustomParticles(r, g, b, size, age, false, true,
-                    vecLeft.x, vecLeft.y, vecLeft.z, vx, vy, vz));
-        }
+        level.sendParticles(ParticleTypes.SONIC_BOOM, center.x, center.y, center.z,
+                0, 0, 0, 0, 0);
     }
 }

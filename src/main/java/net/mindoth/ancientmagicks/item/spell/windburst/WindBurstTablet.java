@@ -25,25 +25,28 @@ public class WindBurstTablet extends TabletItem {
         Vec3 casterPos = caster.getEyePosition(1.0F);
 
         float range = 2.0F;
+        float size = 2.0F;
         float power = 2;
 
-        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true, true);
-        List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + 2, point.y + 2, point.z + 2),
-                new Vec3(point.x - range, point.y - range, point.z - 2)));
+        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true, false);
+        List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + size, point.y + size, point.z + size),
+                new Vec3(point.x - size, point.y - size, point.z - size)));
         for ( Entity target : targets ) {
-            Vec3 targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, caster == owner, false, true, true, true);
+            Vec3 targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, caster == owner, false, true, true, false);
             if ( target != caster && isPushable(target) ) {
                 if ( TabletItem.isPushable(target) ) {
                     target.push((targetPoint.x - casterPos.x) * power, (targetPoint.y - casterPos.y + 0.5F) * power, (targetPoint.z - casterPos.z) * power);
                     target.hurtMarked = true;
                 }
             }
-            Vec3 particlePoint = ShadowEvents.getPoint(level, caster, range, 0.25F, caster == owner, false, true, true, true);
-            addParticles(level, casterPos, particlePoint);
             state = true;
         }
 
-        if ( state ) playWindSound(level, center);
+        if ( state ) {
+            Vec3 particlePoint = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true, false);
+            addParticles(level, casterPos, particlePoint);
+            playWindSound(level, center);
+        }
 
         return state;
     }

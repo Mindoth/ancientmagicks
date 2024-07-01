@@ -18,6 +18,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -159,6 +160,17 @@ public class CastingItem extends Item {
 
     public static void addCastingCooldown(Player player, TabletItem spell, int cooldown) {
         player.getCooldowns().addCooldown(spell, cooldown);
+    }
+
+    @SubscribeEvent
+    public static void disableInteraction(final PlayerInteractEvent.EntityInteract event) {
+        Player player = event.getEntity();
+        if ( !getHeldCastingItem(player).isEmpty() || !getHeldTabletItem(player).isEmpty() ) event.setCanceled(true);
+    }
+
+    public static @Nonnull ItemStack getHeldTabletItem(Player playerEntity) {
+        ItemStack tablet = playerEntity.getMainHandItem().getItem() instanceof TabletItem ? playerEntity.getMainHandItem() : null;
+        return tablet == null ? (playerEntity.getOffhandItem().getItem() instanceof TabletItem ? playerEntity.getOffhandItem() : ItemStack.EMPTY) : tablet;
     }
 
     public static @Nonnull ItemStack getHeldCastingItem(Player playerEntity) {
