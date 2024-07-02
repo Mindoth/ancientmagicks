@@ -42,8 +42,6 @@ public class CallLightningTablet extends TabletItem {
             }
         }
 
-        if ( state ) playLightningSummonSound(level, blockPos.getCenter());
-
         return state;
     }
 

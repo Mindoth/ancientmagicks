@@ -20,11 +20,6 @@ public class NumbnessEffect extends MobEffect {
     }
 
     @Override
-    public boolean isBeneficial() {
-        return true;
-    }
-
-    @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
         return true;
     }
@@ -41,7 +36,7 @@ public class NumbnessEffect extends MobEffect {
     }
 
     @Override
-    public void removeAttributeModifiers(LivingEntity living, AttributeMap pAttributeMap, int pAmplifier) {
+    public void removeAttributeModifiers(LivingEntity living, AttributeMap map, int pAmplifier) {
         if ( living.getCapability(NumbnessDamageProvider.NUMBNESS_DAMAGE).isPresent() ) {
             living.getCapability(NumbnessDamageProvider.NUMBNESS_DAMAGE).ifPresent(numbnessDamage -> {
                 float damageAmount = numbnessDamage.getDamage();

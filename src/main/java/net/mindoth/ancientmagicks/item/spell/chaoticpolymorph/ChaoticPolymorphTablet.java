@@ -28,7 +28,7 @@ public class ChaoticPolymorphTablet extends TabletItem {
         Level level = caster.level();
 
         float range = 14.0F;
-        float size = 1.0F;
+        float size = range * 0.5F;
 
         LivingEntity target;
         if ( caster == owner ) target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);

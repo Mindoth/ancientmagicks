@@ -27,7 +27,7 @@ public class FireballTablet extends TabletItem {
 
         projectile.setColor(AbstractSpellEntity.getSpellColor("gold"), 0.8F);
         projectile.setPos(center.x, center.y + down, center.z);
-        projectile.shootFromRotation(caster, xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 1.0F);
+        projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 1.0F);
         level.addFreshEntity(projectile);
         state = true;
 

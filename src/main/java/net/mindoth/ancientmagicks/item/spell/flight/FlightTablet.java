@@ -24,16 +24,16 @@ public class FlightTablet extends TabletItem {
 
         int life = 200;
         float range = 14.0F;
-        float size = 1.0F;
+        float size = range * 0.5F;
 
         LivingEntity target;
         if ( caster == owner ) target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
 
         if ( target instanceof Player && isAlly(owner, target)) {
-            target.addEffect(new MobEffectInstance(AncientMagicksEffects.FLIGHT.get(), life, 0));
+            target.addEffect(new MobEffectInstance(AncientMagicksEffects.FLIGHT.get(), life));
         }
-        else target.addEffect(new MobEffectInstance(MobEffects.LEVITATION, life, 0));
+        else target.addEffect(new MobEffectInstance(MobEffects.LEVITATION, life));
 
         state = true;
 

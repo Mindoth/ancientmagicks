@@ -23,7 +23,7 @@ public class WardTablet extends TabletItem {
 
         int life = 1200;
         float range = 14.0F;
-        float size = 1.0F;
+        float size = range * 0.5F;
 
         LivingEntity target;
         if ( caster == owner ) target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);

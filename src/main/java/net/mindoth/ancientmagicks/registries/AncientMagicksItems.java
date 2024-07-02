@@ -5,7 +5,8 @@ import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.TabletBag;
 import net.mindoth.ancientmagicks.item.castingitem.AMBagType;
-import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.castingitem.InvocationStaffItem;
+import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityTablet;
 import net.mindoth.ancientmagicks.item.spell.blink.BlinkTablet;
 import net.mindoth.ancientmagicks.item.spell.calllightning.CallLightningTablet;
 import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphTablet;
@@ -34,8 +35,8 @@ public class AncientMagicksItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, AncientMagicks.MOD_ID);
 
     //Casting items
-    public static final RegistryObject<Item> CASTING_ITEM = ITEMS.register("casting_item",
-            () -> new CastingItem(new Item.Properties()));
+    public static final RegistryObject<Item> INVOCATION_STAFF = ITEMS.register("invocation_staff",
+            () -> new InvocationStaffItem(new Item.Properties()));
 
     //Tablet Bag
     public static final RegistryObject<Item> TABLET_BAG = ITEMS.register("tablet_bag",
@@ -101,7 +102,7 @@ public class AncientMagicksItems {
             () -> new CallLightningTablet(new Item.Properties(), 3, false, 60));
 
     public static final RegistryObject<Item> NUMB_PAIN_TABLET = ITEMS.register("numb_pain_tablet",
-            () -> new NumbPainTablet(new Item.Properties(), 3, false, 200));
+            () -> new NumbPainTablet(new Item.Properties(), 3, false, 400));
 
     public static final RegistryObject<Item> SUMMON_SKELETON_TABLET = ITEMS.register("summon_skeleton_tablet",
             () -> new SummonSkeletonTablet(new Item.Properties(), 3, false, 200));
@@ -109,8 +110,11 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> COLLAPSE_TABLET = ITEMS.register("collapse_tablet",
             () -> new CollapseTablet(new Item.Properties(), 3, false, 60));
 
+    public static final RegistryObject<Item> ALACRITY_TABLET = ITEMS.register("alacrity_tablet",
+            () -> new AlacrityTablet(new Item.Properties(), 3, false, 1200));
+
     public static final RegistryObject<Item> FLIGHT_TABLET = ITEMS.register("flight_tablet",
-            () -> new FlightTablet(new Item.Properties(), 4, false, 200));
+            () -> new FlightTablet(new Item.Properties(), 4, false, 1200));
 
     public static final RegistryObject<Item> POLYMORPH_TABLET = ITEMS.register("polymorph_tablet",
             () -> new PolymorphTablet(new Item.Properties(), 4, false, 200));

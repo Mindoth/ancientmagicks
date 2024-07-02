@@ -51,11 +51,11 @@ public class RuneItem extends Item {
                 SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 0.25F, 1.0F);
     }
 
-    public static void playWaterShootSound(Level level, Vec3 center) {
+    public static void playWindSound(Level level, Vec3 center) {
         level.playSound(null, center.x, center.y, center.z,
-                SoundEvents.ENDER_PEARL_THROW, SoundSource.PLAYERS, 0.5F, 1.0F);
+                SoundEvents.HORSE_BREATHE, SoundSource.PLAYERS, 2.0F, 0.02F);
         level.playSound(null, center.x, center.y, center.z,
-                SoundEvents.DOLPHIN_SPLASH, SoundSource.PLAYERS, 0.25F, 0.85F);
+                SoundEvents.HORSE_BREATHE, SoundSource.PLAYERS, 2.0F, 0.03F);
     }
 
     public static void playStormShootSound(Level level, Vec3 center) {
@@ -65,28 +65,9 @@ public class RuneItem extends Item {
                 SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.PLAYERS, 0.35F, 2.0F);
     }
 
-    public static void playEnderSound(Level level, Vec3 center) {
+    public static void playTeleportSound(Level level, Vec3 center) {
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
-    }
-
-    public static void playEvilShootSound(Level level, Vec3 center) {
-        level.playSound(null, center.x, center.y, center.z,
-                SoundEvents.WITHER_SHOOT, SoundSource.PLAYERS, 0.5F, 1.0F);
-    }
-
-    public static void playLightningSummonSound(Level level, Vec3 center) {
-        level.playSound(null, center.x, center.y, center.z,
-                SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.PLAYERS, 1.0F, 1.0F);
-        level.playSound(null, center.x, center.y, center.z,
-                SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1.0F, 1.0F);
-    }
-
-    public static void playWindSound(Level level, Vec3 center) {
-        level.playSound(null, center.x, center.y, center.z,
-                SoundEvents.HORSE_BREATHE, SoundSource.PLAYERS, 2.0F, 0.02F);
-        level.playSound(null, center.x, center.y, center.z,
-                SoundEvents.HORSE_BREATHE, SoundSource.PLAYERS, 2.0F, 0.03F);
     }
 
     public static void playXpSound(Level level, Vec3 center) {

@@ -33,7 +33,7 @@ public class BlinkTablet extends TabletItem {
         caster.teleportTo(pos.x, pos.y, pos.z);
         state = true;
 
-        if ( state ) playEnderSound(level, pos);
+        if ( state ) playTeleportSound(level, pos);
 
         return state;
     }

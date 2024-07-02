@@ -37,17 +37,12 @@ public class FireballEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultPower() {
-        return 8.0F;
+        return 10.0F;
     }
 
     @Override
     public float getDefaultSpeed() {
         return 1.2F;
-    }
-
-    @Override
-    public float getDefaultLife() {
-        return 120.0F;
     }
 
     @Override
@@ -96,15 +91,17 @@ public class FireballEntity extends AbstractSpellEntity {
     private void doSplashEffects() {
         ServerLevel world = (ServerLevel)this.level();
         Vec3 pos = ShadowEvents.getEntityCenter(this);
+        world.sendParticles(ParticleTypes.EXPLOSION, pos.x, this.getY(), pos.z,
+                0, 0, 0, 0, 0);
         for ( int i = 0; i < 360; i++ ) {
-            if ( i % (int)(36 / Math.max(1, (this.size * 2))) == 0 ) {
+            if ( i % (int)(6 / Math.max(1, this.size)) == 0 ) {
                 float size = this.size + 1;
                 float randX = (float)((Math.random() * (size - (-size))) + (-size));
                 float randY = (float)((Math.random() * (size - (-size))) + (-size));
                 float randZ = (float)((Math.random() * (size - (-size))) + (-size));
                 double randomValue = -2 + 4 * world.random.nextDouble();
-                world.sendParticles(ParticleTypes.EXPLOSION, pos.x + randX, this.getY() + randY, pos.z + randZ,
-                        0, Math.cos(i), randomValue * 0.5D, Math.sin(i), 0);
+                world.sendParticles(ParticleTypes.LARGE_SMOKE, pos.x + randX, this.getY() + randY, pos.z + randZ,
+                        0, Math.cos(i), randomValue * 0.5D, Math.sin(i), 0.1D);
             }
         }
         Vec3 center = ShadowEvents.getEntityCenter(this);

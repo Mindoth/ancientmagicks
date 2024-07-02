@@ -26,13 +26,13 @@ public class SummonSkeletonTablet extends TabletItem {
         Level level = caster.level();
         Mob minion = new SkeletonMinionEntity(level, owner);
 
-        float life = 600.0F;
         float range = 14.0F;
+        float life = 600.0F;
 
-        minion.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(4.0F * 1);
-        minion.getAttributes().getInstance(Attributes.MAX_HEALTH).setBaseValue(4.0F * 5);
+        minion.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(4.0F);
+        minion.getAttributes().getInstance(Attributes.MAX_HEALTH).setBaseValue(20.0F);
         minion.getAttributes().getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
-        minion.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(6.0F * 2);
+        minion.getAttributes().getInstance(Attributes.FOLLOW_RANGE).setBaseValue(Math.max(range - 2.0F, 1.0F));
         minion.addEffect(new MobEffectInstance(AncientMagicksEffects.SKELETON_TIMER.get(), (int)life, 0, false, false, true));
 
         Vec3 pos;

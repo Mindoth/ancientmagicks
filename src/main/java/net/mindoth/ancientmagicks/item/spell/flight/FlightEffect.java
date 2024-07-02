@@ -13,11 +13,6 @@ public class FlightEffect extends MobEffect {
     }
 
     @Override
-    public boolean isBeneficial() {
-        return true;
-    }
-
-    @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
         return true;
     }
@@ -32,9 +27,9 @@ public class FlightEffect extends MobEffect {
     }
 
     @Override
-    public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
-        if ( pLivingEntity.level().isClientSide ) return;
-        if ( !(pLivingEntity instanceof Player player) ) return;
+    public void removeAttributeModifiers(LivingEntity living, AttributeMap map, int pAmplifier) {
+        if ( living.level().isClientSide ) return;
+        if ( !(living instanceof Player player) ) return;
         if ( player.isCreative() || !player.getAbilities().mayfly ) return;
         player.getAbilities().mayfly = false;
         player.getAbilities().flying = false;

@@ -33,7 +33,7 @@ public class ExperienceStreamTablet extends TabletItem {
                 float min = -0.1F;
                 float max = 0.1F;
                 projectile.setPos(center.x + (min + Math.random() * (max - min)), center.y + down + (min + Math.random() * (max - min)), center.z + (min + Math.random() * (max - min)));
-                projectile.shootFromRotation(caster, xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
+                projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
                 level.addFreshEntity(projectile);
                 if ( !owner.isCreative() ) owner.giveExperiencePoints(-(int)projectile.power);
             }

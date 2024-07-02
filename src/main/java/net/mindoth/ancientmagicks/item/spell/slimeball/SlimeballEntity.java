@@ -47,11 +47,6 @@ public class SlimeballEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public float getDefaultLife() {
-        return 60.0F;
-    }
-
-    @Override
     public int getDefaultBounce() {
         return Integer.MAX_VALUE;
     }

@@ -7,7 +7,7 @@
 
 
   "item.ancientmagicks.tablet_bag": "Tablet Bag",
-  "item.ancientmagicks.casting_item": "Invocation Staff",
+  "item.ancientmagicks.invocation_staff": "Invocation Staff",
 
   "item.ancientmagicks.empty_rune": "Stone Slate",
 
@@ -37,10 +37,12 @@
   "item.ancientmagicks.experience_stream_tablet": "Experience Stream Tablet",
   "item.ancientmagicks.extinguish_tablet": "Extinguish Tablet",
   "item.ancientmagicks.numb_pain_tablet": "Numb Pain Tablet",
+  "item.ancientmagicks.alacrity_tablet": "Alacrity Tablet",
 
 
   "effect.ancientmagicks.flight": "Flight",
   "effect.ancientmagicks.numbness": "Numbness",
+  "effect.ancientmagicks.alacrity": "Alacrity",
 
 
   "entity.ancientmagicks.skeleton_minion": "Skeleton Minion",

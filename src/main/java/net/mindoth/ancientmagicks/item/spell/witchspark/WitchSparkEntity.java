@@ -35,11 +35,6 @@ public class WitchSparkEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public float getDefaultLife() {
-        return 120.0F;
-    }
-
-    @Override
     protected void doMobEffects(EntityHitResult result) {
         if ( this.power > 0 && !isAlly((LivingEntity)result.getEntity()) ) {
             dealDamage((LivingEntity)result.getEntity());

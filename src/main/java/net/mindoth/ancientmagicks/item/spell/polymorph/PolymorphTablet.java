@@ -22,7 +22,7 @@ public class PolymorphTablet extends TabletItem {
         Level level = caster.level();
 
         float range = 14.0F;
-        float size = 1.0F;
+        float size = 7.0F;
 
         LivingEntity target;
         if ( caster == owner ) target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);

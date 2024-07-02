@@ -3,19 +3,16 @@ package net.mindoth.ancientmagicks.item.castingitem;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
+import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -32,50 +29,6 @@ public class CastingItem extends Item {
         super(pProperties.stacksTo(1));
     }
 
-    @Override
-    @Nonnull
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
-        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
-        if ( !level.isClientSide ) {
-            ItemStack staff = player.getItemInHand(handIn);
-            if ( isValidCastingItem(staff) ) {
-                player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
-                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getSpell()));
-                    if ( item instanceof TabletItem tabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(tabletItem) ) {
-                        if ( player.totalExperience >= tabletItem.tier || player.isCreative() ) player.startUsingItem(handIn);
-                        else {
-                            addCastingCooldown(player, tabletItem, 20);
-                            RuneItem.playWhiffSound(level, ShadowEvents.getEntityCenter(player));
-                        }
-                    }
-                });
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public void onUseTick(Level level, LivingEntity living, ItemStack wand, int timeLeft) {
-        if ( level.isClientSide ) return;
-        if ( living instanceof Player player ) {
-            if ( isValidCastingItem(wand) ) {
-                player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
-                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getSpell()));
-                    if ( item instanceof TabletItem tabletItem ) {
-                        if ( (living.getMainHandItem().getItem() == AncientMagicksItems.STONE_SLATE.get() || living.getOffhandItem().getItem() == AncientMagicksItems.STONE_SLATE.get()) ) {
-                            makeTablets(player, player, tabletItem);
-                        }
-                        else {
-                            int useTime = getUseDuration(wand) - timeLeft;
-                            doSpell(player, player, wand, tabletItem, useTime);
-                            if ( !player.isCreative() && useTime == 0 ) player.giveExperiencePoints(-tabletItem.tier);
-                        }
-                    }
-                });
-            }
-        }
-    }
-
     public static void doSpell(Player owner, Entity caster, ItemStack castingItem, TabletItem tablet, int useTime) {
         float xRot = caster.getXRot();
         float yRot = caster.getYRot();
@@ -83,7 +36,7 @@ public class CastingItem extends Item {
         float distance = 0.0F;
 
         if ( distance > 0 ) {
-            //Adjusters are there to flip rotation if the caster is not a LivingEntity. Don't ask why this works like this...
+            //Adjusters are there to flip rotation if the caster is not a LivingEntity. Don't ask me why this works like this...
             int adjuster = 1;
             if ( caster != owner ) adjuster = -1;
             Vec3 direction = ShadowEvents.calculateViewVector(xRot * adjuster, yRot * adjuster).normalize();
@@ -92,18 +45,26 @@ public class CastingItem extends Item {
         }
         else center = caster.getEyePosition();
 
+        //Check casting bonuses
+        boolean hasAlacrity = caster == owner && owner.hasEffect(AncientMagicksEffects.ALACRITY.get());
+
         //This actually casts the given Spell
         if ( AncientMagicks.isSpellEnabled(tablet) ) {
             if ( tablet.castMagic(owner, caster, center, xRot, yRot, useTime) ) {
                 if ( !tablet.isChannel ) {
                     if ( castingItem.getItem() instanceof TabletItem && !owner.isCreative() ) castingItem.shrink(1);
-                    addCastingCooldown(owner, tablet, tablet.cooldown);
+                    addCastingCooldown(owner, tablet, getCastingCooldown(tablet.cooldown, hasAlacrity));
                     owner.stopUsingItem();
                 }
             }
             else whiffSpell(owner, caster, center, tablet);
         }
         else whiffSpell(owner, caster, center, tablet);
+    }
+
+    public static int getCastingCooldown(int defaultCooldown, boolean hasAlacrity) {
+        float alacrityBonus = hasAlacrity ? 0.5F : 1.0F;
+        return (int)(defaultCooldown * alacrityBonus);
     }
 
     public static void whiffSpell(Player owner, Entity caster, Vec3 center, TabletItem tablet) {

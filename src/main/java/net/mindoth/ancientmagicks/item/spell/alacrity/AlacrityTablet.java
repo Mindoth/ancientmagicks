@@ -1,18 +1,19 @@
-package net.mindoth.ancientmagicks.item.spell.numbpain;
+package net.mindoth.ancientmagicks.item.spell.alacrity;
 
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class NumbPainTablet extends TabletItem {
+public class AlacrityTablet extends TabletItem {
 
-    public NumbPainTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
+    public AlacrityTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
         super(pProperties, tier, isChannel, cooldown);
     }
 
@@ -21,14 +22,18 @@ public class NumbPainTablet extends TabletItem {
         boolean state = false;
         Level level = caster.level();
 
-        int life = 200;
+        int life = 600;
         float range = 14.0F;
         float size = range * 0.5F;
 
         LivingEntity target;
-        if ( caster == owner ) target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
+        if ( caster == owner ) target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
-        target.addEffect(new MobEffectInstance(AncientMagicksEffects.NUMBNESS.get(), life, 0));
+
+        if ( target instanceof Player && isAlly(owner, target)) {
+            target.addEffect(new MobEffectInstance(AncientMagicksEffects.ALACRITY.get(), life));
+        }
+
         state = true;
 
         if ( state ) playMagicSound(level, center);
