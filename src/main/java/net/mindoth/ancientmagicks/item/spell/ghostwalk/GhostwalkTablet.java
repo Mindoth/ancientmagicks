@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.flight;
+package net.mindoth.ancientmagicks.item.spell.ghostwalk;
 
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
@@ -11,9 +11,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class FlightTablet extends TabletItem {
+public class GhostwalkTablet extends TabletItem {
 
-    public FlightTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
+    public GhostwalkTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
         super(pProperties, tier, isChannel, cooldown);
     }
 
@@ -22,20 +22,20 @@ public class FlightTablet extends TabletItem {
         boolean state = false;
         Level level = caster.level();
 
-        int life = 200;
+        int life = 1200;
         float range = 14.0F;
         float size = range * 0.5F;
 
         LivingEntity target;
-        if ( caster == owner ) target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
+        if ( caster == owner ) target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
 
-        if ( target instanceof Player && isAlly(owner, target)) {
-            target.addEffect(new MobEffectInstance(AncientMagicksEffects.FLIGHT.get(), life, 0, false, false));
-        }
-        else target.addEffect(new MobEffectInstance(MobEffects.LEVITATION, life));
+        if ( caster == owner && !isAlly(owner, target) ) target = owner;
 
-        state = true;
+        if ( isAlly(owner, target) ) {
+            state = true;
+            target.addEffect(new MobEffectInstance(AncientMagicksEffects.GHOSTWALK.get(), life, 0, false, false));
+        }
 
         if ( state ) playMagicSound(level, center);
 

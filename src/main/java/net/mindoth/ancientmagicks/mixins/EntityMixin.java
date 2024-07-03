@@ -4,7 +4,6 @@ import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,14 +25,4 @@ public class EntityMixin {
         Entity entity = (Entity)(Object)this;
         if ( entity instanceof LivingEntity living && living.hasEffect(AncientMagicksEffects.SPOOK.get()) ) callback.setReturnValue(false);
     }
-
-
-    /*@Inject(method = "causeFallDamage", at = @At("HEAD"), cancellable = true)
-    protected void preventFalling(double pY, boolean pOnGround, BlockState pState, BlockPos pPos, CallbackInfo callback) {
-        Entity entity = (Entity)(Object)this;
-        if ( entity instanceof LivingEntity living && living.hasEffect(AncientMagicksEffects.SPOOK.get()) ) {
-            callback.cancel();
-            Entity.causeFallDamage();
-        }
-    }*/
 }

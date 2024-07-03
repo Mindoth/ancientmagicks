@@ -5,6 +5,7 @@ import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.summon.SummonedMinion;
 import net.mindoth.ancientmagicks.item.spell.summonskeleton.SkeletonMinionEntity;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
@@ -104,7 +105,7 @@ public class AncientMagicks {
         for ( EntityType<?> entityType : ForgeRegistries.ENTITY_TYPES.getValues() ) {
             if ( DISABLED_POLYMOBS.isEmpty() || !DISABLED_POLYMOBS.contains(entityType) ) {
                 Entity tempEntity = entityType.create(serverLevel);
-                if ( tempEntity instanceof Mob ) MOB_LIST.add(entityType);
+                if ( tempEntity instanceof Mob && !(tempEntity instanceof SummonedMinion) ) MOB_LIST.add(entityType);
             }
         }
     }

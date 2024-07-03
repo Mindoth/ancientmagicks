@@ -9,10 +9,11 @@ import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellPr
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -41,9 +42,22 @@ public class CommonEvents {
     }
 
     @SubscribeEvent
-    public static void onLivingFall(LivingAttackEvent event) {
+    public static void onLivingFallSpook(LivingFallEvent event) {
         LivingEntity living = event.getEntity();
-        if ( !living.hasEffect(AncientMagicksEffects.SPOOK.get()) || event.getSource().type() != living.damageSources().fall().type() ) return;
-        if ( event.getAmount() < living.getHealth() ) event.setCanceled(true);
+        if ( living.hasEffect(AncientMagicksEffects.SPOOK.get()) ) {
+            if ( calculateFallDamage(living, event.getDistance(), event.getDamageMultiplier()) < living.getHealth() ) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    //This is here to check if falldamage is lethal in onLivingFallSpook
+    protected static int calculateFallDamage(LivingEntity living, float pFallDistance, float pDamageMultiplier) {
+        if ( living.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE) ) return 0;
+        else {
+            MobEffectInstance mobeffectinstance = living.getEffect(MobEffects.JUMP);
+            float f = mobeffectinstance == null ? 0.0F : (float)(mobeffectinstance.getAmplifier() + 1);
+            return Mth.ceil((pFallDistance - 3.0F - f) * pDamageMultiplier);
+        }
     }
 }

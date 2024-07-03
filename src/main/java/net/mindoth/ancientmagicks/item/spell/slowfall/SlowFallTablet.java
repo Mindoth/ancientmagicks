@@ -29,7 +29,7 @@ public class SlowFallTablet extends TabletItem {
         List<Entity> list = ShadowEvents.getEntitiesAround(caster, size, size, size);
         if ( caster instanceof LivingEntity living ) list.add(living);
         for ( Entity entity : list ) {
-            if ( entity instanceof LivingEntity living ) living.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, life, 0));
+            if ( entity instanceof LivingEntity living ) living.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, life, 0, false, false));
         }
 
         state = true;

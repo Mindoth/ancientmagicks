@@ -23,8 +23,8 @@ public class AncientMagicksCommonConfig {
         DISABLED_SPELLS = BUILDER.comment("Add any spells you wish to disable here in the following format: [ancientmagicks:ward_tablet, ancientmagicks:fireball_tablet] (Default = [])")
                 .define("spelldisablelist", "[]");
 
-        DISABLED_POLYMOBS = BUILDER.comment("Add any mobs you wish to not summon with Chaotic Polymorph. (Default = [ancientmagicks:skeleton_minion])")
-                .define("polydisablelist", "[ancientmagicks:skeleton_minion]");
+        DISABLED_POLYMOBS = BUILDER.comment("Add any mobs you wish to not summon with Chaotic Polymorph here in the following format: [minecraft:sheep, minecraft:pig] (Default = [])")
+                .define("polydisablelist", "[]");
 
         BUILDER.pop();
         SPEC = BUILDER.build();

@@ -31,7 +31,7 @@ public class AlacrityTablet extends TabletItem {
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
 
         if ( target instanceof Player && isAlly(owner, target)) {
-            target.addEffect(new MobEffectInstance(AncientMagicksEffects.ALACRITY.get(), life));
+            target.addEffect(new MobEffectInstance(AncientMagicksEffects.ALACRITY.get(), life, 0, false, false));
         }
 
         state = true;

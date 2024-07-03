@@ -17,8 +17,10 @@ import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamTa
 import net.mindoth.ancientmagicks.item.spell.extinguish.ExtinguishTablet;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballTablet;
 import net.mindoth.ancientmagicks.item.spell.flight.FlightTablet;
+import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkTablet;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainTablet;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphTablet;
+import net.mindoth.ancientmagicks.item.spell.spook.SpookTablet;
 import net.mindoth.ancientmagicks.item.spell.summonskeleton.SummonSkeletonTablet;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballTablet;
 import net.mindoth.ancientmagicks.item.spell.slowfall.SlowFallTablet;
@@ -113,11 +115,17 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> ALACRITY_TABLET = ITEMS.register("alacrity_tablet",
             () -> new AlacrityTablet(new Item.Properties(), 3, false, 1200));
 
+    public static final RegistryObject<Item> SPOOK_TABLET = ITEMS.register("spook_tablet",
+            () -> new SpookTablet(new Item.Properties(), 3, false, 1200));
+
     public static final RegistryObject<Item> FLIGHT_TABLET = ITEMS.register("flight_tablet",
             () -> new FlightTablet(new Item.Properties(), 4, false, 1200));
 
     public static final RegistryObject<Item> POLYMORPH_TABLET = ITEMS.register("polymorph_tablet",
             () -> new PolymorphTablet(new Item.Properties(), 4, false, 200));
+
+    public static final RegistryObject<Item> GHOSTWALK_TABLET = ITEMS.register("ghostwalk_tablet",
+            () -> new GhostwalkTablet(new Item.Properties(), 4, false, 1199));
 
     public static final RegistryObject<Item> CHAOTIC_POLYMORPH_TABLET = ITEMS.register("chaotic_polymorph_tablet",
             () -> new ChaoticPolymorphTablet(new Item.Properties(), 5, false, 40));
