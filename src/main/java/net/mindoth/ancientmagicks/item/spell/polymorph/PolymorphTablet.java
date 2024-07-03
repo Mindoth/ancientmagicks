@@ -32,8 +32,8 @@ public class PolymorphTablet extends TabletItem {
             if ( target instanceof Mob && !(target instanceof Sheep) ) {
                 Sheep sheep = ((Mob)target).convertTo(EntityType.SHEEP, false);
                 sheep.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
-                state = true;
                 summonParticleLine(caster, sheep);
+                state = true;
             }
         }
 
