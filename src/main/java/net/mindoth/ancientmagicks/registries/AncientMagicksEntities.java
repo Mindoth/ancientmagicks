@@ -34,9 +34,10 @@ public class AncientMagicksEntities {
             = registerEntity(EntityType.Builder.<SlimeballEntity>of(SlimeballEntity::new,
             MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(SlimeballEntity::new), "slimeball");
 
+    //This might need to be 0.5F, 0.5F sized
     public static final RegistryObject<EntityType<ExperienceStreamEntity>> EXPERIENCE_BEAM
             = registerEntity(EntityType.Builder.<ExperienceStreamEntity>of(ExperienceStreamEntity::new,
-            MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(ExperienceStreamEntity::new), "experience_beam");
+            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(ExperienceStreamEntity::new), "experience_beam");
 
 
     public static final RegistryObject<EntityType<SkeletonMinionEntity>> SKELETON_MINION =

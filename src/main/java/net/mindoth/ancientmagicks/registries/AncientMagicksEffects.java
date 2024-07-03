@@ -4,7 +4,9 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.summon.SummonTimer;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityEffect;
 import net.mindoth.ancientmagicks.item.spell.flight.FlightEffect;
+import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkEffect;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbnessEffect;
+import net.mindoth.ancientmagicks.item.spell.spook.SpookEffect;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -22,4 +24,6 @@ public class AncientMagicksEffects {
     public static final RegistryObject<MobEffect> ALACRITY = EFFECTS.register("alacrity", () -> new AlacrityEffect(MobEffectCategory.BENEFICIAL, 16750848)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, "9ca9c968-0f1e-4125-97ba-c6ef04276c7a", 0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributeModifier(Attributes.ATTACK_SPEED, "9ca9c968-0f1e-4125-97ba-c6ef04276c7a", 0.1D, AttributeModifier.Operation.MULTIPLY_TOTAL));
+    public static final RegistryObject<SpookEffect> SPOOK = EFFECTS.register("spook", () -> new SpookEffect(MobEffectCategory.BENEFICIAL, 3402751));
+    public static final RegistryObject<GhostwalkEffect> GHOSTWALK = EFFECTS.register("ghostwalk", () -> new GhostwalkEffect(MobEffectCategory.BENEFICIAL, 16185078));
 }

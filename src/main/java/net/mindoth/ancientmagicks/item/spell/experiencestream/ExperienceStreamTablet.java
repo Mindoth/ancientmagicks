@@ -24,7 +24,7 @@ public class ExperienceStreamTablet extends TabletItem {
             down = 0.0F;
         }
 
-        if ( owner.totalExperience > 0 || owner.experienceLevel > 0 ) {
+        if ( owner.totalExperience > 0 || owner.experienceLevel > 0 || owner.isCreative() ) {
             state = true;
             if ( useTime % 2 == 0 ) {
                 AbstractSpellEntity projectile = new ExperienceStreamEntity(level, owner, caster, this, !owner.isCreative());

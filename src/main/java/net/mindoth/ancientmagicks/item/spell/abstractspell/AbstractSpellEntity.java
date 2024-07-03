@@ -177,7 +177,7 @@ public class AbstractSpellEntity extends ThrowableProjectile {
         if ( level().isClientSide ) doClientTickEffects();
         if ( !level().isClientSide ) {
             doTickEffects();
-            if ( this.tickCount > this.life ) {
+            if ( this.tickCount > this.life || this.isInWater() ) {
                 doExpirationEffects();
             }
             if ( this.homing ) {

@@ -4,6 +4,7 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.network.capabilities.numbnessdamage.NumbnessDamageProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,7 +30,10 @@ public class NumbnessEffect extends MobEffect {
         LivingEntity living = event.getEntity();
         DamageType type = event.getSource().type();
         final float damageAmount = event.getAmount();
-        if ( living.hasEffect(AncientMagicksEffects.NUMBNESS.get()) && damageAmount > 0 && type != living.damageSources().genericKill().type()) {
+        if ( living.hasEffect(AncientMagicksEffects.NUMBNESS.get()) && damageAmount > 0
+                && type != living.damageSources().genericKill().type()
+                && type != living.damageSources().fellOutOfWorld().type()
+                && type != living.damageSources().outOfBorder().type() ) {
             living.getCapability(NumbnessDamageProvider.NUMBNESS_DAMAGE).ifPresent(numbnessDamage -> numbnessDamage.setDamage(numbnessDamage.getDamage() + damageAmount));
             event.setAmount(0);
         }
