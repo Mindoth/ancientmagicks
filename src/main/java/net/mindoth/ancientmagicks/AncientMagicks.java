@@ -62,14 +62,13 @@ public class AncientMagicks {
         AncientMagicksContainers.CONTAINERS.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
-
         //KEEP THIS LAST
         modEventBus.addListener(this::commonSetup);
     }
+
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if ( event.getTab() == AncientMagicksTab.ANCIENTMAGICKS_TAB.get() ) {
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
-                //if ( !(item.get() instanceof SpellItem) ) event.accept(item);
                 event.accept(item);
             }
         }

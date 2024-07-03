@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.slowfall;
+package net.mindoth.ancientmagicks.item.spell.featherfall;
 
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -12,9 +12,9 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class SlowFallTablet extends TabletItem {
+public class FeatherFallTablet extends TabletItem {
 
-    public SlowFallTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
+    public FeatherFallTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
         super(pProperties, tier, isChannel, cooldown);
     }
 

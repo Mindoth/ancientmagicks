@@ -7,6 +7,7 @@ import net.mindoth.ancientmagicks.item.TabletBag;
 import net.mindoth.ancientmagicks.item.castingitem.AMBagType;
 import net.mindoth.ancientmagicks.item.castingitem.InvocationStaffItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityTablet;
+import net.mindoth.ancientmagicks.item.spell.blind.BlindTablet;
 import net.mindoth.ancientmagicks.item.spell.blink.BlinkTablet;
 import net.mindoth.ancientmagicks.item.spell.calllightning.CallLightningTablet;
 import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphTablet;
@@ -18,12 +19,13 @@ import net.mindoth.ancientmagicks.item.spell.extinguish.ExtinguishTablet;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballTablet;
 import net.mindoth.ancientmagicks.item.spell.flight.FlightTablet;
 import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkTablet;
+import net.mindoth.ancientmagicks.item.spell.icewall.IceWallTablet;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainTablet;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphTablet;
 import net.mindoth.ancientmagicks.item.spell.spook.SpookTablet;
 import net.mindoth.ancientmagicks.item.spell.summonskeleton.SummonSkeletonTablet;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballTablet;
-import net.mindoth.ancientmagicks.item.spell.slowfall.SlowFallTablet;
+import net.mindoth.ancientmagicks.item.spell.featherfall.FeatherFallTablet;
 import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabTablet;
 import net.mindoth.ancientmagicks.item.spell.ward.WardTablet;
 import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstTablet;
@@ -79,14 +81,20 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> WARD_TABLET = ITEMS.register("ward_tablet",
             () -> new WardTablet(new Item.Properties(), 1, false, 200));
 
-    public static final RegistryObject<Item> SLOW_FALL_TABLET = ITEMS.register("slow_fall_tablet",
-            () -> new SlowFallTablet(new Item.Properties(), 1, false, 200));
+    public static final RegistryObject<Item> FEATHER_FALL_TABLET = ITEMS.register("feather_fall_tablet",
+            () -> new FeatherFallTablet(new Item.Properties(), 1, false, 200));
 
     public static final RegistryObject<Item> TELEKINETIC_GRAB_TABLET = ITEMS.register("telekinetic_grab_tablet",
             () -> new TelekineticGrabTablet(new Item.Properties(), 1, false, 20));
 
     public static final RegistryObject<Item> EXTINGUISH_TABLET = ITEMS.register("extinguish_tablet",
             () -> new ExtinguishTablet(new Item.Properties(), 1, false, 100));
+
+    public static final RegistryObject<Item> SPOOK_TABLET = ITEMS.register("spook_tablet",
+            () -> new SpookTablet(new Item.Properties(), 1, false, 1200));
+
+    public static final RegistryObject<Item> BLIND_TABLET = ITEMS.register("blind_tablet",
+            () -> new BlindTablet(new Item.Properties(), 1, false, 400));
 
     public static final RegistryObject<Item> WIND_BURST_TABLET = ITEMS.register("wind_burst_tablet",
             () -> new WindBurstTablet(new Item.Properties(), 2, false, 40));
@@ -115,9 +123,6 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> ALACRITY_TABLET = ITEMS.register("alacrity_tablet",
             () -> new AlacrityTablet(new Item.Properties(), 3, false, 1200));
 
-    public static final RegistryObject<Item> SPOOK_TABLET = ITEMS.register("spook_tablet",
-            () -> new SpookTablet(new Item.Properties(), 3, false, 1200));
-
     public static final RegistryObject<Item> FLIGHT_TABLET = ITEMS.register("flight_tablet",
             () -> new FlightTablet(new Item.Properties(), 4, false, 1200));
 
@@ -126,6 +131,9 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> GHOSTWALK_TABLET = ITEMS.register("ghostwalk_tablet",
             () -> new GhostwalkTablet(new Item.Properties(), 4, false, 1199));
+
+    public static final RegistryObject<Item> ICE_WALL_TABLET = ITEMS.register("ice_wall_tablet",
+            () -> new IceWallTablet(new Item.Properties(), 4, true, 80));
 
     public static final RegistryObject<Item> CHAOTIC_POLYMORPH_TABLET = ITEMS.register("chaotic_polymorph_tablet",
             () -> new ChaoticPolymorphTablet(new Item.Properties(), 5, false, 40));

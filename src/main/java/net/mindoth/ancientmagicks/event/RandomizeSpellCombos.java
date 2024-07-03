@@ -18,12 +18,13 @@ import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class RandomizeSpellCombos {
+    public static final String COMBOFILEPATH = "am_spellrecipes.json";
 
     @SubscribeEvent
     public static void onServerStart(final ServerAboutToStartEvent event) {
         Logger logger = AncientMagicks.getLogger();
         Path savePath = event.getServer().getWorldPath(LevelResource.ROOT).normalize().toAbsolutePath();
-        String filepath = savePath + "/ancientmagicks.json";
+        String filepath = savePath + "/" + COMBOFILEPATH;
 
         //Creating file
         try {
@@ -54,7 +55,7 @@ public class RandomizeSpellCombos {
             File file = new File(filepath);
             if ( file.isFile() ) {
                 FileInputStream fis = new FileInputStream(file);
-                String comboString = Files.readString(savePath.resolve("ancientmagicks.json")).replaceAll("\n", "").replaceAll(".$", "");
+                String comboString = Files.readString(savePath.resolve(COMBOFILEPATH)).replaceAll("\n", "").replaceAll(".$", "");
                 ColorRuneItem.CURRENT_COMBO_TAG.putString("am_combostring", comboString);
 
                 ColorRuneItem.CURRENT_COMBO_MAP = ColorRuneItem.buildComboMap(ColorRuneItem.CURRENT_COMBO_TAG.getString("am_combostring"));
