@@ -4,6 +4,7 @@ import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
@@ -65,9 +66,11 @@ public class ExperienceStreamEntity extends AbstractSpellEntity {
     }
 
     private void spawnOrb() {
+        int value = Mth.floor(this.power);
+        if ( value <= 0 ) return;
         Level level = this.level();
         Vec3 center = new Vec3(ShadowEvents.getEntityCenter(this).x, this.position().y, ShadowEvents.getEntityCenter(this).z);
-        ExperienceOrb xpOrb = new ExperienceOrb(level, center.x, center.y, center.z, (int)(this.power - this.getDefaultPower()));
+        ExperienceOrb xpOrb = new ExperienceOrb(level, center.x, center.y, center.z, value);
         level.addFreshEntity(xpOrb);
     }
 

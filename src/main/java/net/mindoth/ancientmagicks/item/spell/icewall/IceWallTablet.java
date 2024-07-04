@@ -34,7 +34,7 @@ public class IceWallTablet extends TabletItem {
 
         float range = 3.5F;
         int height = 2;
-        Block wallMaterial = Blocks.ICE;
+        Block wallMaterial = Blocks.PACKED_ICE;
 
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, false, false, false);
         Vec3 blockPoint = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, false, true, false);

@@ -3,11 +3,9 @@ package net.mindoth.ancientmagicks.item.castingitem;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.RuneItem;
-import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -15,9 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
@@ -74,25 +69,6 @@ public class CastingItem extends Item {
         RuneItem.playWhiffSound(caster);
         addCastingCooldown(owner, tablet, 20);
         owner.stopUsingItem();
-    }
-
-    @SubscribeEvent
-    public static void onStopChannellingSpell(final LivingEntityUseItemEvent.Stop event) {
-        if ( event.getEntity() instanceof Player player ) {
-            if ( !player.level().isClientSide ) {
-                if ( event.getItem().getItem() instanceof CastingItem ) {
-                    player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
-                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getSpell()));
-                        if ( item instanceof TabletItem tabletItem ) {
-                            player.getCooldowns().addCooldown(tabletItem, tabletItem.cooldown);
-                        }
-                    });
-                }
-                else if ( event.getItem().getItem() instanceof TabletItem tabletItem ) {
-                    player.getCooldowns().addCooldown(tabletItem, tabletItem.cooldown);
-                }
-            }
-        }
     }
 
     public void makeTablets(Player owner, Entity caster, TabletItem tabletItem, ItemStack slateStack) {
