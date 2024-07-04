@@ -11,8 +11,11 @@ import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellPr
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
@@ -123,6 +126,23 @@ public class CommonEvents {
                     player.getCooldowns().addCooldown(tabletItem, tabletItem.cooldown);
                 }
             }
+        }
+    }
+
+    public static void summonParticleLine(SimpleParticleType type, Entity caster, Entity target, int count, double xOff, double yOff, double zOff, double speed) {
+        double playerX = ShadowEvents.getEntityCenter(caster).x;
+        double playerY = ShadowEvents.getEntityCenter(caster).y;
+        double playerZ = ShadowEvents.getEntityCenter(caster).z;
+        double listedEntityX = target.getEyePosition().x;
+        double listedEntityY = target.getEyePosition().y;
+        double listedEntityZ = target.getEyePosition().z;
+        int particleInterval = (int)Math.round(caster.distanceToSqr(target.position()));
+        ServerLevel level = (ServerLevel)caster.level();
+        for ( int k = 1; k < (1 + particleInterval); k++ ) {
+            double lineX = playerX * (1 - ((double) k / particleInterval)) + listedEntityX * ((double) k / particleInterval);
+            double lineY = playerY * (1 - ((double) k / particleInterval)) + listedEntityY * ((double) k / particleInterval);
+            double lineZ = playerZ * (1 - ((double) k / particleInterval)) + listedEntityZ * ((double) k / particleInterval);
+            level.sendParticles(type, lineX, lineY, lineZ, count, xOff, yOff, zOff, speed);
         }
     }
 }

@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.polymorph;
 
+import net.mindoth.ancientmagicks.event.CommonEvents;
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -32,7 +33,7 @@ public class PolymorphTablet extends TabletItem {
             if ( target instanceof Mob && !(target instanceof Sheep) ) {
                 Sheep sheep = ((Mob)target).convertTo(EntityType.SHEEP, false);
                 sheep.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
-                summonParticleLine(caster, sheep);
+                CommonEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, sheep, 0, 1, 85F / 255F, 1, 1);
                 state = true;
             }
         }
@@ -40,22 +41,5 @@ public class PolymorphTablet extends TabletItem {
         if ( state ) playMagicSound(level, center);
 
         return state;
-    }
-
-    private void summonParticleLine(Entity caster, Entity target) {
-        double playerX = ShadowEvents.getEntityCenter(caster).x;
-        double playerY = ShadowEvents.getEntityCenter(caster).y;
-        double playerZ = ShadowEvents.getEntityCenter(caster).z;
-        double listedEntityX = ShadowEvents.getEntityCenter(target).x;
-        double listedEntityY = ShadowEvents.getEntityCenter(target).y;
-        double listedEntityZ = ShadowEvents.getEntityCenter(target).z;
-        int particleInterval = (int)Math.round(caster.distanceToSqr(target.position()));
-        ServerLevel level = (ServerLevel)caster.level();
-        for ( int k = 1; k < (1 + particleInterval); k++ ) {
-            double lineX = playerX * (1 - ((double) k / particleInterval)) + listedEntityX * ((double) k / particleInterval);
-            double lineY = playerY * (1 - ((double) k / particleInterval)) + listedEntityY * ((double) k / particleInterval);
-            double lineZ = playerZ * (1 - ((double) k / particleInterval)) + listedEntityZ * ((double) k / particleInterval);
-            level.sendParticles(ParticleTypes.EFFECT, lineX, lineY, lineZ, 0, 0, 0, 0, 0);
-        }
     }
 }

@@ -27,15 +27,9 @@ public class ParticleEmber extends TextureSheetParticle {
         this.colorR = r;
         this.colorG = g;
         this.colorB = b;
-        if (this.colorR > 1.0F) {
-            this.colorR = this.colorR / 255.0F;
-        }
-        if (this.colorG > 1.0F) {
-            this.colorG = this.colorG / 255.0F;
-        }
-        if (this.colorB > 1.0F) {
-            this.colorB = this.colorB / 255.0F;
-        }
+        if ( this.colorR > 1.0F ) this.colorR = this.colorR / 255.0F;
+        if ( this.colorG > 1.0F ) this.colorG = this.colorG / 255.0F;
+        if ( this.colorB > 1.0F ) this.colorB = this.colorB / 255.0F;
         this.setColor(colorR, colorG, colorB);
         this.lifetime = lifetime;
         this.fade = fade;
