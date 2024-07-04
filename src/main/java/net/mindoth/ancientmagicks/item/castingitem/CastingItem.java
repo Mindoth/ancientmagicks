@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
@@ -22,14 +23,13 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
-@Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class CastingItem extends Item {
 
     public CastingItem(Properties pProperties) {
         super(pProperties.stacksTo(1));
     }
 
-    public static void doSpell(Player owner, Entity caster, ItemStack castingItem, TabletItem tablet, int useTime) {
+    public static void doSpell(Player owner, Entity caster, ItemStack castingItem, TabletItem tabletItem, int useTime) {
         float xRot = caster.getXRot();
         float yRot = caster.getYRot();
         Vec3 center;
@@ -49,17 +49,22 @@ public class CastingItem extends Item {
         boolean hasAlacrity = caster == owner && owner.hasEffect(AncientMagicksEffects.ALACRITY.get());
 
         //This actually casts the given Spell
-        if ( AncientMagicks.isSpellEnabled(tablet) ) {
-            if ( tablet.castMagic(owner, caster, center, xRot, yRot, useTime) ) {
-                if ( !tablet.isChannel ) {
+        if ( AncientMagicks.isSpellEnabled(tabletItem) ) {
+            if ( useTime == 0 && caster == owner ) extractCost(owner, tabletItem);
+            if ( tabletItem.castMagic(owner, caster, center, xRot, yRot, useTime) ) {
+                if ( !tabletItem.isChannel ) {
                     if ( castingItem.getItem() instanceof TabletItem && !owner.isCreative() ) castingItem.shrink(1);
-                    addCastingCooldown(owner, tablet, getCastingCooldown(tablet.cooldown, hasAlacrity));
+                    addCastingCooldown(owner, tabletItem, getCastingCooldown(tabletItem.cooldown, hasAlacrity));
                     owner.stopUsingItem();
                 }
             }
-            else whiffSpell(owner, caster, center, tablet);
+            else whiffSpell(owner, caster, center, tabletItem);
         }
-        else whiffSpell(owner, caster, center, tablet);
+        else whiffSpell(owner, caster, center, tabletItem);
+    }
+
+    public static void extractCost(Player owner, TabletItem tabletItem) {
+        if ( !AncientMagicksCommonConfig.FREE_SPELLS.get() && !owner.isCreative() ) owner.giveExperiencePoints(-tabletItem.tier);
     }
 
     public static int getCastingCooldown(int defaultCooldown, boolean hasAlacrity) {
@@ -68,7 +73,7 @@ public class CastingItem extends Item {
     }
 
     public static void whiffSpell(Player owner, Entity caster, Vec3 center, TabletItem tablet) {
-        RuneItem.playWhiffSound(caster.level(), center);
+        RuneItem.playWhiffSound(caster);
         addCastingCooldown(owner, tablet, 20);
         owner.stopUsingItem();
     }
@@ -92,41 +97,34 @@ public class CastingItem extends Item {
         }
     }
 
-    public void makeTablets(Player owner, Entity caster, TabletItem spell) {
-        //Check if player is creating tablets or not
-        if ( (owner.getMainHandItem().getItem() == AncientMagicksItems.STONE_SLATE.get() || owner.getOffhandItem().getItem() == AncientMagicksItems.STONE_SLATE.get()) ) {
-            ItemStack tabletStack;
-            if ( owner.getMainHandItem().getItem() == AncientMagicksItems.STONE_SLATE.get() ) tabletStack = owner.getMainHandItem();
-            else tabletStack = owner.getOffhandItem();
-            int stackCount = 0;
-            for ( int i = 0; i < tabletStack.getCount(); i++ ) {
-                if ( stackCount >= tabletStack.getCount() ) break;
-                boolean canAfford = false;
-                if ( owner.totalExperience >= spell.tier || owner.isCreative() ) {
-                    canAfford = true;
-                    if ( !owner.isCreative() ) owner.giveExperiencePoints(-spell.tier);
-                }
-                if ( canAfford ) stackCount += 1;
+    public void makeTablets(Player owner, Entity caster, TabletItem tabletItem, ItemStack slateStack) {
+        int stackCount = 0;
+        for ( int i = 0; i < slateStack.getCount(); i++ ) {
+            if ( stackCount >= slateStack.getCount() ) break;
+            boolean canAfford = false;
+            if ( owner.totalExperience >= tabletItem.tier || owner.isCreative() ) {
+                canAfford = true;
+                extractCost(owner, tabletItem);
             }
-            tabletStack.shrink(stackCount);
-            ItemStack dropStack = new ItemStack(spell, stackCount);
-            ItemEntity drop = new ItemEntity(owner.level(), ShadowEvents.getEntityCenter(owner).x, ShadowEvents.getEntityCenter(owner).y, ShadowEvents.getEntityCenter(owner).z, dropStack);
-            drop.setDeltaMovement(0, 0, 0);
-            drop.setNoPickUpDelay();
-            caster.level().addFreshEntity(drop);
-            addCastingCooldown(owner, spell, 20);
-            owner.stopUsingItem();
+            if ( canAfford ) stackCount += 1;
         }
+        slateStack.shrink(stackCount);
+        ItemStack dropStack = new ItemStack(tabletItem, stackCount);
+        ItemEntity drop = new ItemEntity(owner.level(), ShadowEvents.getEntityCenter(owner).x, ShadowEvents.getEntityCenter(owner).y, ShadowEvents.getEntityCenter(owner).z, dropStack);
+        drop.setDeltaMovement(0, 0, 0);
+        drop.setNoPickUpDelay();
+        caster.level().addFreshEntity(drop);
+        addCastingCooldown(owner, tabletItem, 20);
+        owner.stopUsingItem();
     }
 
     public static void addCastingCooldown(Player player, TabletItem spell, int cooldown) {
         player.getCooldowns().addCooldown(spell, cooldown);
     }
 
-    @SubscribeEvent
-    public static void disableInteraction(final PlayerInteractEvent.EntityInteract event) {
-        Player player = event.getEntity();
-        if ( !getHeldCastingItem(player).isEmpty() || !getHeldTabletItem(player).isEmpty() ) event.setCanceled(true);
+    public static @Nonnull ItemStack getHeldSlateItem(Player playerEntity) {
+        ItemStack slate = playerEntity.getMainHandItem().getItem() == AncientMagicksItems.STONE_SLATE.get() ? playerEntity.getMainHandItem() : null;
+        return slate == null ? (playerEntity.getOffhandItem().getItem() == AncientMagicksItems.STONE_SLATE.get() ? playerEntity.getOffhandItem() : ItemStack.EMPTY) : slate;
     }
 
     public static @Nonnull ItemStack getHeldTabletItem(Player playerEntity) {

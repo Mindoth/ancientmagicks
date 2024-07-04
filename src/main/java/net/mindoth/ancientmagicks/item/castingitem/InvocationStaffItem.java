@@ -4,7 +4,6 @@ import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
-import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -35,7 +34,7 @@ public class InvocationStaffItem extends CastingItem {
                         if ( player.totalExperience >= tabletItem.tier || player.isCreative() || AncientMagicksCommonConfig.FREE_SPELLS.get() ) player.startUsingItem(handIn);
                         else {
                             addCastingCooldown(player, tabletItem, 20);
-                            RuneItem.playWhiffSound(level, ShadowEvents.getEntityCenter(player));
+                            RuneItem.playWhiffSound(player);
                         }
                     }
                 });
@@ -52,14 +51,8 @@ public class InvocationStaffItem extends CastingItem {
                 player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getSpell()));
                     if ( item instanceof TabletItem tabletItem ) {
-                        if ( (living.getMainHandItem().getItem() == AncientMagicksItems.STONE_SLATE.get() || living.getOffhandItem().getItem() == AncientMagicksItems.STONE_SLATE.get()) ) {
-                            makeTablets(player, player, tabletItem);
-                        }
-                        else {
-                            int useTime = getUseDuration(wand) - timeLeft;
-                            doSpell(player, player, wand, tabletItem, useTime);
-                            if ( !player.isCreative() && useTime == 0 && !AncientMagicksCommonConfig.FREE_SPELLS.get() ) player.giveExperiencePoints(-tabletItem.tier);
-                        }
+                        if ( getHeldSlateItem(player).getItem() == AncientMagicksItems.STONE_SLATE.get() ) makeTablets(player, player, tabletItem, getHeldSlateItem(player));
+                        else doSpell(player, player, wand, tabletItem, getUseDuration(wand) - timeLeft);
                     }
                 });
             }

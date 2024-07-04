@@ -20,9 +20,8 @@ public class RuneItem extends Item {
         return true;
     }
 
-    public static void playWhiffSound(Level level, Vec3 center) {
-        level.playSound(null, center.x, center.y, center.z,
-                SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS, 0.25F, 1.0F);
+    public static void playWhiffSound(Entity caster) {
+        if ( caster instanceof Player player ) player.playNotifySound(SoundEvents.NOTE_BLOCK_SNARE.get(), SoundSource.PLAYERS, 0.5F, 1.0F);
     }
 
     public static void playMagicSound(Level level, Vec3 center) {

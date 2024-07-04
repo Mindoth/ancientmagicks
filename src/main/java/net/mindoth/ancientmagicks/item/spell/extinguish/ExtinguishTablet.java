@@ -3,6 +3,8 @@ package net.mindoth.ancientmagicks.item.spell.extinguish;
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -49,7 +51,10 @@ public class ExtinguishTablet extends TabletItem {
             }
         }
 
-        if ( state ) playWhiffSound(level, center);
+        if ( state ) {
+            level.playSound(null, center.x, center.y, center.z,
+                    SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS, 0.25F, 1.0F);
+        }
 
         return state;
     }

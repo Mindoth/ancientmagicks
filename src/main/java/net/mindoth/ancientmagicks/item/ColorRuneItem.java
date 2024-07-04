@@ -61,11 +61,13 @@ public class ColorRuneItem extends RuneItem {
         Map<String, String> tempMap = Splitter.on(";").withKeyValueSeparator("=").split(comboString);
         for ( Map.Entry<String, String> entry : tempMap.entrySet() ) {
             TabletItem key = (TabletItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()));
-            List<ColorRuneItem> tempList = Lists.newArrayList();
-            for ( String string : List.of(entry.getValue().replaceAll("[\\[\\]]", "").split(",")) ) {
-                tempList.add((ColorRuneItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(AncientMagicks.MOD_ID, string.replaceAll(" ", ""))));
+            if ( AncientMagicks.isSpellEnabled(key) ) {
+                List<ColorRuneItem> tempList = Lists.newArrayList();
+                for ( String string : List.of(entry.getValue().replaceAll("[\\[\\]]", "").split(",")) ) {
+                    tempList.add((ColorRuneItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(AncientMagicks.MOD_ID, string.replaceAll(" ", ""))));
+                }
+                returnMap.put(key, tempList);
             }
-            returnMap.put(key, tempList);
         }
 
         return returnMap;
