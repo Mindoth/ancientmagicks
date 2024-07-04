@@ -16,9 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -98,6 +96,7 @@ public class CastingItem extends Item {
     }
 
     public void makeTablets(Player owner, Entity caster, TabletItem tabletItem, ItemStack slateStack) {
+        if ( !AncientMagicks.isSpellEnabled(tabletItem) ) return;
         int stackCount = 0;
         for ( int i = 0; i < slateStack.getCount(); i++ ) {
             if ( stackCount >= slateStack.getCount() ) break;
@@ -110,7 +109,8 @@ public class CastingItem extends Item {
         }
         slateStack.shrink(stackCount);
         ItemStack dropStack = new ItemStack(tabletItem, stackCount);
-        ItemEntity drop = new ItemEntity(owner.level(), ShadowEvents.getEntityCenter(owner).x, ShadowEvents.getEntityCenter(owner).y, ShadowEvents.getEntityCenter(owner).z, dropStack);
+        Vec3 spawnPos = ShadowEvents.getEntityCenter(owner);
+        ItemEntity drop = new ItemEntity(owner.level(), spawnPos.x, spawnPos.y, spawnPos.z, dropStack);
         drop.setDeltaMovement(0, 0, 0);
         drop.setNoPickUpDelay();
         caster.level().addFreshEntity(drop);
