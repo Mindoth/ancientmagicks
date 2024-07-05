@@ -75,21 +75,16 @@ public class TabletBag extends Item {
         return tier.rarity;
     }
 
-    @Override
-    public boolean isEnchantable(@Nonnull ItemStack stack) {
-        return false;
-    }
-
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new TabletBag.WandCaps(stack);
+        return new TabletBag.AMBagCaps(stack);
     }
 
-    static class WandCaps implements ICapabilityProvider {
+    static class AMBagCaps implements ICapabilityProvider {
         private final ItemStack stack;
 
-        public WandCaps(ItemStack stack) {
+        public AMBagCaps(ItemStack stack) {
             this.stack = stack;
         }
 

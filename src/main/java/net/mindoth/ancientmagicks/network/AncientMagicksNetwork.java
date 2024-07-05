@@ -72,6 +72,12 @@ public class AncientMagicksNetwork {
                 .encoder(PacketSyncClientSpell::encode)
                 .consumerMainThread(PacketSyncClientSpell::handle)
                 .add();
+
+        net.messageBuilder(PacketSolveAncientTablet.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketSolveAncientTablet::new)
+                .encoder(PacketSolveAncientTablet::encode)
+                .consumerMainThread(PacketSolveAncientTablet::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

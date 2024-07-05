@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.TabletBag;
@@ -52,7 +53,7 @@ public class AncientMagicksItems {
 
     //Ancient Tablet
     public static final RegistryObject<Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
-            () -> new Item(new Item.Properties()));
+            () -> new AncientTabletItem(new Item.Properties()));
 
 
     //Runes

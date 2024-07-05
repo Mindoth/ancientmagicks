@@ -74,6 +74,16 @@ public class AncientMagicks {
         }
     }
 
+    @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class EventBusEvents {
+
+        @SubscribeEvent
+        public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
+            event.put(AncientMagicksEntities.SKELETON_MINION.get(), SkeletonMinionEntity.setAttributes());
+        }
+    }
+
+    //Spell list stuff
     public static List<Item> ITEM_LIST = Lists.newArrayList();
     public static List<EntityType<?>> MOB_LIST = Lists.newArrayList();
     public static List<EntityType<?>> DISABLED_POLYMOBS = Lists.newArrayList();
@@ -81,8 +91,13 @@ public class AncientMagicks {
     public void commonSetup(final FMLCommonSetupEvent event) {
         ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
         AncientMagicksNetwork.init();
+        createSpellList();
         createSpellDisableList();
         createPolymobDisableList();
+    }
+
+    private static void createSpellList() {
+        for ( Item item : ITEM_LIST ) if ( item instanceof TabletItem tabletItem && isSpellEnabled(tabletItem) ) SPELL_LIST.add(tabletItem);
     }
 
     private static void createSpellDisableList() {
@@ -111,7 +126,7 @@ public class AncientMagicks {
 
     public static void randomizeSpells() {
         clearLists();
-        createSpellLists();
+        createTieredSpellLists();
         comboRuneInit();
     }
 
@@ -148,8 +163,7 @@ public class AncientMagicks {
         return DISABLED_SPELLS.isEmpty() || !DISABLED_SPELLS.contains(spell);
     }
 
-    public static void createSpellLists() {
-        for ( Item item : ITEM_LIST ) if ( item instanceof TabletItem tabletItem && isSpellEnabled(tabletItem) ) SPELL_LIST.add(tabletItem);
+    public static void createTieredSpellLists() {
         for ( TabletItem tabletItem : SPELL_LIST ) {
             if ( tabletItem.tier == 1 ) TIER1_SPELLS.add(tabletItem);
             if ( tabletItem.tier == 2 ) TIER2_SPELLS.add(tabletItem);
@@ -181,7 +195,7 @@ public class AncientMagicks {
                     List<ColorRuneItem> tempList1 = Lists.newArrayList();
                     tempList1.add(COLOR_RUNE_LIST.get(i));
                     tempList1.add(COLOR_RUNE_LIST.get(j));
-                    if ( !hasDupeInList(comboList1, tempList1) ) comboList1.add(tempList1);
+                    if ( hasNoDupeInList(comboList1, tempList1) ) comboList1.add(tempList1);
                 }
                 for ( int k = 0; k < COLOR_RUNE_LIST.size(); k++ ) {
                     if ( !TIER2_SPELLS.isEmpty() ) {
@@ -189,7 +203,7 @@ public class AncientMagicks {
                         tempList2.add(COLOR_RUNE_LIST.get(i));
                         tempList2.add(COLOR_RUNE_LIST.get(j));
                         tempList2.add(COLOR_RUNE_LIST.get(k));
-                        if ( !hasDupeInList(comboList2, tempList2) ) comboList2.add(tempList2);
+                        if ( hasNoDupeInList(comboList2, tempList2) ) comboList2.add(tempList2);
                     }
                     for ( int l = 0; l < COLOR_RUNE_LIST.size(); l++ ) {
                         if ( !TIER3_SPELLS.isEmpty() ) {
@@ -198,7 +212,7 @@ public class AncientMagicks {
                             tempList3.add(COLOR_RUNE_LIST.get(j));
                             tempList3.add(COLOR_RUNE_LIST.get(k));
                             tempList3.add(COLOR_RUNE_LIST.get(l));
-                            if ( !hasDupeInList(comboList3, tempList3) ) comboList3.add(tempList3);
+                            if ( hasNoDupeInList(comboList3, tempList3) ) comboList3.add(tempList3);
                         }
                         for ( int m = 0; m < COLOR_RUNE_LIST.size(); m++ ) {
                             if ( !TIER4_SPELLS.isEmpty() ) {
@@ -208,7 +222,7 @@ public class AncientMagicks {
                                 tempList4.add(COLOR_RUNE_LIST.get(k));
                                 tempList4.add(COLOR_RUNE_LIST.get(l));
                                 tempList4.add(COLOR_RUNE_LIST.get(m));
-                                if ( !hasDupeInList(comboList4, tempList4) ) comboList4.add(tempList4);
+                                if ( hasNoDupeInList(comboList4, tempList4) ) comboList4.add(tempList4);
                             }
                             for ( int n = 0; n < COLOR_RUNE_LIST.size(); n++ ) {
                                 if ( !TIER5_SPELLS.isEmpty() ) {
@@ -219,7 +233,7 @@ public class AncientMagicks {
                                     tempList5.add(COLOR_RUNE_LIST.get(l));
                                     tempList5.add(COLOR_RUNE_LIST.get(m));
                                     tempList5.add(COLOR_RUNE_LIST.get(n));
-                                    if ( !hasDupeInList(comboList5, tempList5) ) comboList5.add(tempList5);
+                                    if ( hasNoDupeInList(comboList5, tempList5) ) comboList5.add(tempList5);
                                 }
                                 for ( int o = 0; o < COLOR_RUNE_LIST.size(); o++ ) {
                                     if ( !TIER6_SPELLS.isEmpty() ) {
@@ -231,7 +245,7 @@ public class AncientMagicks {
                                         tempList6.add(COLOR_RUNE_LIST.get(m));
                                         tempList6.add(COLOR_RUNE_LIST.get(n));
                                         tempList6.add(COLOR_RUNE_LIST.get(o));
-                                        if ( !hasDupeInList(comboList6, tempList6) ) comboList6.add(tempList6);
+                                        if ( hasNoDupeInList(comboList6, tempList6) ) comboList6.add(tempList6);
                                     }
                                     for ( int p = 0; p < COLOR_RUNE_LIST.size(); p++ ) {
                                         if ( !TIER7_SPELLS.isEmpty() ) {
@@ -244,7 +258,7 @@ public class AncientMagicks {
                                             tempList7.add(COLOR_RUNE_LIST.get(n));
                                             tempList7.add(COLOR_RUNE_LIST.get(o));
                                             tempList7.add(COLOR_RUNE_LIST.get(p));
-                                            if ( !hasDupeInList(comboList7, tempList7) ) comboList7.add(tempList7);
+                                            if ( hasNoDupeInList(comboList7, tempList7) ) comboList7.add(tempList7);
                                         }
                                         for ( int q = 0; q < COLOR_RUNE_LIST.size(); q++ ) {
                                             if ( !TIER8_SPELLS.isEmpty() ) {
@@ -258,7 +272,7 @@ public class AncientMagicks {
                                                 tempList8.add(COLOR_RUNE_LIST.get(o));
                                                 tempList8.add(COLOR_RUNE_LIST.get(p));
                                                 tempList8.add(COLOR_RUNE_LIST.get(q));
-                                                if ( !hasDupeInList(comboList8, tempList8) ) comboList8.add(tempList8);
+                                                if ( hasNoDupeInList(comboList8, tempList8) ) comboList8.add(tempList8);
                                             }
                                         }
                                     }
@@ -276,7 +290,7 @@ public class AncientMagicks {
         else if ( comboList5.size() < TIER5_SPELLS.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 5 SPELL.");
         else if ( comboList6.size() < TIER6_SPELLS.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 6 SPELL.");
         else if ( comboList7.size() < TIER7_SPELLS.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 7 SPELL.");
-        else if ( comboList8.size() < TIER8_SPELLS.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 8 SPELL. THAT MEANS YOU HAVE OVER 2002 TIER 8 SPELLS. HOW DID YOU MANAGE THIS?");
+        else if ( comboList8.size() < TIER8_SPELLS.size() ) logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY TIER 8 SPELL. THAT MEANS YOU HAVE OVER 2000 TIER 8 SPELLS. HOW DID YOU MANAGE THIS?");
         else {
             if ( !TIER1_SPELLS.isEmpty() ) {
                 Collections.shuffle(comboList1);
@@ -359,23 +373,14 @@ public class AncientMagicks {
         return false;
     }
 
-    private static boolean hasDupeInList(List<List<ColorRuneItem>> comboList, List<ColorRuneItem> tempList) {
-        boolean state = false;
+    private static boolean hasNoDupeInList(List<List<ColorRuneItem>> comboList, List<ColorRuneItem> tempList) {
+        boolean state = true;
         for ( List<ColorRuneItem> list : comboList ) {
             if ( listsMatch(tempList, list) ) {
-                state = true;
+                state = false;
                 break;
             }
         }
         return state;
-    }
-
-    @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class EventBusEvents {
-
-        @SubscribeEvent
-        public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
-            event.put(AncientMagicksEntities.SKELETON_MINION.get(), SkeletonMinionEntity.setAttributes());
-        }
     }
 }

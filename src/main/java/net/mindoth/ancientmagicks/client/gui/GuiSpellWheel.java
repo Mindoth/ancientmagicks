@@ -4,11 +4,13 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSetSpell;
+import net.mindoth.ancientmagicks.network.PacketSolveAncientTablet;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -20,8 +22,12 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,6 +38,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
@@ -46,27 +53,34 @@ public class GuiSpellWheel extends Screen {
     private float extraTick;
     private int selectedItem;
     private final List<ItemStack> itemList;
+    private final CompoundTag tag;
     private final List<ColorRuneItem> comboList = Lists.newArrayList();
     private TabletItem comboResult;
+    private final boolean discoveryMode;
+    private final InteractionHand hand;
 
-    public GuiSpellWheel(List<ItemStack> stackList) {
+    public GuiSpellWheel(List<ItemStack> stackList, @Nullable CompoundTag tag, boolean isOffhand) {
         super(Component.literal(""));
+        this.discoveryMode = tag != null;
         this.closing = false;
         this.minecraft = Minecraft.getInstance();
         this.selectedItem = -1;
         if ( !stackList.isEmpty() ) this.itemList = stackList;
         else this.itemList = List.of(new ItemStack(Items.AIR));
+        if ( this.discoveryMode ) this.tag = tag;
+        else this.tag = null;
+        this.hand = isOffhand ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
     }
 
-    public static void open(List<ItemStack> itemList) {
+    public static void open(List<ItemStack> itemList, @Nullable CompoundTag tag, boolean isOffHand) {
         Minecraft MINECRAFT = Minecraft.getInstance();
         Player player = MINECRAFT.player;
         if ( MINECRAFT.screen instanceof GuiSpellWheel ) {
             player.closeContainer();
             return;
         }
-        if ( CastingItem.getHeldCastingItem(player).getItem() instanceof CastingItem && MINECRAFT.screen == null ) {
-            Minecraft.getInstance().setScreen(new GuiSpellWheel(itemList));
+        if ( MINECRAFT.screen == null ) {
+            Minecraft.getInstance().setScreen(new GuiSpellWheel(itemList, tag, isOffHand));
         }
     }
 
@@ -74,25 +88,24 @@ public class GuiSpellWheel extends Screen {
     public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
         if ( this.selectedItem != -1 ) {
             ItemStack clickedItem = this.itemList.get(this.selectedItem);
-            Player player = MINECRAFT.player;
-            if ( CastingItem.getHeldCastingItem(player).getItem() instanceof CastingItem ) {
-                if ( clickedItem.getItem() instanceof ColorRuneItem ) {
-                    if ( this.comboList.size() < 9 ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
-                    else {
-                        this.comboList.remove(0);
-                        this.comboList.add((ColorRuneItem)clickedItem.getItem());
-                    }
+            if ( clickedItem.getItem() instanceof ColorRuneItem ) {
+                if ( this.comboList.size() < 9 ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
+                else {
+                    this.comboList.remove(0);
+                    this.comboList.add((ColorRuneItem)clickedItem.getItem());
                 }
-                if ( ColorRuneItem.checkForSpellCombo(this.comboList) != null ) {
-                    this.comboResult = ColorRuneItem.checkForSpellCombo(this.comboList);
-                    String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
-                    CompoundTag tag = new CompoundTag();
-                    tag.putString("am_spell", spellString);
-                    AncientMagicksNetwork.sendToServer(new PacketSetSpell(tag));
-                    ClientSpellData.set(spellString);
-                }
-                else this.comboResult = null;
             }
+            TabletItem secretSpell = null;
+            if ( this.tag != null ) secretSpell = (TabletItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("am_secretspell")));
+            if ( ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell) != null ) {
+                this.comboResult = ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell);
+                String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
+                CompoundTag tag = new CompoundTag();
+                tag.putString("am_spell", spellString);
+                AncientMagicksNetwork.sendToServer(new PacketSetSpell(tag));
+                ClientSpellData.set(spellString);
+            }
+            else this.comboResult = null;
         }
         return true;
     }
@@ -136,7 +149,7 @@ public class GuiSpellWheel extends Screen {
         boolean hasMouseOver = false;
         int mousedOverSlot = -1;
 
-        if ( !closing ) {
+        if ( !this.closing ) {
             this.selectedItem = -1;
             for ( int i = 0; i < numberOfSlices; i++ ) {
                 float s = (((i - 0.5F) / (float)numberOfSlices) + 0.25F) * 360;
@@ -229,10 +242,26 @@ public class GuiSpellWheel extends Screen {
     }
 
     @Override
+    public void removed() {
+        Player player = MINECRAFT.player;
+        if ( this.discoveryMode && this.comboResult != null && player.getItemInHand(this.hand).getItem() instanceof AncientTabletItem ) {
+            MINECRAFT.gameRenderer.displayItemActivation(new ItemStack(this.comboResult));
+            player.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0F, 0.75F);
+            player.playNotifySound(SoundEvents.FIREWORK_ROCKET_BLAST_FAR, SoundSource.PLAYERS, 1.0F, 0.75F);
+            player.playNotifySound(SoundEvents.FIREWORK_ROCKET_TWINKLE_FAR, SoundSource.PLAYERS, 1.0F, 0.75F);
+            AncientMagicksNetwork.sendToServer(new PacketSolveAncientTablet(new ItemStack(this.comboResult),
+                    this.hand == InteractionHand.OFF_HAND));
+        }
+    }
+
+    @Override
     public void tick() {
         if ( this.totalTime != this.OPEN_ANIMATION_LENGTH ) {
             this.extraTick++;
         }
+        Player player = MINECRAFT.player;
+        Item handItem = player.getItemInHand(this.hand).getItem();
+        if ( (!this.discoveryMode && !(handItem instanceof CastingItem)) || (this.discoveryMode && !(handItem instanceof AncientTabletItem)) ) player.closeContainer();
     }
 
     private void drawSlice(BufferBuilder buffer, float x, float y, float z, float radiusIn, float radiusOut, float startAngle, float endAngle,
