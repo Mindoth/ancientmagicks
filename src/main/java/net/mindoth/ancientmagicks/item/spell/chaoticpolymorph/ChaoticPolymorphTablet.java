@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.chaoticpolymorph;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.event.CommonEvents;
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,7 +46,8 @@ public class ChaoticPolymorphTablet extends TabletItem {
                 if ( sheep.isAddedToWorld() ) {
                     sheep.spawnAnim();
                     target.discard();
-                    CommonEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, sheep, 0, 1, 85F / 255F, 1, 1);
+                    ShadowEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, ShadowEvents.getEntityCenter(caster), ShadowEvents.getEntityCenter(sheep),
+                            0, 1, 85F / 255F, 1, 1);
                     state = true;
                 }
             }

@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.blind;
 
-import net.mindoth.ancientmagicks.event.CommonEvents;
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -33,7 +32,8 @@ public class BlindTablet extends TabletItem {
 
         if ( !isAlly(owner, target)) {
             target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, life));
-            CommonEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, target, 0, 0, 0, 0, 1);
+            ShadowEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, ShadowEvents.getEntityCenter(caster), target.getEyePosition(),
+                    0, 0, 0, 0, 1);
             state = true;
         }
 

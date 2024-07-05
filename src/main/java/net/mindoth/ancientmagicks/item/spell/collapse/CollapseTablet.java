@@ -4,7 +4,6 @@ import net.mindoth.ancientmagicks.event.CommonEvents;
 import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
@@ -28,8 +27,7 @@ public class CollapseTablet extends TabletItem {
         int size = 4;
         float range = 14.0F;
 
-        Vec3 returnPoint = CommonEvents.getBlockPoint(caster, range, caster == owner);
-        BlockPos pos = new BlockPos(Mth.floor(returnPoint.x), Mth.floor(returnPoint.y), Mth.floor(returnPoint.z));
+        BlockPos pos = ShadowEvents.getBlockPoint(caster, range, caster == owner);
         for ( int xPos = pos.getX() - size; xPos <= pos.getX() + size; xPos++ ) {
             for ( int yPos = pos.getY() - size; yPos <= pos.getY() + size; yPos++ ) {
                 for ( int zPos = pos.getZ() - size; zPos <= pos.getZ() + size; zPos++ ) {

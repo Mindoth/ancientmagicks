@@ -16,16 +16,16 @@ import net.mindoth.ancientmagicks.item.spell.deafeningblast.DeafeningBlastTablet
 import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteTablet;
 import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamTablet;
 import net.mindoth.ancientmagicks.item.spell.extinguish.ExtinguishTablet;
+import net.mindoth.ancientmagicks.item.spell.featherfall.FeatherFallTablet;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballTablet;
 import net.mindoth.ancientmagicks.item.spell.flight.FlightTablet;
 import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkTablet;
 import net.mindoth.ancientmagicks.item.spell.icewall.IceWallTablet;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainTablet;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphTablet;
+import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballTablet;
 import net.mindoth.ancientmagicks.item.spell.spook.SpookTablet;
 import net.mindoth.ancientmagicks.item.spell.summonskeleton.SummonSkeletonTablet;
-import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballTablet;
-import net.mindoth.ancientmagicks.item.spell.featherfall.FeatherFallTablet;
 import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabTablet;
 import net.mindoth.ancientmagicks.item.spell.ward.WardTablet;
 import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstTablet;
@@ -38,7 +38,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class AncientMagicksItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, AncientMagicks.MOD_ID);
 
-    //Casting items
+    //Casting Items
     public static final RegistryObject<Item> INVOCATION_STAFF = ITEMS.register("invocation_staff",
             () -> new InvocationStaffItem(new Item.Properties()));
 
@@ -46,13 +46,16 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> TABLET_BAG = ITEMS.register("tablet_bag",
             () -> new TabletBag(AMBagType.TABLET_BAG));
 
-
-
-    //Runes
+    //Stone Slate
     public static final RegistryObject<Item> STONE_SLATE = ITEMS.register("empty_rune",
             () -> new RuneItem(new Item.Properties()));
 
+    //Ancient Tablet
+    public static final RegistryObject<Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
+            () -> new Item(new Item.Properties()));
 
+
+    //Runes
     public static final RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A7b"));
 

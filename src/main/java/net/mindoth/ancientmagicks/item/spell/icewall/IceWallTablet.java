@@ -25,10 +25,8 @@ public class IceWallTablet extends TabletItem {
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        int adjuster = 1;
         float down = -0.2F;
         if ( caster != owner ) {
-            adjuster = -1;
             down = 0.0F;
         }
 
@@ -44,8 +42,8 @@ public class IceWallTablet extends TabletItem {
 
         if ( checkHeight(level, pos, height) != null ) {
             state = true;
-            Vec3 lookAtBlockPoint = CommonEvents.getBlockPoint(caster, range, caster == owner);
-            Block block = level.getBlockState(new BlockPos(Mth.floor(lookAtBlockPoint.x), Mth.floor(lookAtBlockPoint.y),Mth.floor(lookAtBlockPoint.z))).getBlock();
+            BlockPos lookAtBlockPoint = ShadowEvents.getBlockPoint(caster, range, caster == owner);
+            Block block = level.getBlockState(lookAtBlockPoint).getBlock();
             if ( block != wallMaterial ) {
                 BlockPos placePos = checkHeight(level, pos, height);
                 for ( int i = placePos.getY(); i < placePos.getY() + height; i++ ) {
