@@ -23,7 +23,7 @@ public class PacketSendRuneData {
     public void encode(FriendlyByteBuf buf) {
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
+    public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         //contextSupplier.get().getSender().refreshContainer(contextSupplier.get().getSender().containerMenu);
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
@@ -43,6 +43,5 @@ public class PacketSendRuneData {
                 });
             }
         });
-        return true;
     }
 }

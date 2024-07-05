@@ -58,7 +58,7 @@ public class AncientTabletItem extends Item {
         int index = rand.nextInt(list.size());
         TabletItem item = list.get(rand.nextInt(index));
         tag.putString("am_secretspell", ForgeRegistries.ITEMS.getKey(item).toString());
-        System.out.println(item);
+        //System.out.println(item);
 
         return tag;
     }
