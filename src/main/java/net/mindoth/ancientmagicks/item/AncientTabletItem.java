@@ -20,6 +20,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class AncientTabletItem extends Item {
     public AncientTabletItem(Properties pProperties) {
@@ -53,10 +54,10 @@ public class AncientTabletItem extends Item {
     }
 
     private static CompoundTag createSpellToDiscover(CompoundTag tag) {
-        Random rand = new Random();
         List<SpellTabletItem> list = AncientMagicks.SPELL_LIST;
-        int index = rand.nextInt(list.size());
-        SpellTabletItem item = list.get(rand.nextInt(index));
+        int index = ThreadLocalRandom.current().nextInt(0, list.size());
+        System.out.println(index);
+        SpellTabletItem item = list.get(index);
         tag.putString("am_secretspell", ForgeRegistries.ITEMS.getKey(item).toString());
 
         return tag;

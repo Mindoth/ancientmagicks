@@ -15,6 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ChaoticPolymorphTablet extends SpellTabletItem {
 
@@ -37,8 +38,8 @@ public class ChaoticPolymorphTablet extends SpellTabletItem {
         //TODO Check if game is in peaceful
         if ( level instanceof ServerLevel serverLevel && target instanceof Mob ) {
             if ( AncientMagicks.MOB_LIST.isEmpty() ) AncientMagicks.createMobList(serverLevel);
-            Random rand = new Random();
-            Entity entity = AncientMagicks.MOB_LIST.get(rand.nextInt(AncientMagicks.MOB_LIST.size())).create(level);
+            int index = ThreadLocalRandom.current().nextInt(0, AncientMagicks.MOB_LIST.size());
+            Entity entity = AncientMagicks.MOB_LIST.get(index).create(level);
             if ( entity instanceof Mob sheep ) {
                 sheep.moveTo(target.position());
                 ForgeEventFactory.onFinalizeSpawn(sheep, serverLevel, serverLevel.getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
