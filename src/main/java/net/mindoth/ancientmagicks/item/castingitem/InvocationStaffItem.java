@@ -29,11 +29,11 @@ public class InvocationStaffItem extends CastingItem {
             ItemStack staff = player.getItemInHand(handIn);
             if ( isValidCastingItem(staff) ) {
                 player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
-                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getSpell()));
-                    if ( item instanceof TabletItem tabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(tabletItem) ) {
-                        if ( player.totalExperience >= tabletItem.tier || player.isCreative() || AncientMagicksCommonConfig.FREE_SPELLS.get() ) player.startUsingItem(handIn);
+                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
+                    if ( item instanceof SpellTabletItem spellTabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellTabletItem) ) {
+                        if ( player.totalExperience >= spellTabletItem.tier || player.isCreative() || AncientMagicksCommonConfig.FREE_SPELLS.get() ) player.startUsingItem(handIn);
                         else {
-                            addCastingCooldown(player, tabletItem, 20);
+                            addCastingCooldown(player, spellTabletItem, 20);
                             RuneItem.playWhiffSound(player);
                         }
                     }
@@ -49,10 +49,10 @@ public class InvocationStaffItem extends CastingItem {
         if ( living instanceof Player player ) {
             if ( isValidCastingItem(wand) ) {
                 player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
-                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getSpell()));
-                    if ( item instanceof TabletItem tabletItem ) {
-                        if ( getHeldSlateItem(player).getItem() == AncientMagicksItems.STONE_SLATE.get() ) makeTablets(player, player, tabletItem, getHeldSlateItem(player));
-                        else doSpell(player, player, wand, tabletItem, getUseDuration(wand) - timeLeft);
+                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
+                    if ( item instanceof SpellTabletItem spellTabletItem) {
+                        if ( getHeldSlateItem(player).getItem() == AncientMagicksItems.STONE_SLATE.get() ) makeTablets(player, player, spellTabletItem, getHeldSlateItem(player));
+                        else doSpell(player, player, wand, spellTabletItem, getUseDuration(wand) - timeLeft);
                     }
                 });
             }

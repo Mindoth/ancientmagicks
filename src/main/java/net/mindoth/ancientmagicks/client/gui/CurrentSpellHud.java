@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.client.gui;
 
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -37,9 +37,9 @@ public class CurrentSpellHud {
             if ( mainHandItem.getItem() instanceof CastingItem && CastingItem.isValidCastingItem(mainHandItem) ) castingItem = mainHandItem;
             else if ( offHandItem.getItem() instanceof CastingItem && CastingItem.isValidCastingItem(offHandItem) ) castingItem = offHandItem;
 
-            if ( castingItem != null && ClientSpellData.getPlayerSpell() != null ) {
-                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ClientSpellData.getPlayerSpell()));
-                if ( item instanceof TabletItem) state = new ItemStack(item);
+            if ( castingItem != null && ClientSpellData.getCurrentSpell() != null ) {
+                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ClientSpellData.getCurrentSpell()));
+                if ( item instanceof SpellTabletItem ) state = new ItemStack(item);
             }
         }
 
@@ -53,8 +53,11 @@ public class CurrentSpellHud {
         int resultSlotY = MINECRAFT.getWindow().getGuiScaledHeight() - 22;
         GuiSpellWheel.drawSlotTexture(SLOT_TEXTURE, resultSlotX, resultSlotY - 1, 60, 22, 24, 24, 256, 256, graphics);
 
-        if ( currentSpell() != null ) {
-            graphics.renderItem(currentSpell(), resultSlotX + 3, resultSlotY + 3);
+        if ( currentSpell().getItem() != Items.AIR ) {
+            //graphics.renderItem(currentSpell(), resultSlotX + 3, resultSlotY + 3);
+            String id = currentSpell().getItem().toString();
+            GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/spell/" + id + ".png"),
+                    resultSlotX + 3, resultSlotY + 3, 0, 0, 16, 16, 16, 16, graphics);
             graphics.renderItemDecorations(gui.getFont(), currentSpell(), resultSlotX + 3, resultSlotY + 3);
         }
     }

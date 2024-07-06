@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell.summon;
 
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -18,7 +18,7 @@ public interface SummonedMinion {
         if ( getSummoner() == null ) return false;
         boolean isFellowSummon = entity == getSummoner() || entity.isAlliedTo(getSummoner());
         boolean hasCommonOwner = entity instanceof OwnableEntity ownableEntity && ownableEntity.getOwner() == getSummoner();
-        boolean isAlly = entity instanceof LivingEntity living && TabletItem.isAlly(getSummoner(), living);
+        boolean isAlly = entity instanceof LivingEntity living && SpellTabletItem.isAlly(getSummoner(), living);
         return isFellowSummon || hasCommonOwner || isAlly;
     }
 

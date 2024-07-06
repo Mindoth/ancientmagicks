@@ -20,7 +20,7 @@ public class AncientMagicksCommonConfig {
         PVP = BUILDER.comment("true = Harmful spells can hurt and target other players. false = Harmful spells will ignore players (Default = true)")
                 .define("pvp", true);
 
-        DISABLED_SPELLS = BUILDER.comment("Add any spells you wish to disable here in the following format: [ancientmagicks:ward_tablet, ancientmagicks:fireball_tablet] (Default = [])")
+        DISABLED_SPELLS = BUILDER.comment("Add any spells you wish to disable here in the following format: [ancientmagicks:ward, ancientmagicks:fireball] (Default = [])")
                 .define("spelldisablelist", "[]");
 
         DISABLED_POLYMOBS = BUILDER.comment("Add any mobs you wish to not summon with Chaotic Polymorph here in the following format: [minecraft:sheep, minecraft:pig] (Default = [])")

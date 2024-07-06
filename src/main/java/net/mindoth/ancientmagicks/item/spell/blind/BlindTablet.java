@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.blind;
 
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class BlindTablet extends TabletItem {
+public class BlindTablet extends SpellTabletItem {
 
     public BlindTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
         super(pProperties, tier, isChannel, cooldown);

@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.windburst;
 
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class WindBurstTablet extends TabletItem {
+public class WindBurstTablet extends SpellTabletItem {
 
     public WindBurstTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
         super(pProperties, tier, isChannel, cooldown);
@@ -34,7 +34,7 @@ public class WindBurstTablet extends TabletItem {
         for ( Entity target : targets ) {
             Vec3 targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, caster == owner, false, true, true, false);
             if ( target != caster && isPushable(target) ) {
-                if ( TabletItem.isPushable(target) ) {
+                if ( SpellTabletItem.isPushable(target) ) {
                     target.push((targetPoint.x - casterPos.x) * power, (targetPoint.y - casterPos.y + 0.5F) * power, (targetPoint.z - casterPos.z) * power);
                     target.hurtMarked = true;
                 }

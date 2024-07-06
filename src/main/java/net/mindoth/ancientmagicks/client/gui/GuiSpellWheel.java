@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.*;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSetSpell;
 import net.mindoth.ancientmagicks.network.PacketSolveAncientTablet;
@@ -55,11 +55,12 @@ public class GuiSpellWheel extends Screen {
     private final List<ItemStack> itemList;
     private final CompoundTag tag;
     private final List<ColorRuneItem> comboList = Lists.newArrayList();
-    private TabletItem comboResult;
+    private SpellTabletItem comboResult;
     private final boolean discoveryMode;
     private final InteractionHand hand;
+    private final int maxSpellSize;
 
-    public GuiSpellWheel(List<ItemStack> stackList, @Nullable CompoundTag tag, boolean isOffhand) {
+    public GuiSpellWheel(List<ItemStack> stackList, @Nullable CompoundTag tag, boolean isOffhand, int maxSpellSize) {
         super(Component.literal(""));
         this.discoveryMode = tag != null;
         this.closing = false;
@@ -70,9 +71,10 @@ public class GuiSpellWheel extends Screen {
         if ( this.discoveryMode ) this.tag = tag;
         else this.tag = null;
         this.hand = isOffhand ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+        this.maxSpellSize = maxSpellSize;
     }
 
-    public static void open(List<ItemStack> itemList, @Nullable CompoundTag tag, boolean isOffHand) {
+    public static void open(List<ItemStack> itemList, @Nullable CompoundTag tag, boolean isOffHand, int maxSpellSize) {
         Minecraft MINECRAFT = Minecraft.getInstance();
         Player player = MINECRAFT.player;
         if ( MINECRAFT.screen instanceof GuiSpellWheel ) {
@@ -80,7 +82,7 @@ public class GuiSpellWheel extends Screen {
             return;
         }
         if ( MINECRAFT.screen == null ) {
-            Minecraft.getInstance().setScreen(new GuiSpellWheel(itemList, tag, isOffHand));
+            Minecraft.getInstance().setScreen(new GuiSpellWheel(itemList, tag, isOffHand, maxSpellSize));
         }
     }
 
@@ -89,21 +91,24 @@ public class GuiSpellWheel extends Screen {
         if ( this.selectedItem != -1 ) {
             ItemStack clickedItem = this.itemList.get(this.selectedItem);
             if ( clickedItem.getItem() instanceof ColorRuneItem ) {
-                if ( this.comboList.size() < 9 ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
+                if ( this.comboList.size() <= maxSpellSize ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
                 else {
                     this.comboList.remove(0);
                     this.comboList.add((ColorRuneItem)clickedItem.getItem());
                 }
             }
-            TabletItem secretSpell = null;
-            if ( this.tag != null ) secretSpell = (TabletItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("am_secretspell")));
-            if ( ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell) != null ) {
+            SpellTabletItem secretSpell = null;
+            if ( this.tag != null ) secretSpell = (SpellTabletItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.tag.getString("am_secretspell")));
+            SpellTabletItem spellTabletItem = ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell);
+            if ( spellTabletItem != null && (ClientSpellData.isSpellKnown(spellTabletItem) || this.discoveryMode) ) {
                 this.comboResult = ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell);
-                String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
-                CompoundTag tag = new CompoundTag();
-                tag.putString("am_spell", spellString);
-                AncientMagicksNetwork.sendToServer(new PacketSetSpell(tag));
-                ClientSpellData.set(spellString);
+                if ( !this.discoveryMode ) {
+                    String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
+                    CompoundTag tag = new CompoundTag();
+                    tag.putString("am_spell", spellString);
+                    AncientMagicksNetwork.sendToServer(new PacketSetSpell(tag));
+                    ClientSpellData.setCurrentSpell(spellString);
+                }
             }
             else this.comboResult = null;
         }
@@ -199,18 +204,20 @@ public class GuiSpellWheel extends Screen {
             int posY = resultSlotY + 3;
             ItemStack slot = new ItemStack(this.comboResult);
 
-            //Item and its decorations
-            graphics.renderItem(slot, posX, posY);
-            graphics.renderItemDecorations(this.font, slot, posX, posY);
+            //Spell name
+            String name = I18n.get(slot.getDescriptionId());
+            graphics.drawCenteredString(this.font, name, width / 2, (height - this.font.lineHeight) / 2 - 8, 16777215);
 
             //Square slot
             GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/gui/square.png"),
                     resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
 
-            //Spell name
-            String tabletComponent = I18n.get("key.ancientmagicks.tablet_component");
-            String name = slot.getHoverName().getString().replace(tabletComponent, "");
-            graphics.drawCenteredString(this.font, name, width / 2, (height - this.font.lineHeight) / 2 - 8, 16777215);
+            //Item and its decorations
+            //graphics.renderItem(slot, posX, posY);
+            String id = slot.getItem().toString();
+            GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/spell/" + id + ".png"),
+                    posX, posY, 0, 0, 16, 16, 16, 16, graphics);
+            graphics.renderItemDecorations(this.font, slot, posX, posY);
         }
 
         ms.popPose();

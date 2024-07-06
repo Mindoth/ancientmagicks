@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.experiencestream;
 
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class ExperienceStreamTablet extends TabletItem {
+public class ExperienceStreamTablet extends SpellTabletItem {
 
     public ExperienceStreamTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
         super(pProperties, tier, isChannel, cooldown);

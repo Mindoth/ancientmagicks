@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.icewall;
 
-import net.mindoth.ancientmagicks.event.CommonEvents;
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -15,7 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class IceWallTablet extends TabletItem {
+public class IceWallTablet extends SpellTabletItem {
 
     public IceWallTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
         super(pProperties, tier, isChannel, cooldown);

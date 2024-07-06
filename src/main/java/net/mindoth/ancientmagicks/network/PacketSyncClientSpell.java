@@ -25,8 +25,10 @@ public class PacketSyncClientSpell {
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         contextSupplier.get().enqueueWork(() -> {
-            if ( this.spellTag.contains("am_spell") ) ClientSpellData.set(this.spellTag.getString("am_spell"));
-            else ClientSpellData.set("minecraft:air");
+            if ( this.spellTag.contains("am_spell") ) ClientSpellData.setCurrentSpell(this.spellTag.getString("am_spell"));
+            else ClientSpellData.setCurrentSpell("minecraft:air");
+            if ( this.spellTag.contains("am_known_spells") ) ClientSpellData.setKnownSpells(this.spellTag.getString("am_known_spells"));
+            else ClientSpellData.setKnownSpells("");
         });
         contextSupplier.get().setPacketHandled(true);
     }

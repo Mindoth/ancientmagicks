@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks.item;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpell;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
@@ -15,7 +15,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
@@ -44,13 +43,13 @@ public class ColorRuneItem extends RuneItem {
     //Serverside string to send in packets. It being a CompoundTag is just a workaround...
     public static CompoundTag CURRENT_COMBO_TAG = new CompoundTag();
     //Server- AND Client-sided Map used in GUI checks
-    public static HashMap<TabletItem, List<ColorRuneItem>> CURRENT_COMBO_MAP = new HashMap<>();
+    public static HashMap<SpellTabletItem, List<ColorRuneItem>> CURRENT_COMBO_MAP = new HashMap<>();
 
-    public static TabletItem checkForSpellCombo(List<ColorRuneItem> comboToCheck, @Nullable TabletItem secretSpell) {
-        TabletItem spell = null;
+    public static SpellTabletItem checkForSpellCombo(List<ColorRuneItem> comboToCheck, @Nullable SpellTabletItem secretSpell) {
+        SpellTabletItem spell = null;
         if ( secretSpell == null ) {
-            for ( Map.Entry<TabletItem, List<ColorRuneItem>> entry : CURRENT_COMBO_MAP.entrySet() ) {
-                TabletItem key = entry.getKey();
+            for ( Map.Entry<SpellTabletItem, List<ColorRuneItem>> entry : CURRENT_COMBO_MAP.entrySet() ) {
+                SpellTabletItem key = entry.getKey();
                 List<ColorRuneItem> value = entry.getValue();
                 if ( AncientMagicks.listsMatch(comboToCheck, value) ) spell = key;
             }
@@ -60,12 +59,12 @@ public class ColorRuneItem extends RuneItem {
     }
 
     //This is some REALLY delicate String parsing. I'm no expert...
-    public static HashMap<TabletItem, List<ColorRuneItem>> buildComboMap(String comboString) {
-        HashMap<TabletItem, List<ColorRuneItem>> returnMap = new HashMap<>();
+    public static HashMap<SpellTabletItem, List<ColorRuneItem>> buildComboMap(String comboString) {
+        HashMap<SpellTabletItem, List<ColorRuneItem>> returnMap = new HashMap<>();
 
         Map<String, String> tempMap = Splitter.on(";").withKeyValueSeparator("=").split(comboString);
         for ( Map.Entry<String, String> entry : tempMap.entrySet() ) {
-            TabletItem key = (TabletItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()));
+            SpellTabletItem key = (SpellTabletItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()));
             if ( AncientMagicks.isSpellEnabled(key) ) {
                 List<ColorRuneItem> tempList = Lists.newArrayList();
                 for ( String string : List.of(entry.getValue().replaceAll("[\\[\\]]", "").split(",")) ) {

@@ -44,7 +44,8 @@ public class AncientMagicksCapabilities {
                 event.getEntity().getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
                     CompoundTag tag = new CompoundTag();
-                    tag.putString("am_spell", oldStore.getSpell());
+                    tag.putString("am_spell", oldStore.getCurrentSpell());
+                    tag.putString("am_known_spells", oldStore.getKnownSpells());
                     tag.putBoolean("am_blue_rune", oldStore.getBlue());
                     tag.putBoolean("am_purple_rune", oldStore.getPurple());
                     tag.putBoolean("am_yellow_rune", oldStore.getYellow());

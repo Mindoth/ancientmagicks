@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.featherfall;
 
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class FeatherFallTablet extends TabletItem {
+public class FeatherFallTablet extends SpellTabletItem {
 
     public FeatherFallTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
         super(pProperties, tier, isChannel, cooldown);

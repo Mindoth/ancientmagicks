@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.item;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketReceiveRuneData;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
@@ -39,12 +39,12 @@ public class AncientTabletItem extends Item {
             if ( finalTag.contains("am_secretspell") ) {
                 serverPlayer.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                     List<ItemStack> runeList = Lists.newArrayList();
-                    if ( spell.getBlue() ) runeList.add(new ItemStack(AncientMagicksItems.BLUE_RUNE.get()));
-                    if ( spell.getPurple() ) runeList.add(new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()));
-                    if ( spell.getYellow() ) runeList.add(new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
-                    if ( spell.getGreen() ) runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
-                    if ( spell.getBlack() ) runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
-                    if ( spell.getWhite() ) runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
+                    if ( spell.getBlue() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLUE_RUNE.get()));
+                    if ( spell.getPurple() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()));
+                    if ( spell.getYellow() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
+                    if ( spell.getGreen() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
+                    if ( spell.getBlack() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
+                    if ( spell.getWhite() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
                     AncientMagicksNetwork.sendToPlayer(new PacketReceiveRuneData(runeList, finalTag, handIn == InteractionHand.OFF_HAND), serverPlayer);
                 });
             }
@@ -54,11 +54,10 @@ public class AncientTabletItem extends Item {
 
     private static CompoundTag createSpellToDiscover(CompoundTag tag) {
         Random rand = new Random();
-        List<TabletItem> list = AncientMagicks.SPELL_LIST;
+        List<SpellTabletItem> list = AncientMagicks.SPELL_LIST;
         int index = rand.nextInt(list.size());
-        TabletItem item = list.get(rand.nextInt(index));
+        SpellTabletItem item = list.get(rand.nextInt(index));
         tag.putString("am_secretspell", ForgeRegistries.ITEMS.getKey(item).toString());
-        //System.out.println(item);
 
         return tag;
     }

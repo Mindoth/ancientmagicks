@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.polymorph;
 
-import net.mindoth.ancientmagicks.event.CommonEvents;
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -11,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class PolymorphTablet extends TabletItem {
+public class PolymorphTablet extends SpellTabletItem {
 
     public PolymorphTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
         super(pProperties, tier, isChannel, cooldown);

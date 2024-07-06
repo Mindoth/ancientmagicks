@@ -1,7 +1,9 @@
 package net.mindoth.ancientmagicks.network;
 
 import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.client.gui.GuiSpellWheel;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
@@ -44,7 +46,11 @@ public class PacketReceiveRuneData {
     }
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
-        contextSupplier.get().enqueueWork(() -> GuiSpellWheel.open(this.itemList, this.tag, this.isOffHand));
+        contextSupplier.get().enqueueWork(() -> {
+            int maxSpellSize = 0;
+            for ( SpellTabletItem spell : AncientMagicks.SPELL_LIST ) if ( spell.tier > maxSpellSize ) maxSpellSize = spell.tier;
+            GuiSpellWheel.open(this.itemList, this.tag, this.isOffHand, maxSpellSize);
+        });
         contextSupplier.get().setPacketHandled(true);
     }
 }

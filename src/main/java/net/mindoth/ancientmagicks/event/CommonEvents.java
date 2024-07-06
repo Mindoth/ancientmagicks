@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks.event;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientSpell;
 import net.mindoth.ancientmagicks.network.PacketSyncSpellCombos;
@@ -37,8 +37,10 @@ public class CommonEvents {
             AncientMagicksNetwork.sendToPlayer(new PacketSyncSpellCombos(ColorRuneItem.CURRENT_COMBO_TAG), player);
             player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                 CompoundTag tag = new CompoundTag();
-                if ( spell.getSpell() != null ) tag.putString("am_spell", spell.getSpell());
-                else spell.setSpell("minecraft:air");
+                if ( spell.getCurrentSpell() != null ) tag.putString("am_spell", spell.getCurrentSpell());
+                else spell.setCurrentSpell("minecraft:air");
+                if ( spell.getKnownSpells() != null ) tag.putString("am_known_spells", spell.getKnownSpells());
+                else spell.setKnownSpells("");
                 AncientMagicksNetwork.sendToPlayer(new PacketSyncClientSpell(tag), player);
             });
         }
@@ -81,14 +83,14 @@ public class CommonEvents {
             if ( !player.level().isClientSide ) {
                 if ( event.getItem().getItem() instanceof CastingItem ) {
                     player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
-                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getSpell()));
-                        if ( item instanceof TabletItem tabletItem ) {
-                            player.getCooldowns().addCooldown(tabletItem, tabletItem.cooldown);
+                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
+                        if ( item instanceof SpellTabletItem spellTabletItem) {
+                            player.getCooldowns().addCooldown(spellTabletItem, spellTabletItem.cooldown);
                         }
                     });
                 }
-                else if ( event.getItem().getItem() instanceof TabletItem tabletItem ) {
-                    player.getCooldowns().addCooldown(tabletItem, tabletItem.cooldown);
+                else if ( event.getItem().getItem() instanceof SpellTabletItem spellTabletItem) {
+                    player.getCooldowns().addCooldown(spellTabletItem, spellTabletItem.cooldown);
                 }
             }
         }

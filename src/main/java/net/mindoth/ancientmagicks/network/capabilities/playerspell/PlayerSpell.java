@@ -4,12 +4,20 @@ import net.minecraft.nbt.CompoundTag;
 
 public class PlayerSpell {
 
-    private String spell;
-    public String getSpell() {
-        return this.spell;
+    private String currentSpell;
+    public String getCurrentSpell() {
+        return this.currentSpell;
     }
-    public void setSpell(String spell) {
-        this.spell = spell;
+    public void setCurrentSpell(String currentSpell) {
+        this.currentSpell = currentSpell;
+    }
+
+    private String knownSpells;
+    public String getKnownSpells() {
+        return this.knownSpells;
+    }
+    public void setKnownSpells(String knownSpells) {
+        this.knownSpells = knownSpells;
     }
 
     private boolean blue_rune;
@@ -61,7 +69,8 @@ public class PlayerSpell {
     }
 
     public void copyFrom(PlayerSpell source) {
-        this.spell = source.spell;
+        this.knownSpells = source.knownSpells;
+        this.currentSpell = source.currentSpell;
         this.blue_rune = source.blue_rune;
         this.purple_rune = source.purple_rune;
         this.yellow_rune = source.yellow_rune;
@@ -71,7 +80,8 @@ public class PlayerSpell {
     }
 
     public void saveNBTData(CompoundTag tag) {
-        tag.putString("am_spell", this.spell);
+        tag.putString("am_spell", this.currentSpell);
+        tag.putString("am_known_spells", this.knownSpells);
         tag.putBoolean("am_blue_rune", this.blue_rune);
         tag.putBoolean("am_purple_rune", this.purple_rune);
         tag.putBoolean("am_yellow_rune", this.yellow_rune);
@@ -81,7 +91,8 @@ public class PlayerSpell {
     }
 
     public void loadNBTData(CompoundTag tag) {
-        this.spell = tag.getString("am_spell");
+        this.currentSpell = tag.getString("am_spell");
+        this.knownSpells = tag.getString("am_known_spells");
         this.blue_rune = tag.getBoolean("am_blue_rune");
         this.purple_rune = tag.getBoolean("am_purple_rune");
         this.yellow_rune = tag.getBoolean("am_yellow_rune");

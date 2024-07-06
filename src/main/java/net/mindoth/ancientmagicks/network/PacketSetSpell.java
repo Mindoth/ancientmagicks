@@ -33,7 +33,7 @@ public class PacketSetSpell {
                     ItemStack wand = CastingItem.getHeldCastingItem(player);
                     if ( CastingItem.isValidCastingItem(wand) ) {
                         String spellString = this.selectedItem.getString("am_spell");
-                        player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> spell.setSpell(spellString));
+                        player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> spell.setCurrentSpell(spellString));
                     }
                 }
             }

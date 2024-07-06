@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.summon.SummonedMinion;
 import net.mindoth.ancientmagicks.item.spell.summonskeleton.SkeletonMinionEntity;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
@@ -46,9 +46,7 @@ public class AncientMagicks {
 
     public AncientMagicks() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            AncientMagicksClient.registerHandlers();
-        }
+        if ( FMLEnvironment.dist == Dist.CLIENT ) AncientMagicksClient.registerHandlers();
         addRegistries(modEventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AncientMagicksCommonConfig.SPEC, "ancientmagicks-common.toml");
     }
@@ -97,14 +95,15 @@ public class AncientMagicks {
     }
 
     private static void createSpellList() {
-        for ( Item item : ITEM_LIST ) if ( item instanceof TabletItem tabletItem && isSpellEnabled(tabletItem) ) SPELL_LIST.add(tabletItem);
+        clearLists();
+        for ( Item item : ITEM_LIST ) if ( item instanceof SpellTabletItem spellTabletItem && isSpellEnabled(spellTabletItem) ) SPELL_LIST.add(spellTabletItem);
     }
 
     private static void createSpellDisableList() {
         String configString = AncientMagicksCommonConfig.DISABLED_SPELLS.get();
         for ( String string : List.of(configString.replaceAll("[\\[\\]]", "").replaceAll(" ", "").replaceAll("\n", "").split(",")) ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-            if ( item instanceof TabletItem tabletItem ) DISABLED_SPELLS.add(tabletItem);
+            if ( item instanceof SpellTabletItem spellTabletItem) DISABLED_SPELLS.add(spellTabletItem);
         }
     }
 
@@ -125,25 +124,24 @@ public class AncientMagicks {
     }
 
     public static void randomizeSpells() {
-        clearLists();
         createTieredSpellLists();
         comboRuneInit();
     }
 
-    public static List<TabletItem> SPELL_LIST = Lists.newArrayList();
+    public static List<SpellTabletItem> SPELL_LIST = Lists.newArrayList();
     public static List<ColorRuneItem> COLOR_RUNE_LIST = Lists.newArrayList();
 
-    public static List<TabletItem> DISABLED_SPELLS = Lists.newArrayList();
-    public static List<TabletItem> TIER1_SPELLS = Lists.newArrayList();
-    public static List<TabletItem> TIER2_SPELLS = Lists.newArrayList();
-    public static List<TabletItem> TIER3_SPELLS = Lists.newArrayList();
-    public static List<TabletItem> TIER4_SPELLS = Lists.newArrayList();
-    public static List<TabletItem> TIER5_SPELLS = Lists.newArrayList();
-    public static List<TabletItem> TIER6_SPELLS = Lists.newArrayList();
-    public static List<TabletItem> TIER7_SPELLS = Lists.newArrayList();
-    public static List<TabletItem> TIER8_SPELLS = Lists.newArrayList();
+    public static List<SpellTabletItem> DISABLED_SPELLS = Lists.newArrayList();
+    public static List<SpellTabletItem> TIER1_SPELLS = Lists.newArrayList();
+    public static List<SpellTabletItem> TIER2_SPELLS = Lists.newArrayList();
+    public static List<SpellTabletItem> TIER3_SPELLS = Lists.newArrayList();
+    public static List<SpellTabletItem> TIER4_SPELLS = Lists.newArrayList();
+    public static List<SpellTabletItem> TIER5_SPELLS = Lists.newArrayList();
+    public static List<SpellTabletItem> TIER6_SPELLS = Lists.newArrayList();
+    public static List<SpellTabletItem> TIER7_SPELLS = Lists.newArrayList();
+    public static List<SpellTabletItem> TIER8_SPELLS = Lists.newArrayList();
 
-    public static HashMap<TabletItem, List<ColorRuneItem>> COMBO_MAP = new HashMap<>();
+    public static HashMap<SpellTabletItem, List<ColorRuneItem>> COMBO_MAP = new HashMap<>();
 
     public static void clearLists() {
         if ( !SPELL_LIST.isEmpty() ) SPELL_LIST.clear();
@@ -159,20 +157,20 @@ public class AncientMagicks {
         if ( !COMBO_MAP.isEmpty() ) COMBO_MAP.clear();
     }
 
-    public static boolean isSpellEnabled(TabletItem spell) {
+    public static boolean isSpellEnabled(SpellTabletItem spell) {
         return DISABLED_SPELLS.isEmpty() || !DISABLED_SPELLS.contains(spell);
     }
 
     public static void createTieredSpellLists() {
-        for ( TabletItem tabletItem : SPELL_LIST ) {
-            if ( tabletItem.tier == 1 ) TIER1_SPELLS.add(tabletItem);
-            if ( tabletItem.tier == 2 ) TIER2_SPELLS.add(tabletItem);
-            if ( tabletItem.tier == 3 ) TIER3_SPELLS.add(tabletItem);
-            if ( tabletItem.tier == 4 ) TIER4_SPELLS.add(tabletItem);
-            if ( tabletItem.tier == 5 ) TIER5_SPELLS.add(tabletItem);
-            if ( tabletItem.tier == 6 ) TIER6_SPELLS.add(tabletItem);
-            if ( tabletItem.tier == 7 ) TIER7_SPELLS.add(tabletItem);
-            if ( tabletItem.tier == 8 ) TIER8_SPELLS.add(tabletItem);
+        for ( SpellTabletItem spellTabletItem : SPELL_LIST ) {
+            if ( spellTabletItem.tier == 1 ) TIER1_SPELLS.add(spellTabletItem);
+            if ( spellTabletItem.tier == 2 ) TIER2_SPELLS.add(spellTabletItem);
+            if ( spellTabletItem.tier == 3 ) TIER3_SPELLS.add(spellTabletItem);
+            if ( spellTabletItem.tier == 4 ) TIER4_SPELLS.add(spellTabletItem);
+            if ( spellTabletItem.tier == 5 ) TIER5_SPELLS.add(spellTabletItem);
+            if ( spellTabletItem.tier == 6 ) TIER6_SPELLS.add(spellTabletItem);
+            if ( spellTabletItem.tier == 7 ) TIER7_SPELLS.add(spellTabletItem);
+            if ( spellTabletItem.tier == 8 ) TIER8_SPELLS.add(spellTabletItem);
         }
     }
 

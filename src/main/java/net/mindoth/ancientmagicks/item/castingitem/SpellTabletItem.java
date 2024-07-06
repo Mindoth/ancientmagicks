@@ -3,9 +3,9 @@ package net.mindoth.ancientmagicks.item.castingitem;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
+import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -27,12 +26,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TabletItem extends RuneItem {
+public class SpellTabletItem extends RuneItem {
     public int tier;
     public boolean isChannel;
     public int cooldown;
 
-    public TabletItem(Properties pProperties, int tier, boolean isChannel, int cooldown) {
+    public SpellTabletItem(Properties pProperties, int tier, boolean isChannel, int cooldown) {
         super(pProperties);
         this.tier = tier;
         this.isChannel = isChannel;
@@ -43,16 +42,19 @@ public class TabletItem extends RuneItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(this) ) {
-            StringBuilder tooltipString = new StringBuilder();
-            List<ColorRuneItem> list = ColorRuneItem.stringListToActualList(ColorRuneItem.CURRENT_COMBO_MAP.get(this).toString());
-            for ( ColorRuneItem rune : list ) {
-                String color = rune.color + "0" + "\u00A7r";
-                tooltipString.append(color);
-            }
-            tooltip.add(Component.literal(String.valueOf(tooltipString)));
+            if ( ClientSpellData.isSpellKnown(this) ) {
+                StringBuilder tooltipString = new StringBuilder();
+                List<ColorRuneItem> list = ColorRuneItem.stringListToActualList(ColorRuneItem.CURRENT_COMBO_MAP.get(this).toString());
+                for ( ColorRuneItem rune : list ) {
+                    String color = rune.color + "0" + "\u00A7r";
+                    tooltipString.append(color);
+                }
 
-            if ( this.tier != 0 ) tooltip.add(Component.translatable("tooltip.ancientmagicks.rune_tier")
-                    .append(Component.literal(" " + this.tier).withStyle(ChatFormatting.BLUE)));
+                tooltip.add(Component.literal(String.valueOf(tooltipString)));
+
+                if ( this.tier != 0 ) tooltip.add(Component.translatable("tooltip.ancientmagicks.rune_tier")
+                        .append(Component.literal(" " + this.tier).withStyle(ChatFormatting.BLUE)));
+            }
         }
 
         super.appendHoverText(stack, world, tooltip, flagIn);
@@ -73,7 +75,7 @@ public class TabletItem extends RuneItem {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide ) {
             ItemStack tablet = player.getItemInHand(handIn);
-            if ( tablet.getItem() instanceof TabletItem tabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(tabletItem) ) {
+            if ( tablet.getItem() instanceof SpellTabletItem spellTabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellTabletItem) ) {
                 player.startUsingItem(handIn);
             }
         }
@@ -83,8 +85,8 @@ public class TabletItem extends RuneItem {
     @Override
     public void onUseTick(Level level, LivingEntity living, ItemStack tablet, int timeLeft) {
         if ( level.isClientSide ) return;
-        if ( living instanceof Player player && tablet.getItem() instanceof TabletItem tabletItem ) {
-            CastingItem.doSpell(player, player, tablet, tabletItem, getUseDuration(tablet) - timeLeft);
+        if ( living instanceof Player player && tablet.getItem() instanceof SpellTabletItem spellTabletItem) {
+            CastingItem.doSpell(player, player, tablet, spellTabletItem, getUseDuration(tablet) - timeLeft);
         }
     }
 

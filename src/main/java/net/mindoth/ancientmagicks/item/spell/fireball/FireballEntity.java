@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.fireball;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -31,7 +31,7 @@ public class FireballEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public FireballEntity(Level level, LivingEntity owner, Entity caster, TabletItem rune) {
+    public FireballEntity(Level level, LivingEntity owner, Entity caster, SpellTabletItem rune) {
         super(AncientMagicksEntities.FIREBALL.get(), level, owner, caster, rune);
     }
 

@@ -61,12 +61,14 @@ public class AncientMagicksClient {
         }
 
         private static void onInput(Minecraft MINECRAFT, int key, int keyAction) {
+            int SPELLSELECTOR = AncientMagicksKeyBinds.SPELLSELECTOR.getKey().getValue();
+            int INVENTORY = MINECRAFT.options.keyInventory.getKey().getValue();
             ItemStack wand = CastingItem.getHeldCastingItem(MINECRAFT.player);
-            if ( key == AncientMagicksKeyBinds.SPELLSELECTOR.getKey().getValue() && wand.getItem() instanceof CastingItem ) {
-                if ( keyAction == 1 && MINECRAFT.screen == null ) {
-                    if ( wand.getItem() instanceof CastingItem ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());
-                }
-                else if ( keyAction == 0 && MINECRAFT.screen instanceof GuiSpellWheel ) MINECRAFT.player.closeContainer();
+            if ( MINECRAFT.screen instanceof GuiSpellWheel ) {
+                if ( key == INVENTORY || (keyAction == 0 && key == SPELLSELECTOR) ) MINECRAFT.player.closeContainer();
+            }
+            else if ( MINECRAFT.screen == null && key == SPELLSELECTOR && keyAction == 1 ) {
+                if ( wand.getItem() instanceof CastingItem ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());
             }
         }
     }

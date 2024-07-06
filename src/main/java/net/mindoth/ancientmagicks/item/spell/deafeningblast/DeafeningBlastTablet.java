@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.deafeningblast;
 
-import net.mindoth.ancientmagicks.item.castingitem.TabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class DeafeningBlastTablet extends TabletItem {
+public class DeafeningBlastTablet extends SpellTabletItem {
 
     public DeafeningBlastTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
         super(pProperties, tier, isChannel, cooldown);
