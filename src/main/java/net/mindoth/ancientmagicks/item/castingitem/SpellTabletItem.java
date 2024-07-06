@@ -1,11 +1,17 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
+import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
+import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.PacketUpdateKnownSpells;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
+import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -21,10 +27,12 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 public class SpellTabletItem extends RuneItem {
     public int tier;
@@ -60,15 +68,6 @@ public class SpellTabletItem extends RuneItem {
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
-    public static boolean isAlly(LivingEntity owner, LivingEntity target) {
-        if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) return true;
-        else return target == owner || !owner.canAttack(target) || owner.isAlliedTo(target) || (target instanceof TamableAnimal && ((TamableAnimal)target).isOwnedBy(owner));
-    }
-
-    public static boolean isPushable(Entity entity) {
-        return ( entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof PrimedTnt || entity instanceof FallingBlockEntity );
-    }
-
     @Override
     @Nonnull
     public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
@@ -77,9 +76,26 @@ public class SpellTabletItem extends RuneItem {
             ItemStack tablet = player.getItemInHand(handIn);
             if ( tablet.getItem() instanceof SpellTabletItem spellTabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellTabletItem) ) {
                 player.startUsingItem(handIn);
+                learnSpell((ServerPlayer)player, (SpellTabletItem)tablet.getItem());
             }
         }
         return result;
+    }
+
+    private static void learnSpell(ServerPlayer player, SpellTabletItem handTablet) {
+        final String spellString = ForgeRegistries.ITEMS.getKey(handTablet).toString();
+        player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
+            CompoundTag tag = new CompoundTag();
+            tag.putString("am_secretspell", spellString);
+            if ( Objects.equals(spell.getKnownSpells(), "") ) {
+                spell.setKnownSpells(spellString);
+                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), player);
+            }
+            else if ( !ClientSpellData.stringListToSpellList(spell.getKnownSpells()).contains(handTablet) ) {
+                spell.setKnownSpells(spell.getKnownSpells() + "," + spellString);
+                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), player);
+            }
+        });
     }
 
     @Override
@@ -88,6 +104,15 @@ public class SpellTabletItem extends RuneItem {
         if ( living instanceof Player player && tablet.getItem() instanceof SpellTabletItem spellTabletItem) {
             CastingItem.doSpell(player, player, tablet, spellTabletItem, getUseDuration(tablet) - timeLeft);
         }
+    }
+
+    public static boolean isAlly(LivingEntity owner, LivingEntity target) {
+        if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) return true;
+        else return target == owner || !owner.canAttack(target) || owner.isAlliedTo(target) || (target instanceof TamableAnimal && ((TamableAnimal)target).isOwnedBy(owner));
+    }
+
+    public static boolean isPushable(Entity entity) {
+        return ( entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof PrimedTnt || entity instanceof FallingBlockEntity );
     }
 
     @Override
