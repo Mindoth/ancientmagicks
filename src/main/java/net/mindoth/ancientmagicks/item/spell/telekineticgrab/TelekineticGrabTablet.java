@@ -15,8 +15,8 @@ import java.util.List;
 
 public class TelekineticGrabTablet extends SpellTabletItem {
 
-    public TelekineticGrabTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public TelekineticGrabTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

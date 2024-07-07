@@ -46,11 +46,7 @@ public class PacketReceiveRuneData {
     }
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
-        contextSupplier.get().enqueueWork(() -> {
-            int maxSpellSize = 0;
-            for ( SpellTabletItem spell : AncientMagicks.SPELL_LIST ) if ( spell.tier > maxSpellSize ) maxSpellSize = spell.tier;
-            GuiSpellWheel.open(this.itemList, this.tag, this.isOffHand, maxSpellSize);
-        });
+        contextSupplier.get().enqueueWork(() -> GuiSpellWheel.open(this.itemList, this.tag, this.isOffHand));
         contextSupplier.get().setPacketHandled(true);
     }
 }

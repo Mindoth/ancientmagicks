@@ -31,7 +31,7 @@ public class PacketUpdateKnownSpells {
         contextSupplier.get().enqueueWork(() -> {
             if ( ClientSpellData.getKnownSpells() != null && this.spellTag.contains("am_secretspell") ) {
                 final String spellString = this.spellTag.getString("am_secretspell");
-                final SpellTabletItem item = (SpellTabletItem) ForgeRegistries.ITEMS.getValue(new ResourceLocation(spellString));
+                final SpellTabletItem item = (SpellTabletItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(spellString));
                 if ( Objects.equals(ClientSpellData.getKnownSpells(), "") ) {
                     ClientSpellData.setKnownSpells(spellString);
                 }

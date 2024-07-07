@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class GhostwalkTablet extends SpellTabletItem {
 
-    public GhostwalkTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public GhostwalkTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

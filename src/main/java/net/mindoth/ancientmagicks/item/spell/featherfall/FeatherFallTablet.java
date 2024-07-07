@@ -14,8 +14,8 @@ import java.util.List;
 
 public class FeatherFallTablet extends SpellTabletItem {
 
-    public FeatherFallTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public FeatherFallTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

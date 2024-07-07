@@ -18,8 +18,8 @@ import java.util.List;
 
 public class DeafeningBlastTablet extends SpellTabletItem {
 
-    public DeafeningBlastTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public DeafeningBlastTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

@@ -9,8 +9,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class BlinkTablet extends SpellTabletItem {
 
-    public BlinkTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public BlinkTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

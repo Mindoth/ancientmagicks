@@ -14,8 +14,8 @@ import java.util.List;
 
 public class WindBurstTablet extends SpellTabletItem {
 
-    public WindBurstTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public WindBurstTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

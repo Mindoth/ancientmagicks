@@ -10,8 +10,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class ExperienceStreamTablet extends SpellTabletItem {
 
-    public ExperienceStreamTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public ExperienceStreamTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

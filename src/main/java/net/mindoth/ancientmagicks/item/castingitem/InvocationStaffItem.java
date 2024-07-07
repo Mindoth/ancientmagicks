@@ -31,7 +31,7 @@ public class InvocationStaffItem extends CastingItem {
                 player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
                     if ( item instanceof SpellTabletItem spellTabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellTabletItem) ) {
-                        if ( player.totalExperience >= spellTabletItem.tier || player.isCreative() || AncientMagicksCommonConfig.FREE_SPELLS.get() ) player.startUsingItem(handIn);
+                        if ( player.totalExperience >= 1 || player.isCreative() || AncientMagicksCommonConfig.FREE_SPELLS.get() ) player.startUsingItem(handIn);
                         else {
                             addCastingCooldown(player, spellTabletItem, 20);
                             RuneItem.playWhiffSound(player);

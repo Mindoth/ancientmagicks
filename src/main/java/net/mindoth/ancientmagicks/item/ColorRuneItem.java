@@ -10,6 +10,7 @@ import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -118,11 +119,25 @@ public class ColorRuneItem extends RuneItem {
                     if ( stack.getItem() == AncientMagicksItems.GREEN_RUNE.get() ) cap.ifPresent(rune -> rune.setGreen(!rune.getGreen()));
                     if ( stack.getItem() == AncientMagicksItems.WHITE_RUNE.get() ) cap.ifPresent(rune -> rune.setWhite(!rune.getWhite()));
                     if ( stack.getItem() == AncientMagicksItems.BLACK_RUNE.get() ) cap.ifPresent(rune -> rune.setBlack(!rune.getBlack()));
+                    if ( stack.getItem() == AncientMagicksItems.BROWN_RUNE.get() ) cap.ifPresent(rune -> rune.setBrown(!rune.getBrown()));
+                    if ( stack.getItem() == AncientMagicksItems.RED_RUNE.get() ) cap.ifPresent(rune -> rune.setRed(!rune.getRed()));
                     if ( !player.isCreative() ) event.getResultStack().shrink(1);
                     Vec3 center = ShadowEvents.getEntityCenter(event.getEntity());
                     player.level().playSound(null, center.x, center.y, center.z, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5F, 0.25F);
                 }
             }
         }
+    }
+
+    public static List<ItemStack> addColorRunesToList(Player player, List<ItemStack> runeList, PlayerSpell spell) {
+        if ( spell.getBlue() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLUE_RUNE.get()));
+        if ( spell.getPurple() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()));
+        if ( spell.getYellow() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
+        if ( spell.getGreen() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
+        if ( spell.getBlack() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
+        if ( spell.getWhite() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
+        if ( spell.getBrown() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BROWN_RUNE.get()));
+        if ( spell.getRed() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.RED_RUNE.get()));
+        return runeList;
     }
 }

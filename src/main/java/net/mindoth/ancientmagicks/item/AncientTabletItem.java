@@ -15,15 +15,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.extensions.IForgeItem;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class AncientTabletItem extends Item {
+public class AncientTabletItem extends Item implements IForgeItem {
     public AncientTabletItem(Properties pProperties) {
-        super(pProperties);
+        super(pProperties.stacksTo(1));
     }
 
     @Override
@@ -38,13 +39,7 @@ public class AncientTabletItem extends Item {
             else finalTag = tag;
             if ( finalTag.contains("am_secretspell") ) {
                 serverPlayer.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
-                    List<ItemStack> runeList = Lists.newArrayList();
-                    if ( spell.getBlue() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLUE_RUNE.get()));
-                    if ( spell.getPurple() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()));
-                    if ( spell.getYellow() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
-                    if ( spell.getGreen() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
-                    if ( spell.getBlack() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
-                    if ( spell.getWhite() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
+                    List<ItemStack> runeList = ColorRuneItem.addColorRunesToList(player, Lists.newArrayList(), spell);
                     AncientMagicksNetwork.sendToPlayer(new PacketReceiveRuneData(runeList, finalTag, handIn == InteractionHand.OFF_HAND), serverPlayer);
                 });
             }
@@ -61,8 +56,22 @@ public class AncientTabletItem extends Item {
         return tag;
     }
 
-    public static @Nonnull ItemStack getHeldAncientTabletItem(Player playerEntity) {
-        ItemStack slate = playerEntity.getMainHandItem().getItem() == AncientMagicksItems.ANCIENT_TABLET.get() ? playerEntity.getMainHandItem() : null;
-        return slate == null ? (playerEntity.getOffhandItem().getItem() == AncientMagicksItems.ANCIENT_TABLET.get() ? playerEntity.getOffhandItem() : ItemStack.EMPTY) : slate;
+    /*@Override
+    public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
+        Level level = entity.level();
+        BlockPos pos = entity.getOnPos();
+        if ( level.getBlockState(pos).getBlock() == Blocks.WATER_CAULDRON ) {
+            entity.discard();
+            flair(level, entity, pos);
+        }
+        return false;
     }
+
+    private static void flair(Level level, ItemEntity entity, BlockPos pos) {
+        if ( level instanceof ServerLevel world ) {
+            world.playSound(null, pos, SoundEvents.PLAYER_SPLASH_HIGH_SPEED, SoundSource.BLOCKS, 0.5F, 1.0F);
+            world.sendParticles(ParticleTypes.BUBBLE_POP, entity.getX(), entity.getY(), entity.getZ(),
+                    0, 0, 0.5D, 0, 0.5D);
+        }
+    }*/
 }

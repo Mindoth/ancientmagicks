@@ -71,80 +71,86 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A7f"));
 
+    public static final RegistryObject<Item> BROWN_RUNE = ITEMS.register("brown_rune",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A76"));
+
+    public static final RegistryObject<Item> RED_RUNE = ITEMS.register("red_rune",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7c"));
+
     //Empty Rune
     public static final RegistryObject<Item> STONE_SLATE = ITEMS.register("empty_rune",
             () -> new RuneItem(new Item.Properties()));
 
 
     public static final RegistryObject<Item> WITCH_SPARK_TABLET = ITEMS.register("witch_spark",
-            () -> new WitchSparkTablet(new Item.Properties(), 1, false, 20));
+            () -> new WitchSparkTablet(new Item.Properties(), false, 20));
 
     public static final RegistryObject<Item> SLIMEBALL_TABLET = ITEMS.register("slimeball",
-            () -> new SlimeballTablet(new Item.Properties(), 1, false, 20));
+            () -> new SlimeballTablet(new Item.Properties(), false, 20));
 
     public static final RegistryObject<Item> WARD_TABLET = ITEMS.register("ward",
-            () -> new WardTablet(new Item.Properties(), 1, false, 200));
+            () -> new WardTablet(new Item.Properties(), false, 200));
 
     public static final RegistryObject<Item> FEATHER_FALL_TABLET = ITEMS.register("feather_fall",
-            () -> new FeatherFallTablet(new Item.Properties(), 1, false, 200));
+            () -> new FeatherFallTablet(new Item.Properties(), false, 200));
 
     public static final RegistryObject<Item> TELEKINETIC_GRAB_TABLET = ITEMS.register("telekinetic_grab",
-            () -> new TelekineticGrabTablet(new Item.Properties(), 1, false, 20));
+            () -> new TelekineticGrabTablet(new Item.Properties(), false, 20));
 
     public static final RegistryObject<Item> EXTINGUISH_TABLET = ITEMS.register("extinguish",
-            () -> new ExtinguishTablet(new Item.Properties(), 1, false, 100));
+            () -> new ExtinguishTablet(new Item.Properties(), false, 100));
 
     public static final RegistryObject<Item> SPOOK_TABLET = ITEMS.register("spook",
-            () -> new SpookTablet(new Item.Properties(), 1, false, 1200));
+            () -> new SpookTablet(new Item.Properties(), false, 1200));
 
     public static final RegistryObject<Item> BLIND_TABLET = ITEMS.register("blind",
-            () -> new BlindTablet(new Item.Properties(), 1, false, 400));
+            () -> new BlindTablet(new Item.Properties(), false, 400));
 
     public static final RegistryObject<Item> WIND_BURST_TABLET = ITEMS.register("wind_burst",
-            () -> new WindBurstTablet(new Item.Properties(), 2, false, 40));
+            () -> new WindBurstTablet(new Item.Properties(), false, 40));
 
     public static final RegistryObject<Item> DYNAMITE_TABLET = ITEMS.register("dynamite",
-            () -> new DynamiteTablet(new Item.Properties(), 2, false, 80));
+            () -> new DynamiteTablet(new Item.Properties(), false, 80));
 
     public static final RegistryObject<Item> BLINK_TABLET = ITEMS.register("blink",
-            () -> new BlinkTablet(new Item.Properties(), 2, false, 40));
+            () -> new BlinkTablet(new Item.Properties(), false, 40));
 
     public static final RegistryObject<Item> FIREBALL_TABLET = ITEMS.register("fireball",
-            () -> new FireballTablet(new Item.Properties(), 3, false, 60));
+            () -> new FireballTablet(new Item.Properties(), false, 60));
 
     public static final RegistryObject<Item> CALL_LIGHTNING_TABLET = ITEMS.register("call_lightning",
-            () -> new CallLightningTablet(new Item.Properties(), 3, false, 60));
+            () -> new CallLightningTablet(new Item.Properties(), false, 60));
 
     public static final RegistryObject<Item> NUMB_PAIN_TABLET = ITEMS.register("numb_pain",
-            () -> new NumbPainTablet(new Item.Properties(), 3, false, 400));
+            () -> new NumbPainTablet(new Item.Properties(), false, 400));
 
     public static final RegistryObject<Item> SUMMON_SKELETON_TABLET = ITEMS.register("summon_skeleton",
-            () -> new SummonSkeletonTablet(new Item.Properties(), 3, false, 200));
+            () -> new SummonSkeletonTablet(new Item.Properties(), false, 200));
 
     public static final RegistryObject<Item> COLLAPSE_TABLET = ITEMS.register("collapse",
-            () -> new CollapseTablet(new Item.Properties(), 3, false, 60));
+            () -> new CollapseTablet(new Item.Properties(), false, 60));
 
     public static final RegistryObject<Item> ALACRITY_TABLET = ITEMS.register("alacrity",
-            () -> new AlacrityTablet(new Item.Properties(), 3, false, 1200));
+            () -> new AlacrityTablet(new Item.Properties(), false, 1200));
 
     public static final RegistryObject<Item> FLIGHT_TABLET = ITEMS.register("flight",
-            () -> new FlightTablet(new Item.Properties(), 4, false, 1200));
+            () -> new FlightTablet(new Item.Properties(), false, 1200));
 
     public static final RegistryObject<Item> POLYMORPH_TABLET = ITEMS.register("polymorph",
-            () -> new PolymorphTablet(new Item.Properties(), 4, false, 200));
+            () -> new PolymorphTablet(new Item.Properties(), false, 200));
 
     public static final RegistryObject<Item> GHOSTWALK_TABLET = ITEMS.register("ghostwalk",
-            () -> new GhostwalkTablet(new Item.Properties(), 4, false, 1199));
+            () -> new GhostwalkTablet(new Item.Properties(), false, 1199));
 
     public static final RegistryObject<Item> ICE_WALL_TABLET = ITEMS.register("ice_wall",
-            () -> new IceWallTablet(new Item.Properties(), 4, true, 80));
+            () -> new IceWallTablet(new Item.Properties(), true, 80));
 
     public static final RegistryObject<Item> CHAOTIC_POLYMORPH_TABLET = ITEMS.register("chaotic_polymorph",
-            () -> new ChaoticPolymorphTablet(new Item.Properties(), 5, false, 40));
+            () -> new ChaoticPolymorphTablet(new Item.Properties(), false, 40));
 
     public static final RegistryObject<Item> DEAFENING_BLAST_TABLET = ITEMS.register("deafening_blast",
-            () -> new DeafeningBlastTablet(new Item.Properties(), 5, false, 120));
+            () -> new DeafeningBlastTablet(new Item.Properties(), false, 120));
 
     public static final RegistryObject<Item> EXPERIENCE_STREAM_TABLET = ITEMS.register("experience_stream",
-            () -> new ExperienceStreamTablet(new Item.Properties(), 5, true, 20));
+            () -> new ExperienceStreamTablet(new Item.Properties(), true, 20));
 }

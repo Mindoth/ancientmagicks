@@ -9,8 +9,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class SlimeballTablet extends SpellTabletItem {
 
-    public SlimeballTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public SlimeballTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

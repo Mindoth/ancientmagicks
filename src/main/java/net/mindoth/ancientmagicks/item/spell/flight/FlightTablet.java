@@ -13,8 +13,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class FlightTablet extends SpellTabletItem {
 
-    public FlightTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public FlightTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

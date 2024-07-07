@@ -1,14 +1,13 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketUpdateKnownSpells;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
-import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,13 +34,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class SpellTabletItem extends RuneItem {
-    public int tier;
     public boolean isChannel;
     public int cooldown;
 
-    public SpellTabletItem(Properties pProperties, int tier, boolean isChannel, int cooldown) {
+    public SpellTabletItem(Properties pProperties, boolean isChannel, int cooldown) {
         super(pProperties);
-        this.tier = tier;
         this.isChannel = isChannel;
         this.cooldown = cooldown;
     }
@@ -50,7 +47,7 @@ public class SpellTabletItem extends RuneItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(this) ) {
-            if ( ClientSpellData.isSpellKnown(this) ) {
+            if ( ClientSpellData.isSpellKnown(this) || Minecraft.getInstance().player.isCreative() ) {
                 StringBuilder tooltipString = new StringBuilder();
                 List<ColorRuneItem> list = ColorRuneItem.stringListToActualList(ColorRuneItem.CURRENT_COMBO_MAP.get(this).toString());
                 for ( ColorRuneItem rune : list ) {
@@ -59,9 +56,6 @@ public class SpellTabletItem extends RuneItem {
                 }
 
                 tooltip.add(Component.literal(String.valueOf(tooltipString)));
-
-                if ( this.tier != 0 ) tooltip.add(Component.translatable("tooltip.ancientmagicks.rune_tier")
-                        .append(Component.literal(" " + this.tier).withStyle(ChatFormatting.BLUE)));
             }
         }
 

@@ -57,7 +57,7 @@ public class CastingItem extends Item {
     }
 
     public static void extractCost(Player owner, SpellTabletItem spellTabletItem) {
-        if ( !AncientMagicksCommonConfig.FREE_SPELLS.get() && !owner.isCreative() ) owner.giveExperiencePoints(-spellTabletItem.tier);
+        if ( !AncientMagicksCommonConfig.FREE_SPELLS.get() && !owner.isCreative() ) owner.giveExperiencePoints(-1);
     }
 
     public static int getCastingCooldown(int defaultCooldown, boolean hasAlacrity) {
@@ -77,7 +77,7 @@ public class CastingItem extends Item {
         for ( int i = 0; i < slateStack.getCount(); i++ ) {
             if ( stackCount >= slateStack.getCount() ) break;
             boolean canAfford = false;
-            if ( owner.totalExperience >= spellTabletItem.tier || owner.isCreative() ) {
+            if ( owner.totalExperience >= 1 || owner.isCreative() ) {
                 canAfford = true;
                 extractCost(owner, spellTabletItem);
             }

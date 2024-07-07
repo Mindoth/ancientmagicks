@@ -17,8 +17,8 @@ import java.util.List;
 
 public class ExtinguishTablet extends SpellTabletItem {
 
-    public ExtinguishTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public ExtinguishTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

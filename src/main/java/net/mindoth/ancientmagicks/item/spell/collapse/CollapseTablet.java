@@ -14,8 +14,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class CollapseTablet extends SpellTabletItem {
 
-    public CollapseTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public CollapseTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

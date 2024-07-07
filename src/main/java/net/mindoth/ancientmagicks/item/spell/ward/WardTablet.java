@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class WardTablet extends SpellTabletItem {
 
-    public WardTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public WardTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

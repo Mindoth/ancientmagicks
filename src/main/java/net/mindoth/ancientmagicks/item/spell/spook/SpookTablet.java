@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class SpookTablet extends SpellTabletItem {
 
-    public SpookTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public SpookTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

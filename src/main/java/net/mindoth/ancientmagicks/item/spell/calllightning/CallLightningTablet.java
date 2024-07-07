@@ -17,8 +17,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class CallLightningTablet extends SpellTabletItem {
 
-    public CallLightningTablet(Item.Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public CallLightningTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

@@ -16,8 +16,8 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 public class SummonSkeletonTablet extends SpellTabletItem {
 
-    public SummonSkeletonTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public SummonSkeletonTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

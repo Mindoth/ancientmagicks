@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class NumbPainTablet extends SpellTabletItem {
 
-    public NumbPainTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public NumbPainTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

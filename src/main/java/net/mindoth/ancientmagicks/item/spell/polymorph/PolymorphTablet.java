@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class PolymorphTablet extends SpellTabletItem {
 
-    public PolymorphTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public PolymorphTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override

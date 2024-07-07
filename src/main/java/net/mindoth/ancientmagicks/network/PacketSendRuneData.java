@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.network;
 
 import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
@@ -32,13 +33,7 @@ public class PacketSendRuneData {
                 player.stopUsingItem();
                 player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                     boolean isOffHand = !(player.getMainHandItem().getItem() instanceof CastingItem);
-                    List<ItemStack> runeList = Lists.newArrayList();
-                    if ( spell.getBlue() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLUE_RUNE.get()));
-                    if ( spell.getPurple() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()));
-                    if ( spell.getYellow() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
-                    if ( spell.getGreen() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
-                    if ( spell.getBlack() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
-                    if ( spell.getWhite() || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
+                    List<ItemStack> runeList = ColorRuneItem.addColorRunesToList(player, Lists.newArrayList(), spell);
                     AncientMagicksNetwork.sendToPlayer(new PacketReceiveRuneData(runeList, null, isOffHand), player);
                 });
             }

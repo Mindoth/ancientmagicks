@@ -19,8 +19,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ChaoticPolymorphTablet extends SpellTabletItem {
 
-    public ChaoticPolymorphTablet(Properties pProperties, int tier, boolean isChannel, int cooldown) {
-        super(pProperties, tier, isChannel, cooldown);
+    public ChaoticPolymorphTablet(Properties pProperties, boolean isChannel, int cooldown) {
+        super(pProperties, isChannel, cooldown);
     }
 
     @Override
