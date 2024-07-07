@@ -71,6 +71,10 @@ public class AbstractSpellEntity extends ThrowableProjectile {
         return 0;
     }
 
+    public boolean getDefaultHoming() {
+        return false;
+    }
+
     public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, SpellTabletItem rune) {
         super(entityType, owner, pLevel);
 
@@ -84,6 +88,7 @@ public class AbstractSpellEntity extends ThrowableProjectile {
         this.bounce = this.getDefaultBounce();
         this.enemyPierce = this.getDefaultEnemyPierce();
         this.blockPierce = this.getDefaultBlockPierce();
+        this.homing = this.getDefaultHoming();
     }
 
     protected LivingEntity owner;
@@ -93,7 +98,7 @@ public class AbstractSpellEntity extends ThrowableProjectile {
     public float speed;
     public float life;
     public float size;
-    public boolean homing = false;
+    public boolean homing;
     public int bounce;
     public int enemyPierce;
     public int blockPierce;

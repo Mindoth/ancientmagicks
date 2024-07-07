@@ -27,7 +27,7 @@ public class WitchSparkTablet extends SpellTabletItem {
 
         projectile.setColor(AbstractSpellEntity.getSpellColor("dark_purple"), 0.3F);
         projectile.setPos(center.x, center.y + down, center.z);
-        projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 1.0F);
+        projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
         level.addFreshEntity(projectile);
         state = true;
 
