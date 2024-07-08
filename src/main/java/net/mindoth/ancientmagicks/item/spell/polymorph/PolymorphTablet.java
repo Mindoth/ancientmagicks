@@ -29,8 +29,8 @@ public class PolymorphTablet extends SpellTabletItem {
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
 
         if ( level instanceof ServerLevel serverLevel ) {
-            if ( target instanceof Mob && !(target instanceof Sheep) ) {
-                Sheep sheep = ((Mob)target).convertTo(EntityType.SHEEP, false);
+            if ( target instanceof Mob mob && !(target instanceof Sheep) ) {
+                Sheep sheep = mob.convertTo(EntityType.SHEEP, false);
                 sheep.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
                 ShadowEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, ShadowEvents.getEntityCenter(caster), ShadowEvents.getEntityCenter(sheep),
                         0, 1, 85F / 255F, 1, 1);
