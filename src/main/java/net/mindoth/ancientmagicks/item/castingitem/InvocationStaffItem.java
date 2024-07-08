@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
+import net.mindoth.ancientmagicks.event.SpellCasting;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
@@ -33,7 +34,7 @@ public class InvocationStaffItem extends CastingItem {
                     if ( item instanceof SpellTabletItem spellTabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellTabletItem) ) {
                         if ( player.totalExperience >= 1 || player.isCreative() || AncientMagicksCommonConfig.FREE_SPELLS.get() ) player.startUsingItem(handIn);
                         else {
-                            addCastingCooldown(player, spellTabletItem, 20);
+                            SpellCasting.addCastingCooldown(player, spellTabletItem, 20);
                             RuneItem.playWhiffSound(player);
                         }
                     }
@@ -51,8 +52,10 @@ public class InvocationStaffItem extends CastingItem {
                 player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
                     if ( item instanceof SpellTabletItem spellTabletItem) {
-                        if ( getHeldSlateItem(player).getItem() == AncientMagicksItems.STONE_SLATE.get() ) makeTablets(player, player, spellTabletItem, getHeldSlateItem(player));
-                        else doSpell(player, player, wand, spellTabletItem, getUseDuration(wand) - timeLeft);
+                        if ( SpellCasting.getHeldSlateItem(player).getItem() == AncientMagicksItems.EMPTY_RUNE.get() ) {
+                            SpellCasting.makeTablets(player, player, spellTabletItem, SpellCasting.getHeldSlateItem(player));
+                        }
+                        else SpellCasting.doSpell(player, player, wand, spellTabletItem, getUseDuration(wand) - timeLeft);
                     }
                 });
             }

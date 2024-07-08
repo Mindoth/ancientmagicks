@@ -1,12 +1,14 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
+import net.mindoth.ancientmagicks.event.SpellCasting;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketUpdateKnownSpells;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
+import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -70,34 +72,43 @@ public class SpellTabletItem extends RuneItem {
             ItemStack tablet = player.getItemInHand(handIn);
             if ( tablet.getItem() instanceof SpellTabletItem spellTabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellTabletItem) ) {
                 player.startUsingItem(handIn);
-                learnSpell((ServerPlayer)player, (SpellTabletItem)tablet.getItem());
             }
         }
         return result;
     }
 
-    private static void learnSpell(ServerPlayer player, SpellTabletItem handTablet) {
+    @Override
+    public void onUseTick(Level level, LivingEntity living, ItemStack stack, int timeLeft) {
+        if ( level.isClientSide ) return;
+        if ( living instanceof Player player && stack.getItem() instanceof SpellTabletItem spellTabletItem ) {
+            SpellCasting.doSpell(player, player, stack, spellTabletItem, getUseDuration(stack) - timeLeft);
+        }
+    }
+
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int pTimeCharged) {
+        if ( living instanceof Player player && stack.getItem() instanceof SpellTabletItem spellTabletItem ) {
+            learnSpell(player, spellTabletItem, stack);
+        }
+    }
+
+    public static void learnSpell(Player player, SpellTabletItem handTablet, ItemStack castingItem) {
+        SpellCasting.addCastingCooldown(player, handTablet, SpellCasting.getCastingCooldown(handTablet.cooldown, player.hasEffect(AncientMagicksEffects.ALACRITY.get())));
+        if ( !isValidSpellTabletItem(castingItem) || !(player instanceof ServerPlayer serverPlayer) ) return;
+        if ( !player.isCreative() ) castingItem.shrink(1);
         final String spellString = ForgeRegistries.ITEMS.getKey(handTablet).toString();
-        player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
+        serverPlayer.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
             CompoundTag tag = new CompoundTag();
             tag.putString("am_secretspell", spellString);
             if ( Objects.equals(spell.getKnownSpells(), "") ) {
                 spell.setKnownSpells(spellString);
-                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), player);
+                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
             }
             else if ( !ClientSpellData.stringListToSpellList(spell.getKnownSpells()).contains(handTablet) ) {
                 spell.setKnownSpells(spell.getKnownSpells() + "," + spellString);
-                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), player);
+                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
             }
         });
-    }
-
-    @Override
-    public void onUseTick(Level level, LivingEntity living, ItemStack tablet, int timeLeft) {
-        if ( level.isClientSide ) return;
-        if ( living instanceof Player player && tablet.getItem() instanceof SpellTabletItem spellTabletItem) {
-            CastingItem.doSpell(player, player, tablet, spellTabletItem, getUseDuration(tablet) - timeLeft);
-        }
     }
 
     public static boolean isAlly(LivingEntity owner, LivingEntity target) {
@@ -107,6 +118,10 @@ public class SpellTabletItem extends RuneItem {
 
     public static boolean isPushable(Entity entity) {
         return ( entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof PrimedTnt || entity instanceof FallingBlockEntity );
+    }
+
+    public static boolean isValidSpellTabletItem(ItemStack spellTabletItem) {
+        return spellTabletItem.getItem() instanceof SpellTabletItem;
     }
 
     @Override

@@ -56,5 +56,6 @@
   "entity.ancientmagicks.skeleton_minion": "Skeleton Minion",
 
 
-  "tooltip.ancientmagicks.rune_tier": "\u00A79Spell Tier\u00A7r"
+  "tooltip.ancientmagicks.rune_tier": "\u00A79Spell Tier\u00A7r",
+  "tooltip.ancientmagicks.no_runes": "Runeless..."
 }

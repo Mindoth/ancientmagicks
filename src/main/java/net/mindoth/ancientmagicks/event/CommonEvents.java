@@ -3,14 +3,12 @@ package net.mindoth.ancientmagicks.event;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientSpell;
 import net.mindoth.ancientmagicks.network.PacketSyncSpellCombos;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
@@ -18,15 +16,12 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class CommonEvents {
@@ -74,25 +69,6 @@ public class CommonEvents {
     @SubscribeEvent
     public static void disableInteraction(final PlayerInteractEvent.EntityInteract event) {
         Player player = event.getEntity();
-        if ( !CastingItem.getHeldCastingItem(player).isEmpty() || !CastingItem.getHeldTabletItem(player).isEmpty() ) event.setCanceled(true);
-    }
-
-    @SubscribeEvent
-    public static void onStopChannellingSpell(final LivingEntityUseItemEvent.Stop event) {
-        if ( event.getEntity() instanceof Player player ) {
-            if ( !player.level().isClientSide ) {
-                if ( event.getItem().getItem() instanceof CastingItem ) {
-                    player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
-                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
-                        if ( item instanceof SpellTabletItem spellTabletItem) {
-                            player.getCooldowns().addCooldown(spellTabletItem, spellTabletItem.cooldown);
-                        }
-                    });
-                }
-                else if ( event.getItem().getItem() instanceof SpellTabletItem spellTabletItem) {
-                    player.getCooldowns().addCooldown(spellTabletItem, spellTabletItem.cooldown);
-                }
-            }
-        }
+        if ( !SpellCasting.getHeldCastingItem(player).isEmpty() || !SpellCasting.getHeldTabletItem(player).isEmpty() ) event.setCanceled(true);
     }
 }

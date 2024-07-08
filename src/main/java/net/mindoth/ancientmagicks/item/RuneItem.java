@@ -21,7 +21,7 @@ public class RuneItem extends Item {
     }
 
     public static void playWhiffSound(Entity caster) {
-        if ( caster instanceof Player player ) player.playNotifySound(SoundEvents.NOTE_BLOCK_SNARE.get(), SoundSource.PLAYERS, 0.5F, 1.0F);
+        if ( caster instanceof Player player ) player.playNotifySound(SoundEvents.NOTE_BLOCK_SNARE.get(), SoundSource.MASTER, 0.5F, 1.0F);
     }
 
     public static void playMagicSound(Level level, Vec3 center) {

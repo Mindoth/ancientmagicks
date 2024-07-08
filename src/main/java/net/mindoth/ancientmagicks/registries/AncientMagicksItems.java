@@ -39,18 +39,9 @@ import net.minecraftforge.registries.RegistryObject;
 public class AncientMagicksItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, AncientMagicks.MOD_ID);
 
-    //Casting Items
-    public static final RegistryObject<Item> INVOCATION_STAFF = ITEMS.register("invocation_staff",
-            () -> new InvocationStaffItem(new Item.Properties()));
-
-    //Tablet Bag
-    public static final RegistryObject<Item> TABLET_BAG = ITEMS.register("tablet_bag",
-            () -> new TabletBag(AMBagType.TABLET_BAG));
-
-    //Ancient Tablet
-    public static final RegistryObject<Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
-            () -> new AncientTabletItem(new Item.Properties()));
-
+    //Empty Rune
+    public static final RegistryObject<Item> EMPTY_RUNE = ITEMS.register("empty_rune",
+            () -> new RuneItem(new Item.Properties()));
 
     //Runes
     public static final RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune",
@@ -77,9 +68,17 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> RED_RUNE = ITEMS.register("red_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A7c"));
 
-    //Empty Rune
-    public static final RegistryObject<Item> STONE_SLATE = ITEMS.register("empty_rune",
-            () -> new RuneItem(new Item.Properties()));
+    //Casting Items
+    public static final RegistryObject<Item> INVOCATION_STAFF = ITEMS.register("invocation_staff",
+            () -> new InvocationStaffItem(new Item.Properties()));
+
+    //Tablet Bag
+    public static final RegistryObject<Item> TABLET_BAG = ITEMS.register("tablet_bag",
+            () -> new TabletBag(AMBagType.TABLET_BAG));
+
+    //Ancient Tablet
+    public static final RegistryObject<Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
+            () -> new AncientTabletItem(new Item.Properties()));
 
 
     public static final RegistryObject<Item> WITCH_SPARK_TABLET = ITEMS.register("witch_spark",

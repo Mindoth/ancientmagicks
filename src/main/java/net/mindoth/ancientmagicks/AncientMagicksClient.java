@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks;
 import net.mindoth.ancientmagicks.client.gui.CurrentSpellHud;
 import net.mindoth.ancientmagicks.client.gui.GuiAMBag;
 import net.mindoth.ancientmagicks.client.gui.GuiSpellWheel;
+import net.mindoth.ancientmagicks.event.SpellCasting;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
@@ -63,7 +64,7 @@ public class AncientMagicksClient {
         private static void onInput(Minecraft MINECRAFT, int key, int keyAction) {
             int SPELLSELECTOR = AncientMagicksKeyBinds.SPELLSELECTOR.getKey().getValue();
             int INVENTORY = MINECRAFT.options.keyInventory.getKey().getValue();
-            ItemStack wand = CastingItem.getHeldCastingItem(MINECRAFT.player);
+            ItemStack wand = SpellCasting.getHeldCastingItem(MINECRAFT.player);
             if ( MINECRAFT.screen instanceof GuiSpellWheel ) {
                 if ( key == INVENTORY || (keyAction == 0 && key == SPELLSELECTOR) ) MINECRAFT.player.closeContainer();
             }

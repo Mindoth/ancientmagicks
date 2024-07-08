@@ -29,7 +29,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
@@ -52,7 +51,8 @@ public class GuiSpellWheel extends Screen {
     private float prevTick;
     private float extraTick;
     private int selectedItem;
-    private final List<ItemStack> itemList;
+    private final List<ItemStack> runeList;
+    private final boolean hasNoRunes;
     private final CompoundTag tag;
     private final List<ColorRuneItem> comboList = Lists.newArrayList();
     private SpellTabletItem comboResult;
@@ -65,8 +65,14 @@ public class GuiSpellWheel extends Screen {
         this.closing = false;
         this.minecraft = Minecraft.getInstance();
         this.selectedItem = -1;
-        if ( !stackList.isEmpty() ) this.itemList = stackList;
-        else this.itemList = List.of(new ItemStack(Items.AIR));
+        if ( !stackList.isEmpty() ) {
+            this.runeList = stackList;
+            this.hasNoRunes = false;
+        }
+        else {
+            this.runeList = List.of(ItemStack.EMPTY);
+            this.hasNoRunes = true;
+        }
         if ( this.discoveryMode ) this.tag = tag;
         else this.tag = null;
         this.hand = isOffhand ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
@@ -87,7 +93,7 @@ public class GuiSpellWheel extends Screen {
     @Override
     public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
         if ( this.selectedItem != -1 ) {
-            ItemStack clickedItem = this.itemList.get(this.selectedItem);
+            ItemStack clickedItem = this.runeList.get(this.selectedItem);
             if ( clickedItem.getItem() instanceof ColorRuneItem ) {
                 if ( this.comboList.size() < 3 ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
                 else {
@@ -98,7 +104,7 @@ public class GuiSpellWheel extends Screen {
             SpellTabletItem secretSpell = null;
             if ( this.tag != null ) secretSpell = (SpellTabletItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.tag.getString("am_secretspell")));
             SpellTabletItem spellTabletItem = ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell);
-            if ( spellTabletItem != null && (ClientSpellData.isSpellKnown(spellTabletItem) || this.discoveryMode) ) {
+            if ( spellTabletItem != null && ((ClientSpellData.isSpellKnown(spellTabletItem) || MINECRAFT.player.isCreative()) || this.discoveryMode) ) {
                 this.comboResult = ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell);
                 if ( !this.discoveryMode ) {
                     String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
@@ -131,7 +137,7 @@ public class GuiSpellWheel extends Screen {
         int x = width / 2;
         int y = height / 2;
 
-        int numberOfSlices = this.itemList.size();
+        int numberOfSlices = this.runeList.size();
 
         double a = Math.toDegrees(Math.atan2(mouseY - y, mouseX - x));
         double d = Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2));
@@ -183,7 +189,7 @@ public class GuiSpellWheel extends Screen {
         for ( int i = 0; i < numberOfSlices; i++ ) {
             float s = (((i - 0.5F) / (float)numberOfSlices) + 0.25F) * 360;
             float e = (((i + 0.5F) / (float)numberOfSlices) + 0.25F) * 360;
-            if ( this.selectedItem == i ) {
+            if ( this.selectedItem == i && !this.hasNoRunes ) {
                 drawSlice(buffer, x, y, numberOfSlices, radiusIn, radiusOut * 1.05F, s, e, 198, 198, 198, 100);
                 hasMouseOver = true;
                 mousedOverSlot = this.selectedItem;
@@ -193,6 +199,11 @@ public class GuiSpellWheel extends Screen {
 
         tessellator.end();
         RenderSystem.disableBlend();
+
+        if ( this.hasNoRunes ) {
+            graphics.drawCenteredString(this.font, Component.translatable("tooltip.ancientmagicks.no_runes"),
+                    width / 2, (height - this.font.lineHeight) / 2, 16777215);
+        }
 
         //Show comboResult square in the middle
         int resultSlotX = this.minecraft.getWindow().getGuiScaledWidth() / 2 - 11;
@@ -211,7 +222,6 @@ public class GuiSpellWheel extends Screen {
                     resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
 
             //Item and its decorations
-            //graphics.renderItem(slot, posX, posY);
             String id = slot.getItem().toString();
             GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/spell/" + id + ".png"),
                     posX, posY, 0, 0, 16, 16, 16, 16, graphics);
@@ -226,7 +236,7 @@ public class GuiSpellWheel extends Screen {
             float middle = ((i / (float)numberOfSlices) + 0.25F) * 2 * (float)Math.PI;
             int posX = (int)(x - ((float)magnifier / 2) + itemRadius * (float)Math.cos(middle)) + 4;
             int posY = (int)(y - ((float)magnifier / 2) + itemRadius * (float)Math.sin(middle)) + 4;
-            ItemStack slot = this.itemList.get(i);
+            ItemStack slot = this.runeList.get(i);
 
             RenderSystem.disableDepthTest();
 
@@ -243,14 +253,14 @@ public class GuiSpellWheel extends Screen {
             graphics.renderItemDecorations(this.font, slot, posX, posY);
         }
 
-        for ( ItemStack slot : this.itemList ) {
+        for ( ItemStack slot : this.runeList) {
             RenderSystem.disableDepthTest();
 
             ms.pushPose();
 
             if ( hasMouseOver && mousedOverSlot != -1 ) {
-                if ( !this.itemList.get(mousedOverSlot).isEmpty() && slot.equals(this.itemList.get(mousedOverSlot)) ) {
-                    graphics.renderTooltip(this.font, this.itemList.get(mousedOverSlot), mouseX, mouseY);
+                if ( !this.runeList.get(mousedOverSlot).isEmpty() && slot.equals(this.runeList.get(mousedOverSlot)) ) {
+                    graphics.renderTooltip(this.font, this.runeList.get(mousedOverSlot), mouseX, mouseY);
                 }
             }
 
