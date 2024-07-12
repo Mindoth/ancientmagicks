@@ -1,61 +1,8 @@
 {
   "itemGroup.ancientmagicks_tab": "Ancient Magicks",
 
+  "item.ancientmagicks.stone_tablet": "Stone Tablet",
 
-  "key.category.ancientmagicks": "Ancient Magicks",
-  "key.ancientmagicks.spellselector": "Spell Selector",
-
-
-  "item.ancientmagicks.invocation_staff": "Invocation Staff",
-  "item.ancientmagicks.tablet_bag": "Tablet Bag",
-  "item.ancientmagicks.empty_rune": "Stone Slate",
-  "item.ancientmagicks.ancient_tablet": "Ancient Tablet",
-
-  "item.ancientmagicks.blue_rune": "Blue Rune",
-  "item.ancientmagicks.purple_rune": "Purple Rune",
-  "item.ancientmagicks.yellow_rune": "Yellow Rune",
-  "item.ancientmagicks.green_rune": "Green Rune",
-  "item.ancientmagicks.white_rune": "White Rune",
-  "item.ancientmagicks.black_rune": "Black Rune",
-  "item.ancientmagicks.brown_rune": "Brown Rune",
-  "item.ancientmagicks.red_rune": "Red Rune",
-
-  "item.ancientmagicks.witch_spark": "Witch Spark",
-  "item.ancientmagicks.fireball": "Fireball",
-  "item.ancientmagicks.telekinetic_grab": "Telekinetic Grab",
-  "item.ancientmagicks.collapse": "Collapse",
-  "item.ancientmagicks.flight": "Flight",
-  "item.ancientmagicks.dynamite": "Dynamite",
-  "item.ancientmagicks.summon_skeleton": "Summon Skeleton",
-  "item.ancientmagicks.blink": "Blink",
-  "item.ancientmagicks.wind_burst": "Wind Burst",
-  "item.ancientmagicks.slimeball": "Slimeball",
-  "item.ancientmagicks.ward": "Ward",
-  "item.ancientmagicks.call_lightning": "Call Lightning",
-  "item.ancientmagicks.polymorph": "Polymorph",
-  "item.ancientmagicks.chaotic_polymorph": "Chaotic Polymorph",
-  "item.ancientmagicks.feather_fall": "Feather Fall",
-  "item.ancientmagicks.deafening_blast": "Deafening Blast",
-  "item.ancientmagicks.experience_stream": "Experience Stream",
-  "item.ancientmagicks.extinguish": "Extinguish",
-  "item.ancientmagicks.numb_pain": "Numb Pain",
-  "item.ancientmagicks.alacrity": "Alacrity",
-  "item.ancientmagicks.spook": "Spook",
-  "item.ancientmagicks.ghostwalk": "Ghostwalk",
-  "item.ancientmagicks.ice_wall": "Ice Wall",
-  "item.ancientmagicks.blind": "Blind",
-
-
-  "effect.ancientmagicks.flight": "Flight",
-  "effect.ancientmagicks.numbness": "Numbness",
-  "effect.ancientmagicks.alacrity": "Alacrity",
-  "effect.ancientmagicks.spook": "Spook",
-  "effect.ancientmagicks.ghostwalk": "Ghostwalk",
-
-
-  "entity.ancientmagicks.skeleton_minion": "Skeleton Minion",
-
-
-  "tooltip.ancientmagicks.rune_tier": "\u00A79Spell Tier\u00A7r",
-  "tooltip.ancientmagicks.no_runes": "Runeless..."
+  "tooltip.ancientmagicks.am_self": "Form: Self-cast",
+  "tooltip.ancientmagicks.am_projectile": "Form: Projectile"
 }
