@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.projectile;
+package net.mindoth.ancientmagicks.entity.projectile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.mindoth.ancientmagicks.AncientMagicks;

@@ -1,8 +1,9 @@
 package net.mindoth.ancientmagicks.item;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.spell.projectile.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.spell.projectile.WitchSparkEntity;
+import net.mindoth.ancientmagicks.entity.projectile.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.entity.projectile.WitchSparkEntity;
+import net.mindoth.ancientmagicks.item.glyph.GlyphItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -14,18 +15,21 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.compress.utils.Lists;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class StoneTabletItem extends Item {
@@ -40,7 +44,7 @@ public class StoneTabletItem extends Item {
         if ( !level.isClientSide ) {
             ItemStack tablet = player.getItemInHand(handIn);
             if ( tablet.getItem() instanceof StoneTabletItem tabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(tabletItem) ) {
-                if ( tablet.hasTag() && tablet.getTag() != null && tablet.getTag().contains("am_firemode") ) {
+                if ( tablet.hasTag() && tablet.getTag() != null ) {
                     player.startUsingItem(handIn);
                 }
             }
@@ -52,31 +56,38 @@ public class StoneTabletItem extends Item {
     public void onUseTick(Level level, LivingEntity living, ItemStack tablet, int timeLeft) {
         if ( level.isClientSide || !(living instanceof Player player) ) return;
         CompoundTag tag = tablet.getTag();
-        if ( tablet.hasTag() && tag != null ) {
-            if ( tag.contains("am_firemode") ) doSpell(player, living, tablet, tag);
-        }
+        if ( tablet.hasTag() && tag != null ) doSpell(player, living, tag);
     }
 
-    public static void doSpell(Player owner, Entity caster, ItemStack castingItem, CompoundTag tag) {
+    public static void doSpell(Player owner, Entity caster, CompoundTag tag) {
         Level level = caster.level();
-        if ( tag.getString("am_firemode").equals("am_projectile") ) {
-            int adjuster = -1;
-            float down = 0.0F;
-            if ( caster == owner ) {
-                adjuster = 1;
-                down = -0.2F;
-                owner.stopUsingItem();
-            }
-            Vec3 center = caster.getEyePosition();
-            float xRot = caster.getXRot();
-            float yRot = caster.getYRot();
 
-            AbstractSpellEntity projectile = new WitchSparkEntity(level, owner, caster);
-            projectile.setColor(AbstractSpellEntity.getSpellColor("dark_purple"), 0.3F);
-            projectile.setPos(center.x, center.y + down, center.z);
-            projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
-            level.addFreshEntity(projectile);
+        List<GlyphItem> glyphList = Lists.newArrayList();
+        for ( GlyphItem glyph : AncientMagicks.GLYPH_LIST ) if ( tag.contains(glyph.tag) ) glyphList.add(glyph);
+        String color = "purple";
+        if ( tag.contains("am_color") ) color = tag.getString("am_color");
+
+        if ( tag.contains("am_firemode") ) {
+            if ( tag.getString("am_firemode").equals("am_projectile") ) {
+                int adjuster = -1;
+                float down = 0.0F;
+                if ( caster == owner ) {
+                    adjuster = 1;
+                    down = -0.2F;
+                }
+                Vec3 center = caster.getEyePosition();
+                float xRot = caster.getXRot();
+                float yRot = caster.getYRot();
+                AbstractSpellEntity projectile = new WitchSparkEntity(level, owner, caster, glyphList);
+                projectile.setColor(AbstractSpellEntity.getSpellColor(color), 0.3F);
+                projectile.setPos(center.x, center.y + down, center.z);
+                projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
+                level.addFreshEntity(projectile);
+            }
         }
+        else for ( GlyphItem glyph : glyphList ) glyph.onEntityHit(caster.level(), new EntityHitResult(caster));
+
+        if ( caster == owner ) owner.stopUsingItem();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -89,6 +100,22 @@ public class StoneTabletItem extends Item {
                 tooltip.add(Component.translatable("tooltip.ancientmagicks." + tag.getString("am_firemode")).withStyle(ChatFormatting.GRAY) );
             }
             else tooltip.add(Component.translatable("tooltip.ancientmagicks.am_self").withStyle(ChatFormatting.GRAY));
+            for ( Map.Entry<Item, String> entry : AncientMagicks.ANVIL_RECIPE_MAP.entrySet() ) {
+                Item item = entry.getKey();
+                String string = entry.getValue();
+                if ( item instanceof GlyphItem && tag.contains(string) ) {
+                    tooltip.add(Component.translatable("tooltip.ancientmagicks.am_has_glyph")
+                            .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
+                }
+            }
+            if ( tag.contains("am_color") ) {
+                tooltip.add(Component.translatable("tooltip.ancientmagicks.am_color")
+                        .append(Component.literal(StringUtils.capitalize(tag.getString("am_color").replaceAll("_", " ")))).withStyle(ChatFormatting.GRAY));
+            }
+            else {
+                tooltip.add(Component.translatable("tooltip.ancientmagicks.am_color")
+                        .append(Component.literal("Purple")).withStyle(ChatFormatting.GRAY));
+            }
         }
 
         super.appendHoverText(stack, world, tooltip, flagIn);
@@ -96,14 +123,15 @@ public class StoneTabletItem extends Item {
 
     @SubscribeEvent
     public static void onAnvilRecipe(final AnvilUpdateEvent event) {
-        ItemStack left = event.getLeft();
-        ItemStack right = event.getRight();
+        ItemStack leftStack = event.getLeft();
+        Item rightItem = event.getRight().getItem();
         HashMap<Item, String> map = AncientMagicks.ANVIL_RECIPE_MAP;
-        if ( left.getItem() == AncientMagicksItems.STONE_TABLET.get() && map.containsKey(right.getItem()) ) {
-            ItemStack result = left.copy();
+        if ( leftStack.getItem() == AncientMagicksItems.STONE_TABLET.get() && (map.containsKey(rightItem) || rightItem instanceof DyeItem) ) {
+            ItemStack result = leftStack.copy();
             CompoundTag tag = result.getOrCreateTag();
-            if ( right.getItem() == Items.ARROW ) tag.putString("am_firemode", map.get(right.getItem()));
-            else tag.putBoolean(ForgeRegistries.ITEMS.getKey(right.getItem()).toString(), true);
+            if ( rightItem instanceof DyeItem dyeItem ) tag.putString("am_color", dyeItem.getDyeColor().toString());
+            else if ( rightItem == Items.ARROW ) tag.putString("am_firemode", map.get(rightItem));
+            else if ( rightItem instanceof GlyphItem glyphItem ) tag.putBoolean(glyphItem.tag, true);
             result.setTag(tag);
             event.setOutput(result);
             event.setCost(1);

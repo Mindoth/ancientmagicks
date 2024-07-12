@@ -1,9 +1,10 @@
-package net.mindoth.ancientmagicks.item.spell.projectile;
+package net.mindoth.ancientmagicks.entity.projectile;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
+import net.mindoth.ancientmagicks.item.glyph.GlyphItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Direction;
@@ -47,7 +48,7 @@ public class AbstractSpellEntity extends ThrowableProjectile {
     }
 
     public float getDefaultSpeed() {
-        return 0.0F;
+        return 1.6F;
     }
 
     public float getDefaultLife() {
@@ -74,12 +75,13 @@ public class AbstractSpellEntity extends ThrowableProjectile {
         return false;
     }
 
-    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster) {
+    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, List<GlyphItem> glyphList) {
         super(entityType, owner, pLevel);
 
         this.setNoGravity(true);
         this.owner = owner;
         this.caster = caster;
+        this.glyphList = glyphList;
         this.power = this.getDefaultPower();
         this.speed = this.getDefaultSpeed();
         this.life = this.getDefaultLife();
@@ -93,6 +95,7 @@ public class AbstractSpellEntity extends ThrowableProjectile {
     protected LivingEntity owner;
     protected Entity caster;
 
+    public List<GlyphItem> glyphList;
     public float power;
     public float speed;
     public float life;
@@ -264,9 +267,15 @@ public class AbstractSpellEntity extends ThrowableProjectile {
     }
 
     protected void doMobEffects(EntityHitResult result) {
+        for ( GlyphItem glyph : this.glyphList ) {
+            glyph.onEntityHit(this.level(), result);
+        }
     }
 
     protected void doBlockEffects(BlockHitResult result) {
+        for ( GlyphItem glyph : this.glyphList ) {
+            glyph.onBlockHit(this.level(), result);
+        }
     }
 
     protected void playHitSound() {
@@ -285,22 +294,22 @@ public class AbstractSpellEntity extends ThrowableProjectile {
 
     public static ParticleColor.IntWrapper getSpellColor(String element) {
         ParticleColor.IntWrapper returnColor = null;
-        if ( element.equals("dark_red") ) returnColor = new ParticleColor.IntWrapper(170, 25, 25);
-        if ( element.equals("red") ) returnColor = new ParticleColor.IntWrapper(255, 85, 85);
-        if ( element.equals("gold") ) returnColor = new ParticleColor.IntWrapper(255, 170, 25);
-        if ( element.equals("yellow") ) returnColor = new ParticleColor.IntWrapper(255, 255, 85);
-        if ( element.equals("dark_green") ) returnColor = new ParticleColor.IntWrapper(25, 170, 25);
-        if ( element.equals("green") ) returnColor = new ParticleColor.IntWrapper(85, 225, 85);
-        if ( element.equals("aqua") ) returnColor = new ParticleColor.IntWrapper(85, 255, 255);
-        if ( element.equals("dark_aqua") ) returnColor = new ParticleColor.IntWrapper(25, 170, 170);
-        if ( element.equals("dark_blue") ) returnColor = new ParticleColor.IntWrapper(25, 25, 170);
-        if ( element.equals("blue") ) returnColor = new ParticleColor.IntWrapper(85, 85, 255);
-        if ( element.equals("light_purple") ) returnColor = new ParticleColor.IntWrapper(255, 85, 255);
-        if ( element.equals("dark_purple") ) returnColor = new ParticleColor.IntWrapper(170, 25, 170);
-        if ( element.equals("white") ) returnColor = new ParticleColor.IntWrapper(255, 255, 255);
-        if ( element.equals("gray") ) returnColor = new ParticleColor.IntWrapper(170, 170, 170);
-        if ( element.equals("dark_gray") ) returnColor = new ParticleColor.IntWrapper(85, 85, 85);
         if ( element.equals("black") ) returnColor = new ParticleColor.IntWrapper(25, 25, 25);
+        if ( element.equals("blue") ) returnColor = new ParticleColor.IntWrapper(25, 109, 181);
+        if ( element.equals("brown") ) returnColor = new ParticleColor.IntWrapper(125, 85, 25);
+        if ( element.equals("cyan") ) returnColor = new ParticleColor.IntWrapper(85, 123, 149);
+        if ( element.equals("gray") ) returnColor = new ParticleColor.IntWrapper(85, 85, 85);
+        if ( element.equals("green") ) returnColor = new ParticleColor.IntWrapper(101, 129, 25);
+        if ( element.equals("light_blue") ) returnColor = new ParticleColor.IntWrapper(125, 184, 235);
+        if ( element.equals("light_gray") ) returnColor = new ParticleColor.IntWrapper(208, 208, 208);
+        if ( element.equals("lime") ) returnColor = new ParticleColor.IntWrapper(149, 218, 62);
+        if ( element.equals("magenta") ) returnColor = new ParticleColor.IntWrapper(224, 85, 219);
+        if ( element.equals("orange") ) returnColor = new ParticleColor.IntWrapper(234, 172, 25);
+        if ( element.equals("pink") ) returnColor = new ParticleColor.IntWrapper(240, 125, 211);
+        if ( element.equals("purple") ) returnColor = new ParticleColor.IntWrapper(188, 25, 222);
+        if ( element.equals("red") ) returnColor = new ParticleColor.IntWrapper(180, 25, 25);
+        if ( element.equals("white") ) returnColor = new ParticleColor.IntWrapper(255, 255, 255);
+        if ( element.equals("yellow") ) returnColor = new ParticleColor.IntWrapper(235, 235, 25);
         return returnColor;
     }
 

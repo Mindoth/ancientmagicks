@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks;
 
-import net.mindoth.ancientmagicks.item.spell.projectile.WitchSparkRenderer;
+import net.mindoth.ancientmagicks.entity.projectile.WitchSparkRenderer;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;

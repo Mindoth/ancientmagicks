@@ -1,8 +1,12 @@
 {
   "itemGroup.ancientmagicks_tab": "Ancient Magicks",
 
+  "tooltip.ancientmagicks.am_self": "Form: Self-cast",
+  "tooltip.ancientmagicks.am_projectile": "Form: Projectile",
+  "tooltip.ancientmagicks.am_has_glyph": "Casts: ",
+  "tooltip.ancientmagicks.am_color": "Color: ",
+
   "item.ancientmagicks.stone_tablet": "Stone Tablet",
 
-  "tooltip.ancientmagicks.am_self": "Form: Self-cast",
-  "tooltip.ancientmagicks.am_projectile": "Form: Projectile"
+  "item.ancientmagicks.fire_glyph": "Fire Glyph"
 }

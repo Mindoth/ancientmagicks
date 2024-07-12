@@ -1,6 +1,8 @@
 package net.mindoth.ancientmagicks;
 
+import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
+import net.mindoth.ancientmagicks.item.glyph.GlyphItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.ancientmagicks.registries.AncientMagicksParticles;
@@ -15,11 +17,13 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Mod(AncientMagicks.MOD_ID)
 public class AncientMagicks {
@@ -53,6 +57,16 @@ public class AncientMagicks {
 
     public void commonSetup(final FMLCommonSetupEvent event) {
         createAnvilRecipes();
+        createGlyphList();
+    }
+
+    public static List<GlyphItem> GLYPH_LIST;
+
+    private void createGlyphList() {
+        GLYPH_LIST = Lists.newArrayList();
+        for ( Item item : ForgeRegistries.ITEMS.getValues() ) {
+            if ( item instanceof GlyphItem glyphItem ) GLYPH_LIST.add(glyphItem);
+        }
     }
 
     public static HashMap<Item, String> ANVIL_RECIPE_MAP;
@@ -60,5 +74,8 @@ public class AncientMagicks {
     private void createAnvilRecipes() {
         ANVIL_RECIPE_MAP = new HashMap<>();
         ANVIL_RECIPE_MAP.put(Items.ARROW, "am_projectile");
+        for ( Item item : ForgeRegistries.ITEMS.getValues()) {
+            if ( item instanceof GlyphItem glyphItem ) ANVIL_RECIPE_MAP.put(glyphItem, glyphItem.tag);
+        }
     }
 }
