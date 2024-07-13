@@ -1,13 +1,23 @@
 {
   "itemGroup.ancientmagicks_tab": "Ancient Magicks",
 
+  "tooltip.ancientmagicks.hold_shift": "Hold SHIFT to see Spell Properties",
   "tooltip.ancientmagicks.am_self": "Form: Self-cast",
   "tooltip.ancientmagicks.am_projectile": "Form: Projectile",
-  "tooltip.ancientmagicks.am_has_glyph": "Casts: ",
   "tooltip.ancientmagicks.am_color": "Color: ",
 
   "item.ancientmagicks.stone_tablet": "Stone Tablet",
 
+  "item.ancientmagicks.blink_glyph": "Blink Glyph",
   "item.ancientmagicks.fire_glyph": "Fire Glyph",
-  "item.ancientmagicks.mind_control_glyph": "Mind Control Glyph"
+  "item.ancientmagicks.flight_glyph": "Flight Glyph",
+  "item.ancientmagicks.lightning_glyph": "Lightning Glyph",
+  "item.ancientmagicks.mind_control_glyph": "Mind Control Glyph",
+  "item.ancientmagicks.numb_pain_glyph": "Numb Pain Glyph",
+  "item.ancientmagicks.polymorph_glyph": "Polymorph Glyph",
+  "item.ancientmagicks.skeleton_glyph": "Skeleton Glyph",
+  "item.ancientmagicks.spook_glyph": "Spook Glyph",
+  "item.ancientmagicks.telekinetic_grab_glyph": "Telekinetic Grab Glyph",
+
+  "effect.ancientmagicks.numbness": "Numbness"
 }

@@ -1,10 +1,12 @@
 package net.mindoth.ancientmagicks.item;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.entity.projectile.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.entity.projectile.WitchSparkEntity;
+import net.mindoth.ancientmagicks.entity.projectile.AbstractSpell;
+import net.mindoth.ancientmagicks.entity.projectile.WitchSpark;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -21,6 +23,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.StringUtils;
 
@@ -62,7 +65,7 @@ public class TabletItem extends Item {
         Level level = caster.level();
 
         List<GlyphItem> glyphList = Lists.newArrayList();
-        for ( GlyphItem glyph : AncientMagicks.GLYPH_LIST ) if ( tag.contains(glyph.tag) ) glyphList.add(glyph);
+        for ( GlyphItem glyph : AncientMagicks.GLYPH_LIST ) if ( tag.contains(ForgeRegistries.ITEMS.getKey(glyph).toString()) ) glyphList.add(glyph);
         String color = "purple";
         if ( tag.contains("am_color") ) color = tag.getString("am_color");
 
@@ -77,14 +80,14 @@ public class TabletItem extends Item {
                 Vec3 center = caster.getEyePosition();
                 float xRot = caster.getXRot();
                 float yRot = caster.getYRot();
-                AbstractSpellEntity projectile = new WitchSparkEntity(level, owner, caster, glyphList);
-                projectile.setColor(AbstractSpellEntity.getSpellColor(color), 0.3F);
+                AbstractSpell projectile = new WitchSpark(level, owner, caster, glyphList);
+                projectile.setColor(AbstractSpell.getSpellColor(color), 0.3F);
                 projectile.setPos(center.x, center.y + down, center.z);
                 projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
                 level.addFreshEntity(projectile);
             }
         }
-        else for ( GlyphItem glyph : glyphList ) glyph.onEntityHit(caster.level(), owner, new EntityHitResult(caster));
+        else for ( GlyphItem glyph : glyphList ) glyph.onEntityHit(null, owner, new EntityHitResult(caster));
 
         if ( caster == owner ) owner.stopUsingItem();
     }
@@ -94,26 +97,32 @@ public class TabletItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         if ( !stack.hasTag() || stack.getTag() == null ) return;
         else {
-            CompoundTag tag = stack.getTag();
-            if ( tag.contains("am_firemode") ) {
-                tooltip.add(Component.translatable("tooltip.ancientmagicks." + tag.getString("am_firemode")).withStyle(ChatFormatting.GRAY) );
+            if ( !Screen.hasShiftDown() ) {
+                tooltip.add(Component.translatable("tooltip.ancientmagicks.hold_shift").withStyle(ChatFormatting.GRAY));
             }
-            else tooltip.add(Component.translatable("tooltip.ancientmagicks.am_self").withStyle(ChatFormatting.GRAY));
-            for ( Map.Entry<Item, String> entry : AncientMagicks.ANVIL_RECIPE_MAP.entrySet() ) {
-                Item item = entry.getKey();
-                String string = entry.getValue();
-                if ( item instanceof GlyphItem && tag.contains(string) ) {
-                    tooltip.add(Component.translatable("tooltip.ancientmagicks.am_has_glyph")
-                            .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
+            if ( Screen.hasShiftDown() ) {
+                CompoundTag tag = stack.getTag();
+                if ( tag.contains("am_firemode") ) {
+                    tooltip.add(Component.translatable("tooltip.ancientmagicks." + tag.getString("am_firemode")).withStyle(ChatFormatting.GRAY));
                 }
-            }
-            if ( tag.contains("am_color") ) {
-                tooltip.add(Component.translatable("tooltip.ancientmagicks.am_color")
-                        .append(Component.literal(StringUtils.capitalize(tag.getString("am_color").replaceAll("_", " ")))).withStyle(ChatFormatting.GRAY));
-            }
-            else {
-                tooltip.add(Component.translatable("tooltip.ancientmagicks.am_color")
-                        .append(Component.literal("Purple")).withStyle(ChatFormatting.GRAY));
+                else
+                    tooltip.add(Component.translatable("tooltip.ancientmagicks.am_self").withStyle(ChatFormatting.GRAY));
+                if ( tag.contains("am_color") ) {
+                    tooltip.add(Component.translatable("tooltip.ancientmagicks.am_color")
+                            .append(Component.literal(StringUtils.capitalize(tag.getString("am_color")
+                                    .replaceAll("_", " ")))).withStyle(ChatFormatting.GRAY));
+                }
+                else {
+                    tooltip.add(Component.translatable("tooltip.ancientmagicks.am_color")
+                            .append(Component.literal("Purple")).withStyle(ChatFormatting.GRAY));
+                }
+                for ( Map.Entry<Item, String> entry : AncientMagicks.ANVIL_RECIPE_MAP.entrySet() ) {
+                    Item item = entry.getKey();
+                    String string = entry.getValue();
+                    if ( item instanceof GlyphItem && tag.contains(string) ) {
+                        tooltip.add(Component.translatable(item.getDescriptionId()).withStyle(ChatFormatting.GRAY));
+                    }
+                }
             }
         }
 
@@ -130,11 +139,24 @@ public class TabletItem extends Item {
             CompoundTag tag = result.getOrCreateTag();
             if ( rightItem instanceof DyeItem dyeItem ) tag.putString("am_color", dyeItem.getDyeColor().toString());
             else if ( rightItem == Items.ARROW ) tag.putString("am_firemode", map.get(rightItem));
-            else if ( rightItem instanceof GlyphItem glyphItem ) tag.putBoolean(glyphItem.tag, true);
+            else if ( rightItem instanceof GlyphItem glyph ) tag.putBoolean(ForgeRegistries.ITEMS.getKey(glyph).toString(), true);
             result.setTag(tag);
-            event.setOutput(result);
-            event.setCost(1);
+            int xpCost = 1;
+
+            if ( event.getName() != null && !Util.isBlank(event.getName()) ) {
+                if ( !event.getName().equals(leftStack.getHoverName().getString()) ) {
+                    result.setHoverName(Component.literal(event.getName()));
+                    xpCost += 1;
+                }
+            }
+            else if ( leftStack.hasCustomHoverName() ) {
+                result.resetHoverName();
+                xpCost += 1;
+            }
+            event.setCost(xpCost);
             event.setMaterialCost(1);
+
+            event.setOutput(result);
         }
     }
 

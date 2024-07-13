@@ -2,8 +2,7 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.TabletItem;
-import net.mindoth.ancientmagicks.item.glyph.FireGlyphItem;
-import net.mindoth.ancientmagicks.item.glyph.MindControlGlyphItem;
+import net.mindoth.ancientmagicks.item.glyph.*;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -17,9 +16,21 @@ public class AncientMagicksItems {
             () -> new TabletItem(new Item.Properties()));
 
     //Glyphs
+    public static final RegistryObject<Item> BLINK_GLYPH = ITEMS.register("blink_glyph",
+            () -> new BlinkGlyph(new Item.Properties()));
+
     public static final RegistryObject<Item> FIRE_GLYPH = ITEMS.register("fire_glyph",
-            () -> new FireGlyphItem(new Item.Properties(), "am_fire"));
+            () -> new FireGlyph(new Item.Properties()));
+
+    public static final RegistryObject<Item> LIGHTNING_GLYPH = ITEMS.register("lightning_glyph",
+            () -> new LightningGlyph(new Item.Properties()));
 
     public static final RegistryObject<Item> MIND_CONTROL_GLYPH = ITEMS.register("mind_control_glyph",
-            () -> new MindControlGlyphItem(new Item.Properties(), "am_mind_control"));
+            () -> new MindControlGlyph(new Item.Properties()));
+
+    public static final RegistryObject<Item> NUMB_PAIN_GLYPH = ITEMS.register("numb_pain_glyph",
+            () -> new NumbPainGlyph(new Item.Properties()));
+
+    public static final RegistryObject<Item> POLYMORPH_GLYPH = ITEMS.register("polymorph_glyph",
+            () -> new PolymorphGlyph(new Item.Properties()));
 }

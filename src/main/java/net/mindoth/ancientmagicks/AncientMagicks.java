@@ -74,7 +74,7 @@ public class AncientMagicks {
         ANVIL_RECIPE_MAP = new HashMap<>();
         ANVIL_RECIPE_MAP.put(Items.ARROW, "am_projectile");
         for ( Item item : ForgeRegistries.ITEMS.getValues()) {
-            if ( item instanceof GlyphItem glyphItem ) ANVIL_RECIPE_MAP.put(glyphItem, glyphItem.tag);
+            if ( item instanceof GlyphItem glyph ) ANVIL_RECIPE_MAP.put(glyph, ForgeRegistries.ITEMS.getKey(glyph).toString());
         }
     }
 }

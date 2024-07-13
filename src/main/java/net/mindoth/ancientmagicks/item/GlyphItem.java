@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item;
 
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.effect.MindControlEffect;
+import net.mindoth.ancientmagicks.entity.projectile.AbstractSpell;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -12,17 +13,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
+import javax.annotation.Nullable;
+
 public class GlyphItem extends Item {
-    public String tag;
-    public GlyphItem(Properties pProperties, String tag) {
+    public GlyphItem(Properties pProperties) {
         super(pProperties);
-        this.tag = tag;
     }
 
-    public void onEntityHit(Level level, LivingEntity owner, EntityHitResult result) {
+    public void onEntityHit(@Nullable AbstractSpell spell, LivingEntity owner, EntityHitResult result) {
     }
 
-    public void onBlockHit(Level level, LivingEntity owner, BlockHitResult result) {
+    public void onBlockHit(@Nullable AbstractSpell spell, LivingEntity owner, BlockHitResult result) {
     }
 
     public static boolean isAlly(LivingEntity owner, LivingEntity target) {

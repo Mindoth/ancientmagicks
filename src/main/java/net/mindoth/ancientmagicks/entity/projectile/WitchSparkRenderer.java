@@ -7,18 +7,18 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class WitchSparkRenderer extends EntityRenderer<WitchSparkEntity> {
+public class WitchSparkRenderer extends EntityRenderer<WitchSpark> {
 
     public WitchSparkRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(WitchSparkEntity entity) {
+    public ResourceLocation getTextureLocation(WitchSpark entity) {
         return new ResourceLocation(AncientMagicks.MOD_ID, "textures/particle/clear.png");
     }
 
     @Override
-    public void render(WitchSparkEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(WitchSpark entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
     }
 }

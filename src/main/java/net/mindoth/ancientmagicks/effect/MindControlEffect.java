@@ -13,10 +13,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -109,6 +111,14 @@ public class MindControlEffect extends MobEffect {
         if ( effect != null && effect == AncientMagicksEffects.MIND_CONTROL.get() && entity instanceof Mob mob ) {
             mob.setTarget(null);
             mob.setLastHurtByMob(null);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerMindControl(final MobEffectEvent.Applicable event) {
+        if ( event.getEffectInstance().getEffect() == AncientMagicksEffects.MIND_CONTROL.get() ) {
+            if ( event.getEntity() instanceof Player ) event.setResult(Event.Result.DENY);
+            else event.setResult(Event.Result.DEFAULT);
         }
     }
 

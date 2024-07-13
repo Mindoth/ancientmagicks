@@ -10,17 +10,17 @@ import net.minecraftforge.network.PlayMessages;
 
 import java.util.List;
 
-public class WitchSparkEntity extends AbstractSpellEntity {
+public class WitchSpark extends AbstractSpell {
 
-    public WitchSparkEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
+    public WitchSpark(PlayMessages.SpawnEntity spawnEntity, Level level) {
         this(AncientMagicksEntities.WITCH_SPARK.get(), level);
     }
 
-    public WitchSparkEntity(EntityType<WitchSparkEntity> entityType, Level level) {
+    public WitchSpark(EntityType<WitchSpark> entityType, Level level) {
         super(entityType, level);
     }
 
-    public WitchSparkEntity(Level level, LivingEntity owner, Entity caster, List<GlyphItem> glyphList) {
+    public WitchSpark(Level level, LivingEntity owner, Entity caster, List<GlyphItem> glyphList) {
         super(AncientMagicksEntities.WITCH_SPARK.get(), level, owner, caster, glyphList);
     }
 }

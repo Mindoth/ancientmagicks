@@ -32,9 +32,9 @@ import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 
-public class AbstractSpellEntity extends ThrowableProjectile {
+public class AbstractSpell extends ThrowableProjectile {
 
-    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level level) {
+    public AbstractSpell(EntityType<? extends AbstractSpell> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -75,7 +75,7 @@ public class AbstractSpellEntity extends ThrowableProjectile {
         return false;
     }
 
-    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, List<GlyphItem> glyphList) {
+    public AbstractSpell(EntityType<? extends AbstractSpell> entityType, Level pLevel, LivingEntity owner, Entity caster, List<GlyphItem> glyphList) {
         super(entityType, owner, pLevel);
 
         this.setNoGravity(true);
@@ -92,8 +92,8 @@ public class AbstractSpellEntity extends ThrowableProjectile {
         this.homing = this.getDefaultHoming();
     }
 
-    protected LivingEntity owner;
-    protected Entity caster;
+    public LivingEntity owner;
+    public Entity caster;
 
     public List<GlyphItem> glyphList;
     public float power;
@@ -268,13 +268,13 @@ public class AbstractSpellEntity extends ThrowableProjectile {
 
     protected void doMobEffects(EntityHitResult result) {
         for ( GlyphItem glyph : this.glyphList ) {
-            glyph.onEntityHit(this.level(), this.owner, result);
+            glyph.onEntityHit(this, this.owner, result);
         }
     }
 
     protected void doBlockEffects(BlockHitResult result) {
         for ( GlyphItem glyph : this.glyphList ) {
-            glyph.onBlockHit(this.level(), this.owner, result);
+            glyph.onBlockHit(this, this.owner, result);
         }
     }
 
@@ -295,7 +295,7 @@ public class AbstractSpellEntity extends ThrowableProjectile {
     public static ParticleColor.IntWrapper getSpellColor(String element) {
         ParticleColor.IntWrapper returnColor = null;
         if ( element.equals("black") ) returnColor = new ParticleColor.IntWrapper(25, 25, 25);
-        if ( element.equals("blue") ) returnColor = new ParticleColor.IntWrapper(25, 109, 181);
+        if ( element.equals("blue") ) returnColor = new ParticleColor.IntWrapper(25, 50, 85);
         if ( element.equals("brown") ) returnColor = new ParticleColor.IntWrapper(125, 85, 25);
         if ( element.equals("cyan") ) returnColor = new ParticleColor.IntWrapper(85, 123, 149);
         if ( element.equals("gray") ) returnColor = new ParticleColor.IntWrapper(85, 85, 85);
@@ -313,10 +313,10 @@ public class AbstractSpellEntity extends ThrowableProjectile {
         return returnColor;
     }
 
-    public static final EntityDataAccessor<Integer> RED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> GREEN = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> BLUE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Integer> RED = SynchedEntityData.defineId(AbstractSpell.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> GREEN = SynchedEntityData.defineId(AbstractSpell.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> BLUE = SynchedEntityData.defineId(AbstractSpell.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(AbstractSpell.class, EntityDataSerializers.FLOAT);
 
     public ParticleColor getParticleColor() {
         return new ParticleColor(this.entityData.get(RED), this.entityData.get(GREEN), this.entityData.get(BLUE));
