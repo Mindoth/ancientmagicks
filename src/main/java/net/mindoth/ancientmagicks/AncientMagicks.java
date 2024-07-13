@@ -2,7 +2,8 @@ package net.mindoth.ancientmagicks;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.glyph.GlyphItem;
+import net.mindoth.ancientmagicks.item.GlyphItem;
+import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.ancientmagicks.registries.AncientMagicksParticles;
@@ -19,8 +20,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +27,6 @@ import java.util.List;
 @Mod(AncientMagicks.MOD_ID)
 public class AncientMagicks {
     public static final String MOD_ID = "ancientmagicks";
-    public static Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public AncientMagicks() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -41,6 +39,7 @@ public class AncientMagicks {
         AncientMagicksTab.register(modEventBus);
         AncientMagicksItems.ITEMS.register(modEventBus);
         AncientMagicksEntities.ENTITIES.register(modEventBus);
+        AncientMagicksEffects.EFFECTS.register(modEventBus);
         AncientMagicksParticles.PARTICLES.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);

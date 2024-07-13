@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.entity.projectile;
 
-import net.mindoth.ancientmagicks.item.glyph.GlyphItem;
+import net.mindoth.ancientmagicks.item.GlyphItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

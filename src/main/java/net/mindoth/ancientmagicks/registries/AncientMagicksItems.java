@@ -1,8 +1,9 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.StoneTabletItem;
+import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.ancientmagicks.item.glyph.FireGlyphItem;
+import net.mindoth.ancientmagicks.item.glyph.MindControlGlyphItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -13,9 +14,12 @@ public class AncientMagicksItems {
 
     //Ancient Tablet
     public static final RegistryObject<Item> STONE_TABLET = ITEMS.register("stone_tablet",
-            () -> new StoneTabletItem(new Item.Properties()));
+            () -> new TabletItem(new Item.Properties()));
 
     //Glyphs
     public static final RegistryObject<Item> FIRE_GLYPH = ITEMS.register("fire_glyph",
             () -> new FireGlyphItem(new Item.Properties(), "am_fire"));
+
+    public static final RegistryObject<Item> MIND_CONTROL_GLYPH = ITEMS.register("mind_control_glyph",
+            () -> new MindControlGlyphItem(new Item.Properties(), "am_mind_control"));
 }

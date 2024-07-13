@@ -3,7 +3,6 @@ package net.mindoth.ancientmagicks.item;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.entity.projectile.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.entity.projectile.WitchSparkEntity;
-import net.mindoth.ancientmagicks.item.glyph.GlyphItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -32,8 +31,8 @@ import java.util.List;
 import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
-public class StoneTabletItem extends Item {
-    public StoneTabletItem(Properties pProperties) {
+public class TabletItem extends Item {
+    public TabletItem(Properties pProperties) {
         super(pProperties);
     }
 
@@ -43,7 +42,7 @@ public class StoneTabletItem extends Item {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide ) {
             ItemStack tablet = player.getItemInHand(handIn);
-            if ( tablet.getItem() instanceof StoneTabletItem tabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(tabletItem) ) {
+            if ( tablet.getItem() instanceof TabletItem tabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(tabletItem) ) {
                 if ( tablet.hasTag() && tablet.getTag() != null ) {
                     player.startUsingItem(handIn);
                 }
@@ -85,7 +84,7 @@ public class StoneTabletItem extends Item {
                 level.addFreshEntity(projectile);
             }
         }
-        else for ( GlyphItem glyph : glyphList ) glyph.onEntityHit(caster.level(), new EntityHitResult(caster));
+        else for ( GlyphItem glyph : glyphList ) glyph.onEntityHit(caster.level(), owner, new EntityHitResult(caster));
 
         if ( caster == owner ) owner.stopUsingItem();
     }

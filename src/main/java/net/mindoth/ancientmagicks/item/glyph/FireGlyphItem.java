@@ -1,9 +1,11 @@
 package net.mindoth.ancientmagicks.item.glyph;
 
+import net.mindoth.ancientmagicks.item.GlyphItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -20,13 +22,14 @@ public class FireGlyphItem extends GlyphItem {
     }
 
     @Override
-    public void onEntityHit(Level level, EntityHitResult result) {
+    public void onEntityHit(Level level, LivingEntity owner, EntityHitResult result) {
         Entity target = result.getEntity();
+        if ( target instanceof LivingEntity living && isAlly(owner, living) ) return;
         if ( !target.fireImmune() ) target.setSecondsOnFire(8);
     }
 
     @Override
-    public void onBlockHit(Level level, BlockHitResult result) {
+    public void onBlockHit(Level level, LivingEntity owner, BlockHitResult result) {
         BlockPos pos = result.getBlockPos();
         BlockState state = level.getBlockState(pos);
         BlockPos side = pos.relative(result.getDirection());

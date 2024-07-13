@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.glyph.GlyphItem;
+import net.mindoth.ancientmagicks.item.GlyphItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Direction;
@@ -268,13 +268,13 @@ public class AbstractSpellEntity extends ThrowableProjectile {
 
     protected void doMobEffects(EntityHitResult result) {
         for ( GlyphItem glyph : this.glyphList ) {
-            glyph.onEntityHit(this.level(), result);
+            glyph.onEntityHit(this.level(), this.owner, result);
         }
     }
 
     protected void doBlockEffects(BlockHitResult result) {
         for ( GlyphItem glyph : this.glyphList ) {
-            glyph.onBlockHit(this.level(), result);
+            glyph.onBlockHit(this.level(), this.owner, result);
         }
     }
 
