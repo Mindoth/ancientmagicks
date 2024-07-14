@@ -134,29 +134,28 @@ public class TabletItem extends Item {
         ItemStack leftStack = event.getLeft();
         Item rightItem = event.getRight().getItem();
         HashMap<Item, String> map = AncientMagicks.ANVIL_RECIPE_MAP;
-        if ( leftStack.getItem() == AncientMagicksItems.STONE_TABLET.get() && (map.containsKey(rightItem) || rightItem instanceof DyeItem) ) {
-            ItemStack result = leftStack.copy();
-            CompoundTag tag = result.getOrCreateTag();
-            if ( rightItem instanceof DyeItem dyeItem ) tag.putString("am_color", dyeItem.getDyeColor().toString());
-            else if ( rightItem == Items.ARROW ) tag.putString("am_firemode", map.get(rightItem));
-            else if ( rightItem instanceof GlyphItem glyph ) tag.putBoolean(ForgeRegistries.ITEMS.getKey(glyph).toString(), true);
-            result.setTag(tag);
+        if ( leftStack.getItem() == AncientMagicksItems.STONE_TABLET.get() ) {
             int xpCost = 1;
+            if ( (map.containsKey(rightItem) || rightItem instanceof DyeItem) ) {
+                ItemStack result = leftStack.copy();
+                CompoundTag tag = result.getOrCreateTag();
+                if ( rightItem instanceof DyeItem dyeItem ) tag.putString("am_color", dyeItem.getDyeColor().toString());
+                else if ( rightItem == Items.ARROW ) tag.putString("am_firemode", map.get(rightItem));
+                else if ( rightItem instanceof GlyphItem glyph ) tag.putBoolean(ForgeRegistries.ITEMS.getKey(glyph).toString(), true);
+                result.setTag(tag);
 
-            if ( event.getName() != null && !Util.isBlank(event.getName()) ) {
-                if ( !event.getName().equals(leftStack.getHoverName().getString()) ) {
-                    result.setHoverName(Component.literal(event.getName()));
-                    xpCost += 1;
+                if ( event.getName() != null && !Util.isBlank(event.getName()) ) {
+                    if ( !event.getName().equals(leftStack.getHoverName().getString()) ) {
+                        result.setHoverName(Component.literal(event.getName()));
+                    }
                 }
-            }
-            else if ( leftStack.hasCustomHoverName() ) {
-                result.resetHoverName();
-                xpCost += 1;
+                else if ( leftStack.hasCustomHoverName() ) {
+                    result.resetHoverName();
+                }
+                event.setMaterialCost(1);
+                event.setOutput(result);
             }
             event.setCost(xpCost);
-            event.setMaterialCost(1);
-
-            event.setOutput(result);
         }
     }
 

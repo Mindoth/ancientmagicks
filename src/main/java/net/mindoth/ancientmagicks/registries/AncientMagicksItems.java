@@ -22,6 +22,9 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> FIRE_GLYPH = ITEMS.register("fire_glyph",
             () -> new FireGlyph(new Item.Properties()));
 
+    public static final RegistryObject<Item> FLIGHT_GLYPH = ITEMS.register("flight_glyph",
+            () -> new FlightGlyph(new Item.Properties()));
+
     public static final RegistryObject<Item> LIGHTNING_GLYPH = ITEMS.register("lightning_glyph",
             () -> new LightningGlyph(new Item.Properties()));
 
@@ -33,4 +36,10 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> POLYMORPH_GLYPH = ITEMS.register("polymorph_glyph",
             () -> new PolymorphGlyph(new Item.Properties()));
+
+    public static final RegistryObject<Item> SKELETON_GLYPH = ITEMS.register("skeleton_glyph",
+            () -> new SkeletonGlyph(new Item.Properties()));
+
+    public static final RegistryObject<Item> ZOMBIE_GLYPH = ITEMS.register("zombie_glyph",
+            () -> new ZombieGlyph(new Item.Properties()));
 }

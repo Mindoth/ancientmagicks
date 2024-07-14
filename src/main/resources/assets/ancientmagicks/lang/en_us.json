@@ -18,6 +18,8 @@
   "item.ancientmagicks.skeleton_glyph": "Skeleton Glyph",
   "item.ancientmagicks.spook_glyph": "Spook Glyph",
   "item.ancientmagicks.telekinetic_grab_glyph": "Telekinetic Grab Glyph",
+  "item.ancientmagicks.zombie_glyph": "Zombie Glyph",
 
+  "effect.ancientmagicks.flight": "Flight",
   "effect.ancientmagicks.numbness": "Numbness"
 }

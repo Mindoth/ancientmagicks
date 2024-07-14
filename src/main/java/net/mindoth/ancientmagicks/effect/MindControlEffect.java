@@ -15,9 +15,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -52,7 +50,7 @@ public class MindControlEffect extends MobEffect {
         LivingEntity newTarget = null;
 
         for ( LivingEntity possibleTarget : possibleTargets ) {
-            if ( !GlyphItem.isAlly(owner, possibleTarget) ) {
+            if ( isTargetable(owner, possibleTarget) ) {
                 if ( newTarget == null || mob.distanceTo(possibleTarget) < mob.distanceTo(newTarget) ) newTarget = possibleTarget;
             }
         }
@@ -66,10 +64,17 @@ public class MindControlEffect extends MobEffect {
         if ( tag.hasUUID(NBT_KEY) ) {
             Entity entity = getEntityByUUID(level, tag.getUUID(NBT_KEY));
             if ( entity instanceof LivingEntity owner ) {
-                if ( !GlyphItem.isAlly(target, mob) || setMindControlTarget(mob, owner, level) ) return;
+                if ( isTargetable(target, mob) || setMindControlTarget(mob, owner, level) ) return;
             }
         }
         else mob.setTarget(null);
+    }
+
+    private static boolean isTargetable(LivingEntity owner, LivingEntity target) {
+        if ( owner == null ) return false;
+        if ( GlyphItem.isAlly(owner, target.getLastHurtByMob()) ) return true;
+        else if ( GlyphItem.isAlly(owner, target) ) return owner.getLastHurtMob() == target || owner.getLastHurtByMob() == target;
+        else return owner.getLastHurtMob() == target || owner.getLastHurtByMob() == target || (target instanceof Mob mob && mob.getTarget() == owner);
     }
 
     @SubscribeEvent
@@ -109,8 +114,11 @@ public class MindControlEffect extends MobEffect {
 
     private static void onMindControlEnd(MobEffect effect, Entity entity) {
         if ( effect != null && effect == AncientMagicksEffects.MIND_CONTROL.get() && entity instanceof Mob mob ) {
-            mob.setTarget(null);
-            mob.setLastHurtByMob(null);
+            if ( mob.getPersistentData().getBoolean("am_is_minion") ) mob.kill();
+            else {
+                mob.setTarget(null);
+                mob.setLastHurtByMob(null);
+            }
         }
     }
 
@@ -119,6 +127,20 @@ public class MindControlEffect extends MobEffect {
         if ( event.getEffectInstance().getEffect() == AncientMagicksEffects.MIND_CONTROL.get() ) {
             if ( event.getEntity() instanceof Player ) event.setResult(Event.Result.DENY);
             else event.setResult(Event.Result.DEFAULT);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onMinionLootDrop(final LivingDropsEvent event) {
+        if ( event.getEntity() instanceof Mob mob && mob.getPersistentData().getBoolean("am_is_minion") ) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onMinionLootDrop(final LivingExperienceDropEvent event) {
+        if ( event.getEntity() instanceof Mob mob && mob.getPersistentData().getBoolean("am_is_minion") ) {
+            event.setCanceled(true);
         }
     }
 

@@ -23,7 +23,7 @@ public class MindControlGlyph extends GlyphItem {
         Entity target = result.getEntity();
         if ( target instanceof Mob mob && !isAlly(owner, mob) ) {
             mob.getPersistentData().putUUID(MindControlEffect.NBT_KEY, owner.getUUID());
-            mob.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), 600, 0));
+            mob.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), 600));
             mob.setTarget(MindControlEffect.findMindControlTarget(mob, owner, mob.level()));
         }
     }
