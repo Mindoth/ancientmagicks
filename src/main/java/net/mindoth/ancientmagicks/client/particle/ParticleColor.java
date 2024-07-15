@@ -6,11 +6,11 @@ import java.util.Random;
 public class ParticleColor {
 
     public static ParticleColor defaultParticleColor() {
-        return new ParticleColor(255, 25, 180);
+        return new ParticleColor(188, 25, 222);
     }
 
     public static ParticleColor.IntWrapper defaultParticleColorWrapper(){
-        return new ParticleColor.IntWrapper(255, 25, 180);
+        return new ParticleColor.IntWrapper(188, 25, 222);
     }
 
     private final float r;
@@ -45,7 +45,9 @@ public class ParticleColor {
         return new ParticleColor(r,g,b);
     }
 
-    public float getRed() {return r;}
+    public float getRed() {
+        return r;
+    }
 
     public float getGreen() {
         return g;

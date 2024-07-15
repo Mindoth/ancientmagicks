@@ -14,6 +14,7 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -25,8 +26,8 @@ public class NumbnessEffect extends MobEffect {
 
     public static final String NBT_KEY = "am_numbness_damage";
 
-    @SubscribeEvent
-    public static void storeDamage(final LivingDamageEvent event) {
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void numbnessStoreDamage(final LivingDamageEvent event) {
         LivingEntity living = event.getEntity();
         DamageType type = event.getSource().type();
         final float damageAmount = event.getAmount();

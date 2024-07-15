@@ -39,13 +39,13 @@ public class FireGlyph extends GlyphItem {
         BlockPos side = pos.relative(result.getDirection());
         if ( !CampfireBlock.canLight(state) && !CandleBlock.canLight(state) && !CandleCakeBlock.canLight(state) ) {
             if ( BaseFireBlock.canBePlacedAt(level, side, result.getDirection()) ) {
-                level.playSound(null, side, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
+                level.playSound(null, side, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
                 BlockState sideState = BaseFireBlock.getState(level, side);
                 level.setBlock(side, sideState, 11);
             }
         }
         else {
-            level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
+            level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
             level.setBlock(pos, state.setValue(BlockStateProperties.LIT, true), 11);
         }
     }

@@ -5,6 +5,8 @@ import net.mindoth.ancientmagicks.client.particle.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.GlyphItem;
+import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.PacketSpellHitBurst;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Direction;
@@ -31,6 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class AbstractSpell extends ThrowableProjectile {
 
@@ -121,12 +124,14 @@ public class AbstractSpell extends ThrowableProjectile {
         target.hurt(target.damageSources().indirectMagic(this, this.owner), this.power);
     }
 
+    protected Vec3 lerpVector(float arc, Vec3 start, Vec3 end) {
+        return new Vec3(Mth.lerp(arc, start.x, end.x), Mth.lerp(arc, start.y, end.y), Mth.lerp(arc, start.z, end.z));
+    }
+
     @Override
     protected void onHit(HitResult result) {
-        if ( this.level().isClientSide ) {
-            doClientHitEffects();
-        }
-        if ( !this.level().isClientSide ) {
+        if ( this.level().isClientSide ) doClientHitEffects();
+        else {
             if ( result.getType() == HitResult.Type.ENTITY && ((EntityHitResult)result).getEntity() instanceof LivingEntity ) {
                 doMobEffects((EntityHitResult)result);
                 if ( this.enemyPierce > 0 ) this.enemyPierce--;
@@ -137,10 +142,7 @@ public class AbstractSpell extends ThrowableProjectile {
                 BlockHitResult traceResult = (BlockHitResult)result;
                 BlockState blockState = this.level().getBlockState(traceResult.getBlockPos());
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), blockState.getSoundType().getBreakSound(), SoundSource.PLAYERS, 0.3F, 2);
-
-                if ( this.blockPierce > 0 ) {
-                    this.blockPierce--;
-                }
+                if ( this.blockPierce > 0 ) this.blockPierce--;
                 else if ( this.bounce > 0 ) {
                     this.bounce--;
                     Direction face = traceResult.getDirection();
@@ -178,15 +180,18 @@ public class AbstractSpell extends ThrowableProjectile {
         }
     }
 
+    protected void playHitSound() {
+    }
+
+    protected void doClientHitEffects() {
+    }
+
     @Override
     public void tick() {
         super.tick();
-        if ( level().isClientSide ) doClientTickEffects();
-        if ( !level().isClientSide ) {
-            doTickEffects();
-            if ( this.tickCount > this.life || this.isInWater() ) {
-                doExpirationEffects();
-            }
+        if ( this.level().isClientSide ) doClientTickEffects();
+        else {
+            if ( this.tickCount > this.life || this.isInWater() ) doExpirationEffects();
             if ( this.homing ) {
                 int range = 3;
                 List<LivingEntity> entitiesAround = ShadowEvents.getEntitiesAround(this, this.level(), range, null);
@@ -219,18 +224,12 @@ public class AbstractSpell extends ThrowableProjectile {
         }
     }
 
-    protected Vec3 lerpVector(float arc, Vec3 start, Vec3 end) {
-        return new Vec3(Mth.lerp(arc, start.x, end.x), Mth.lerp(arc, start.y, end.y), Mth.lerp(arc, start.z, end.z));
-    }
-
     protected void doClientTickEffects() {
         if ( this.isRemoved() ) return;
         if ( !this.level().isClientSide ) return;
         ClientLevel world = (ClientLevel)this.level();
         Vec3 center = ShadowEvents.getEntityCenter(this);
         Vec3 pos = new Vec3(center.x, this.getY(), center.z);
-
-        if ( this.isRemoved() ) return;
         Vec3 vec3 = this.getDeltaMovement();
         double d5 = vec3.x;
         double d6 = vec3.y;
@@ -240,11 +239,11 @@ public class AbstractSpell extends ThrowableProjectile {
                 //Main body
                 float particleSize = Math.min(this.entityData.get(SIZE), (this.entityData.get(SIZE) * 0.1F) * this.tickCount);
                 for ( int i = 0; i < 2; i++ ) {
-                    float sphereSize = this.entityData.get(SIZE) / 4;
+                    float sphereSize = this.entityData.get(SIZE) * 0.25F;
                     float randX = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
                     float randY = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
                     float randZ = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
-                    world.addParticle(EmberParticleProvider.createData(getParticleColor(), particleSize, 10, true, true), true,
+                    world.addParticle(EmberParticleProvider.createData(getParticleColor(), particleSize, 10, true, true),
                             pos.x + randX + d5 * (double)j / 4.0D, pos.y + randY + d6 * (double)j / 4.0D, pos.z + randZ + d1 * (double)j / 4.0D, 0, 0, 0);
                 }
                 //Trail twinkle
@@ -255,7 +254,7 @@ public class AbstractSpell extends ThrowableProjectile {
                         float randY = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
                         float randZ = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
                         int life = 4 + level().random.nextInt(20);
-                        world.addParticle(EmberParticleProvider.createData(getParticleColor(), sphereSize, life, true, true), true,
+                        world.addParticle(EmberParticleProvider.createData(getParticleColor(), sphereSize, life, true, true),
                                 pos.x + randX, pos.y + randY, pos.z + randZ, 0, 0, 0);
                     }
                 }
@@ -263,28 +262,20 @@ public class AbstractSpell extends ThrowableProjectile {
         }
     }
 
-    protected void doClientHitEffects() {
-    }
-
     protected void doMobEffects(EntityHitResult result) {
-        for ( GlyphItem glyph : this.glyphList ) {
-            glyph.onEntityHit(this, this.owner, result);
-        }
     }
 
     protected void doBlockEffects(BlockHitResult result) {
-        for ( GlyphItem glyph : this.glyphList ) {
-            glyph.onBlockHit(this, this.owner, result);
-        }
-    }
-
-    protected void playHitSound() {
-    }
-
-    protected void doTickEffects() {
     }
 
     protected void doDeathEffects() {
+        int r = (int)(this.getParticleColor().getRed() * 255F);
+        int g = (int)(this.getParticleColor().getGreen() * 255F);
+        int b = (int)(this.getParticleColor().getBlue() * 255F);
+        AncientMagicksNetwork.sendToNearby(this.level(), this,
+                new PacketSpellHitBurst(r, g, b, this.entityData.get(SIZE) * 0.5F, 4 + level().random.nextInt(10),
+                        true, true, this.position().x, this.position().y, this.position().z));
+
         this.discard();
     }
 
@@ -304,7 +295,7 @@ public class AbstractSpell extends ThrowableProjectile {
         if ( element.equals("light_gray") ) returnColor = new ParticleColor.IntWrapper(208, 208, 208);
         if ( element.equals("lime") ) returnColor = new ParticleColor.IntWrapper(149, 218, 62);
         if ( element.equals("magenta") ) returnColor = new ParticleColor.IntWrapper(224, 85, 219);
-        if ( element.equals("orange") ) returnColor = new ParticleColor.IntWrapper(234, 172, 25);
+        if ( element.equals("orange") ) returnColor = new ParticleColor.IntWrapper(225, 125, 25);
         if ( element.equals("pink") ) returnColor = new ParticleColor.IntWrapper(240, 125, 211);
         if ( element.equals("purple") ) returnColor = new ParticleColor.IntWrapper(188, 25, 222);
         if ( element.equals("red") ) returnColor = new ParticleColor.IntWrapper(180, 25, 25);
@@ -349,9 +340,9 @@ public class AbstractSpell extends ThrowableProjectile {
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(RED, 255);
+        this.entityData.define(RED, 188);
         this.entityData.define(GREEN, 25);
-        this.entityData.define(BLUE, 180);
+        this.entityData.define(BLUE, 222);
         this.entityData.define(SIZE, 0.3F);
     }
 

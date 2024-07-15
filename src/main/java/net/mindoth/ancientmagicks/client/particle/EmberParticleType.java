@@ -12,4 +12,9 @@ public class EmberParticleType extends ParticleType<ColoredDynamicTypeData> {
     public Codec<ColoredDynamicTypeData> codec() {
         return ColoredDynamicTypeData.CODEC;
     }
+
+    @Override
+    public boolean getOverrideLimiter() {
+        return true;
+    }
 }

@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.GlyphItem;
+import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
@@ -55,8 +56,9 @@ public class AncientMagicks {
     }
 
     public void commonSetup(final FMLCommonSetupEvent event) {
-        createAnvilRecipes();
+        AncientMagicksNetwork.init();
         createGlyphList();
+        createAnvilRecipes();
     }
 
     public static List<GlyphItem> GLYPH_LIST;
@@ -73,6 +75,7 @@ public class AncientMagicks {
     private void createAnvilRecipes() {
         ANVIL_RECIPE_MAP = new HashMap<>();
         ANVIL_RECIPE_MAP.put(Items.ARROW, "am_projectile");
+        ANVIL_RECIPE_MAP.put(Items.GLASS_BOTTLE, "am_self");
         for ( Item item : ForgeRegistries.ITEMS.getValues()) {
             if ( item instanceof GlyphItem glyph ) ANVIL_RECIPE_MAP.put(glyph, ForgeRegistries.ITEMS.getKey(glyph).toString());
         }

@@ -1,9 +1,13 @@
 package net.mindoth.ancientmagicks.item;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.client.particle.ParticleColor;
 import net.mindoth.ancientmagicks.entity.projectile.AbstractSpell;
 import net.mindoth.ancientmagicks.entity.projectile.WitchSpark;
+import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.PacketSpellHitBurst;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.gui.screens.Screen;
@@ -16,6 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -86,8 +91,19 @@ public class TabletItem extends Item {
                 projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
                 level.addFreshEntity(projectile);
             }
+            else if ( tag.getString("am_firemode").equals("am_self") ) {
+                for ( GlyphItem glyph : glyphList ) glyph.onEntityHit(null, owner, new EntityHitResult(caster));
+                ParticleColor particleColor = AbstractSpell.getSpellColor(color).toParticleColor();
+                int r = (int)(particleColor.getRed() * 255F);
+                int g = (int)(particleColor.getGreen() * 255F);
+                int b = (int)(particleColor.getBlue() * 255F);
+                Vec3 pos = ShadowEvents.getEntityCenter(caster);
+                AncientMagicksNetwork.sendToNearby(level, caster, new PacketSpellHitBurst(r, g, b, 0.15F,
+                        4 + level.random.nextInt(10), true, true, pos.x, pos.y, pos.z));
+            }
+            else if ( tag.getString("am_firemode").equals("am_touch") ) {
+            }
         }
-        else for ( GlyphItem glyph : glyphList ) glyph.onEntityHit(null, owner, new EntityHitResult(caster));
 
         if ( caster == owner ) owner.stopUsingItem();
     }
@@ -105,8 +121,6 @@ public class TabletItem extends Item {
                 if ( tag.contains("am_firemode") ) {
                     tooltip.add(Component.translatable("tooltip.ancientmagicks." + tag.getString("am_firemode")).withStyle(ChatFormatting.GRAY));
                 }
-                else
-                    tooltip.add(Component.translatable("tooltip.ancientmagicks.am_self").withStyle(ChatFormatting.GRAY));
                 if ( tag.contains("am_color") ) {
                     tooltip.add(Component.translatable("tooltip.ancientmagicks.am_color")
                             .append(Component.literal(StringUtils.capitalize(tag.getString("am_color")
@@ -139,24 +153,33 @@ public class TabletItem extends Item {
             if ( (map.containsKey(rightItem) || rightItem instanceof DyeItem) ) {
                 ItemStack result = leftStack.copy();
                 CompoundTag tag = result.getOrCreateTag();
-                if ( rightItem instanceof DyeItem dyeItem ) tag.putString("am_color", dyeItem.getDyeColor().toString());
-                else if ( rightItem == Items.ARROW ) tag.putString("am_firemode", map.get(rightItem));
-                else if ( rightItem instanceof GlyphItem glyph ) tag.putBoolean(ForgeRegistries.ITEMS.getKey(glyph).toString(), true);
-                result.setTag(tag);
-
-                if ( event.getName() != null && !Util.isBlank(event.getName()) ) {
-                    if ( !event.getName().equals(leftStack.getHoverName().getString()) ) {
-                        result.setHoverName(Component.literal(event.getName()));
-                    }
+                if ( rightItem == Items.ARROW || rightItem == Items.GLASS_BOTTLE ) {
+                    tag.putString("am_firemode", map.get(rightItem));
+                    handleCustomAnvil(event, leftStack, result, tag, xpCost);
                 }
-                else if ( leftStack.hasCustomHoverName() ) {
-                    result.resetHoverName();
+                else if ( tag.contains("am_firemode") ) {
+                    if ( rightItem instanceof DyeItem dyeItem ) tag.putString("am_color", dyeItem.getDyeColor().toString());
+                    else if ( rightItem instanceof GlyphItem glyph ) tag.putBoolean(ForgeRegistries.ITEMS.getKey(glyph).toString(), true);
+                    handleCustomAnvil(event, leftStack, result, tag, xpCost);
                 }
-                event.setMaterialCost(1);
-                event.setOutput(result);
             }
-            event.setCost(xpCost);
         }
+    }
+
+    private static void handleCustomAnvil(AnvilUpdateEvent event, ItemStack leftStack, ItemStack result, CompoundTag tag, int xpCost) {
+        result.setTag(tag);
+
+        if ( event.getName() != null && !Util.isBlank(event.getName()) ) {
+            if ( !event.getName().equals(leftStack.getHoverName().getString()) ) {
+                result.setHoverName(Component.literal(event.getName()));
+            }
+        }
+        else if ( leftStack.hasCustomHoverName() ) {
+            result.resetHoverName();
+        }
+        event.setMaterialCost(1);
+        event.setOutput(result);
+        event.setCost(xpCost);
     }
 
     @Override

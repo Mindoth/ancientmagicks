@@ -39,15 +39,4 @@ public class GlyphItem extends Item {
         return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY)
                 && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY).equals(owner.getUUID()) && mob.getTarget() != owner;
     }
-
-    public void summonMinion(Mob minion, LivingEntity owner, Level level, Vec3 pos, @Nullable Entity hitEntity) {
-        minion.teleportTo(pos.x, pos.y, pos.z);
-        minion.getPersistentData().putUUID(MindControlEffect.NBT_KEY, owner.getUUID());
-        minion.getPersistentData().putBoolean("am_is_minion", true);
-        minion.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), 1200));
-        ForgeEventFactory.onFinalizeSpawn(minion, (ServerLevel)level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-        level.addFreshEntity(minion);
-        minion.spawnAnim();
-        if ( hitEntity instanceof LivingEntity living && !isAlly(owner, living) ) minion.setTarget(living);
-    }
 }
