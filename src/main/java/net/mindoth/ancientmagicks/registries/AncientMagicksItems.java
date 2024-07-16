@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.StaffItem;
 import net.mindoth.ancientmagicks.item.TabletItem;
 import net.mindoth.ancientmagicks.item.glyph.*;
 import net.minecraft.world.item.Item;
@@ -14,6 +15,10 @@ public class AncientMagicksItems {
     //Ancient Tablet
     public static final RegistryObject<Item> STONE_TABLET = ITEMS.register("stone_tablet",
             () -> new TabletItem(new Item.Properties()));
+
+    //Ancient Staff
+    public static final RegistryObject<Item> ANCIENT_STAFF = ITEMS.register("ancient_staff",
+            () -> new StaffItem(new Item.Properties()));
 
     //Glyphs
     public static final RegistryObject<Item> BLINK_GLYPH = ITEMS.register("blink_glyph",

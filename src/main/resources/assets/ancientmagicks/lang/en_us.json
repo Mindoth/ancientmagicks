@@ -1,12 +1,8 @@
 {
   "itemGroup.ancientmagicks_tab": "Ancient Magicks",
 
-  "tooltip.ancientmagicks.hold_shift": "Hold SHIFT to see Spell Properties",
-  "tooltip.ancientmagicks.am_self": "Form: Self-cast",
-  "tooltip.ancientmagicks.am_projectile": "Form: Projectile",
-  "tooltip.ancientmagicks.am_color": "Color: ",
-
   "item.ancientmagicks.stone_tablet": "Stone Tablet",
+  "item.ancientmagicks.ancient_staff": "Ancient Staff",
 
   "item.ancientmagicks.blink_glyph": "Blink Glyph",
   "item.ancientmagicks.fire_glyph": "Fire Glyph",
@@ -21,5 +17,10 @@
   "item.ancientmagicks.zombie_glyph": "Zombie Glyph",
 
   "effect.ancientmagicks.flight": "Flight",
-  "effect.ancientmagicks.numbness": "Numbness"
+  "effect.ancientmagicks.numbness": "Numbness",
+
+  "tooltip.ancientmagicks.hold_shift": "Hold SHIFT to see Spell Properties",
+  "tooltip.ancientmagicks.am_self": "Form: Self-cast",
+  "tooltip.ancientmagicks.am_projectile": "Form: Projectile",
+  "tooltip.ancientmagicks.am_color": "Color: "
 }
