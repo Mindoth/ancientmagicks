@@ -31,10 +31,58 @@ public class AncientMagicksNetwork {
 
         CHANNEL = net;
 
-        net.messageBuilder(PacketSpellHitBurst.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketSpellHitBurst::new)
-                .encoder(PacketSpellHitBurst::encode)
-                .consumerMainThread(PacketSpellHitBurst::handle)
+        net.messageBuilder(PacketSetSpell.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketSetSpell::new)
+                .encoder(PacketSetSpell::encode)
+                .consumerMainThread(PacketSetSpell::handle)
+                .add();
+
+        net.messageBuilder(PacketSendRuneData.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketSendRuneData::new)
+                .encoder(PacketSendRuneData::encode)
+                .consumerMainThread(PacketSendRuneData::handle)
+                .add();
+
+        net.messageBuilder(PacketReceiveRuneData.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketReceiveRuneData::new)
+                .encoder(PacketReceiveRuneData::encode)
+                .consumerMainThread(PacketReceiveRuneData::handle)
+                .add();
+
+        net.messageBuilder(PacketSendCustomParticles.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketSendCustomParticles::new)
+                .encoder(PacketSendCustomParticles::encode)
+                .consumerMainThread(PacketSendCustomParticles::handle)
+                .add();
+
+        net.messageBuilder(PacketSyncSpellCombos.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketSyncSpellCombos::new)
+                .encoder(PacketSyncSpellCombos::encode)
+                .consumerMainThread(PacketSyncSpellCombos::handle)
+                .add();
+
+        net.messageBuilder(PacketSyncSpellCombos.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketSyncSpellCombos::new)
+                .encoder(PacketSyncSpellCombos::encode)
+                .consumerMainThread(PacketSyncSpellCombos::handle)
+                .add();
+
+        net.messageBuilder(PacketSyncClientSpell.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketSyncClientSpell::new)
+                .encoder(PacketSyncClientSpell::encode)
+                .consumerMainThread(PacketSyncClientSpell::handle)
+                .add();
+
+        net.messageBuilder(PacketSolveAncientTablet.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketSolveAncientTablet::new)
+                .encoder(PacketSolveAncientTablet::encode)
+                .consumerMainThread(PacketSolveAncientTablet::handle)
+                .add();
+
+        net.messageBuilder(PacketUpdateKnownSpells.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketUpdateKnownSpells::new)
+                .encoder(PacketUpdateKnownSpells::encode)
+                .consumerMainThread(PacketUpdateKnownSpells::handle)
                 .add();
     }
 
@@ -47,7 +95,7 @@ public class AncientMagicksNetwork {
     }
 
     public static void sendToNearby(Level world, BlockPos pos, Object msg){
-        if ( world instanceof ServerLevel) {
+        if ( world instanceof ServerLevel ) {
             ServerLevel serverWorld = (ServerLevel)world;
             serverWorld.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).stream()
                     .filter(p -> p.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64 * 64)

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "hhh",
+    "h#h",
+    "hhh"
+  ],
+  "key": {
+    "#": {
+      "item": "ancientmagicks:empty_rune"
+    },
+    "h": {
+      "item": "minecraft:white_dye"
+    }
+  },
+  "result": {
+    "item": "ancientmagicks:white_rune",
+    "count": 1
+  }
+}

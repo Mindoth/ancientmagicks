@@ -1,7 +1,11 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.entity.projectile.WitchSpark;
+import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteEntity;
+import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamEntity;
+import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
+import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballEntity;
+import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -12,9 +16,27 @@ import net.minecraftforge.registries.RegistryObject;
 public class AncientMagicksEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, AncientMagicks.MOD_ID);
 
-    public static final RegistryObject<EntityType<WitchSpark>> WITCH_SPARK
-            = registerEntity(EntityType.Builder.<WitchSpark>of(WitchSpark::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(WitchSpark::new), "witch_spark");
+    public static final RegistryObject<EntityType<WitchSparkEntity>> WITCH_SPARK
+            = registerEntity(EntityType.Builder.<WitchSparkEntity>of(WitchSparkEntity::new,
+            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(WitchSparkEntity::new), "witch_spark");
+
+    public static final RegistryObject<EntityType<FireballEntity>> FIREBALL
+            = registerEntity(EntityType.Builder.<FireballEntity>of(FireballEntity::new,
+            MobCategory.MISC).sized(0.8F, 0.8F).setCustomClientFactory(FireballEntity::new), "fireball");
+
+    public static final RegistryObject<EntityType<DynamiteEntity>> DYNAMITE
+            = registerEntity(EntityType.Builder.<DynamiteEntity>of(DynamiteEntity::new,
+            MobCategory.MISC).sized(1.0F, 1.0F).setCustomClientFactory(DynamiteEntity::new), "dynamite");
+
+    public static final RegistryObject<EntityType<SlimeballEntity>> SLIMEBALL
+            = registerEntity(EntityType.Builder.<SlimeballEntity>of(SlimeballEntity::new,
+            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(SlimeballEntity::new), "slimeball");
+
+    //This might need to be 0.5F, 0.5F sized
+    public static final RegistryObject<EntityType<ExperienceStreamEntity>> EXPERIENCE_BEAM
+            = registerEntity(EntityType.Builder.<ExperienceStreamEntity>of(ExperienceStreamEntity::new,
+            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(ExperienceStreamEntity::new), "experience_beam");
+
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntity(EntityType.Builder<T> builder, String entityName) {
         return ENTITIES.register(entityName, () -> builder.build(entityName));
