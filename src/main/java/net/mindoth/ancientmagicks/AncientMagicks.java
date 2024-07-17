@@ -55,14 +55,22 @@ public class AncientMagicks {
         AncientMagicksParticles.PARTICLES.register(modEventBus);
         AncientMagicksContainers.CONTAINERS.register(modEventBus);
 
+        //KEEP THESE LAST
         modEventBus.addListener(this::addCreative);
-        //KEEP THIS LAST
         modEventBus.addListener(this::commonSetup);
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if ( event.getTab() == AncientMagicksTab.ANCIENTMAGICKS_TAB.get() ) {
-            for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) event.accept(item);
+            for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
+                if ( item.get() instanceof ColorRuneItem rune ) {
+                    if ( COLOR_RUNE_LIST.contains(rune) ) event.accept(item);
+                }
+                else if ( item.get() instanceof SpellTabletItem spell ) {
+                    if ( isSpellEnabled(spell) ) event.accept(item);
+                }
+                else event.accept(item);
+            }
         }
     }
 
@@ -74,27 +82,44 @@ public class AncientMagicks {
     public void commonSetup(final FMLCommonSetupEvent event) {
         ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
         AncientMagicksNetwork.init();
-        createSpellList();
-        createSpellDisableList();
+        createLists();
         createPolymobDisableList();
     }
 
-    private static void createSpellList() {
+    private static void createLists() {
         if ( !SPELL_LIST.isEmpty() ) SPELL_LIST.clear();
         if ( !COLOR_RUNE_LIST.isEmpty() ) COLOR_RUNE_LIST.clear();
         if ( !COMBO_MAP.isEmpty() ) COMBO_MAP.clear();
+        createSpellDisableList();
         for ( Item item : ITEM_LIST ) if ( item instanceof SpellTabletItem spellTabletItem && isSpellEnabled(spellTabletItem) ) SPELL_LIST.add(spellTabletItem);
+        createColorRuneList();
     }
 
     public static boolean isSpellEnabled(SpellTabletItem spell) {
         return DISABLED_SPELLS.isEmpty() || !DISABLED_SPELLS.contains(spell);
     }
 
+    public static boolean isColorRuneEnabled(Item item) {
+        return item instanceof ColorRuneItem rune && COLOR_RUNE_LIST.contains(rune);
+    }
+
+    private static void createColorRuneList() {
+        int n = 0;
+        for ( Item item : ITEM_LIST ) {
+            if ( item instanceof ColorRuneItem ) {
+                if ( (n * (n + 2) * (n + 1)) < (6 * SPELL_LIST.size()) ) {
+                    COLOR_RUNE_LIST.add((ColorRuneItem)item);
+                    n++;
+                }
+            }
+        }
+    }
+
     private static void createSpellDisableList() {
         String configString = AncientMagicksCommonConfig.DISABLED_SPELLS.get();
         for ( String string : List.of(configString.replaceAll("[\\[\\]]", "").replaceAll(" ", "").replaceAll("\n", "").split(",")) ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-            if ( item instanceof SpellTabletItem spellTabletItem) DISABLED_SPELLS.add(spellTabletItem);
+            if ( item instanceof SpellTabletItem spellTabletItem ) DISABLED_SPELLS.add(spellTabletItem);
         }
     }
 
@@ -121,19 +146,16 @@ public class AncientMagicks {
 
     public static void randomizeSpells() {
         Logger logger = getLogger();
-        for ( Item item : ITEM_LIST ) if ( item instanceof ColorRuneItem ) COLOR_RUNE_LIST.add((ColorRuneItem)item);
 
         List<List<ColorRuneItem>> comboList = Lists.newArrayList();
         for ( int i = 0; i < COLOR_RUNE_LIST.size(); i++ ) {
             for ( int j = 0; j < COLOR_RUNE_LIST.size(); j++ ) {
                 for ( int k = 0; k < COLOR_RUNE_LIST.size(); k++ ) {
-                    if ( !SPELL_LIST.isEmpty() ) {
-                        List<ColorRuneItem> tempList = Lists.newArrayList();
-                        tempList.add(COLOR_RUNE_LIST.get(i));
-                        tempList.add(COLOR_RUNE_LIST.get(j));
-                        tempList.add(COLOR_RUNE_LIST.get(k));
-                        if ( hasNoDupeInList(comboList, tempList) ) comboList.add(tempList);
-                    }
+                    List<ColorRuneItem> tempList = Lists.newArrayList();
+                    tempList.add(COLOR_RUNE_LIST.get(i));
+                    tempList.add(COLOR_RUNE_LIST.get(j));
+                    tempList.add(COLOR_RUNE_LIST.get(k));
+                    if ( hasNoDupeInList(comboList, tempList) ) comboList.add(tempList);
                 }
             }
         }
@@ -144,7 +166,7 @@ public class AncientMagicks {
             if ( !SPELL_LIST.isEmpty() ) {
                 Collections.shuffle(comboList);
                 for ( int i = 0; i < comboList.size(); i++ ) {
-                    if ( i < SPELL_LIST.size() ) COMBO_MAP.put(SPELL_LIST.get(i), comboList.get(i));
+                    if ( i < SPELL_LIST.size() && isSpellEnabled(SPELL_LIST.get(i)) ) COMBO_MAP.put(SPELL_LIST.get(i), comboList.get(i));
                     else break;
                 }
             }

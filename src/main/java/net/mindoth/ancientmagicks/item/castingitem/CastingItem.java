@@ -43,20 +43,27 @@ public class CastingItem extends Item {
 
         //This actually casts the given Spell
         if ( AncientMagicks.isSpellEnabled(spellTabletItem) ) {
-            if ( useTime == 0 && caster == owner ) extractCost(owner, spellTabletItem);
+            if ( useTime == 0 && caster == owner ) extractCost(owner);
             if ( spellTabletItem.castMagic(owner, caster, center, xRot, yRot, useTime) ) {
                 if ( !spellTabletItem.isChannel ) {
-                    if ( castingItem.getItem() instanceof SpellTabletItem && !owner.isCreative() ) castingItem.shrink(1);
                     addCastingCooldown(owner, spellTabletItem, getCastingCooldown(spellTabletItem.cooldown, hasAlacrity));
                     owner.stopUsingItem();
+                    if ( castingItem.getItem() instanceof SpellTabletItem && !owner.isCreative() ) castingItem.shrink(1);
                 }
             }
-            else whiffSpell(owner, caster, center, spellTabletItem);
+            else {
+                if ( useTime == 0 ) whiffSpell(owner, caster, spellTabletItem);
+                else if ( caster == owner ) {
+                    addCastingCooldown(owner, spellTabletItem, getCastingCooldown(spellTabletItem.cooldown, hasAlacrity));
+                    owner.stopUsingItem();
+                    if ( castingItem.getItem() instanceof SpellTabletItem && !owner.isCreative() ) castingItem.shrink(1);
+                }
+            }
         }
-        else whiffSpell(owner, caster, center, spellTabletItem);
+        else whiffSpell(owner, caster, spellTabletItem);
     }
 
-    public static void extractCost(Player owner, SpellTabletItem spellTabletItem) {
+    public static void extractCost(Player owner) {
         if ( !AncientMagicksCommonConfig.FREE_SPELLS.get() && !owner.isCreative() ) owner.giveExperiencePoints(-1);
     }
 
@@ -65,13 +72,13 @@ public class CastingItem extends Item {
         return (int)(defaultCooldown * alacrityBonus);
     }
 
-    public static void whiffSpell(Player owner, Entity caster, Vec3 center, SpellTabletItem tablet) {
+    public static void whiffSpell(Player owner, Entity caster, SpellTabletItem tablet) {
         RuneItem.playWhiffSound(caster);
         addCastingCooldown(owner, tablet, 20);
         owner.stopUsingItem();
     }
 
-    public void makeTablets(Player owner, Entity caster, SpellTabletItem spellTabletItem, ItemStack slateStack) {
+    /*public void makeTablets(Player owner, Entity caster, SpellTabletItem spellTabletItem, ItemStack slateStack) {
         if ( !AncientMagicks.isSpellEnabled(spellTabletItem) ) return;
         int stackCount = 0;
         for ( int i = 0; i < slateStack.getCount(); i++ ) {
@@ -92,7 +99,7 @@ public class CastingItem extends Item {
         caster.level().addFreshEntity(drop);
         addCastingCooldown(owner, spellTabletItem, 20);
         owner.stopUsingItem();
-    }
+    }*/
 
     public static void addCastingCooldown(Player player, SpellTabletItem spell, int cooldown) {
         player.getCooldowns().addCooldown(spell, cooldown);

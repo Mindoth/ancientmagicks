@@ -51,8 +51,9 @@ public class InvocationStaffItem extends CastingItem {
                 player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
                     if ( item instanceof SpellTabletItem spellTabletItem) {
-                        if ( getHeldSlateItem(player).getItem() == AncientMagicksItems.STONE_SLATE.get() ) makeTablets(player, player, spellTabletItem, getHeldSlateItem(player));
-                        else doSpell(player, player, wand, spellTabletItem, getUseDuration(wand) - timeLeft);
+                        /*if ( getHeldSlateItem(player).getItem() == AncientMagicksItems.STONE_SLATE.get() ) makeTablets(player, player, spellTabletItem, getHeldSlateItem(player));
+                        else doSpell(player, player, wand, spellTabletItem, getUseDuration(wand) - timeLeft);*/
+                        doSpell(player, player, wand, spellTabletItem, getUseDuration(wand) - timeLeft);
                     }
                 });
             }

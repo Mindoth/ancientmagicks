@@ -61,7 +61,7 @@ public class CommonEvents {
         }
     }
 
-    //This is here to check if falldamage is lethal in onLivingFallSpook
+    //This is here to check if fall damage is lethal in onLivingFallSpook
     protected static int calculateFallDamage(LivingEntity living, float pFallDistance, float pDamageMultiplier) {
         if ( living.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE) ) return 0;
         else {
@@ -84,13 +84,14 @@ public class CommonEvents {
                 if ( event.getItem().getItem() instanceof CastingItem ) {
                     player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
-                        if ( item instanceof SpellTabletItem spellTabletItem) {
+                        if ( item instanceof SpellTabletItem spellTabletItem ) {
                             player.getCooldowns().addCooldown(spellTabletItem, spellTabletItem.cooldown);
                         }
                     });
                 }
-                else if ( event.getItem().getItem() instanceof SpellTabletItem spellTabletItem) {
+                else if ( event.getItem().getItem() instanceof SpellTabletItem spellTabletItem ) {
                     player.getCooldowns().addCooldown(spellTabletItem, spellTabletItem.cooldown);
+                    if ( !player.isCreative() ) event.getItem().shrink(1);
                 }
             }
         }

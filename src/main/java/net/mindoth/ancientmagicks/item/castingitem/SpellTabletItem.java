@@ -73,13 +73,12 @@ public class SpellTabletItem extends RuneItem {
             ItemStack tablet = player.getItemInHand(handIn);
             if ( tablet.getItem() instanceof SpellTabletItem spellTabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellTabletItem) ) {
                 player.startUsingItem(handIn);
-                learnSpell((ServerPlayer)player, (SpellTabletItem)tablet.getItem());
             }
         }
         return result;
     }
 
-    private static void learnSpell(ServerPlayer player, SpellTabletItem handTablet) {
+    public static void learnSpell(ServerPlayer player, SpellTabletItem handTablet) {
         final String spellString = ForgeRegistries.ITEMS.getKey(handTablet).toString();
         player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
             CompoundTag tag = new CompoundTag();

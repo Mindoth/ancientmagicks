@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.client.gui.inventory;
 
+import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
@@ -18,6 +19,6 @@ public class AMBagItemHandler extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-        return stack.getItem() instanceof SpellTabletItem;
+        return stack.getItem() instanceof SpellTabletItem || stack.getItem() instanceof AncientTabletItem;
     }
 }

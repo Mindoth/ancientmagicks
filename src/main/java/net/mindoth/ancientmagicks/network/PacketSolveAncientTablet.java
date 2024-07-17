@@ -46,6 +46,7 @@ public class PacketSolveAncientTablet {
                         final String spellString = tag.getString("am_secretspell");
                         final SpellTabletItem item = (SpellTabletItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(spellString));
                         if ( this.resulStack.getItem() == item ) player.setItemSlot(hand, this.resulStack);
+                        SpellTabletItem.learnSpell(player, item);
                     }
                 }
             }
