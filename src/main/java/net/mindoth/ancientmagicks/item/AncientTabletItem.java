@@ -33,7 +33,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class AncientTabletItem extends Item {
     public AncientTabletItem(Properties pProperties) {
-        super(pProperties);
+        super(pProperties.stacksTo(1));
     }
 
     @Override
@@ -42,11 +42,8 @@ public class AncientTabletItem extends Item {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
             ItemStack stack = serverPlayer.getItemInHand(handIn);
-            CompoundTag tag = stack.getOrCreateTag();
-            CompoundTag finalTag;
-            if ( !tag.contains("am_secretspell") ) finalTag = createSpellToDiscover(tag);
-            else finalTag = tag;
-            if ( finalTag.contains("am_secretspell") ) {
+            final CompoundTag finalTag = stack.getTag();
+            if ( finalTag != null && finalTag.contains("am_secretspell") ) {
                 serverPlayer.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                     List<ItemStack> runeList = ColorRuneItem.getColorRuneList(player, spell);
                     AncientMagicksNetwork.sendToPlayer(new PacketReceiveRuneData(runeList, finalTag, handIn == InteractionHand.OFF_HAND), serverPlayer);
@@ -71,8 +68,12 @@ public class AncientTabletItem extends Item {
         if ( !level.isClientSide ) {
             BlockPos blockPos = entity.blockPosition();
             if ( level.getBlockState(blockPos).getBlock() == Blocks.WATER_CAULDRON ) {
-                if ( stack.getTag() != null && stack.getTag().contains("am_secretspell") ) {
-                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(stack.getTag().getString("am_secretspell")));
+                CompoundTag tag = stack.getOrCreateTag();
+                final CompoundTag finalTag;
+                if ( !tag.contains("am_secretspell") ) finalTag = createSpellToDiscover(tag);
+                else finalTag = tag;
+                if ( finalTag.contains("am_secretspell") ) {
+                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(finalTag.getString("am_secretspell")));
                     if ( item instanceof SpellTabletItem spell ) {
                         List<ColorRuneItem> runeList = ColorRuneItem.CURRENT_COMBO_MAP.get(spell);
                         ColorRuneItem randomRune = runeList.get(ThreadLocalRandom.current().nextInt(0, runeList.size()));

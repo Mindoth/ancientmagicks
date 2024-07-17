@@ -5,6 +5,7 @@ import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
+import net.mindoth.ancientmagicks.loot.AncientMagicksModifiers;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
 import net.minecraft.resources.ResourceLocation;
@@ -54,6 +55,7 @@ public class AncientMagicks {
         AncientMagicksEffects.EFFECTS.register(modEventBus);
         AncientMagicksParticles.PARTICLES.register(modEventBus);
         AncientMagicksContainers.CONTAINERS.register(modEventBus);
+        AncientMagicksModifiers.LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
 
         //KEEP THESE LAST
         modEventBus.addListener(this::addCreative);

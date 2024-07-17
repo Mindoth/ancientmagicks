@@ -50,13 +50,13 @@ public class GhostwalkEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity livin, int amp) {
-        if ( !livin.level().isClientSide && lastHurtTimestamp != livin.getLastHurtMobTimestamp() ) {
-            livin.removeEffect(this);
+    public void applyEffectTick(LivingEntity living, int amp) {
+        if ( !living.level().isClientSide && this.lastHurtTimestamp != living.getLastHurtMobTimestamp() ) {
+            living.removeEffect(this);
         }
     }
 
-    @SubscribeEvent()
+    @SubscribeEvent
     public static void interruptRender(RenderLivingEvent.Pre<? extends LivingEntity, ? extends EntityModel<? extends LivingEntity>> event) {
         if ( event.getEntity().hasEffect(AncientMagicksEffects.GHOSTWALK.get()) ) {
             event.setCanceled(true);

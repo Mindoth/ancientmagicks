@@ -94,16 +94,12 @@ public class AncientMagicksNetwork {
         CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), message);
     }
 
-    public static void sendToNearby(Level world, BlockPos pos, Object msg){
-        if ( world instanceof ServerLevel ) {
-            ServerLevel serverWorld = (ServerLevel)world;
-            serverWorld.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).stream()
-                    .filter(p -> p.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64 * 64)
-                    .forEach(p -> CHANNEL.send(PacketDistributor.PLAYER.with(() -> p), msg));
-        }
+    public static <MSG> void sendToPlayersTrackingEntity(MSG message, Entity entity) {
+        sendToPlayersTrackingEntity(message, entity, false);
     }
 
-    public static void sendToNearby(Level world, Entity caster, Object msg) {
-        sendToNearby(world, caster.blockPosition(), msg);
+    public static <MSG> void sendToPlayersTrackingEntity(MSG message, Entity entity, boolean sendToSource) {
+        CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), message);
+        if ( sendToSource && entity instanceof ServerPlayer serverPlayer ) sendToPlayer(message, serverPlayer);
     }
 }
