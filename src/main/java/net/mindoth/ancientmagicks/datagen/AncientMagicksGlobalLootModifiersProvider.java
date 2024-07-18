@@ -26,7 +26,7 @@ public class AncientMagicksGlobalLootModifiersProvider extends GlobalLootModifie
                         "desert_pyramid", "end_city_treasure", "nether_bridge",
                         "stronghold_corridor", "stronghold_crossing", "stronghold_library",
                         "woodland_mansion", "underwater_ruin_big", "underwater_ruin_small", "shipwreck_treasure"
-                }), LootItemRandomChanceCondition.randomChance(0.5F).build()
+                }), LootItemRandomChanceCondition.randomChance(0.75F).build()
         }, AncientMagicksItems.ANCIENT_TABLET.get()));
     }
 

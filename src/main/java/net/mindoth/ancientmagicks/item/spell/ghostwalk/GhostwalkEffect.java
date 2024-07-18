@@ -56,6 +56,7 @@ public class GhostwalkEffect extends MobEffect {
         }
     }
 
+    //TODO: Sync visual effect to clients for ghostwalk and spook. Maybe move particle hiding to ghostwalk?
     @SubscribeEvent
     public static void interruptRender(RenderLivingEvent.Pre<? extends LivingEntity, ? extends EntityModel<? extends LivingEntity>> event) {
         if ( event.getEntity().hasEffect(AncientMagicksEffects.GHOSTWALK.get()) ) {
