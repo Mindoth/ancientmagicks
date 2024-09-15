@@ -31,7 +31,7 @@ public class GhostwalkEffect extends MobEffect {
         return true;
     }
 
-    int lastHurtTimestamp;
+    int LASTHURTTIME;
 
     @Override
     public void addAttributeModifiers(LivingEntity living, AttributeMap map, int amp) {
@@ -46,12 +46,12 @@ public class GhostwalkEffect extends MobEffect {
                     target.setLastHurtByMob(null);
                     target.targetSelector.getAvailableGoals().forEach(WrappedGoal::stop);
                 });
-        this.lastHurtTimestamp = living.getLastHurtMobTimestamp();
+        this.LASTHURTTIME = living.getLastHurtMobTimestamp();
     }
 
     @Override
     public void applyEffectTick(LivingEntity living, int amp) {
-        if ( !living.level().isClientSide && this.lastHurtTimestamp != living.getLastHurtMobTimestamp() ) {
+        if ( !living.level().isClientSide && this.LASTHURTTIME != living.getLastHurtMobTimestamp() ) {
             living.removeEffect(this);
         }
     }

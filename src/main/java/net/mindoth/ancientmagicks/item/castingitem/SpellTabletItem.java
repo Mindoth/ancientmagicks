@@ -12,8 +12,11 @@ import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -71,27 +74,40 @@ public class SpellTabletItem extends RuneItem {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide ) {
             ItemStack tablet = player.getItemInHand(handIn);
-            if ( tablet.getItem() instanceof SpellTabletItem spellTabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellTabletItem) ) {
-                player.startUsingItem(handIn);
+            if ( tablet.getItem() instanceof SpellTabletItem spellTablet && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellTablet) ) {
+                //player.startUsingItem(handIn);
+                if ( player instanceof ServerPlayer serverPlayer && tablet.getItem() instanceof SpellTabletItem ) learnSpell(serverPlayer, tablet);
             }
         }
         return result;
     }
 
-    public static void learnSpell(ServerPlayer player, SpellTabletItem handTablet) {
-        final String spellString = ForgeRegistries.ITEMS.getKey(handTablet).toString();
-        player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
+    public static void learnSpell(ServerPlayer serverPlayer, ItemStack stack) {
+        SpellTabletItem spellTablet = (SpellTabletItem)stack.getItem();
+        final String spellString = ForgeRegistries.ITEMS.getKey(spellTablet).toString();
+        serverPlayer.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
             CompoundTag tag = new CompoundTag();
             tag.putString("am_secretspell", spellString);
             if ( Objects.equals(spell.getKnownSpells(), "") ) {
                 spell.setKnownSpells(spellString);
-                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), player);
+                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
+                stack.shrink(1);
+                playDiscoveryEffects(serverPlayer);
             }
-            else if ( !ClientSpellData.stringListToSpellList(spell.getKnownSpells()).contains(handTablet) ) {
+            else if ( !ClientSpellData.stringListToSpellList(spell.getKnownSpells()).contains(spellTablet) ) {
                 spell.setKnownSpells(spell.getKnownSpells() + "," + spellString);
-                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), player);
+                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
+                stack.shrink(1);
+                playDiscoveryEffects(serverPlayer);
             }
         });
+    }
+
+    //TODO Make a method for the client side totem effect
+    public static void playDiscoveryEffects(Player player) {
+        player.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0F, 0.75F);
+        player.playNotifySound(SoundEvents.FIREWORK_ROCKET_BLAST_FAR, SoundSource.PLAYERS, 1.0F, 0.75F);
+        player.playNotifySound(SoundEvents.FIREWORK_ROCKET_TWINKLE_FAR, SoundSource.PLAYERS, 1.0F, 0.75F);
     }
 
     @Override
