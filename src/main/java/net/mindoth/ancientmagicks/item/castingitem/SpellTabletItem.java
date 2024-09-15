@@ -5,6 +5,7 @@ import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.PacketItemActivationAnimation;
 import net.mindoth.ancientmagicks.network.PacketUpdateKnownSpells;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
@@ -12,7 +13,6 @@ import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -91,23 +91,27 @@ public class SpellTabletItem extends RuneItem {
             if ( Objects.equals(spell.getKnownSpells(), "") ) {
                 spell.setKnownSpells(spellString);
                 AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
-                stack.shrink(1);
-                playDiscoveryEffects(serverPlayer);
+                playLearnEffects(serverPlayer, stack);
             }
             else if ( !ClientSpellData.stringListToSpellList(spell.getKnownSpells()).contains(spellTablet) ) {
                 spell.setKnownSpells(spell.getKnownSpells() + "," + spellString);
                 AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
-                stack.shrink(1);
-                playDiscoveryEffects(serverPlayer);
+                playLearnEffects(serverPlayer, stack);
             }
         });
     }
 
-    //TODO Make a method for the client side totem effect
-    public static void playDiscoveryEffects(Player player) {
+    public static void playLearnEffects(Player player, ItemStack stack) {
         player.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0F, 0.75F);
         player.playNotifySound(SoundEvents.FIREWORK_ROCKET_BLAST_FAR, SoundSource.PLAYERS, 1.0F, 0.75F);
         player.playNotifySound(SoundEvents.FIREWORK_ROCKET_TWINKLE_FAR, SoundSource.PLAYERS, 1.0F, 0.75F);
+        if ( player instanceof ServerPlayer ) AncientMagicksNetwork.sendToPlayer(new PacketItemActivationAnimation(stack, player), (ServerPlayer)player);
+        stack.shrink(1);
+    }
+
+    public static void playItemActivationAnimation(ItemStack itemStack, Entity entity) {
+        Minecraft mc = Minecraft.getInstance();
+        if ( entity == mc.player ) mc.gameRenderer.displayItemActivation(itemStack);
     }
 
     @Override

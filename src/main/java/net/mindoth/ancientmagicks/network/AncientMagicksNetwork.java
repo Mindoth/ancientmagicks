@@ -1,13 +1,9 @@
 package net.mindoth.ancientmagicks.network;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
@@ -83,6 +79,12 @@ public class AncientMagicksNetwork {
                 .decoder(PacketUpdateKnownSpells::new)
                 .encoder(PacketUpdateKnownSpells::encode)
                 .consumerMainThread(PacketUpdateKnownSpells::handle)
+                .add();
+
+        net.messageBuilder(PacketItemActivationAnimation.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketItemActivationAnimation::new)
+                .encoder(PacketItemActivationAnimation::encode)
+                .consumerMainThread(PacketItemActivationAnimation::handle)
                 .add();
     }
 

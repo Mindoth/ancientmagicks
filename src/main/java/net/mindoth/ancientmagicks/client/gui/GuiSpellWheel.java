@@ -272,10 +272,7 @@ public class GuiSpellWheel extends Screen {
     public void removed() {
         Player player = MINECRAFT.player;
         if ( this.discoveryMode && this.comboResult != null && player.getItemInHand(this.hand).getItem() instanceof AncientTabletItem ) {
-            MINECRAFT.gameRenderer.displayItemActivation(new ItemStack(this.comboResult));
-            player.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0F, 0.75F);
-            player.playNotifySound(SoundEvents.FIREWORK_ROCKET_BLAST_FAR, SoundSource.PLAYERS, 1.0F, 0.75F);
-            player.playNotifySound(SoundEvents.FIREWORK_ROCKET_TWINKLE_FAR, SoundSource.PLAYERS, 1.0F, 0.75F);
+            player.playNotifySound(SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.PLAYERS, 1.0F, 1.0F);
             AncientMagicksNetwork.sendToServer(new PacketSolveAncientTablet(new ItemStack(this.comboResult), this.hand == InteractionHand.OFF_HAND));
         }
     }

@@ -23,6 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -67,7 +69,7 @@ public class AncientTabletItem extends Item {
         Level level = entity.level();
         if ( !level.isClientSide ) {
             BlockPos blockPos = entity.blockPosition();
-            if ( level.getBlockState(blockPos).getBlock() == Blocks.WATER_CAULDRON ) {
+            if ( level.getBlockState(blockPos).getBlock() == Blocks.WATER_CAULDRON || entity.isInWater() ) {
                 CompoundTag tag = stack.getOrCreateTag();
                 final CompoundTag finalTag;
                 if ( !tag.contains("am_secretspell") ) finalTag = createSpellToDiscover(tag);
@@ -97,5 +99,22 @@ public class AncientTabletItem extends Item {
         if ( rune == AncientMagicksItems.WHITE_RUNE.get() ) serverLevel.sendParticles(type, pos.x, pos.y, pos.z, 0, 1, 1, 0, 1);
         if ( rune == AncientMagicksItems.BROWN_RUNE.get() ) serverLevel.sendParticles(type, pos.x, pos.y, pos.z, 0, 122F / 255F, 70F / 255F, 33F / 255F, 1);
         if ( rune == AncientMagicksItems.RED_RUNE.get() ) serverLevel.sendParticles(type, pos.x, pos.y, pos.z, 0, 1, 0, 0, 1);
+    }
+
+    @SubscribeEvent
+    public static void insertTablet(final PlayerInteractEvent.RightClickBlock event) {
+        Level level = event.getLevel();
+        if ( !level.isClientSide ) {
+            BlockPos blockPos = event.getHitVec().getBlockPos();
+            if ( event.getItemStack().getItem() == AncientMagicksItems.ANCIENT_TABLET.get() && level.getBlockState(blockPos).getBlock() == Blocks.WATER_CAULDRON ) {
+                ItemStack stack = event.getItemStack();
+                ItemStack newStack = stack.copyWithCount(1);
+                ItemEntity drop = new ItemEntity(level, blockPos.getX() + 0.5F, blockPos.getY() + 0.5F, blockPos.getZ() + 0.5F, newStack);
+                stack.shrink(1);
+                drop.setDeltaMovement(0, 0, 0);
+                drop.setPickUpDelay(40);
+                level.addFreshEntity(drop);
+            }
+        }
     }
 }
