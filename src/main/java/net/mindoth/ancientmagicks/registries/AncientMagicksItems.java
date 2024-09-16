@@ -2,7 +2,10 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.client.gui.inventory.AMBagType;
-import net.mindoth.ancientmagicks.item.*;
+import net.mindoth.ancientmagicks.item.AncientTabletItem;
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
+import net.mindoth.ancientmagicks.item.RuneItem;
+import net.mindoth.ancientmagicks.item.TabletBag;
 import net.mindoth.ancientmagicks.item.castingitem.InvocationStaffItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityTablet;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindTablet;
@@ -49,9 +52,6 @@ public class AncientMagicksItems {
     //Spell Items
     public static final RegistryObject<Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
             () -> new AncientTabletItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> INERT_TABLET = ITEMS.register("inert_tablet",
-            () -> new Item(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> SPELL_FRAGMENT = ITEMS.register("spell_fragment",
             () -> new Item(new Item.Properties().fireResistant()));
