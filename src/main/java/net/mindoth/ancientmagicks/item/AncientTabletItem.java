@@ -6,14 +6,15 @@ import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketReceiveRuneData;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -106,7 +108,8 @@ public class AncientTabletItem extends Item {
         Level level = event.getLevel();
         if ( !level.isClientSide ) {
             BlockPos blockPos = event.getHitVec().getBlockPos();
-            if ( event.getItemStack().getItem() == AncientMagicksItems.ANCIENT_TABLET.get() && level.getBlockState(blockPos).getBlock() == Blocks.WATER_CAULDRON ) {
+            if ( (event.getItemStack().getItem() == AncientMagicksItems.ANCIENT_TABLET.get() && level.getBlockState(blockPos).getBlock() == Blocks.WATER_CAULDRON)
+                    || (event.getItemStack().getItem() instanceof SpellTabletItem && level.getBlockState(blockPos).getBlock() == Blocks.LAVA_CAULDRON) ) {
                 ItemStack stack = event.getItemStack();
                 ItemStack newStack = stack.copyWithCount(1);
                 ItemEntity drop = new ItemEntity(level, blockPos.getX() + 0.5F, blockPos.getY() + 0.5F, blockPos.getZ() + 0.5F, newStack);

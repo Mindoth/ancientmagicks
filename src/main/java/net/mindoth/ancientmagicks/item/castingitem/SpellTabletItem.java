@@ -10,6 +10,7 @@ import net.mindoth.ancientmagicks.network.PacketUpdateKnownSpells;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,6 +20,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.FallingBlockEntity;
@@ -38,6 +40,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SpellTabletItem extends RuneItem {
     public boolean isChannel;
@@ -66,6 +69,21 @@ public class SpellTabletItem extends RuneItem {
         }
 
         super.appendHoverText(stack, world, tooltip, flagIn);
+    }
+
+    @Override
+    public void onDestroyed(ItemEntity entity, DamageSource damageSource) {
+        Level level = entity.level();
+        if ( level.isClientSide ) return;
+        if ( damageSource.type() != entity.damageSources().lava().type() && damageSource.type() != entity.damageSources().onFire().type() ) return;
+        int amount = ThreadLocalRandom.current().nextInt(1, 4 + 1);
+        float randX = ThreadLocalRandom.current().nextFloat(-0.3F, 0.3F);
+        float randZ = ThreadLocalRandom.current().nextFloat(-0.3F, 0.3F);
+        ItemStack newStack = new ItemStack(AncientMagicksItems.SPELL_FRAGMENT.get(), amount);
+        ItemEntity drop = new ItemEntity(level, entity.position().x, entity.position().y, entity.position().z, newStack);
+        drop.setDeltaMovement(randX, 0.3F, randZ);
+        drop.setPickUpDelay(40);
+        level.addFreshEntity(drop);
     }
 
     @Override
