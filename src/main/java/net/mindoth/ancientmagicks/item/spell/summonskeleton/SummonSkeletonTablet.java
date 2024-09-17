@@ -1,21 +1,15 @@
 package net.mindoth.ancientmagicks.item.spell.summonskeleton;
 
-import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
-import net.mindoth.shadowizardlib.event.ShadowEvents;
+import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
 
 public class SummonSkeletonTablet extends SpellTabletItem {
 

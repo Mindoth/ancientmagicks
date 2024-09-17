@@ -3,7 +3,8 @@ package net.mindoth.ancientmagicks.event;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellPearlItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientSpell;
 import net.mindoth.ancientmagicks.network.PacketSyncSpellCombos;
@@ -19,6 +20,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -81,17 +83,24 @@ public class CommonEvents {
     public static void onStopChannellingSpell(final LivingEntityUseItemEvent.Stop event) {
         if ( event.getEntity() instanceof Player player ) {
             if ( !player.level().isClientSide ) {
-                if ( event.getItem().getItem() instanceof CastingItem ) {
+                ItemStack stack = event.getItem();
+                Item castingItem = stack.getItem();
+                if ( castingItem instanceof SpellPearlItem spellPearlItem ) {
+                    if ( stack.getTag() != null && stack.getTag().contains("spell_pearl") ) {
+                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(stack.getTag().getString("spell_pearl")));
+                        if ( item instanceof SpellTabletItem spellTabletItem ) {
+                            player.getCooldowns().addCooldown(spellTabletItem, spellTabletItem.cooldown);
+                            if ( !player.isCreative() ) stack.shrink(1);
+                        }
+                    }
+                }
+                else if ( castingItem instanceof CastingItem ) {
                     player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
                         if ( item instanceof SpellTabletItem spellTabletItem ) {
                             player.getCooldowns().addCooldown(spellTabletItem, spellTabletItem.cooldown);
                         }
                     });
-                }
-                else if ( event.getItem().getItem() instanceof SpellTabletItem spellTabletItem ) {
-                    player.getCooldowns().addCooldown(spellTabletItem, spellTabletItem.cooldown);
-                    if ( !player.isCreative() ) event.getItem().shrink(1);
                 }
             }
         }

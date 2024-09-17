@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.*;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSetSpell;
 import net.mindoth.ancientmagicks.network.PacketSolveAncientTablet;
@@ -213,7 +213,8 @@ public class GuiSpellWheel extends Screen {
             //Item and its decorations
             //graphics.renderItem(slot, posX, posY);
             String id = slot.getItem().toString();
-            GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/spell/" + id + ".png"),
+            String modid = ForgeRegistries.ITEMS.getKey(slot.getItem()).toString().split(":")[0];
+            GuiSpellWheel.drawSlotTexture(new ResourceLocation(modid, "textures/spell/" + id + ".png"),
                     posX, posY, 0, 0, 16, 16, 16, 16, graphics);
             graphics.renderItemDecorations(this.font, slot, posX, posY);
         }

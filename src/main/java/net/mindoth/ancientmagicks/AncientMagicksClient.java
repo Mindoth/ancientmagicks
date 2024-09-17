@@ -7,6 +7,7 @@ import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballRenderer;
+import net.mindoth.ancientmagicks.item.spell.spellpearl.SpellPearlRenderer;
 import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendRuneData;
@@ -15,7 +16,6 @@ import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.ancientmagicks.registries.AncientMagicksKeyBinds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.entity.SkeletonRenderer;
 import net.minecraft.client.renderer.entity.TntRenderer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -47,6 +47,7 @@ public class AncientMagicksClient {
         event.registerEntityRenderer(AncientMagicksEntities.DYNAMITE.get(), TntRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.SLIMEBALL.get(), SlimeballRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.EXPERIENCE_BEAM.get(), ExperienceStreamRenderer::new);
+        event.registerEntityRenderer(AncientMagicksEntities.SPELL_PEARL.get(), SpellPearlRenderer::new);
     }
 
     @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID, value = Dist.CLIENT)
@@ -67,7 +68,7 @@ public class AncientMagicksClient {
                 if ( key == INVENTORY || (keyAction == 0 && key == SPELLSELECTOR) ) MINECRAFT.player.closeContainer();
             }
             else if ( MINECRAFT.screen == null && key == SPELLSELECTOR && keyAction == 1 ) {
-                if ( wand.getItem() instanceof CastingItem ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());
+                if ( CastingItem.isValidCastingItem(wand) ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());
             }
         }
     }

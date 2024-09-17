@@ -2,8 +2,8 @@ package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.RuneItem;
+import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -23,15 +23,15 @@ public class InvocationStaffItem extends CastingItem {
 
     @Override
     @Nonnull
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
-        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
+        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(hand));
         if ( !level.isClientSide ) {
-            ItemStack staff = player.getItemInHand(handIn);
+            ItemStack staff = player.getItemInHand(hand);
             if ( isValidCastingItem(staff) ) {
                 player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
                     if ( item instanceof SpellTabletItem spellTabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellTabletItem) ) {
-                        if ( player.totalExperience >= 1 || player.isCreative() || AncientMagicksCommonConfig.FREE_SPELLS.get() ) player.startUsingItem(handIn);
+                        if ( player.totalExperience >= 1 || player.isCreative() || AncientMagicksCommonConfig.FREE_SPELLS.get() ) player.startUsingItem(hand);
                         else {
                             addCastingCooldown(player, spellTabletItem, 20);
                             RuneItem.playWhiffSound(player);
@@ -50,7 +50,7 @@ public class InvocationStaffItem extends CastingItem {
             if ( isValidCastingItem(wand) ) {
                 player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
-                    if ( item instanceof SpellTabletItem spellTabletItem) {
+                    if ( item instanceof SpellTabletItem spellTabletItem ) {
                         /*if ( getHeldSlateItem(player).getItem() == AncientMagicksItems.STONE_SLATE.get() ) makeTablets(player, player, spellTabletItem, getHeldSlateItem(player));
                         else doSpell(player, player, wand, spellTabletItem, getUseDuration(wand) - timeLeft);*/
                         doSpell(player, player, wand, spellTabletItem, getUseDuration(wand) - timeLeft);

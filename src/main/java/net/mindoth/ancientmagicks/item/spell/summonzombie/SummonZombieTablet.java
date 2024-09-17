@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.summonzombie;
 
-import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;

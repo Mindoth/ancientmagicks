@@ -7,6 +7,7 @@ import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.TabletBag;
 import net.mindoth.ancientmagicks.item.castingitem.InvocationStaffItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellPearlItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityTablet;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindTablet;
 import net.mindoth.ancientmagicks.item.spell.blink.BlinkTablet;
@@ -43,7 +44,10 @@ public class AncientMagicksItems {
 
     //Casting Items
     public static final RegistryObject<Item> INVOCATION_STAFF = ITEMS.register("invocation_staff",
-            () -> new InvocationStaffItem(new Item.Properties()));
+            () -> new InvocationStaffItem(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> SPELL_PEARL = ITEMS.register("spell_pearl",
+            () -> new SpellPearlItem(new Item.Properties()));
 
     //Tablet Bag
     public static final RegistryObject<Item> TABLET_BAG = ITEMS.register("tablet_bag",

@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.experiencestream;
 
-import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -25,8 +25,8 @@ public class ExperienceStreamEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public ExperienceStreamEntity(Level level, LivingEntity owner, Entity caster, SpellTabletItem rune, boolean spawnOrbs) {
-        super(AncientMagicksEntities.EXPERIENCE_BEAM.get(), level, owner, caster, rune);
+    public ExperienceStreamEntity(Level level, LivingEntity owner, Entity caster, SpellTabletItem spell, boolean spawnOrbs) {
+        super(AncientMagicksEntities.EXPERIENCE_BEAM.get(), level, owner, caster, spell);
         this.spawnOrbs = spawnOrbs;
     }
 

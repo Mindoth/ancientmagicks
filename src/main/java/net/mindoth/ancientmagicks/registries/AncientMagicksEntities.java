@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.spell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteEntity;
 import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamEntity;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
@@ -36,6 +37,10 @@ public class AncientMagicksEntities {
     public static final RegistryObject<EntityType<ExperienceStreamEntity>> EXPERIENCE_BEAM
             = registerEntity(EntityType.Builder.<ExperienceStreamEntity>of(ExperienceStreamEntity::new,
             MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(ExperienceStreamEntity::new), "experience_beam");
+
+    public static final RegistryObject<EntityType<SpellPearlEntity>> SPELL_PEARL
+            = registerEntity(EntityType.Builder.<SpellPearlEntity>of(SpellPearlEntity::new,
+            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(SpellPearlEntity::new), "spell_pearl");
 
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntity(EntityType.Builder<T> builder, String entityName) {

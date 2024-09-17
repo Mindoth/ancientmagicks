@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.witchspark;
 
-import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;

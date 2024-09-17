@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Direction;
@@ -75,10 +75,11 @@ public class AbstractSpellEntity extends ThrowableProjectile {
         return false;
     }
 
-    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, SpellTabletItem rune) {
+    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, SpellTabletItem spell) {
         super(entityType, owner, pLevel);
 
         this.setNoGravity(true);
+        this.spell = spell;
         this.owner = owner;
         this.caster = caster;
         this.power = this.getDefaultPower();
@@ -91,6 +92,7 @@ public class AbstractSpellEntity extends ThrowableProjectile {
         this.homing = this.getDefaultHoming();
     }
 
+    protected SpellTabletItem spell;
     protected LivingEntity owner;
     protected Entity caster;
 

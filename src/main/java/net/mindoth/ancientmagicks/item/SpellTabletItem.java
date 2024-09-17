@@ -1,8 +1,7 @@
-package net.mindoth.ancientmagicks.item.castingitem;
+package net.mindoth.ancientmagicks.item;
 
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.RuneItem;
+import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketItemActivationAnimation;
@@ -93,7 +92,6 @@ public class SpellTabletItem extends RuneItem {
         if ( !level.isClientSide ) {
             ItemStack tablet = player.getItemInHand(handIn);
             if ( tablet.getItem() instanceof SpellTabletItem spellTablet && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellTablet) ) {
-                //player.startUsingItem(handIn);
                 if ( player instanceof ServerPlayer serverPlayer && tablet.getItem() instanceof SpellTabletItem ) learnSpell(serverPlayer, tablet);
             }
         }

@@ -4,6 +4,7 @@ import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -13,6 +14,7 @@ import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
 public class AddItemModifier extends LootModifier {
@@ -30,7 +32,12 @@ public class AddItemModifier extends LootModifier {
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         for ( LootItemCondition condition : this.conditions ) if ( !condition.test(context) ) return generatedLoot;
-        generatedLoot.add(new ItemStack(this.item));
+        if ( this.item == AncientMagicksItems.ANCIENT_TABLET.get() ) {
+            int amount = ThreadLocalRandom.current().nextInt(1, 4 + 1);
+            for ( int i = 0; i < amount; i++ ) generatedLoot.add(new ItemStack(this.item));
+        }
+        else generatedLoot.add(new ItemStack(this.item));
+
         return generatedLoot;
     }
 

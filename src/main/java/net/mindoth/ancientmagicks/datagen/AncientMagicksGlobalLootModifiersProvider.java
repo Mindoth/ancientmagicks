@@ -25,7 +25,8 @@ public class AncientMagicksGlobalLootModifiersProvider extends GlobalLootModifie
                         "bastion_treasure", "bastion_bridge", "bastion_hoglin_stable", "bastion_other",
                         "desert_pyramid", "end_city_treasure", "nether_bridge",
                         "stronghold_corridor", "stronghold_crossing", "stronghold_library",
-                        "woodland_mansion", "underwater_ruin_big", "underwater_ruin_small", "shipwreck_treasure"
+                        "woodland_mansion", "underwater_ruin_big", "underwater_ruin_small", "shipwreck_treasure",
+                        "ancient_city"
                 }), LootItemRandomChanceCondition.randomChance(0.75F).build()
         }, AncientMagicksItems.ANCIENT_TABLET.get()));
     }

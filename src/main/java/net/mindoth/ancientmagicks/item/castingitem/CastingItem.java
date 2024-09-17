@@ -3,9 +3,11 @@ package net.mindoth.ancientmagicks.item.castingitem;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.RuneItem;
+import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -13,54 +15,59 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class CastingItem extends Item {
 
     public CastingItem(Properties pProperties) {
-        super(pProperties.stacksTo(1));
+        super(pProperties);
     }
 
-    public static void doSpell(Player owner, Entity caster, ItemStack castingItem, SpellTabletItem spellTabletItem, int useTime) {
+    public static void doSpell(Player owner, Entity caster, @Nullable ItemStack castingItem, SpellTabletItem spell, int useTime) {
         float xRot = caster.getXRot();
         float yRot = caster.getYRot();
-        Vec3 center;
-        float distance = 0.0F;
-
-        if ( distance > 0 ) {
-            //Adjusters are there to flip rotation if the caster is not a LivingEntity. Don't ask me why this works like this...
-            int adjuster = 1;
-            if ( caster != owner ) adjuster = -1;
-            Vec3 direction = ShadowEvents.calculateViewVector(xRot * adjuster, yRot * adjuster).normalize();
-            direction = direction.multiply(distance, distance, distance);
-            center = caster.getEyePosition().add(direction);
-        }
-        else center = caster.getEyePosition();
+        Vec3 center = caster.getEyePosition();
 
         //Check casting bonuses
         boolean hasAlacrity = caster == owner && owner.hasEffect(AncientMagicksEffects.ALACRITY.get());
 
         //This actually casts the given Spell
-        if ( AncientMagicks.isSpellEnabled(spellTabletItem) ) {
-            if ( useTime == 0 && caster == owner ) extractCost(owner);
-            if ( spellTabletItem.castMagic(owner, caster, center, xRot, yRot, useTime) ) {
-                if ( !spellTabletItem.isChannel ) {
-                    addCastingCooldown(owner, spellTabletItem, getCastingCooldown(spellTabletItem.cooldown, hasAlacrity));
-                    owner.stopUsingItem();
-                    if ( castingItem.getItem() instanceof SpellTabletItem && !owner.isCreative() ) castingItem.shrink(1);
-                }
+        if ( AncientMagicks.isSpellEnabled(spell) ) {
+            if ( caster == owner && owner.isHolding((item) -> item.getItem() == AncientMagicksItems.SPELL_PEARL.get()
+                    && (!item.hasTag() || (item.getTag() != null && !item.getTag().contains("spell_pearl"))))
+                    && owner.isHolding((item) -> item.getItem() instanceof CastingItem && !(item.getItem() instanceof SpellPearlItem)) ) {
+                ItemStack pearlStack;
+                if ( owner.getMainHandItem().getItem() == AncientMagicksItems.SPELL_PEARL.get() ) pearlStack = owner.getMainHandItem();
+                else pearlStack = owner.getOffhandItem();
+                makePearls(owner, caster, spell, pearlStack);
             }
             else {
-                if ( useTime == 0 ) whiffSpell(owner, caster, spellTabletItem);
-                else if ( caster == owner ) {
-                    addCastingCooldown(owner, spellTabletItem, getCastingCooldown(spellTabletItem.cooldown, hasAlacrity));
-                    owner.stopUsingItem();
-                    if ( castingItem.getItem() instanceof SpellTabletItem && !owner.isCreative() ) castingItem.shrink(1);
+                if ( useTime == 0 && caster == owner ) extractCost(owner);
+                if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) && castingItem != null ) {
+                    if ( !spell.isChannel ) handleCooldownsAndStuff(owner, castingItem, spell, hasAlacrity);
+                }
+                else {
+                    if ( useTime == 0 ) whiffSpell(owner, caster, spell);
+                    else if ( caster == owner && castingItem != null ) handleCooldownsAndStuff(owner, castingItem, spell, hasAlacrity);
                 }
             }
         }
-        else whiffSpell(owner, caster, spellTabletItem);
+        else whiffSpell(owner, caster, spell);
+    }
+
+    private static void handleCooldownsAndStuff(Player owner, ItemStack castingItem, SpellTabletItem spell, boolean hasAlacrity) {
+        if ( castingItem.getItem() instanceof SpellPearlItem ) {
+            if ( !owner.isCreative() ) castingItem.shrink(1);
+            owner.getCooldowns().addCooldown(AncientMagicksItems.SPELL_PEARL.get(), 120);
+            owner.stopUsingItem();
+        }
+        else {
+            addCastingCooldown(owner, spell, getCastingCooldown(spell.cooldown, hasAlacrity));
+            owner.stopUsingItem();
+        }
     }
 
     public static void extractCost(Player owner) {
@@ -78,36 +85,26 @@ public class CastingItem extends Item {
         owner.stopUsingItem();
     }
 
-    /*public void makeTablets(Player owner, Entity caster, SpellTabletItem spellTabletItem, ItemStack slateStack) {
-        if ( !AncientMagicks.isSpellEnabled(spellTabletItem) ) return;
-        int stackCount = 0;
-        for ( int i = 0; i < slateStack.getCount(); i++ ) {
-            if ( stackCount >= slateStack.getCount() ) break;
-            boolean canAfford = false;
-            if ( owner.totalExperience >= 1 || owner.isCreative() ) {
-                canAfford = true;
-                extractCost(owner, spellTabletItem);
-            }
-            if ( canAfford ) stackCount += 1;
+    public static void makePearls(Player owner, Entity caster, SpellTabletItem spell, ItemStack pearlStack) {
+        if ( !AncientMagicks.isSpellEnabled(spell) ) return;
+        if ( AncientMagicksCommonConfig.FREE_SPELLS.get() || owner.totalExperience >= 1 || owner.isCreative() ) {
+            if ( !AncientMagicksCommonConfig.FREE_SPELLS.get() && !owner.isCreative() ) extractCost(owner);
+            ItemStack dropStack = pearlStack.copyWithCount(1);
+            CompoundTag tag = dropStack.getOrCreateTag();
+            tag.putString("spell_pearl", ForgeRegistries.ITEMS.getKey(spell).toString());
+            pearlStack.shrink(1);
+            Vec3 spawnPos = ShadowEvents.getEntityCenter(owner);
+            ItemEntity drop = new ItemEntity(owner.level(), spawnPos.x, spawnPos.y, spawnPos.z, dropStack);
+            drop.setDeltaMovement(0, 0, 0);
+            drop.setNoPickUpDelay();
+            caster.level().addFreshEntity(drop);
+            addCastingCooldown(owner, spell, spell.cooldown);
+            owner.stopUsingItem();
         }
-        slateStack.shrink(stackCount);
-        ItemStack dropStack = new ItemStack(spellTabletItem, stackCount);
-        Vec3 spawnPos = ShadowEvents.getEntityCenter(owner);
-        ItemEntity drop = new ItemEntity(owner.level(), spawnPos.x, spawnPos.y, spawnPos.z, dropStack);
-        drop.setDeltaMovement(0, 0, 0);
-        drop.setNoPickUpDelay();
-        caster.level().addFreshEntity(drop);
-        addCastingCooldown(owner, spellTabletItem, 20);
-        owner.stopUsingItem();
-    }*/
+    }
 
     public static void addCastingCooldown(Player player, SpellTabletItem spell, int cooldown) {
         player.getCooldowns().addCooldown(spell, cooldown);
-    }
-
-    public static @Nonnull ItemStack getHeldSlateItem(Player playerEntity) {
-        ItemStack slate = playerEntity.getMainHandItem().getItem() == AncientMagicksItems.STONE_SLATE.get() ? playerEntity.getMainHandItem() : null;
-        return slate == null ? (playerEntity.getOffhandItem().getItem() == AncientMagicksItems.STONE_SLATE.get() ? playerEntity.getOffhandItem() : ItemStack.EMPTY) : slate;
     }
 
     public static @Nonnull ItemStack getHeldTabletItem(Player playerEntity) {
@@ -121,7 +118,7 @@ public class CastingItem extends Item {
     }
 
     public static boolean isValidCastingItem(ItemStack castingItem) {
-        return castingItem.getItem() instanceof CastingItem;
+        return castingItem.getItem() instanceof CastingItem && !(castingItem.getItem() instanceof SpellPearlItem);
     }
 
     @Override

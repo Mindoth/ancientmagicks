@@ -1,7 +1,8 @@
 package net.mindoth.ancientmagicks.client.gui;
 
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellPearlItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -21,21 +22,21 @@ public class CurrentSpellHud {
     public static final ResourceLocation SLOT_TEXTURE = new ResourceLocation("textures/gui/widgets.png");
 
     public static boolean shouldDisplaySlot() {
-        ItemStack mainHandItem = MINECRAFT.player.getMainHandItem();
-        ItemStack offHandItem = MINECRAFT.player.getOffhandItem();
+        ItemStack main = MINECRAFT.player.getMainHandItem();
+        ItemStack off = MINECRAFT.player.getOffhandItem();
 
-        return !(MINECRAFT.screen instanceof GuiSpellWheel) && (mainHandItem.getItem() instanceof CastingItem || offHandItem.getItem() instanceof CastingItem);
+        return !(MINECRAFT.screen instanceof GuiSpellWheel) && CastingItem.isValidCastingItem(main) || CastingItem.isValidCastingItem(off);
     }
 
     public static ItemStack currentSpell() {
         ItemStack state = new ItemStack(Items.AIR);
-        ItemStack mainHandItem = MINECRAFT.player.getMainHandItem();
-        ItemStack offHandItem = MINECRAFT.player.getOffhandItem();
+        ItemStack main = MINECRAFT.player.getMainHandItem();
+        ItemStack off = MINECRAFT.player.getOffhandItem();
 
         if ( shouldDisplaySlot() ) {
             ItemStack castingItem = null;
-            if ( mainHandItem.getItem() instanceof CastingItem && CastingItem.isValidCastingItem(mainHandItem) ) castingItem = mainHandItem;
-            else if ( offHandItem.getItem() instanceof CastingItem && CastingItem.isValidCastingItem(offHandItem) ) castingItem = offHandItem;
+            if ( main.getItem() instanceof CastingItem && CastingItem.isValidCastingItem(main) ) castingItem = main;
+            else if ( off.getItem() instanceof CastingItem && CastingItem.isValidCastingItem(off) ) castingItem = off;
 
             if ( castingItem != null && ClientSpellData.getCurrentSpell() != null ) {
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ClientSpellData.getCurrentSpell()));

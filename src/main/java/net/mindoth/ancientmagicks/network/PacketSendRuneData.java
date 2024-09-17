@@ -1,10 +1,8 @@
 package net.mindoth.ancientmagicks.network;
 
-import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;

@@ -3,7 +3,6 @@ package net.mindoth.ancientmagicks.item;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.castingitem.SpellTabletItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpell;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
