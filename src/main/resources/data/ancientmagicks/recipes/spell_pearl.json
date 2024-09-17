@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#F#",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:quartz"
+    },
+    "F": {
+      "item": "ancientmagicks:spell_fragment"
+    }
+  },
+  "result": {
+    "item": "ancientmagicks:spell_pearl",
+    "count": 4
+  }
+}
