@@ -110,7 +110,7 @@ public class AncientMagicksItems {
             () -> new ExtinguishTablet(new Item.Properties(), false, 100));
 
     public static final RegistryObject<Item> SPOOK_TABLET = ITEMS.register("spook",
-            () -> new SpookTablet(new Item.Properties(), false, 1200));
+            () -> new SpookTablet(new Item.Properties(), false, 1199));
 
     public static final RegistryObject<Item> BLIND_TABLET = ITEMS.register("blind",
             () -> new BlindTablet(new Item.Properties(), false, 400));

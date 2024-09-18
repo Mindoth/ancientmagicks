@@ -26,6 +26,7 @@ public class CallLightningTablet extends SpellTabletItem {
         Level level = caster.level();
         float power = 10.0F;
         float range = 64.0F;
+        if ( owner != caster ) range = 0.0F;
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, true, true, true, true);
         BlockPos blockPos = new BlockPos(Mth.floor(point.x), Mth.floor(point.y), Mth.floor(point.z));
         BlockState blockState = level.getBlockState(blockPos.below());

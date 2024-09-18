@@ -25,6 +25,7 @@ public class CollapseTablet extends SpellTabletItem {
 
         int size = 4;
         float range = 14.0F;
+        if ( owner != caster ) range = 0.0F;
 
         BlockPos pos = ShadowEvents.getBlockPoint(caster, range, caster == owner);
         for ( int xPos = pos.getX() - size; xPos <= pos.getX() + size; xPos++ ) {

@@ -19,6 +19,7 @@ public class BlinkTablet extends SpellTabletItem {
         Level level = caster.level();
 
         float range = 14.0F;
+        if ( owner != caster ) range = 0.0F;
 
         Vec3 pos;
 
@@ -30,7 +31,8 @@ public class BlinkTablet extends SpellTabletItem {
         pos = new Vec3(pos.x, pos.y - 0.5D, pos.z);
 
         //TODO maybe try teleportToWithTicket?
-        caster.teleportTo(pos.x, pos.y, pos.z);
+        if ( owner == caster ) caster.teleportTo(pos.x, pos.y, pos.z);
+        else if ( owner != null && owner.level() == caster.level() ) owner.teleportTo(pos.x, pos.y, pos.z);
         state = true;
 
         if ( state ) playTeleportSound(level, pos);

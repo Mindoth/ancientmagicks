@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item.spell.telekineticgrab;
 import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -11,6 +12,7 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class TelekineticGrabTablet extends SpellTabletItem {
@@ -24,12 +26,17 @@ public class TelekineticGrabTablet extends SpellTabletItem {
         boolean state = false;
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);
+        if ( owner != caster && owner != null && owner.level() == caster.level() ) casterPos = owner.getEyePosition(1.0F);
 
         float range = 14.0F;
+        if ( owner != caster ) range = 0.0F;
         float size = 0.5F;
+        if ( owner != caster ) size = 1.0F;
 
-        Entity target = getPointedItemEntity(level, caster, range, size, caster == owner);
-        if ( target instanceof ItemEntity) {
+        Entity target;
+        if ( owner == caster ) target = getPointedItemEntity(level, caster, range, size, caster == owner);
+        else target = getNearestItemEntity(caster, level, size);
+        if ( target instanceof ItemEntity ) {
             ArrayList<ItemEntity> itemPile = getItemEntitiesAround(target, level, 1.0F, null);
             for ( ItemEntity itemEntity : itemPile ) {
                 itemEntity.push((casterPos.x - itemEntity.getX()) / 6, (casterPos.y - itemEntity.getY()) / 6, (casterPos.z - itemEntity.getZ()) / 6);
@@ -47,6 +54,19 @@ public class TelekineticGrabTablet extends SpellTabletItem {
         ArrayList<ItemEntity> targets = (ArrayList<ItemEntity>) pLevel.getEntitiesOfClass(ItemEntity.class, caster.getBoundingBox().inflate(size));
         if ( exceptions != null && !exceptions.isEmpty() ) targets.removeIf(exceptions::contains);
         return targets;
+    }
+
+    private static Entity getNearestItemEntity(Entity caster, Level pLevel, double size) {
+        ArrayList<ItemEntity> targets = getItemEntitiesAround(caster, pLevel, size, null);
+        ItemEntity target = null;
+        double lowestSoFar = Double.MAX_VALUE;
+        for ( ItemEntity closestSoFar : targets ) {
+            double testDistance = caster.distanceTo(closestSoFar);
+            if ( testDistance < lowestSoFar ) {
+                target = closestSoFar;
+            }
+        }
+        return target;
     }
 
     private static Entity getPointedItemEntity(Level level, Entity caster, float range, float error, boolean isPlayer) {

@@ -34,10 +34,8 @@ public class WindBurstTablet extends SpellTabletItem {
         for ( Entity target : targets ) {
             Vec3 targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, caster == owner, false, true, true, false);
             if ( target != caster && isPushable(target) ) {
-                if ( SpellTabletItem.isPushable(target) ) {
-                    target.push((targetPoint.x - casterPos.x) * power, (targetPoint.y - casterPos.y + 0.5F) * power, (targetPoint.z - casterPos.z) * power);
-                    target.hurtMarked = true;
-                }
+                target.push((targetPoint.x - casterPos.x) * power, (targetPoint.y - casterPos.y + 0.5F) * power, (targetPoint.z - casterPos.z) * power);
+                target.hurtMarked = true;
             }
             state = true;
         }

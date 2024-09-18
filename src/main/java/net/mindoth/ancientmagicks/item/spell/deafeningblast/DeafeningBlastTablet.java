@@ -29,6 +29,7 @@ public class DeafeningBlastTablet extends SpellTabletItem {
 
         float range = 3.5F;
         float size = 1.5F;
+        if ( owner != caster ) range = 0.0F;
 
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true, false);
         List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + size, point.y + size, point.z + size),

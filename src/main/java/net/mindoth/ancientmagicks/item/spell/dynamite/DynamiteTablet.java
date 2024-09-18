@@ -20,7 +20,8 @@ public class DynamiteTablet extends SpellTabletItem {
         boolean state = false;
         Level level = caster.level();
 
-        float range = 14.0F;
+        float range = 3.5F;
+        if ( owner != caster ) range = 0.0F;
 
         Vec3 pos;
 

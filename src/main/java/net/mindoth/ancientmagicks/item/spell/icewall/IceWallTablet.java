@@ -30,6 +30,7 @@ public class IceWallTablet extends SpellTabletItem {
         }
 
         float range = 3.5F;
+        if ( owner != caster ) range = 0.0F;
         int height = 2;
         Block wallMaterial = Blocks.PACKED_ICE;
 
