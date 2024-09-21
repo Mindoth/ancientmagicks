@@ -10,7 +10,9 @@ import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellDa
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -54,7 +56,14 @@ public class SpellTabletItem extends RuneItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(this) ) {
+        if ( !Screen.hasShiftDown() ) {
+            tooltip.add(Component.translatable("tooltip.ancientmagicks.shift"));
+        }
+        else if ( Screen.hasShiftDown() ) {
+            String modid = ForgeRegistries.ITEMS.getKey(stack.getItem()).toString().split(":")[0];
+            if ( modid != null ) tooltip.add(Component.translatable("tooltip." + modid + "." + stack.getItem()).withStyle(ChatFormatting.GRAY));
+        }
+        if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(this) && Minecraft.getInstance().player != null ) {
             if ( ClientSpellData.isSpellKnown(this) || Minecraft.getInstance().player.isCreative() ) {
                 StringBuilder tooltipString = new StringBuilder();
                 List<ColorRuneItem> list = ColorRuneItem.stringListToActualList(ColorRuneItem.CURRENT_COMBO_MAP.get(this).toString());
