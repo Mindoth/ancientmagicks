@@ -21,7 +21,7 @@ public class SpookTablet extends SpellTabletItem {
         boolean state = false;
         Level level = caster.level();
 
-        int life = 1200;
+        int life = 4800;
         float range = 14.0F;
         float size = range * 0.5F;
 

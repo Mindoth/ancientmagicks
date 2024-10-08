@@ -71,7 +71,7 @@ public class AncientMagicks {
                 else if ( item.get() instanceof SpellTabletItem spell ) {
                     if ( isSpellEnabled(spell) ) event.accept(item);
                 }
-                else event.accept(item);
+                else if ( item.get() != AncientMagicksItems.TABLET_BAG.get() ) event.accept(item);
             }
         }
     }

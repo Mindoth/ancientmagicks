@@ -110,7 +110,7 @@ public class AncientMagicksItems {
             () -> new ExtinguishTablet(new Item.Properties(), false, 100));
 
     public static final RegistryObject<Item> SPOOK_TABLET = ITEMS.register("spook",
-            () -> new SpookTablet(new Item.Properties(), false, 1199));
+            () -> new SpookTablet(new Item.Properties(), false, 4799));
 
     public static final RegistryObject<Item> BLIND_TABLET = ITEMS.register("blind",
             () -> new BlindTablet(new Item.Properties(), false, 400));
@@ -152,7 +152,7 @@ public class AncientMagicksItems {
             () -> new PolymorphTablet(new Item.Properties(), false, 200));
 
     public static final RegistryObject<Item> GHOSTWALK_TABLET = ITEMS.register("ghostwalk",
-            () -> new GhostwalkTablet(new Item.Properties(), false, 1199));
+            () -> new GhostwalkTablet(new Item.Properties(), false, 4799));
 
     public static final RegistryObject<Item> ICE_WALL_TABLET = ITEMS.register("ice_wall",
             () -> new IceWallTablet(new Item.Properties(), true, 80));
