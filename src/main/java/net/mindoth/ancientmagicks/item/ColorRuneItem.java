@@ -129,6 +129,9 @@ public class ColorRuneItem extends RuneItem {
 
     public static List<ItemStack> getColorRuneList(Player player, PlayerSpell spell) {
         List<ItemStack> runeList = Lists.newArrayList();
+        if ( (spell.getBlack() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.BLACK_RUNE.get()) ) {
+            runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
+        }
         if ( (spell.getBlue() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.BLUE_RUNE.get()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.BLUE_RUNE.get()));
         }
@@ -138,14 +141,11 @@ public class ColorRuneItem extends RuneItem {
         if ( (spell.getYellow() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.YELLOW_RUNE.get()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
         }
-        if ( (spell.getGreen() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.GREEN_RUNE.get()) ) {
-            runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
-        }
-        if ( (spell.getBlack() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.BLACK_RUNE.get()) ) {
-            runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
-        }
         if ( (spell.getWhite() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.WHITE_RUNE.get()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
+        }
+        if ( (spell.getGreen() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.GREEN_RUNE.get()) ) {
+            runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
         }
         if ( (spell.getBrown() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.BROWN_RUNE.get()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.BROWN_RUNE.get()));

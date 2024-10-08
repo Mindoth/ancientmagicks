@@ -110,8 +110,10 @@ public class AncientMagicks {
         for ( Item item : ITEM_LIST ) {
             if ( item instanceof ColorRuneItem ) {
                 if ( (n * (n + 2) * (n + 1)) < (6 * SPELL_LIST.size()) ) {
-                    COLOR_RUNE_LIST.add((ColorRuneItem)item);
                     n++;
+                }
+                if ( (item != AncientMagicksItems.BLACK_RUNE.get() && item != AncientMagicksItems.WHITE_RUNE.get()) || n > 6 ) {
+                    COLOR_RUNE_LIST.add((ColorRuneItem)item);
                 }
             }
         }
