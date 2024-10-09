@@ -11,6 +11,7 @@ import net.mindoth.ancientmagicks.item.castingitem.SpellPearlItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityTablet;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindTablet;
 import net.mindoth.ancientmagicks.item.spell.blink.BlinkTablet;
+import net.mindoth.ancientmagicks.item.spell.blizzard.BlizzardTablet;
 import net.mindoth.ancientmagicks.item.spell.calllightning.CallLightningTablet;
 import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphTablet;
 import net.mindoth.ancientmagicks.item.spell.collapse.CollapseTablet;
@@ -21,6 +22,7 @@ import net.mindoth.ancientmagicks.item.spell.extinguish.ExtinguishTablet;
 import net.mindoth.ancientmagicks.item.spell.featherfall.FeatherFallTablet;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballTablet;
 import net.mindoth.ancientmagicks.item.spell.flight.FlightTablet;
+import net.mindoth.ancientmagicks.item.spell.icicle.IcicleTablet;
 import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkTablet;
 import net.mindoth.ancientmagicks.item.spell.icewall.IceWallTablet;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlTablet;
@@ -168,4 +170,10 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> MIND_CONTROL_TABLET = ITEMS.register("mind_control",
             () -> new MindControlTablet(new Item.Properties(), true, 1200));
+
+    public static final RegistryObject<Item> ICICLE_TABLET = ITEMS.register("icicle",
+            () -> new IcicleTablet(new Item.Properties(), false, 20));
+
+    public static final RegistryObject<Item> BLIZZARD_TABLET = ITEMS.register("blizzard",
+            () -> new BlizzardTablet(new Item.Properties(), true, 120));
 }

@@ -26,7 +26,7 @@ public class FireballTablet extends SpellTabletItem {
         AbstractSpellEntity projectile = new FireballEntity(level, owner, caster, this);
 
         projectile.setColor(AbstractSpellEntity.getSpellColor("gold"), 0.8F);
-        projectile.setPos(center.x, center.y + down, center.z);
+        projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
         projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
         level.addFreshEntity(projectile);
         state = true;

@@ -7,6 +7,7 @@ import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -21,8 +22,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.TheEndGatewayBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -32,13 +37,13 @@ import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 
-public class AbstractSpellEntity extends ThrowableProjectile {
+public abstract class AbstractSpellEntity extends Projectile {
 
     public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    @Override
+    //@Override
     protected float getGravity() {
         return 0.000F;
     }
@@ -76,7 +81,7 @@ public class AbstractSpellEntity extends ThrowableProjectile {
     }
 
     public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, SpellTabletItem spell) {
-        super(entityType, owner, pLevel);
+        super(entityType, pLevel);
 
         this.setNoGravity(true);
         this.spell = spell;
@@ -127,6 +132,7 @@ public class AbstractSpellEntity extends ThrowableProjectile {
             doClientHitEffects();
         }
         if ( !this.level().isClientSide ) {
+            doExtraServerEffects(result);
             if ( result.getType() == HitResult.Type.ENTITY && ((EntityHitResult)result).getEntity() instanceof LivingEntity ) {
                 doMobEffects((EntityHitResult)result);
                 if ( this.enemyPierce > 0 ) this.enemyPierce--;
@@ -184,43 +190,75 @@ public class AbstractSpellEntity extends ThrowableProjectile {
         if ( level().isClientSide ) doClientTickEffects();
         if ( !level().isClientSide ) {
             doTickEffects();
-            if ( this.tickCount > this.life || this.isInWater() ) {
-                doExpirationEffects();
-            }
-            if ( this.homing ) {
-                int range = 3;
-                List<LivingEntity> entitiesAround = ShadowEvents.getEntitiesAround(this, this.level(), range, null);
+            if ( this.tickCount > this.life ) doExpirationEffects();
+            if ( this.homing ) doHoming();
+        }
+        handleHitDetection();
+        handleTravel();
+    }
 
-                //Need to do this haxxy way to still exclude targeting allies
-                List<LivingEntity> excludeList = Lists.newArrayList();
-                for ( LivingEntity exception : entitiesAround ) {
-                    if ( isAlly(exception) || exception.isDeadOrDying() || !exception.isAttackable() ) {
-                        excludeList.add(exception);
-                    }
+    public void handleHitDetection() {
+        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        boolean flag = false;
+        if ( hitresult.getType() == HitResult.Type.BLOCK ) {
+            BlockPos blockpos = ((BlockHitResult)hitresult).getBlockPos();
+            BlockState blockstate = this.level().getBlockState(blockpos);
+            if ( blockstate.is(Blocks.NETHER_PORTAL) ) {
+                this.handleInsidePortal(blockpos);
+                flag = true;
+            }
+            else if ( blockstate.is(Blocks.END_GATEWAY) ) {
+                BlockEntity blockentity = this.level().getBlockEntity(blockpos);
+                if ( blockentity instanceof TheEndGatewayBlockEntity && TheEndGatewayBlockEntity.canEntityTeleport(this) ) {
+                    TheEndGatewayBlockEntity.teleportEntity(this.level(), blockpos, blockstate, this, (TheEndGatewayBlockEntity)blockentity);
                 }
 
-                Entity nearest = ShadowEvents.getNearestEntity(this, this.level(), range, excludeList);
-                if ( nearest != null && !this.getBoundingBox().inflate(1.5F).intersects(nearest.getBoundingBox()) ) {
-                    if ( !this.isNoGravity() ) this.setNoGravity(true);
-                    double mX = getDeltaMovement().x();
-                    double mY = getDeltaMovement().y();
-                    double mZ = getDeltaMovement().z();
-                    Vec3 spellPos = new Vec3(getX(), getY(), getZ());
-                    Vec3 targetPos = new Vec3(ShadowEvents.getEntityCenter(nearest).x, ShadowEvents.getEntityCenter(nearest).y, ShadowEvents.getEntityCenter(nearest).z);
-                    Vec3 lookVec = targetPos.subtract(spellPos);
-                    Vec3 spellMotion = new Vec3(mX, mY, mZ);
-                    float arc = 1.0F;
-                    Vec3 lerpVec = lerpVector(arc, spellMotion, lookVec);
-                    float multiplier = this.speed * 0.25F;
-                    this.setDeltaMovement(lerpVec.multiply(multiplier, multiplier, multiplier));
-                }
-                else if ( this.isNoGravity() ) this.setNoGravity(false);
+                flag = true;
             }
+        }
+
+        if ( hitresult.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult) ) {
+            this.onHit(hitresult);
         }
     }
 
-    protected Vec3 lerpVector(float arc, Vec3 start, Vec3 end) {
-        return new Vec3(Mth.lerp(arc, start.x, end.x), Mth.lerp(arc, start.y, end.y), Mth.lerp(arc, start.z, end.z));
+    public void handleTravel() {
+        setPos(position().add(getDeltaMovement()));
+        this.updateRotation();
+        if ( !this.isNoGravity() ) {
+            Vec3 vec31 = this.getDeltaMovement();
+            this.setDeltaMovement(vec31.x, vec31.y - (double)this.getGravity(), vec31.z);
+        }
+    }
+
+    private void doHoming() {
+        int range = 3;
+        List<LivingEntity> entitiesAround = ShadowEvents.getEntitiesAround(this, this.level(), range, null);
+
+        //Need to do this haxxy way to still exclude targeting allies
+        List<LivingEntity> excludeList = Lists.newArrayList();
+        for ( LivingEntity exception : entitiesAround ) {
+            if ( isAlly(exception) || exception.isDeadOrDying() || !exception.isAttackable() ) {
+                excludeList.add(exception);
+            }
+        }
+
+        Entity nearest = ShadowEvents.getNearestEntity(this, this.level(), range, excludeList);
+        if ( nearest != null && !this.getBoundingBox().inflate(1.5F).intersects(nearest.getBoundingBox()) ) {
+            if ( !this.isNoGravity() ) this.setNoGravity(true);
+            double mX = getDeltaMovement().x();
+            double mY = getDeltaMovement().y();
+            double mZ = getDeltaMovement().z();
+            Vec3 spellPos = new Vec3(getX(), getY(), getZ());
+            Vec3 targetPos = new Vec3(ShadowEvents.getEntityCenter(nearest).x, ShadowEvents.getEntityCenter(nearest).y, ShadowEvents.getEntityCenter(nearest).z);
+            Vec3 lookVec = targetPos.subtract(spellPos);
+            Vec3 spellMotion = new Vec3(mX, mY, mZ);
+            float arc = 1.0F;
+            Vec3 lerpVec = new Vec3(Mth.lerp(arc, spellMotion.x, lookVec.x), Mth.lerp(arc, spellMotion.y, lookVec.y), Mth.lerp(arc, spellMotion.z, lookVec.z));
+            float multiplier = this.speed * 0.25F;
+            this.setDeltaMovement(lerpVec.multiply(multiplier, multiplier, multiplier));
+        }
+        else if ( this.isNoGravity() ) this.setNoGravity(false);
     }
 
     protected void doClientTickEffects() {
@@ -270,6 +308,9 @@ public class AbstractSpellEntity extends ThrowableProjectile {
     }
 
     protected void doBlockEffects(BlockHitResult result) {
+    }
+
+    protected void doExtraServerEffects(HitResult result) {
     }
 
     protected void playHitSound() {

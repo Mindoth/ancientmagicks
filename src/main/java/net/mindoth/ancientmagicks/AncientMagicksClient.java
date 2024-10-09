@@ -6,6 +6,7 @@ import net.mindoth.ancientmagicks.client.gui.GuiSpellWheel;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
+import net.mindoth.ancientmagicks.item.spell.icicle.IcicleRenderer;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballRenderer;
 import net.mindoth.ancientmagicks.item.spell.spellpearl.SpellPearlRenderer;
 import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkRenderer;
@@ -42,12 +43,13 @@ public class AncientMagicksClient {
     }
 
     private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(AncientMagicksEntities.FIREBALL.get(), FireballRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.WITCH_SPARK.get(), WitchSparkRenderer::new);
+        event.registerEntityRenderer(AncientMagicksEntities.FIREBALL.get(), FireballRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.DYNAMITE.get(), TntRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.SLIMEBALL.get(), SlimeballRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.EXPERIENCE_BEAM.get(), ExperienceStreamRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.SPELL_PEARL.get(), SpellPearlRenderer::new);
+        event.registerEntityRenderer(AncientMagicksEntities.ICICLE.get(), IcicleRenderer::new);
     }
 
     @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID, value = Dist.CLIENT)

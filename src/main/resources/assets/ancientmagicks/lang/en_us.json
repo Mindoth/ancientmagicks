@@ -74,6 +74,10 @@
   "tooltip.ancientmagicks.blind": "Blind a target creature",
   "item.ancientmagicks.mind_control": "Mind Control",
   "tooltip.ancientmagicks.mind_control": "Force a target creature to fight for you momentarily",
+  "item.ancientmagicks.icicle": "Icicle",
+  "tooltip.ancientmagicks.icicle": "Launches a cold icicle that damages enemies",
+  "item.ancientmagicks.blizzard": "Blizzard",
+  "tooltip.ancientmagicks.blizzard": "Channel to conjure an ice storm to damage enemies in an area you're targeting",
 
 
   "effect.ancientmagicks.flight": "Flight",

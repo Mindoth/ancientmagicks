@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.witchspark;
+package net.mindoth.ancientmagicks.item.spell.icicle;
 
 import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
@@ -7,9 +7,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class WitchSparkTablet extends SpellTabletItem {
+public class IcicleTablet extends SpellTabletItem {
 
-    public WitchSparkTablet(Properties pProperties, boolean isChannel, int cooldown) {
+    public IcicleTablet(Properties pProperties, boolean isChannel, int cooldown) {
         super(pProperties, isChannel, cooldown);
     }
 
@@ -23,9 +23,9 @@ public class WitchSparkTablet extends SpellTabletItem {
             adjuster = -1;
             down = 0.0F;
         }
-        AbstractSpellEntity projectile = new WitchSparkEntity(level, owner, caster, this);
+        AbstractSpellEntity projectile = new IcicleEntity(level, owner, caster, this);
 
-        projectile.setColor(AbstractSpellEntity.getSpellColor("dark_purple"), 0.3F);
+        projectile.setColor(AbstractSpellEntity.getSpellColor("white"), 0.3F);
         projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
         projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
         level.addFreshEntity(projectile);

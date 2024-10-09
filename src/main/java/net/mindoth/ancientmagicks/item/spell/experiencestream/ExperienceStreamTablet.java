@@ -34,7 +34,7 @@ public class ExperienceStreamTablet extends SpellTabletItem {
                 projectile.setColor(AbstractSpellEntity.getSpellColor("green"), 0.3F);
                 float min = -0.1F;
                 float max = 0.1F;
-                projectile.setPos(center.x + (min + Math.random() * (max - min)), center.y + down + (min + Math.random() * (max - min)), center.z + (min + Math.random() * (max - min)));
+                projectile.setPos(center.add((min + Math.random() * (max - min)), down + (min + Math.random() * (max - min)), (min + Math.random() * (max - min))).add(caster.getForward()));
                 projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
                 level.addFreshEntity(projectile);
                 if ( !owner.isCreative() ) owner.giveExperiencePoints(-Mth.floor(projectile.power));
