@@ -49,7 +49,15 @@ public class BlizzardTablet extends SpellTabletItem {
         projectile.speed *= 0.5F;
         projectile.setColor(AbstractSpellEntity.getSpellColor("white"), 0.3F);
         if ( useTime % 20 == 0 ) projectile.setPos(center.x, getHeight(level, center), center.z);
-        else projectile.setPos(center.x + getRandomPos().x, getHeight(level, center), center.z + getRandomPos().z);
+        else {
+            Vec3 setPos = new Vec3(center.x + getRandomPos().x, getHeight(level, center), center.z + getRandomPos().z);
+            /*BlockPos newPos = new BlockPos(Mth.floor(setPos.x), Mth.floor(setPos.y), Mth.floor(setPos.z));
+            while ( level.getBlockState(newPos).isSolid() ) {
+                setPos = new Vec3(center.x + getRandomPos().x, getHeight(level, center), center.z + getRandomPos().z);
+                newPos = new BlockPos(Mth.floor(setPos.x), Mth.floor(setPos.y), Mth.floor(setPos.z));
+            }*/
+            projectile.setPos(setPos);
+        }
         projectile.anonShootFromRotation(90, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
         level.addFreshEntity(projectile);
     }

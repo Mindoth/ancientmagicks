@@ -42,7 +42,7 @@ public class CollapseTablet extends SpellTabletItem {
             }
         }
 
-        if ( state ) playMagicSummonSound(level, center);
+        if ( state ) playMagicSummonSound(level, pos.getCenter());
 
         return state;
     }

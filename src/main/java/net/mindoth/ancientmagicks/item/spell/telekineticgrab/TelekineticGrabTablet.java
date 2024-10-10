@@ -2,17 +2,21 @@ package net.mindoth.ancientmagicks.item.spell.telekineticgrab;
 
 import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class TelekineticGrabTablet extends SpellTabletItem {
@@ -30,9 +34,10 @@ public class TelekineticGrabTablet extends SpellTabletItem {
 
         float range = 14.0F;
         if ( owner != caster ) range = 0.0F;
-        float size = 0.5F;
+        float size = 0.4F;
         if ( owner != caster ) size = 1.0F;
 
+        Vec3 soundPos = center;
         Entity target;
         if ( owner == caster ) target = getPointedItemEntity(level, caster, range, size, caster == owner);
         else target = getNearestItemEntity(caster, level, size);
@@ -42,10 +47,31 @@ public class TelekineticGrabTablet extends SpellTabletItem {
                 itemEntity.push((casterPos.x - itemEntity.getX()) / 6, (casterPos.y - itemEntity.getY()) / 6, (casterPos.z - itemEntity.getZ()) / 6);
                 itemEntity.setNoPickUpDelay();
                 state = true;
+                soundPos = ShadowEvents.getEntityCenter(itemEntity);
+            }
+        }
+        else if ( target == caster ) {
+            BlockPos blockPos = getBlockPoint(caster, range, caster == owner);
+            BlockState blockState = level.getBlockState(blockPos);
+            Block block = blockState.getBlock();
+            if ( block instanceof DoorBlock || block instanceof TrapDoorBlock || block instanceof FenceGateBlock ) {
+                level.setBlock(blockPos, blockState.setValue(BlockStateProperties.OPEN, !blockState.getValue(BlockStateProperties.OPEN)), 10);
+                state = true;
+                soundPos = blockPos.getCenter();
+            }
+            else if ( block instanceof LeverBlock ) {
+                level.setBlock(blockPos, blockState.setValue(BlockStateProperties.POWERED, !blockState.getValue(BlockStateProperties.POWERED)), 10);
+                state = true;
+                soundPos = blockPos.getCenter();
+            }
+            if ( block instanceof ButtonBlock button ) {
+                button.press(blockState, level, blockPos);
+                state = true;
+                soundPos = blockPos.getCenter();
             }
         }
 
-        if ( state ) playMagicShootSound(level, center);
+        if ( state ) playMagicShootSound(level, soundPos);
 
         return state;
     }
@@ -108,5 +134,37 @@ public class TelekineticGrabTablet extends SpellTabletItem {
             }
         }
         return returnEntity;
+    }
+
+    public static BlockPos getBlockPoint(Entity caster, float range, boolean isPlayer) {
+        int adjuster = 1;
+        if ( !isPlayer ) adjuster = -1;
+
+        Vec3 direction = ShadowEvents.calculateViewVector(caster.getXRot() * (float)adjuster, caster.getYRot() * (float)adjuster).normalize();
+        direction = direction.multiply(range, range, range);
+        Vec3 center = caster.getEyePosition().add(direction);
+        double playerX = caster.getEyePosition().x;
+        double playerY = caster.getEyePosition().y;
+        double playerZ = caster.getEyePosition().z;
+        double listedEntityX = center.x();
+        double listedEntityY = center.y();
+        double listedEntityZ = center.z();
+        int particleInterval = (int)Math.round(caster.distanceToSqr(center));
+
+        BlockPos blockPos = new BlockPos(Mth.floor(center.x), Mth.floor(center.y), Mth.floor(center.z));
+        for ( int k = 1; k < 1 + particleInterval; ++k ) {
+            double lineX = playerX * (1.0 - (double)k / (double)particleInterval) + listedEntityX * ((double)k / (double)particleInterval);
+            double lineY = playerY * (1.0 - (double)k / (double)particleInterval) + listedEntityY * ((double)k / (double)particleInterval);
+            double lineZ = playerZ * (1.0 - (double)k / (double)particleInterval) + listedEntityZ * ((double)k / (double)particleInterval);
+
+            BlockPos tempPos = new BlockPos(Mth.floor(lineX), Mth.floor(lineY), Mth.floor(lineZ));
+            if ( caster.level().getBlockState(tempPos).isSolid()
+                    || caster.level().getBlockState(tempPos).getBlock() instanceof LeverBlock
+                    || caster.level().getBlockState(tempPos).getBlock() instanceof ButtonBlock ) {
+                blockPos = tempPos;
+                break;
+            }
+        }
+        return blockPos;
     }
 }
