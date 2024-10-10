@@ -44,8 +44,8 @@
   "tooltip.ancientmagicks.wind_burst": "Causes a sudden burst of wind to blow past you and towards where you're looking at lifting ANYONE caught in it into the air",
   "item.ancientmagicks.slimeball": "Slimeball",
   "tooltip.ancientmagicks.slimeball": "Launches a slimeball that bounces from walls and other surfaces and damages enemies",
-  "item.ancientmagicks.ward": "Ward",
-  "tooltip.ancientmagicks.ward": "Grant yourself or target ally some momentary damage resistance",
+  "item.ancientmagicks.mage_armor": "Mage Armor",
+  "tooltip.ancientmagicks.mage_armor": "Grant yourself or an unarmored target ally some protection. Protection ends if any armor is worn",
   "item.ancientmagicks.call_lightning": "Call Lightning",
   "tooltip.ancientmagicks.call_lightning": "Direct a powerful lightning strike towards where you're looking. The lightning will always hit a surface",
   "item.ancientmagicks.polymorph": "Polymorph",
@@ -75,16 +75,20 @@
   "item.ancientmagicks.mind_control": "Mind Control",
   "tooltip.ancientmagicks.mind_control": "Force a target creature to fight for you momentarily",
   "item.ancientmagicks.icicle": "Icicle",
-  "tooltip.ancientmagicks.icicle": "Launches a cold icicle that damages enemies",
+  "tooltip.ancientmagicks.icicle": "Launches an icicle that damages enemies and pierces one target",
   "item.ancientmagicks.blizzard": "Blizzard",
   "tooltip.ancientmagicks.blizzard": "Channel to conjure an ice storm to damage enemies in an area you're targeting",
+  "item.ancientmagicks.sleep": "Sleep",
+  "tooltip.ancientmagicks.sleep": "Put a target enemy to sleep",
 
 
+  "effect.ancientmagicks.mage_armor": "Mage Armor",
   "effect.ancientmagicks.flight": "Flight",
   "effect.ancientmagicks.numbness": "Numbness",
   "effect.ancientmagicks.alacrity": "Alacrity",
   "effect.ancientmagicks.spook": "Spook",
   "effect.ancientmagicks.ghostwalk": "Ghostwalk",
+  "effect.ancientmagicks.sleep": "Sleep",
 
 
   "tooltip.ancientmagicks.shift": "\u00A77Hold SHIFT to read Spell effects\u00A7r"

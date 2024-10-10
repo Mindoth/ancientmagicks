@@ -25,11 +25,6 @@ public class NumbnessEffect extends MobEffect {
         super(pCategory, pColor);
     }
 
-    @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
-        return true;
-    }
-
     public static final String NBT_KEY = "am_numbness_damage";
 
     @SubscribeEvent(priority = EventPriority.HIGH)

@@ -1,19 +1,20 @@
-package net.mindoth.ancientmagicks.item.spell.blind;
+package net.mindoth.ancientmagicks.item.spell.sleep;
 
 import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class BlindTablet extends SpellTabletItem {
+public class SleepTablet extends SpellTabletItem {
 
-    public BlindTablet(Properties pProperties, boolean isChannel, int cooldown) {
+    public SleepTablet(Properties pProperties, boolean isChannel, int cooldown) {
         super(pProperties, isChannel, cooldown);
     }
 
@@ -22,7 +23,7 @@ public class BlindTablet extends SpellTabletItem {
         boolean state = false;
         Level level = caster.level();
 
-        int life = 200;
+        int life = 1200;
         float range = 14.0F;
         float size = range * 0.5F;
 
@@ -30,10 +31,10 @@ public class BlindTablet extends SpellTabletItem {
         if ( caster == owner ) target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
 
-        if ( !isAlly(owner, target) ) {
-            target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, life));
+        if ( !isAlly(owner, target) && target instanceof Mob ) {
+            target.addEffect(new MobEffectInstance(AncientMagicksEffects.SLEEP.get(), life, 0, false, false));
             ShadowEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, ShadowEvents.getEntityCenter(caster), target.getEyePosition(),
-                    0, 0, 0, 0, 1);
+                    0, 1, 85F / 255F, 1, 1);
             state = true;
         }
 

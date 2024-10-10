@@ -28,12 +28,13 @@ import net.mindoth.ancientmagicks.item.spell.icewall.IceWallTablet;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlTablet;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainTablet;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphTablet;
+import net.mindoth.ancientmagicks.item.spell.sleep.SleepTablet;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballTablet;
 import net.mindoth.ancientmagicks.item.spell.spook.SpookTablet;
 import net.mindoth.ancientmagicks.item.spell.summonskeleton.SummonSkeletonTablet;
 import net.mindoth.ancientmagicks.item.spell.summonzombie.SummonZombieTablet;
 import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabTablet;
-import net.mindoth.ancientmagicks.item.spell.ward.WardTablet;
+import net.mindoth.ancientmagicks.item.spell.magearmor.MageArmorTablet;
 import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstTablet;
 import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkTablet;
 import net.minecraft.world.item.Item;
@@ -99,8 +100,8 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> SLIMEBALL_TABLET = ITEMS.register("slimeball",
             () -> new SlimeballTablet(new Item.Properties(), false, 20));
 
-    public static final RegistryObject<Item> WARD_TABLET = ITEMS.register("ward",
-            () -> new WardTablet(new Item.Properties(), false, 200));
+    public static final RegistryObject<Item> MAGE_ARMOR_TABLET = ITEMS.register("mage_armor",
+            () -> new MageArmorTablet(new Item.Properties(), false, 1600));
 
     public static final RegistryObject<Item> FEATHER_FALL_TABLET = ITEMS.register("feather_fall",
             () -> new FeatherFallTablet(new Item.Properties(), false, 200));
@@ -112,7 +113,7 @@ public class AncientMagicksItems {
             () -> new ExtinguishTablet(new Item.Properties(), false, 100));
 
     public static final RegistryObject<Item> SPOOK_TABLET = ITEMS.register("spook",
-            () -> new SpookTablet(new Item.Properties(), false, 4799));
+            () -> new SpookTablet(new Item.Properties(), false, 2400));
 
     public static final RegistryObject<Item> BLIND_TABLET = ITEMS.register("blind",
             () -> new BlindTablet(new Item.Properties(), false, 400));
@@ -154,7 +155,7 @@ public class AncientMagicksItems {
             () -> new PolymorphTablet(new Item.Properties(), false, 200));
 
     public static final RegistryObject<Item> GHOSTWALK_TABLET = ITEMS.register("ghostwalk",
-            () -> new GhostwalkTablet(new Item.Properties(), false, 4799));
+            () -> new GhostwalkTablet(new Item.Properties(), false, 2400));
 
     public static final RegistryObject<Item> ICE_WALL_TABLET = ITEMS.register("ice_wall",
             () -> new IceWallTablet(new Item.Properties(), true, 80));
@@ -176,4 +177,7 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> BLIZZARD_TABLET = ITEMS.register("blizzard",
             () -> new BlizzardTablet(new Item.Properties(), true, 120));
+
+    public static final RegistryObject<Item> SLEEP_TABLET = ITEMS.register("sleep",
+            () -> new SleepTablet(new Item.Properties(), false, 120));
 }

@@ -48,11 +48,15 @@ public class IcicleEntity extends AbstractSpellEntity {
     }
 
     @Override
+    public int getDefaultEnemyPierce() {
+        return 1;
+    }
+
+    @Override
     protected void doMobEffects(EntityHitResult result) {
         if ( this.power > 0 && !isAlly((LivingEntity)result.getEntity()) ) {
             LivingEntity target = (LivingEntity)result.getEntity();
             dealDamage(target);
-            target.setTicksFrozen(target.getTicksFrozen() + 180);
         }
     }
 

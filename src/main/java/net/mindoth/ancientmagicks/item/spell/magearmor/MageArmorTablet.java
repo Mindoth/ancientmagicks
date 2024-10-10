@@ -1,6 +1,7 @@
-package net.mindoth.ancientmagicks.item.spell.ward;
+package net.mindoth.ancientmagicks.item.spell.magearmor;
 
 import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -10,9 +11,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class WardTablet extends SpellTabletItem {
+public class MageArmorTablet extends SpellTabletItem {
 
-    public WardTablet(Properties pProperties, boolean isChannel, int cooldown) {
+    public MageArmorTablet(Properties pProperties, boolean isChannel, int cooldown) {
         super(pProperties, isChannel, cooldown);
     }
 
@@ -21,7 +22,7 @@ public class WardTablet extends SpellTabletItem {
         boolean state = false;
         Level level = caster.level();
 
-        int life = 1200;
+        int life = 72000;
         float range = 14.0F;
         float size = range * 0.5F;
 
@@ -31,9 +32,9 @@ public class WardTablet extends SpellTabletItem {
 
         if ( caster == owner && !isAlly(owner, target) ) target = owner;
 
-        if ( isAlly(owner, target) ) {
+        if ( isAlly(owner, target) && target.getArmorCoverPercentage() == 0 ) {
             state = true;
-            target.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, life, 0, false, false));
+            target.addEffect(new MobEffectInstance(AncientMagicksEffects.MAGE_ARMOR.get(), life, 0, false, false));
         }
 
         if ( state ) playMagicSound(level, center);
