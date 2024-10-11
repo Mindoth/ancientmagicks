@@ -5,6 +5,8 @@ import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
+import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -17,10 +19,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -43,9 +42,12 @@ public abstract class AbstractSpellEntity extends Projectile {
         super(entityType, level);
     }
 
-    //@Override
+    protected boolean isHarmful() {
+        return true;
+    }
+
     protected float getGravity() {
-        return 0.000F;
+        return 0.0F;
     }
 
     public float getDefaultPower() {
@@ -87,6 +89,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.spell = spell;
         this.owner = owner;
         this.caster = caster;
+        this.isHarmful = this.isHarmful();
         this.power = this.getDefaultPower();
         this.speed = this.getDefaultSpeed();
         this.life = this.getDefaultLife();
@@ -95,12 +98,14 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.enemyPierce = this.getDefaultEnemyPierce();
         this.blockPierce = this.getDefaultBlockPierce();
         this.homing = this.getDefaultHoming();
+        this.target = null;
     }
 
     protected SpellTabletItem spell;
     protected LivingEntity owner;
     protected Entity caster;
 
+    public boolean isHarmful;
     public float power;
     public float speed;
     public float life;
@@ -109,6 +114,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     public int bounce;
     public int enemyPierce;
     public int blockPierce;
+    public Entity target;
 
     public void anonShootFromRotation(float p_37253_, float p_37254_, float p_37255_, float p_37256_, float p_37257_) {
         float f = -Mth.sin(p_37254_ * ((float)Math.PI / 180F)) * Mth.cos(p_37253_ * ((float)Math.PI / 180F));
@@ -118,8 +124,15 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     protected boolean isAlly(LivingEntity target) {
+        if ( this.owner == null || target == null ) return false;
         if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) return true;
-        else return target == this.owner || !this.owner.canAttack(target) || this.owner.isAlliedTo(target) || (target instanceof TamableAnimal && ((TamableAnimal)target).isOwnedBy(this.owner));
+        else return target == this.owner || !this.owner.canAttack(target) || this.owner.isAlliedTo(target)
+                || (target instanceof TamableAnimal pet && pet.isOwnedBy(this.owner)) || (target instanceof Mob mob && isMinionsOwner(mob));
+    }
+
+    protected boolean isMinionsOwner(Mob mob) {
+        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY)
+                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY).equals(this.owner.getUUID()) && mob.getTarget() != this.owner;
     }
 
     protected void dealDamage(LivingEntity target) {
@@ -234,29 +247,26 @@ public abstract class AbstractSpellEntity extends Projectile {
     private void doHoming() {
         int range = 3;
         List<LivingEntity> entitiesAround = ShadowEvents.getEntitiesAround(this, this.level(), range, null);
-
         //Need to do this haxxy way to still exclude targeting allies
         List<LivingEntity> excludeList = Lists.newArrayList();
         for ( LivingEntity exception : entitiesAround ) {
-            if ( isAlly(exception) || exception.isDeadOrDying() || !exception.isAttackable() ) {
+            if ( (this.isHarmful && isAlly(exception)) || (!this.isHarmful && !isAlly(exception)) || exception.isDeadOrDying() || !exception.isAttackable() ) {
                 excludeList.add(exception);
             }
         }
 
-        Entity nearest = ShadowEvents.getNearestEntity(this, this.level(), range, excludeList);
-        if ( nearest != null && !this.getBoundingBox().inflate(1.5F).intersects(nearest.getBoundingBox()) ) {
+        if ( this.target == null || !this.target.isAlive() ) this.target = ShadowEvents.getNearestEntity(this, this.level(), range, excludeList);
+        if ( this.target != null ) {
             if ( !this.isNoGravity() ) this.setNoGravity(true);
             double mX = getDeltaMovement().x();
             double mY = getDeltaMovement().y();
             double mZ = getDeltaMovement().z();
-            Vec3 spellPos = new Vec3(getX(), getY(), getZ());
-            Vec3 targetPos = new Vec3(ShadowEvents.getEntityCenter(nearest).x, ShadowEvents.getEntityCenter(nearest).y, ShadowEvents.getEntityCenter(nearest).z);
-            Vec3 lookVec = targetPos.subtract(spellPos);
+            Vec3 lookVec = ShadowEvents.getEntityCenter(this.target).subtract(this.position()).normalize();
             Vec3 spellMotion = new Vec3(mX, mY, mZ);
-            float arc = 1.0F;
+            float arc = 0.2F;
+            if ( this.position().distanceTo(this.target.position()) < 2.0D ) arc = 1.0F;
             Vec3 lerpVec = new Vec3(Mth.lerp(arc, spellMotion.x, lookVec.x), Mth.lerp(arc, spellMotion.y, lookVec.y), Mth.lerp(arc, spellMotion.z, lookVec.z));
-            float multiplier = this.speed * 0.25F;
-            this.setDeltaMovement(lerpVec.multiply(multiplier, multiplier, multiplier));
+            this.setDeltaMovement(lerpVec);
         }
         else if ( this.isNoGravity() ) this.setNoGravity(false);
     }

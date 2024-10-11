@@ -6,6 +6,8 @@ import net.mindoth.ancientmagicks.client.gui.GuiSpellWheel;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
+import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltRenderer;
+import net.mindoth.ancientmagicks.item.spell.frostbolt.FrostBoltRenderer;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleRenderer;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballRenderer;
 import net.mindoth.ancientmagicks.item.spell.spellpearl.SpellPearlRenderer;
@@ -50,6 +52,8 @@ public class AncientMagicksClient {
         event.registerEntityRenderer(AncientMagicksEntities.EXPERIENCE_BEAM.get(), ExperienceStreamRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.SPELL_PEARL.get(), SpellPearlRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.ICICLE.get(), IcicleRenderer::new);
+        event.registerEntityRenderer(AncientMagicksEntities.FIRE_BOLT.get(), FireBoltRenderer::new);
+        event.registerEntityRenderer(AncientMagicksEntities.FROST_BOLT.get(), FrostBoltRenderer::new);
     }
 
     @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID, value = Dist.CLIENT)

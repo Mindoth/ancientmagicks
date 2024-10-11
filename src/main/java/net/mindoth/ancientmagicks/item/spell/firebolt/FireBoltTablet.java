@@ -1,17 +1,16 @@
-package net.mindoth.ancientmagicks.item.spell.witchspark;
+package net.mindoth.ancientmagicks.item.spell.firebolt;
 
 import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.shadowizardlib.event.ShadowEvents;
+import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class WitchSparkTablet extends SpellTabletItem {
+public class FireBoltTablet extends SpellTabletItem {
 
-    public WitchSparkTablet(Properties pProperties, boolean isChannel, int cooldown) {
+    public FireBoltTablet(Properties pProperties, boolean isChannel, int cooldown) {
         super(pProperties, isChannel, cooldown);
     }
 
@@ -25,21 +24,15 @@ public class WitchSparkTablet extends SpellTabletItem {
             adjuster = -1;
             down = 0.0F;
         }
+        AbstractSpellEntity projectile = new FireBoltEntity(level, owner, caster, this);
 
-        float range = 64.0F;
-        if ( owner != caster ) range = 0.0F;
-
-        AbstractSpellEntity projectile = new WitchSparkEntity(level, owner, caster, this);
-
-        projectile.setColor(AbstractSpellEntity.getSpellColor("dark_purple"), 0.2F);
+        projectile.setColor(AbstractSpellEntity.getSpellColor("gold"), 0.2F);
         projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
-        Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, caster == owner, true);
-        if ( target != null && target != caster && (target instanceof LivingEntity living && !isAlly(owner, living)) ) projectile.target = target;
         projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
         level.addFreshEntity(projectile);
         state = true;
 
-        if ( state ) playMagicShootSound(level, center);
+        if ( state ) playFireShootSound(level, center);
 
         return state;
     }

@@ -21,7 +21,9 @@ import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamTa
 import net.mindoth.ancientmagicks.item.spell.extinguish.ExtinguishTablet;
 import net.mindoth.ancientmagicks.item.spell.featherfall.FeatherFallTablet;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballTablet;
+import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltTablet;
 import net.mindoth.ancientmagicks.item.spell.flight.FlightTablet;
+import net.mindoth.ancientmagicks.item.spell.frostbolt.FrostBoltTablet;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleTablet;
 import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkTablet;
 import net.mindoth.ancientmagicks.item.spell.icewall.IceWallTablet;
@@ -180,4 +182,10 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> SLEEP_TABLET = ITEMS.register("sleep",
             () -> new SleepTablet(new Item.Properties(), false, 120));
+
+    public static final RegistryObject<Item> FIRE_BOLT_TABLET = ITEMS.register("fire_bolt",
+            () -> new FireBoltTablet(new Item.Properties(), false, 20));
+
+    public static final RegistryObject<Item> FROST_BOLT_TABLET = ITEMS.register("frost_bolt",
+            () -> new FrostBoltTablet(new Item.Properties(), false, 20));
 }

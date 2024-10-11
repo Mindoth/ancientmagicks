@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.witchspark;
+package net.mindoth.ancientmagicks.item.spell.firebolt;
 
 import net.mindoth.ancientmagicks.item.SpellTabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
@@ -10,18 +10,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.network.PlayMessages;
 
-public class WitchSparkEntity extends AbstractSpellEntity {
+public class FireBoltEntity extends AbstractSpellEntity {
 
-    public WitchSparkEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
-        this(AncientMagicksEntities.WITCH_SPARK.get(), level);
+    public FireBoltEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
+        this(AncientMagicksEntities.FIRE_BOLT.get(), level);
     }
 
-    public WitchSparkEntity(EntityType<WitchSparkEntity> entityType, Level level) {
+    public FireBoltEntity(EntityType<FireBoltEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public WitchSparkEntity(Level level, LivingEntity owner, Entity caster, SpellTabletItem rune) {
-        super(AncientMagicksEntities.WITCH_SPARK.get(), level, owner, caster, rune);
+    public FireBoltEntity(Level level, LivingEntity owner, Entity caster, SpellTabletItem rune) {
+        super(AncientMagicksEntities.FIRE_BOLT.get(), level, owner, caster, rune);
     }
 
     @Override
@@ -31,12 +31,7 @@ public class WitchSparkEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultSpeed() {
-        return 1.0F;
-    }
-
-    @Override
-    public boolean getDefaultHoming() {
-        return true;
+        return 1.6F;
     }
 
     @Override
@@ -44,6 +39,7 @@ public class WitchSparkEntity extends AbstractSpellEntity {
         if ( this.power > 0 && !isAlly((LivingEntity)result.getEntity()) ) {
             LivingEntity living = (LivingEntity)result.getEntity();
             dealDamage(living);
+            living.setSecondsOnFire(8);
         }
     }
 }

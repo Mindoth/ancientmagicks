@@ -150,8 +150,8 @@ public class SpellTabletItem extends RuneItem {
     public static boolean isAlly(LivingEntity owner, LivingEntity target) {
         if ( owner == null || target == null ) return false;
         if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) return true;
-        else return target == owner || !owner.canAttack(target) || owner.isAlliedTo(target) || (target instanceof TamableAnimal pet && pet.isOwnedBy(owner))
-                || (target instanceof Mob mob && isMinionsOwner(owner, mob));
+        else return target == owner || !owner.canAttack(target) || owner.isAlliedTo(target)
+                || (target instanceof TamableAnimal pet && pet.isOwnedBy(owner)) || (target instanceof Mob mob && isMinionsOwner(owner, mob));
     }
 
     public static boolean isMinionsOwner(LivingEntity owner, Mob mob) {

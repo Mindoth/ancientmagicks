@@ -80,6 +80,10 @@
   "tooltip.ancientmagicks.blizzard": "Channel to conjure an ice storm to damage enemies in an area you're targeting",
   "item.ancientmagicks.sleep": "Sleep",
   "tooltip.ancientmagicks.sleep": "Put a target enemy to sleep",
+  "item.ancientmagicks.fire_bolt": "Fire Bolt",
+  "tooltip.ancientmagicks.fire_bolt": "Launches a small fiery bolt that damages enemies and lights them on fire",
+  "item.ancientmagicks.frost_bolt": "Frost Bolt",
+  "tooltip.ancientmagicks.frost_bolt": "Launches a small freezing bolt that damages and slows enemies",
 
 
   "effect.ancientmagicks.mage_armor": "Mage Armor",
