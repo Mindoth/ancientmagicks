@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.*;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSetSpell;
 import net.mindoth.ancientmagicks.network.PacketSolveAncientTablet;
@@ -55,7 +55,7 @@ public class GuiSpellWheel extends Screen {
     private final List<ItemStack> itemList;
     private final CompoundTag tag;
     private final List<ColorRuneItem> comboList = Lists.newArrayList();
-    private SpellTabletItem comboResult;
+    private SpellItem comboResult;
     private final boolean discoveryMode;
     private final InteractionHand hand;
 
@@ -95,10 +95,10 @@ public class GuiSpellWheel extends Screen {
                     this.comboList.add((ColorRuneItem)clickedItem.getItem());
                 }
             }
-            SpellTabletItem secretSpell = null;
-            if ( this.tag != null ) secretSpell = (SpellTabletItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.tag.getString("am_secretspell")));
-            SpellTabletItem spellTabletItem = ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell);
-            if ( spellTabletItem != null && ((ClientSpellData.isSpellKnown(spellTabletItem) || MINECRAFT.player.isCreative()) || this.discoveryMode) ) {
+            SpellItem secretSpell = null;
+            if ( this.tag != null ) secretSpell = (SpellItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.tag.getString("am_secretspell")));
+            SpellItem spellItem = ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell);
+            if ( spellItem != null && ((ClientSpellData.isSpellKnown(spellItem) || MINECRAFT.player.isCreative()) || this.discoveryMode) ) {
                 this.comboResult = ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell);
                 if ( !this.discoveryMode ) {
                     String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));

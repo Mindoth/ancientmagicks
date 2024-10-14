@@ -54,9 +54,10 @@ public class AncientTabletItem extends Item {
     }
 
     private static CompoundTag createSpellToDiscover(CompoundTag tag) {
-        List<SpellTabletItem> list = AncientMagicks.SPELL_LIST;
+        List<SpellItem> list = AncientMagicks.SPELL_LIST;
+        list.removeIf(spell -> !spell.isAncient());
         int index = ThreadLocalRandom.current().nextInt(0, list.size());
-        SpellTabletItem item = list.get(index);
+        SpellItem item = list.get(index);
         tag.putString("am_secretspell", ForgeRegistries.ITEMS.getKey(item).toString());
 
         return tag;
@@ -74,7 +75,7 @@ public class AncientTabletItem extends Item {
                 else finalTag = tag;
                 if ( finalTag.contains("am_secretspell") ) {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(finalTag.getString("am_secretspell")));
-                    if ( item instanceof SpellTabletItem spell ) {
+                    if ( item instanceof SpellItem spell ) {
                         List<ColorRuneItem> runeList = ColorRuneItem.CURRENT_COMBO_MAP.get(spell);
                         ColorRuneItem randomRune = runeList.get(ThreadLocalRandom.current().nextInt(0, runeList.size()));
                         double randX = ThreadLocalRandom.current().nextDouble(blockPos.getX() + 0.1D, blockPos.getX() + 0.9D);
@@ -105,7 +106,7 @@ public class AncientTabletItem extends Item {
         if ( !level.isClientSide ) {
             BlockPos blockPos = event.getHitVec().getBlockPos();
             if ( (event.getItemStack().getItem() == AncientMagicksItems.ANCIENT_TABLET.get() && level.getBlockState(blockPos).getBlock() == Blocks.WATER_CAULDRON)
-                    || (event.getItemStack().getItem() instanceof SpellTabletItem && level.getBlockState(blockPos).getBlock() == Blocks.LAVA_CAULDRON) ) {
+                    || (event.getItemStack().getItem() instanceof SpellItem && level.getBlockState(blockPos).getBlock() == Blocks.LAVA_CAULDRON) ) {
                 ItemStack stack = event.getItemStack();
                 ItemStack newStack = stack.copyWithCount(1);
                 ItemEntity drop = new ItemEntity(level, blockPos.getX() + 0.5F, blockPos.getY() + 0.5F, blockPos.getZ() + 0.5F, newStack);

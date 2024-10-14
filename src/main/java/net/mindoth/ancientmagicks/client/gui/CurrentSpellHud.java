@@ -1,8 +1,7 @@
 package net.mindoth.ancientmagicks.client.gui;
 
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
-import net.mindoth.ancientmagicks.item.castingitem.SpellPearlItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -40,7 +39,7 @@ public class CurrentSpellHud {
 
             if ( castingItem != null && ClientSpellData.getCurrentSpell() != null ) {
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ClientSpellData.getCurrentSpell()));
-                if ( item instanceof SpellTabletItem ) state = new ItemStack(item);
+                if ( item instanceof SpellItem) state = new ItemStack(item);
             }
         }
 

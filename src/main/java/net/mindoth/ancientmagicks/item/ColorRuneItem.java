@@ -42,13 +42,13 @@ public class ColorRuneItem extends RuneItem {
     //Serverside string to send in packets. It being a CompoundTag is just a workaround...
     public static CompoundTag CURRENT_COMBO_TAG = new CompoundTag();
     //Server- AND Client-sided Map used in GUI checks
-    public static HashMap<SpellTabletItem, List<ColorRuneItem>> CURRENT_COMBO_MAP = new HashMap<>();
+    public static HashMap<SpellItem, List<ColorRuneItem>> CURRENT_COMBO_MAP = new HashMap<>();
 
-    public static SpellTabletItem checkForSpellCombo(List<ColorRuneItem> comboToCheck, @Nullable SpellTabletItem secretSpell) {
-        SpellTabletItem spell = null;
+    public static SpellItem checkForSpellCombo(List<ColorRuneItem> comboToCheck, @Nullable SpellItem secretSpell) {
+        SpellItem spell = null;
         if ( secretSpell == null ) {
-            for ( Map.Entry<SpellTabletItem, List<ColorRuneItem>> entry : CURRENT_COMBO_MAP.entrySet() ) {
-                SpellTabletItem key = entry.getKey();
+            for ( Map.Entry<SpellItem, List<ColorRuneItem>> entry : CURRENT_COMBO_MAP.entrySet() ) {
+                SpellItem key = entry.getKey();
                 List<ColorRuneItem> value = entry.getValue();
                 if ( AncientMagicks.listsMatch(comboToCheck, value) ) spell = key;
             }
@@ -58,12 +58,12 @@ public class ColorRuneItem extends RuneItem {
     }
 
     //This is some REALLY delicate String parsing. I'm no expert...
-    public static HashMap<SpellTabletItem, List<ColorRuneItem>> buildComboMap(String comboString) {
-        HashMap<SpellTabletItem, List<ColorRuneItem>> returnMap = new HashMap<>();
+    public static HashMap<SpellItem, List<ColorRuneItem>> buildComboMap(String comboString) {
+        HashMap<SpellItem, List<ColorRuneItem>> returnMap = new HashMap<>();
 
         Map<String, String> tempMap = Splitter.on(";").withKeyValueSeparator("=").split(comboString);
         for ( Map.Entry<String, String> entry : tempMap.entrySet() ) {
-            SpellTabletItem key = (SpellTabletItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()));
+            SpellItem key = (SpellItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()));
             if ( AncientMagicks.isSpellEnabled(key) ) {
                 List<ColorRuneItem> tempList = Lists.newArrayList();
                 for ( String string : List.of(entry.getValue().replaceAll("[\\[\\]]", "").split(",")) ) {
@@ -129,9 +129,6 @@ public class ColorRuneItem extends RuneItem {
 
     public static List<ItemStack> getColorRuneList(Player player, PlayerSpell spell) {
         List<ItemStack> runeList = Lists.newArrayList();
-        if ( (spell.getBlack() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.BLACK_RUNE.get()) ) {
-            runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
-        }
         if ( (spell.getBlue() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.BLUE_RUNE.get()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.BLUE_RUNE.get()));
         }
@@ -141,11 +138,14 @@ public class ColorRuneItem extends RuneItem {
         if ( (spell.getYellow() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.YELLOW_RUNE.get()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
         }
-        if ( (spell.getWhite() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.WHITE_RUNE.get()) ) {
-            runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
-        }
         if ( (spell.getGreen() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.GREEN_RUNE.get()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
+        }
+        if ( (spell.getBlack() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.BLACK_RUNE.get()) ) {
+            runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
+        }
+        if ( (spell.getWhite() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.WHITE_RUNE.get()) ) {
+            runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
         }
         if ( (spell.getBrown() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.BROWN_RUNE.get()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.BROWN_RUNE.get()));

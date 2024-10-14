@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.network;
 
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -31,7 +31,7 @@ public class PacketUpdateKnownSpells {
         contextSupplier.get().enqueueWork(() -> {
             if ( ClientSpellData.getKnownSpells() != null && this.spellTag.contains("am_secretspell") ) {
                 final String spellString = this.spellTag.getString("am_secretspell");
-                final SpellTabletItem item = (SpellTabletItem) ForgeRegistries.ITEMS.getValue(new ResourceLocation(spellString));
+                final SpellItem item = (SpellItem) ForgeRegistries.ITEMS.getValue(new ResourceLocation(spellString));
                 if ( Objects.equals(ClientSpellData.getKnownSpells(), "") ) {
                     ClientSpellData.setKnownSpells(spellString);
                 }

@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.loot.AncientMagicksModifiers;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
@@ -68,7 +68,7 @@ public class AncientMagicks {
                 if ( item.get() instanceof ColorRuneItem rune ) {
                     if ( COLOR_RUNE_LIST.contains(rune) ) event.accept(item);
                 }
-                else if ( item.get() instanceof SpellTabletItem spell ) {
+                else if ( item.get() instanceof SpellItem spell ) {
                     if ( isSpellEnabled(spell) ) event.accept(item);
                 }
                 else if ( item.get() != AncientMagicksItems.TABLET_BAG.get() ) event.accept(item);
@@ -93,11 +93,11 @@ public class AncientMagicks {
         if ( !COLOR_RUNE_LIST.isEmpty() ) COLOR_RUNE_LIST.clear();
         if ( !COMBO_MAP.isEmpty() ) COMBO_MAP.clear();
         createSpellDisableList();
-        for ( Item item : ITEM_LIST ) if ( item instanceof SpellTabletItem spellTabletItem && isSpellEnabled(spellTabletItem) ) SPELL_LIST.add(spellTabletItem);
+        for ( Item item : ITEM_LIST ) if ( item instanceof SpellItem spellItem && isSpellEnabled(spellItem) ) SPELL_LIST.add(spellItem);
         createColorRuneList();
     }
 
-    public static boolean isSpellEnabled(SpellTabletItem spell) {
+    public static boolean isSpellEnabled(SpellItem spell) {
         return DISABLED_SPELLS.isEmpty() || !DISABLED_SPELLS.contains(spell);
     }
 
@@ -106,14 +106,12 @@ public class AncientMagicks {
     }
 
     private static void createColorRuneList() {
-        int n = 0;
+        int n = -1;
         for ( Item item : ITEM_LIST ) {
             if ( item instanceof ColorRuneItem ) {
                 if ( (n * (n + 2) * (n + 1)) < (6 * SPELL_LIST.size()) ) {
-                    n++;
-                }
-                if ( (item != AncientMagicksItems.BLACK_RUNE.get() && item != AncientMagicksItems.WHITE_RUNE.get()) || n > 6 ) {
                     COLOR_RUNE_LIST.add((ColorRuneItem)item);
+                    n++;
                 }
             }
         }
@@ -123,7 +121,7 @@ public class AncientMagicks {
         String configString = AncientMagicksCommonConfig.DISABLED_SPELLS.get();
         for ( String string : List.of(configString.replaceAll("[\\[\\]]", "").replaceAll(" ", "").replaceAll("\n", "").split(",")) ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-            if ( item instanceof SpellTabletItem spellTabletItem ) DISABLED_SPELLS.add(spellTabletItem);
+            if ( item instanceof SpellItem spellItem) DISABLED_SPELLS.add(spellItem);
         }
     }
 
@@ -144,9 +142,9 @@ public class AncientMagicks {
     }
 
     public static List<ColorRuneItem> COLOR_RUNE_LIST = Lists.newArrayList();
-    public static List<SpellTabletItem> SPELL_LIST = Lists.newArrayList();
-    public static List<SpellTabletItem> DISABLED_SPELLS = Lists.newArrayList();
-    public static HashMap<SpellTabletItem, List<ColorRuneItem>> COMBO_MAP = new HashMap<>();
+    public static List<SpellItem> SPELL_LIST = Lists.newArrayList();
+    public static List<SpellItem> DISABLED_SPELLS = Lists.newArrayList();
+    public static HashMap<SpellItem, List<ColorRuneItem>> COMBO_MAP = new HashMap<>();
 
     public static void randomizeSpells() {
         Logger logger = getLogger();

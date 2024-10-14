@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
-import net.mindoth.ancientmagicks.item.RuneItem;
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.ChatFormatting;
@@ -56,7 +55,7 @@ public class SpellPearlItem extends CastingItem {
         if ( !level.isClientSide ) {
             if ( pearl.getTag() != null && pearl.getTag().contains("spell_pearl") ) {
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(pearl.getTag().getString("spell_pearl")));
-                if ( item instanceof SpellTabletItem spell ) {
+                if ( item instanceof SpellItem spell ) {
                     if ( !player.getCooldowns().isOnCooldown(pearl.getItem()) ) {
                         if ( !player.isCrouching() ) {
                             level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -84,8 +83,8 @@ public class SpellPearlItem extends CastingItem {
         if ( level.isClientSide ) return;
         if ( living instanceof Player player && castingItem.getTag() != null && castingItem.getTag().contains("spell_pearl") ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(castingItem.getTag().getString("spell_pearl")));
-            if ( item instanceof SpellTabletItem spellTabletItem ) {
-                doSpell(player, player, castingItem, spellTabletItem, getUseDuration(castingItem) - timeLeft);
+            if ( item instanceof SpellItem spellItem) {
+                doSpell(player, player, castingItem, spellItem, getUseDuration(castingItem) - timeLeft);
             }
         }
     }

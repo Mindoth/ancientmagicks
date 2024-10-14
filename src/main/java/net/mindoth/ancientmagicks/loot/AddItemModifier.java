@@ -32,8 +32,9 @@ public class AddItemModifier extends LootModifier {
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         for ( LootItemCondition condition : this.conditions ) if ( !condition.test(context) ) return generatedLoot;
-        if ( this.item == AncientMagicksItems.ANCIENT_TABLET.get() ) {
-            int amount = ThreadLocalRandom.current().nextInt(1, 4 + 1);
+
+        if ( this.item == AncientMagicksItems.SPELL_FRAGMENT.get() ) {
+            int amount = ThreadLocalRandom.current().nextInt(1, 4);
             for ( int i = 0; i < amount; i++ ) generatedLoot.add(new ItemStack(this.item));
         }
         else generatedLoot.add(new ItemStack(this.item));

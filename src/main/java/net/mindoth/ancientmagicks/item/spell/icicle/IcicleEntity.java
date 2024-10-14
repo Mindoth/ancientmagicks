@@ -1,9 +1,10 @@
 package net.mindoth.ancientmagicks.item.spell.icicle;
 
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -27,7 +29,7 @@ public class IcicleEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public IcicleEntity(Level level, LivingEntity owner, Entity caster, SpellTabletItem rune) {
+    public IcicleEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
         super(AncientMagicksEntities.ICICLE.get(), level, owner, caster, rune);
         this.setNoGravity(false);
     }
@@ -45,11 +47,6 @@ public class IcicleEntity extends AbstractSpellEntity {
     @Override
     public float getDefaultSpeed() {
         return 1.6F;
-    }
-
-    @Override
-    public int getDefaultEnemyPierce() {
-        return 1;
     }
 
     @Override
@@ -77,7 +74,7 @@ public class IcicleEntity extends AbstractSpellEntity {
             float randX = (float)((Math.random() * (size - (-size))) + (-size));
             float randY = (float)((Math.random() * (size - (-size))) + (-size));
             float randZ = (float)((Math.random() * (size - (-size))) + (-size));
-            world.sendParticles(ParticleTypes.ITEM_SNOWBALL, center.x, center.y, center.z, 0, randX, randY, randZ, 0.1F);
+            world.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.PACKED_ICE.defaultBlockState()), center.x, center.y, center.z, 0, randX, randY, randZ, 0.1F);
         }
     }
 

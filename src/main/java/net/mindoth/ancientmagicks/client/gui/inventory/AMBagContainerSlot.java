@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.client.gui.inventory;
 
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -15,6 +15,6 @@ public class AMBagContainerSlot extends SlotItemHandler {
 
     @Override
     public boolean mayPlace(@Nonnull ItemStack stack) {
-        return super.mayPlace(stack) && stack.getItem() instanceof SpellTabletItem || stack.getItem() instanceof AncientTabletItem;
+        return super.mayPlace(stack) && stack.getItem() instanceof SpellItem || stack.getItem() instanceof AncientTabletItem;
     }
 }

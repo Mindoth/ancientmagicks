@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#F#",
+    "FAF",
+    "#F#"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "F": {
+      "item": "ancientmagicks:spell_fragment"
+    },
+    "#": {
+      "item": "minecraft:sugar_cane"
+    }
+  },
+  "result": {
+    "item": "ancientmagicks:wind_burst",
+    "count": 1
+  }
+}

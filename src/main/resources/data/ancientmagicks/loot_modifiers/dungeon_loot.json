@@ -79,7 +79,7 @@
       ]
     },
     {
-      "chance": 0.75,
+      "chance": 0.25,
       "condition": "minecraft:random_chance"
     }
   ],

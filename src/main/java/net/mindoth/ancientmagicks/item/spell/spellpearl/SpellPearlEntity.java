@@ -1,16 +1,14 @@
 package net.mindoth.ancientmagicks.item.spell.spellpearl;
 
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -28,7 +26,7 @@ public class SpellPearlEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public SpellPearlEntity(Level level, LivingEntity owner, Entity caster, SpellTabletItem spell) {
+    public SpellPearlEntity(Level level, LivingEntity owner, Entity caster, SpellItem spell) {
         super(AncientMagicksEntities.SPELL_PEARL.get(), level, owner, caster, spell);
         this.setNoGravity(false);
     }

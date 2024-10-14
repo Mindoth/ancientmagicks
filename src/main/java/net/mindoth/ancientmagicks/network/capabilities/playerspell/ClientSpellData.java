@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.network.capabilities.playerspell;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -27,22 +27,22 @@ public class ClientSpellData {
     }
 
 
-    public static boolean isSpellKnown(SpellTabletItem spellToCheck) {
+    public static boolean isSpellKnown(SpellItem spellToCheck) {
         boolean state = false;
 
         if ( getKnownSpells() != null ) {
-            List<SpellTabletItem> spellList = stringListToSpellList(ClientSpellData.getKnownSpells());
+            List<SpellItem> spellList = stringListToSpellList(ClientSpellData.getKnownSpells());
             if ( spellList.contains(spellToCheck) ) state = true;
         }
 
         return state;
     }
 
-    public static List<SpellTabletItem> stringListToSpellList(String list) {
-        List<SpellTabletItem> spellList = Lists.newArrayList();
+    public static List<SpellItem> stringListToSpellList(String list) {
+        List<SpellItem> spellList = Lists.newArrayList();
         for ( String string : List.of(list.split(",")) ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-            if ( item instanceof SpellTabletItem spellTabletItem ) spellList.add(spellTabletItem);
+            if ( item instanceof SpellItem spellItem) spellList.add(spellItem);
         }
         return spellList;
     }

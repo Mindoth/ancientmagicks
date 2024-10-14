@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#F#",
+    "FAF",
+    "#F#"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "F": {
+      "item": "ancientmagicks:spell_fragment"
+    },
+    "#": {
+      "item": "minecraft:lightning_rod"
+    }
+  },
+  "result": {
+    "item": "ancientmagicks:call_lightning",
+    "count": 1
+  }
+}

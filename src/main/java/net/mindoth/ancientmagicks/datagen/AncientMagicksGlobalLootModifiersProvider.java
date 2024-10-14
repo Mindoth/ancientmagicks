@@ -27,15 +27,20 @@ public class AncientMagicksGlobalLootModifiersProvider extends GlobalLootModifie
                         "stronghold_corridor", "stronghold_crossing", "stronghold_library",
                         "woodland_mansion", "underwater_ruin_big", "underwater_ruin_small", "shipwreck_treasure",
                         "ancient_city"
-                }), LootItemRandomChanceCondition.randomChance(0.75F).build()
+                }, "chests/"), LootItemRandomChanceCondition.randomChance(0.25F).build()
         }, AncientMagicksItems.ANCIENT_TABLET.get()));
+        add("spell_fragment_drop", new AddItemModifier(new LootItemCondition[] {
+                getList(new String[] {
+                        "witch", "evoker", "illusioner"
+                }, "entities/"), LootItemRandomChanceCondition.randomChance(1.0F).build()
+        }, AncientMagicksItems.SPELL_FRAGMENT.get()));
     }
 
-    private LootItemCondition getList(String[] chests) {
-        Validate.isTrue(chests.length > 0);
+    private LootItemCondition getList(String[] tables, String dest) {
+        Validate.isTrue(tables.length > 0);
         LootItemCondition.Builder condition = null;
-        for ( String s : chests ) {
-            LootTableIdCondition.Builder builder = new LootTableIdCondition.Builder(new ResourceLocation("chests/" + s));
+        for ( String s : tables ) {
+            LootTableIdCondition.Builder builder = new LootTableIdCondition.Builder(new ResourceLocation(dest + s));
             condition = condition == null ? builder : condition.or(builder);
         }
         return condition.build();

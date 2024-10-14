@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.mindcontrol;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.nbt.CompoundTag;
@@ -72,8 +72,8 @@ public class MindControlEffect extends MobEffect {
 
     private static boolean isTargetable(LivingEntity owner, LivingEntity target) {
         if ( owner == null ) return false;
-        if ( SpellTabletItem.isAlly(owner, target.getLastHurtByMob()) ) return true;
-        else if ( SpellTabletItem.isAlly(owner, target) ) return owner.getLastHurtMob() == target || owner.getLastHurtByMob() == target;
+        if ( SpellItem.isAlly(owner, target.getLastHurtByMob()) ) return true;
+        else if ( SpellItem.isAlly(owner, target) ) return owner.getLastHurtMob() == target || owner.getLastHurtByMob() == target;
         else return owner.getLastHurtMob() == target || owner.getLastHurtByMob() == target || (target instanceof Mob mob && mob.getTarget() == owner);
     }
 

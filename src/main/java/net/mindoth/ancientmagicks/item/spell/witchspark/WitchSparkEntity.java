@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.witchspark;
 
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.minecraft.world.entity.Entity;
@@ -20,7 +20,7 @@ public class WitchSparkEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public WitchSparkEntity(Level level, LivingEntity owner, Entity caster, SpellTabletItem rune) {
+    public WitchSparkEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
         super(AncientMagicksEntities.WITCH_SPARK.get(), level, owner, caster, rune);
     }
 
@@ -31,12 +31,7 @@ public class WitchSparkEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultSpeed() {
-        return 1.0F;
-    }
-
-    @Override
-    public boolean getDefaultHoming() {
-        return true;
+        return 1.6F;
     }
 
     @Override

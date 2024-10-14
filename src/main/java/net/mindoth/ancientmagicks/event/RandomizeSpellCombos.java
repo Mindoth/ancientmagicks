@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.event;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,7 +36,7 @@ public class RandomizeSpellCombos {
                 PrintWriter pw = new PrintWriter(fos);
 
                 //TODO MAKE FILE NOT BE WHITESPACE SENSITIVE
-                for ( Map.Entry<SpellTabletItem, List<ColorRuneItem>> entry : AncientMagicks.COMBO_MAP.entrySet() ) {
+                for ( Map.Entry<SpellItem, List<ColorRuneItem>> entry : AncientMagicks.COMBO_MAP.entrySet() ) {
                     pw.print(ForgeRegistries.ITEMS.getKey(entry.getKey()) + "=" + entry.getValue() + ";" + "\n");
                 }
 

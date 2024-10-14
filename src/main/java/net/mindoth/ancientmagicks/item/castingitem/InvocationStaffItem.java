@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.RuneItem;
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -30,10 +30,10 @@ public class InvocationStaffItem extends CastingItem {
             if ( isValidCastingItem(staff) ) {
                 player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
-                    if ( item instanceof SpellTabletItem spellTabletItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellTabletItem) ) {
+                    if ( item instanceof SpellItem spellItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellItem) ) {
                         if ( player.totalExperience >= 1 || player.isCreative() || AncientMagicksCommonConfig.FREE_SPELLS.get() ) player.startUsingItem(hand);
                         else {
-                            addCastingCooldown(player, spellTabletItem, 20);
+                            addCastingCooldown(player, spellItem, 20);
                             RuneItem.playWhiffSound(player);
                         }
                     }
@@ -50,10 +50,10 @@ public class InvocationStaffItem extends CastingItem {
             if ( isValidCastingItem(wand) ) {
                 player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
-                    if ( item instanceof SpellTabletItem spellTabletItem ) {
+                    if ( item instanceof SpellItem spellItem) {
                         /*if ( getHeldSlateItem(player).getItem() == AncientMagicksItems.STONE_SLATE.get() ) makeTablets(player, player, spellTabletItem, getHeldSlateItem(player));
                         else doSpell(player, player, wand, spellTabletItem, getUseDuration(wand) - timeLeft);*/
-                        doSpell(player, player, wand, spellTabletItem, getUseDuration(wand) - timeLeft);
+                        doSpell(player, player, wand, spellItem, getUseDuration(wand) - timeLeft);
                     }
                 });
             }

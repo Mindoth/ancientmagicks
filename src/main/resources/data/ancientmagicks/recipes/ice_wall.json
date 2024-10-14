@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#F#",
+    "FAF",
+    "#F#"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "F": {
+      "item": "ancientmagicks:spell_fragment"
+    },
+    "#": {
+      "item": "minecraft:packed_ice"
+    }
+  },
+  "result": {
+    "item": "ancientmagicks:ice_wall",
+    "count": 1
+  }
+}

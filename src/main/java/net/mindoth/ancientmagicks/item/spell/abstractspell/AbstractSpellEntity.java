@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -82,7 +82,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         return false;
     }
 
-    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, SpellTabletItem spell) {
+    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, SpellItem spell) {
         super(entityType, pLevel);
 
         this.setNoGravity(true);
@@ -101,7 +101,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.target = null;
     }
 
-    protected SpellTabletItem spell;
+    protected SpellItem spell;
     protected LivingEntity owner;
     protected Entity caster;
 

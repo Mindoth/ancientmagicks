@@ -1,14 +1,12 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltEntity;
-import net.mindoth.ancientmagicks.item.spell.frostbolt.FrostBoltEntity;
-import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
-import net.mindoth.ancientmagicks.item.spell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteEntity;
 import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamEntity;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
+import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballEntity;
+import net.mindoth.ancientmagicks.item.spell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -48,14 +46,6 @@ public class AncientMagicksEntities {
     public static final RegistryObject<EntityType<IcicleEntity>> ICICLE
             = registerEntity(EntityType.Builder.<IcicleEntity>of(IcicleEntity::new,
             MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(IcicleEntity::new), "icicle");
-
-    public static final RegistryObject<EntityType<FireBoltEntity>> FIRE_BOLT
-            = registerEntity(EntityType.Builder.<FireBoltEntity>of(FireBoltEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(FireBoltEntity::new), "fire_bolt");
-
-    public static final RegistryObject<EntityType<FrostBoltEntity>> FROST_BOLT
-            = registerEntity(EntityType.Builder.<FrostBoltEntity>of(FrostBoltEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(FrostBoltEntity::new), "frost_bolt");
 
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntity(EntityType.Builder<T> builder, String entityName) {

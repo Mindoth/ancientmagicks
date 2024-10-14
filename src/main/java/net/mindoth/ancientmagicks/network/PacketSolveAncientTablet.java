@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.network;
 
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
-import net.mindoth.ancientmagicks.item.SpellTabletItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -44,7 +44,7 @@ public class PacketSolveAncientTablet {
                     CompoundTag tag = handTablet.getTag();
                     if ( tag != null && tag.contains("am_secretspell") ) {
                         final String spellString = tag.getString("am_secretspell");
-                        final SpellTabletItem item = (SpellTabletItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(spellString));
+                        final SpellItem item = (SpellItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(spellString));
                         if ( this.resulStack.getItem() == item ) player.setItemSlot(hand, this.resulStack);
                         //SpellTabletItem.learnSpell(player, item);
                     }

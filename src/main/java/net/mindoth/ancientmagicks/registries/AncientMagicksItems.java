@@ -8,37 +8,28 @@ import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.TabletBag;
 import net.mindoth.ancientmagicks.item.castingitem.InvocationStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellPearlItem;
-import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityTablet;
-import net.mindoth.ancientmagicks.item.spell.blind.BlindTablet;
-import net.mindoth.ancientmagicks.item.spell.blink.BlinkTablet;
-import net.mindoth.ancientmagicks.item.spell.blizzard.BlizzardTablet;
-import net.mindoth.ancientmagicks.item.spell.calllightning.CallLightningTablet;
-import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphTablet;
-import net.mindoth.ancientmagicks.item.spell.collapse.CollapseTablet;
-import net.mindoth.ancientmagicks.item.spell.deafeningblast.DeafeningBlastTablet;
-import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteTablet;
-import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamTablet;
-import net.mindoth.ancientmagicks.item.spell.extinguish.ExtinguishTablet;
-import net.mindoth.ancientmagicks.item.spell.featherfall.FeatherFallTablet;
-import net.mindoth.ancientmagicks.item.spell.fireball.FireballTablet;
-import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltTablet;
-import net.mindoth.ancientmagicks.item.spell.flight.FlightTablet;
-import net.mindoth.ancientmagicks.item.spell.frostbolt.FrostBoltTablet;
-import net.mindoth.ancientmagicks.item.spell.icicle.IcicleTablet;
-import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkTablet;
-import net.mindoth.ancientmagicks.item.spell.icewall.IceWallTablet;
-import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlTablet;
-import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainTablet;
-import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphTablet;
-import net.mindoth.ancientmagicks.item.spell.sleep.SleepTablet;
-import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballTablet;
-import net.mindoth.ancientmagicks.item.spell.spook.SpookTablet;
-import net.mindoth.ancientmagicks.item.spell.summonskeleton.SummonSkeletonTablet;
-import net.mindoth.ancientmagicks.item.spell.summonzombie.SummonZombieTablet;
-import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabTablet;
-import net.mindoth.ancientmagicks.item.spell.magearmor.MageArmorTablet;
-import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstTablet;
-import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkTablet;
+import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
+import net.mindoth.ancientmagicks.item.spell.blink.BlinkItem;
+import net.mindoth.ancientmagicks.item.spell.blizzard.BlizzardItem;
+import net.mindoth.ancientmagicks.item.spell.calllightning.CallLightningItem;
+import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphItem;
+import net.mindoth.ancientmagicks.item.spell.endlessbreath.EndlessBreathItem;
+import net.mindoth.ancientmagicks.item.spell.extinguish.ExtinguishItem;
+import net.mindoth.ancientmagicks.item.spell.featherfall.FeatherFallItem;
+import net.mindoth.ancientmagicks.item.spell.fireball.FireballItem;
+import net.mindoth.ancientmagicks.item.spell.flight.FlightItem;
+import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkItem;
+import net.mindoth.ancientmagicks.item.spell.icewall.IceWallItem;
+import net.mindoth.ancientmagicks.item.spell.magearmor.MageArmorItem;
+import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlItem;
+import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainItem;
+import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphItem;
+import net.mindoth.ancientmagicks.item.spell.sleep.SleepItem;
+import net.mindoth.ancientmagicks.item.spell.spook.SpookItem;
+import net.mindoth.ancientmagicks.item.spell.summonzombie.SummonZombieItem;
+import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabItem;
+import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstItem;
+import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -67,9 +58,6 @@ public class AncientMagicksItems {
 
 
     //Color Runes
-    public static final RegistryObject<Item> BLACK_RUNE = ITEMS.register("black_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A78"));
-
     public static final RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A7b"));
 
@@ -79,11 +67,14 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> YELLOW_RUNE = ITEMS.register("yellow_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A7e"));
 
-    public static final RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7f"));
-
     public static final RegistryObject<Item> GREEN_RUNE = ITEMS.register("green_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A7a"));
+
+    public static final RegistryObject<Item> BLACK_RUNE = ITEMS.register("black_rune",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A78"));
+
+    public static final RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7f"));
 
     public static final RegistryObject<Item> BROWN_RUNE = ITEMS.register("brown_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A76"));
@@ -96,96 +87,97 @@ public class AncientMagicksItems {
             () -> new RuneItem(new Item.Properties()));
 
 
-    public static final RegistryObject<Item> WITCH_SPARK_TABLET = ITEMS.register("witch_spark",
-            () -> new WitchSparkTablet(new Item.Properties(), false, 20));
+    //Spells
+    public static final RegistryObject<Item> ENDLESS_BREATH_ITEM = ITEMS.register("endless_breath",
+            () -> new EndlessBreathItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> SLIMEBALL_TABLET = ITEMS.register("slimeball",
-            () -> new SlimeballTablet(new Item.Properties(), false, 20));
+    public static final RegistryObject<Item> FEATHER_FALL_ITEM = ITEMS.register("feather_fall",
+            () -> new FeatherFallItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> MAGE_ARMOR_TABLET = ITEMS.register("mage_armor",
-            () -> new MageArmorTablet(new Item.Properties(), false, 1600));
+    public static final RegistryObject<Item> TELEKINETIC_GRAB_ITEM = ITEMS.register("telekinetic_grab",
+            () -> new TelekineticGrabItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> FEATHER_FALL_TABLET = ITEMS.register("feather_fall",
-            () -> new FeatherFallTablet(new Item.Properties(), false, 200));
+    public static final RegistryObject<Item> EXTINGUISH_ITEM = ITEMS.register("extinguish",
+            () -> new ExtinguishItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> TELEKINETIC_GRAB_TABLET = ITEMS.register("telekinetic_grab",
-            () -> new TelekineticGrabTablet(new Item.Properties(), false, 20));
+    public static final RegistryObject<Item> SPOOK_ITEM = ITEMS.register("spook",
+            () -> new SpookItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> EXTINGUISH_TABLET = ITEMS.register("extinguish",
-            () -> new ExtinguishTablet(new Item.Properties(), false, 100));
 
-    public static final RegistryObject<Item> SPOOK_TABLET = ITEMS.register("spook",
-            () -> new SpookTablet(new Item.Properties(), false, 2400));
+    public static final RegistryObject<Item> WITCH_SPARK_ITEM = ITEMS.register("witch_spark",
+            () -> new WitchSparkItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> BLIND_TABLET = ITEMS.register("blind",
-            () -> new BlindTablet(new Item.Properties(), false, 400));
+    public static final RegistryObject<Item> MAGE_ARMOR_ITEM = ITEMS.register("mage_armor",
+            () -> new MageArmorItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> WIND_BURST_TABLET = ITEMS.register("wind_burst",
-            () -> new WindBurstTablet(new Item.Properties(), false, 40));
+    public static final RegistryObject<Item> WIND_BURST_ITEM = ITEMS.register("wind_burst",
+            () -> new WindBurstItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> DYNAMITE_TABLET = ITEMS.register("dynamite",
-            () -> new DynamiteTablet(new Item.Properties(), false, 80));
+    public static final RegistryObject<Item> FIREBALL_ITEM = ITEMS.register("fireball",
+            () -> new FireballItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> BLINK_TABLET = ITEMS.register("blink",
-            () -> new BlinkTablet(new Item.Properties(), false, 40));
+    public static final RegistryObject<Item> CALL_LIGHTNING_ITEM = ITEMS.register("call_lightning",
+            () -> new CallLightningItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> FIREBALL_TABLET = ITEMS.register("fireball",
-            () -> new FireballTablet(new Item.Properties(), false, 60));
+    public static final RegistryObject<Item> ALACRITY_ITEM = ITEMS.register("alacrity",
+            () -> new AlacrityItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> CALL_LIGHTNING_TABLET = ITEMS.register("call_lightning",
-            () -> new CallLightningTablet(new Item.Properties(), false, 60));
+    public static final RegistryObject<Item> GHOSTWALK_ITEM = ITEMS.register("ghostwalk",
+            () -> new GhostwalkItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> NUMB_PAIN_TABLET = ITEMS.register("numb_pain",
-            () -> new NumbPainTablet(new Item.Properties(), false, 400));
+    public static final RegistryObject<Item> ICE_WALL_ITEM = ITEMS.register("ice_wall",
+            () -> new IceWallItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> SUMMON_ZOMBIE_TABLET = ITEMS.register("summon_zombie",
-            () -> new SummonZombieTablet(new Item.Properties(), false, 600));
+    public static final RegistryObject<Item> BLIZZARD_ITEM = ITEMS.register("blizzard",
+            () -> new BlizzardItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> SLEEP_ITEM = ITEMS.register("sleep",
+            () -> new SleepItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> NUMB_PAIN_ITEM = ITEMS.register("numb_pain",
+            () -> new NumbPainItem(new Item.Properties()));
+
+
+    public static final RegistryObject<Item> BLINK_ITEM = ITEMS.register("blink",
+            () -> new BlinkItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> SUMMON_ZOMBIE_ITEM = ITEMS.register("summon_zombie",
+            () -> new SummonZombieItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> FLIGHT_ITEM = ITEMS.register("flight",
+            () -> new FlightItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> POLYMORPH_ITEM = ITEMS.register("polymorph",
+            () -> new PolymorphItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> CHAOTIC_POLYMORPH_ITEM = ITEMS.register("chaotic_polymorph",
+            () -> new ChaoticPolymorphItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> MIND_CONTROL_ITEM = ITEMS.register("mind_control",
+            () -> new MindControlItem(new Item.Properties()));
+
+
+    /*public static final RegistryObject<Item> COLLAPSE_TABLET = ITEMS.register("collapse",
+            () -> new CollapseTablet(new Item.Properties(), false, 60, true));
 
     public static final RegistryObject<Item> SUMMON_SKELETON_TABLET = ITEMS.register("summon_skeleton",
-            () -> new SummonSkeletonTablet(new Item.Properties(), false, 600));
+            () -> new SummonSkeletonTablet(new Item.Properties(), false, 600, true));
 
-    public static final RegistryObject<Item> COLLAPSE_TABLET = ITEMS.register("collapse",
-            () -> new CollapseTablet(new Item.Properties(), false, 60));
+    public static final RegistryObject<Item> BLIND_TABLET = ITEMS.register("blind",
+            () -> new BlindTablet(new Item.Properties(), false, 400, true));
 
-    public static final RegistryObject<Item> ALACRITY_TABLET = ITEMS.register("alacrity",
-            () -> new AlacrityTablet(new Item.Properties(), false, 1200));
+    public static final RegistryObject<Item> SLIMEBALL_TABLET = ITEMS.register("slimeball",
+            () -> new SlimeballTablet(new Item.Properties(), false, 20, true));
 
-    public static final RegistryObject<Item> FLIGHT_TABLET = ITEMS.register("flight",
-            () -> new FlightTablet(new Item.Properties(), false, 1200));
-
-    public static final RegistryObject<Item> POLYMORPH_TABLET = ITEMS.register("polymorph",
-            () -> new PolymorphTablet(new Item.Properties(), false, 200));
-
-    public static final RegistryObject<Item> GHOSTWALK_TABLET = ITEMS.register("ghostwalk",
-            () -> new GhostwalkTablet(new Item.Properties(), false, 2400));
-
-    public static final RegistryObject<Item> ICE_WALL_TABLET = ITEMS.register("ice_wall",
-            () -> new IceWallTablet(new Item.Properties(), true, 80));
-
-    public static final RegistryObject<Item> CHAOTIC_POLYMORPH_TABLET = ITEMS.register("chaotic_polymorph",
-            () -> new ChaoticPolymorphTablet(new Item.Properties(), false, 40));
+    public static final RegistryObject<Item> DYNAMITE_TABLET = ITEMS.register("dynamite",
+            () -> new DynamiteTablet(new Item.Properties(), false, 80, true));
 
     public static final RegistryObject<Item> DEAFENING_BLAST_TABLET = ITEMS.register("deafening_blast",
-            () -> new DeafeningBlastTablet(new Item.Properties(), false, 120));
+            () -> new DeafeningBlastTablet(new Item.Properties(), false, 120, true));
 
     public static final RegistryObject<Item> EXPERIENCE_STREAM_TABLET = ITEMS.register("experience_stream",
-            () -> new ExperienceStreamTablet(new Item.Properties(), true, 20));
-
-    public static final RegistryObject<Item> MIND_CONTROL_TABLET = ITEMS.register("mind_control",
-            () -> new MindControlTablet(new Item.Properties(), true, 1200));
+            () -> new ExperienceStreamTablet(new Item.Properties(), true, 20, true));
 
     public static final RegistryObject<Item> ICICLE_TABLET = ITEMS.register("icicle",
-            () -> new IcicleTablet(new Item.Properties(), false, 20));
-
-    public static final RegistryObject<Item> BLIZZARD_TABLET = ITEMS.register("blizzard",
-            () -> new BlizzardTablet(new Item.Properties(), true, 120));
-
-    public static final RegistryObject<Item> SLEEP_TABLET = ITEMS.register("sleep",
-            () -> new SleepTablet(new Item.Properties(), false, 120));
-
-    public static final RegistryObject<Item> FIRE_BOLT_TABLET = ITEMS.register("fire_bolt",
-            () -> new FireBoltTablet(new Item.Properties(), false, 20));
-
-    public static final RegistryObject<Item> FROST_BOLT_TABLET = ITEMS.register("frost_bolt",
-            () -> new FrostBoltTablet(new Item.Properties(), false, 20));
+            () -> new IcicleTablet(new Item.Properties(), false, 20, true));*/
 }
