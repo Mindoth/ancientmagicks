@@ -13,6 +13,7 @@ import net.mindoth.ancientmagicks.item.spell.blink.BlinkItem;
 import net.mindoth.ancientmagicks.item.spell.blizzard.BlizzardItem;
 import net.mindoth.ancientmagicks.item.spell.calllightning.CallLightningItem;
 import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphItem;
+import net.mindoth.ancientmagicks.item.spell.dragonbreath.DragonBreathItem;
 import net.mindoth.ancientmagicks.item.spell.endlessbreath.EndlessBreathItem;
 import net.mindoth.ancientmagicks.item.spell.extinguish.ExtinguishItem;
 import net.mindoth.ancientmagicks.item.spell.featherfall.FeatherFallItem;
@@ -87,7 +88,7 @@ public class AncientMagicksItems {
             () -> new RuneItem(new Item.Properties()));
 
 
-    //Spells
+    //Folk Spells
     public static final RegistryObject<Item> ENDLESS_BREATH_ITEM = ITEMS.register("endless_breath",
             () -> new EndlessBreathItem(new Item.Properties()));
 
@@ -103,7 +104,7 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> SPOOK_ITEM = ITEMS.register("spook",
             () -> new SpookItem(new Item.Properties()));
 
-
+    //Combat Spells
     public static final RegistryObject<Item> WITCH_SPARK_ITEM = ITEMS.register("witch_spark",
             () -> new WitchSparkItem(new Item.Properties()));
 
@@ -137,7 +138,7 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> NUMB_PAIN_ITEM = ITEMS.register("numb_pain",
             () -> new NumbPainItem(new Item.Properties()));
 
-
+    //Ancient Spells
     public static final RegistryObject<Item> BLINK_ITEM = ITEMS.register("blink",
             () -> new BlinkItem(new Item.Properties()));
 
@@ -155,6 +156,9 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> MIND_CONTROL_ITEM = ITEMS.register("mind_control",
             () -> new MindControlItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> DRAGON_BREATH_ITEM = ITEMS.register("dragon_breath",
+            () -> new DragonBreathItem(new Item.Properties()));
 
 
     /*public static final RegistryObject<Item> COLLAPSE_TABLET = ITEMS.register("collapse",

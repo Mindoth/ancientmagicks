@@ -66,6 +66,8 @@
   "tooltip.ancientmagicks.sleep": "Put a target enemy to sleep",
   "item.ancientmagicks.endless_breath": "Endless Breath",
   "tooltip.ancientmagicks.endless_breath": "Channel to restore your breath",
+  "item.ancientmagicks.dragon_breath": "Dragon Breath",
+  "tooltip.ancientmagicks.dragon_breath": "Channel to breathe damaging flames like a dragon",
 
   "item.ancientmagicks.collapse": "Collapse",
   "tooltip.ancientmagicks.collapse": "Causes blocks to collapse and start falling around the targeted area",

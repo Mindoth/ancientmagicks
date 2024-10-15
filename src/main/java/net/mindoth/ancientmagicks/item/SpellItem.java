@@ -31,7 +31,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -59,6 +62,54 @@ public class SpellItem extends RuneItem {
 
     public boolean isChannel() {
         return false;
+    }
+
+    @Override
+    public void onUseTick(Level level, LivingEntity living, ItemStack tablet, int timeLeft) {
+        if ( level.isClientSide ) return;
+        if ( living instanceof Player player && tablet.getItem() instanceof SpellItem spellItem) {
+            CastingItem.doSpell(player, player, tablet, spellItem, getUseDuration(tablet) - timeLeft);
+        }
+    }
+
+    public static void attackEntityWithoutKnockback(LivingEntity owner, Entity caster, Entity target, float amount) {
+        final double vx = target.getDeltaMovement().x;
+        final double vy = target.getDeltaMovement().y;
+        final double vz = target.getDeltaMovement().z;
+        target.hurt(target.damageSources().indirectMagic(caster, owner), amount);
+        target.setDeltaMovement(vx, vy, vz);
+        target.hurtMarked = true;
+    }
+
+    public static boolean isAlly(LivingEntity owner, LivingEntity target) {
+        if ( owner == null || target == null ) return false;
+        if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) return true;
+        else return target == owner || !owner.canAttack(target) || owner.isAlliedTo(target)
+                || (target instanceof TamableAnimal pet && pet.isOwnedBy(owner)) || (target instanceof Mob mob && isMinionsOwner(owner, mob));
+    }
+
+    public static boolean isMinionsOwner(LivingEntity owner, Mob mob) {
+        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY)
+                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY).equals(owner.getUUID()) && mob.getTarget() != owner;
+    }
+
+    public static boolean isPushable(Entity entity) {
+        return ( entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof PrimedTnt || entity instanceof FallingBlockEntity );
+    }
+
+    public static boolean hasLineOfSight(Entity start, Entity target) {
+        Vec3 vec3 = new Vec3(start.getX(), start.getEyeY(), start.getZ());
+        Vec3 vec31 = new Vec3(target.getX(), target.getEyeY(), target.getZ());
+        return start.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, start)).getType() == HitResult.Type.MISS;
+    }
+
+    public void summonMinion(Mob minion, LivingEntity owner, Level level) {
+        minion.getPersistentData().putUUID(MindControlEffect.NBT_KEY, owner.getUUID());
+        minion.getPersistentData().putBoolean("am_is_minion", true);
+        minion.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), 1200));
+        ForgeEventFactory.onFinalizeSpawn(minion, (ServerLevel)level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+        level.addFreshEntity(minion);
+        minion.spawnAnim();
     }
 
     public SpellItem(Properties pProperties) {
@@ -149,39 +200,6 @@ public class SpellItem extends RuneItem {
     public static void playItemActivationAnimation(ItemStack itemStack, Entity entity) {
         Minecraft mc = Minecraft.getInstance();
         if ( entity == mc.player ) mc.gameRenderer.displayItemActivation(itemStack);
-    }
-
-    @Override
-    public void onUseTick(Level level, LivingEntity living, ItemStack tablet, int timeLeft) {
-        if ( level.isClientSide ) return;
-        if ( living instanceof Player player && tablet.getItem() instanceof SpellItem spellItem) {
-            CastingItem.doSpell(player, player, tablet, spellItem, getUseDuration(tablet) - timeLeft);
-        }
-    }
-
-    public static boolean isAlly(LivingEntity owner, LivingEntity target) {
-        if ( owner == null || target == null ) return false;
-        if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) return true;
-        else return target == owner || !owner.canAttack(target) || owner.isAlliedTo(target)
-                || (target instanceof TamableAnimal pet && pet.isOwnedBy(owner)) || (target instanceof Mob mob && isMinionsOwner(owner, mob));
-    }
-
-    public static boolean isMinionsOwner(LivingEntity owner, Mob mob) {
-        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY)
-                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY).equals(owner.getUUID()) && mob.getTarget() != owner;
-    }
-
-    public static boolean isPushable(Entity entity) {
-        return ( entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof PrimedTnt || entity instanceof FallingBlockEntity );
-    }
-
-    public void summonMinion(Mob minion, LivingEntity owner, Level level) {
-        minion.getPersistentData().putUUID(MindControlEffect.NBT_KEY, owner.getUUID());
-        minion.getPersistentData().putBoolean("am_is_minion", true);
-        minion.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), 1200));
-        ForgeEventFactory.onFinalizeSpawn(minion, (ServerLevel)level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-        level.addFreshEntity(minion);
-        minion.spawnAnim();
     }
 
     @Override

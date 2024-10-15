@@ -116,11 +116,11 @@ public abstract class AbstractSpellEntity extends Projectile {
     public int blockPierce;
     public Entity target;
 
-    public void anonShootFromRotation(float p_37253_, float p_37254_, float p_37255_, float p_37256_, float p_37257_) {
-        float f = -Mth.sin(p_37254_ * ((float)Math.PI / 180F)) * Mth.cos(p_37253_ * ((float)Math.PI / 180F));
-        float f1 = -Mth.sin((p_37253_ + p_37255_) * ((float)Math.PI / 180F));
-        float f2 = Mth.cos(p_37254_ * ((float)Math.PI / 180F)) * Mth.cos(p_37253_ * ((float)Math.PI / 180F));
-        this.shoot((double)f, (double)f1, (double)f2, p_37256_, p_37257_);
+    public void anonShootFromRotation(float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
+        float f = -Mth.sin(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
+        float f1 = -Mth.sin((pX + pZ) * ((float)Math.PI / 180F));
+        float f2 = Mth.cos(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
+        this.shoot((double)f, (double)f1, (double)f2, pVelocity, pInaccuracy);
     }
 
     protected boolean isAlly(LivingEntity target) {

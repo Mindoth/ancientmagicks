@@ -38,11 +38,11 @@ public class WindBurstItem extends SpellItem {
                 new Vec3(point.x - size, point.y - size, point.z - size)));
         for ( Entity target : targets ) {
             Vec3 targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, caster == owner, false, true, true, false);
-            if ( target != caster && isPushable(target) ) {
+            if ( target != caster && isPushable(target) && hasLineOfSight(caster, target) ) {
                 target.push((targetPoint.x - casterPos.x) * power, (targetPoint.y - casterPos.y + 0.5F) * power, (targetPoint.z - casterPos.z) * power);
                 target.hurtMarked = true;
+                if ( !state ) state = true;
             }
-            state = true;
         }
 
         if ( state ) {
