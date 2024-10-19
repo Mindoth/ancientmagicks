@@ -37,7 +37,7 @@ public class FireballEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultPower() {
-        return 10.0F;
+        return 20.0F;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class FireballEntity extends AbstractSpellEntity {
 
     private void causeDamage(LivingEntity target) {
         if ( !isAlly(target) ) {
-            dealDamage(target);
+            dealDamage(target, 8.0F);
             target.setSecondsOnFire(8);
         }
     }

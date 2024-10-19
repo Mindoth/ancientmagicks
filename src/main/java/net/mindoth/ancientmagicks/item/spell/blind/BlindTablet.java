@@ -11,15 +11,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class Blind extends SpellItem {
+public class BlindTablet extends SpellItem {
 
-    public Blind(Properties pProperties, int spellLevel) {
+    public BlindTablet(Properties pProperties, int spellLevel) {
         super(pProperties, spellLevel);
     }
 
     @Override
     public int getCooldown() {
-        return 400;
+        return 200;
     }
 
     @Override

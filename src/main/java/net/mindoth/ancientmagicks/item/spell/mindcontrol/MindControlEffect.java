@@ -138,7 +138,7 @@ public class MindControlEffect extends MobEffect {
     }
 
     @SubscribeEvent
-    public static void onMinionLootDrop(final LivingExperienceDropEvent event) {
+    public static void onMinionXpDrop(final LivingExperienceDropEvent event) {
         if ( event.getEntity() instanceof Mob mob && mob.getPersistentData().getBoolean("am_is_minion") ) {
             event.setCanceled(true);
         }

@@ -1,27 +1,41 @@
-package net.mindoth.ancientmagicks.item.spell.summonskeleton;
+package net.mindoth.ancientmagicks.item.spell.summondeathknight;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class SummonSkeleton extends SpellItem {
+public class SummonDeathKnightItem extends SpellItem {
 
-    public SummonSkeleton(Properties pProperties, int spellLevel) {
+    public SummonDeathKnightItem(Properties pProperties, int spellLevel) {
         super(pProperties, spellLevel);
+    }
+
+    @Override
+    public int getCooldown() {
+        return 600;
     }
 
     @Override
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        Mob minion = new Skeleton(EntityType.SKELETON, level);
+        Mob minion = new Zombie(EntityType.ZOMBIE, level);
+        minion.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
+        minion.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.SHIELD));
+        minion.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
+        minion.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.IRON_CHESTPLATE));
+        minion.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.IRON_LEGGINGS));
+        minion.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
 
         Vec3 pos = caster.position();
         Vec3 newPos = null;

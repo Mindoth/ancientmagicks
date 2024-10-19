@@ -44,6 +44,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SpellItem extends RuneItem {
@@ -98,6 +99,11 @@ public class SpellItem extends RuneItem {
         }
     }
 
+    public static float getPowerInRange(float minPower, float maxPower) {
+        Random r = new Random();
+        return minPower + r.nextFloat() * (maxPower - minPower);
+    }
+
     public static void attackEntityWithoutKnockback(LivingEntity owner, Entity caster, Entity target, float amount) {
         final double vx = target.getDeltaMovement().x;
         final double vy = target.getDeltaMovement().y;
@@ -132,7 +138,7 @@ public class SpellItem extends RuneItem {
     public void summonMinion(Mob minion, LivingEntity owner, Level level) {
         minion.getPersistentData().putUUID(MindControlEffect.NBT_KEY, owner.getUUID());
         minion.getPersistentData().putBoolean("am_is_minion", true);
-        minion.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), 1200));
+        minion.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), 4800));
         ForgeEventFactory.onFinalizeSpawn(minion, (ServerLevel)level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
         level.addFreshEntity(minion);
         minion.spawnAnim();

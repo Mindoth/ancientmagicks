@@ -9,6 +9,10 @@ import net.mindoth.ancientmagicks.item.TabletBag;
 import net.mindoth.ancientmagicks.item.castingitem.InvocationStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellPearlItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
+import net.mindoth.ancientmagicks.item.spell.blind.BlindTablet;
+import net.mindoth.ancientmagicks.item.spell.icicle.IcicleItem;
+import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballItem;
+import net.mindoth.ancientmagicks.item.spell.summondeathknight.SummonDeathKnightItem;
 import net.mindoth.ancientmagicks.item.spell.teleport.TeleportItem;
 import net.mindoth.ancientmagicks.item.spell.blizzard.BlizzardItem;
 import net.mindoth.ancientmagicks.item.spell.callthunder.CallThunderItem;
@@ -39,26 +43,18 @@ import net.minecraftforge.registries.RegistryObject;
 public class AncientMagicksItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, AncientMagicks.MOD_ID);
 
-    //Casting Items
     public static final RegistryObject<Item> INVOCATION_STAFF = ITEMS.register("invocation_staff",
             () -> new InvocationStaffItem(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> SPELL_PEARL = ITEMS.register("spell_pearl",
             () -> new SpellPearlItem(new Item.Properties()));
 
-    //Tablet Bag
     public static final RegistryObject<Item> TABLET_BAG = ITEMS.register("tablet_bag",
             () -> new TabletBag(AMBagType.TABLET_BAG));
 
-    //Spell Items
     public static final RegistryObject<Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
             () -> new AncientTabletItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> SPELL_FRAGMENT = ITEMS.register("spell_fragment",
-            () -> new Item(new Item.Properties().fireResistant()));
-
-
-    //Color Runes
     public static final RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A7b"));
 
@@ -83,10 +79,11 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> RED_RUNE = ITEMS.register("red_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A7c"));*/
 
-    //Empty Rune
     public static final RegistryObject<Item> STONE_SLATE = ITEMS.register("empty_rune",
             () -> new RuneItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> SPELL_FRAGMENT = ITEMS.register("spell_fragment",
+            () -> new Item(new Item.Properties().fireResistant()));
 
     //Magic Spells
     public static final RegistryObject<Item> FEATHER_FALL_ITEM = ITEMS.register("feather_fall",
@@ -116,6 +113,12 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> NUMB_PAIN_ITEM = ITEMS.register("numb_pain",
             () -> new NumbPainItem(new Item.Properties(), 1));
 
+    public static final RegistryObject<Item> ICICLE_ITEM = ITEMS.register("icicle",
+            () -> new IcicleItem(new Item.Properties(), 1));
+
+    public static final RegistryObject<Item> SLIMEBALL_ITEM = ITEMS.register("slimeball",
+            () -> new SlimeballItem(new Item.Properties(), 1));
+
     public static final RegistryObject<Item> ENDLESS_BREATH_ITEM = ITEMS.register("endless_breath",
             () -> new EndlessBreathItem(new Item.Properties(), 2));
 
@@ -125,17 +128,14 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> TELEPORT_ITEM = ITEMS.register("teleport",
             () -> new TeleportItem(new Item.Properties(), 2));
 
+    public static final RegistryObject<Item> BLIND_ITEM = ITEMS.register("blind",
+            () -> new BlindTablet(new Item.Properties(), 2));
+
     public static final RegistryObject<Item> FIREBALL_ITEM = ITEMS.register("fireball",
             () -> new FireballItem(new Item.Properties(), 3));
 
     public static final RegistryObject<Item> CALL_THUNDER_ITEM = ITEMS.register("call_thunder",
             () -> new CallThunderItem(new Item.Properties(), 3));
-
-    public static final RegistryObject<Item> GHOSTWALK_ITEM = ITEMS.register("ghostwalk",
-            () -> new GhostwalkItem(new Item.Properties(), 3));
-
-    public static final RegistryObject<Item> BLIZZARD_ITEM = ITEMS.register("blizzard",
-            () -> new BlizzardItem(new Item.Properties(), 3));
 
     public static final RegistryObject<Item> SUMMON_ZOMBIE_ITEM = ITEMS.register("summon_zombie",
             () -> new SummonZombieItem(new Item.Properties(), 3));
@@ -143,8 +143,14 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> FLY_ITEM = ITEMS.register("fly",
             () -> new FlyItem(new Item.Properties(), 3));
 
+    public static final RegistryObject<Item> BLIZZARD_ITEM = ITEMS.register("blizzard",
+            () -> new BlizzardItem(new Item.Properties(), 4));
+
     public static final RegistryObject<Item> POLYMORPH_ITEM = ITEMS.register("polymorph",
             () -> new PolymorphItem(new Item.Properties(), 4));
+
+    public static final RegistryObject<Item> GHOSTWALK_ITEM = ITEMS.register("ghostwalk",
+            () -> new GhostwalkItem(new Item.Properties(), 4));
 
     public static final RegistryObject<Item> CHAOTIC_POLYMORPH_ITEM = ITEMS.register("chaotic_polymorph",
             () -> new ChaoticPolymorphItem(new Item.Properties(), 5));
@@ -152,34 +158,12 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> MIND_CONTROL_ITEM = ITEMS.register("mind_control",
             () -> new MindControlItem(new Item.Properties(), 5));
 
+    public static final RegistryObject<Item> SUMMON_DEATH_KNIGHT_ITEM = ITEMS.register("summon_death_knight",
+            () -> new SummonDeathKnightItem(new Item.Properties(), 5));
+
     public static final RegistryObject<Item> DRAGON_BREATH_ITEM = ITEMS.register("dragon_breath",
             () -> new DragonBreathItem(new Item.Properties(), 6));
 
     public static final RegistryObject<Item> ICE_WALL_ITEM = ITEMS.register("ice_wall",
             () -> new IceWallItem(new Item.Properties(), 6));
-
-
-    /*public static final RegistryObject<Item> COLLAPSE_TABLET = ITEMS.register("collapse",
-            () -> new CollapseTablet(new Item.Properties(), false, 60, true));
-
-    public static final RegistryObject<Item> SUMMON_SKELETON_TABLET = ITEMS.register("summon_skeleton",
-            () -> new SummonSkeletonTablet(new Item.Properties(), false, 600, true));
-
-    public static final RegistryObject<Item> BLIND_TABLET = ITEMS.register("blind",
-            () -> new BlindTablet(new Item.Properties(), false, 400, true));
-
-    public static final RegistryObject<Item> SLIMEBALL_TABLET = ITEMS.register("slimeball",
-            () -> new SlimeballTablet(new Item.Properties(), false, 20, true));
-
-    public static final RegistryObject<Item> DYNAMITE_TABLET = ITEMS.register("dynamite",
-            () -> new DynamiteTablet(new Item.Properties(), false, 80, true));
-
-    public static final RegistryObject<Item> DEAFENING_BLAST_TABLET = ITEMS.register("deafening_blast",
-            () -> new DeafeningBlastTablet(new Item.Properties(), false, 120, true));
-
-    public static final RegistryObject<Item> EXPERIENCE_STREAM_TABLET = ITEMS.register("experience_stream",
-            () -> new ExperienceStreamTablet(new Item.Properties(), true, 20, true));
-
-    public static final RegistryObject<Item> ICICLE_TABLET = ITEMS.register("icicle",
-            () -> new IcicleTablet(new Item.Properties(), false, 20, true));*/
 }

@@ -35,6 +35,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
+import java.util.Random;
 
 public abstract class AbstractSpellEntity extends Projectile {
 
@@ -135,8 +136,10 @@ public abstract class AbstractSpellEntity extends Projectile {
                 && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY).equals(this.owner.getUUID()) && mob.getTarget() != this.owner;
     }
 
-    protected void dealDamage(LivingEntity target) {
-        target.hurt(target.damageSources().indirectMagic(this, this.owner), this.power);
+    protected void dealDamage(LivingEntity target, float minPower) {
+        Random r = new Random();
+        float random = minPower + r.nextFloat() * (this.power - minPower);
+        target.hurt(target.damageSources().indirectMagic(this, this.owner), random);
     }
 
     @Override

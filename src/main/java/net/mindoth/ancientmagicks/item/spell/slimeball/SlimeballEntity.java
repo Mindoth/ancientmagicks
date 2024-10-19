@@ -33,7 +33,7 @@ public class SlimeballEntity extends AbstractSpellEntity {
 
     @Override
     protected float getGravity() {
-        return 0.02F;
+        return 0.03F;
     }
 
     @Override
@@ -54,7 +54,8 @@ public class SlimeballEntity extends AbstractSpellEntity {
     @Override
     protected void doMobEffects(EntityHitResult result) {
         if ( this.power > 0 && !isAlly((LivingEntity)result.getEntity()) ) {
-            dealDamage((LivingEntity)result.getEntity());
+            LivingEntity living = (LivingEntity)result.getEntity();
+            dealDamage(living, 1.0F);
         }
     }
 

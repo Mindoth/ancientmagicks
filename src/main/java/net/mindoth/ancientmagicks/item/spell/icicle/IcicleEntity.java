@@ -41,7 +41,7 @@ public class IcicleEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultPower() {
-        return 4.0F;
+        return 6.0F;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class IcicleEntity extends AbstractSpellEntity {
     protected void doMobEffects(EntityHitResult result) {
         if ( this.power > 0 && !isAlly((LivingEntity)result.getEntity()) ) {
             LivingEntity target = (LivingEntity)result.getEntity();
-            dealDamage(target);
+            dealDamage(target, 2.0F);
         }
     }
 

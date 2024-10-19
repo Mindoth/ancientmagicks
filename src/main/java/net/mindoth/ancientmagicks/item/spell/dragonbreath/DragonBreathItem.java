@@ -47,7 +47,7 @@ public class DragonBreathItem extends SpellItem {
         float range = 2.5F;
         if ( owner != caster ) range = 0.0F;
         float size = 1.5F;
-        float power = 4;
+        float power = 8.0F;
 
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, false, true, false);
         List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + size, point.y + size, point.z + size),
@@ -63,7 +63,7 @@ public class DragonBreathItem extends SpellItem {
 
         for ( Entity target : doubleList ) {
             if ( target != caster && target instanceof LivingEntity living && !isAlly(owner, living) && hasLineOfSight(caster, target) ) {
-                attackEntityWithoutKnockback(owner, caster, target, power);
+                attackEntityWithoutKnockback(owner, caster, target, getPowerInRange(1.0F, power));
             }
         }
 

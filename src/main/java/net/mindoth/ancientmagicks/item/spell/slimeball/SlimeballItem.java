@@ -14,6 +14,11 @@ public class SlimeballItem extends SpellItem {
     }
 
     @Override
+    public int getCooldown() {
+        return 20;
+    }
+
+    @Override
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();

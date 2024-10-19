@@ -1,8 +1,6 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.spell.dynamite.DynamiteEntity;
-import net.mindoth.ancientmagicks.item.spell.experiencestream.ExperienceStreamEntity;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballEntity;
@@ -26,18 +24,9 @@ public class AncientMagicksEntities {
             = registerEntity(EntityType.Builder.<FireballEntity>of(FireballEntity::new,
             MobCategory.MISC).sized(0.8F, 0.8F).setCustomClientFactory(FireballEntity::new), "fireball");
 
-    public static final RegistryObject<EntityType<DynamiteEntity>> DYNAMITE
-            = registerEntity(EntityType.Builder.<DynamiteEntity>of(DynamiteEntity::new,
-            MobCategory.MISC).sized(1.0F, 1.0F).setCustomClientFactory(DynamiteEntity::new), "dynamite");
-
     public static final RegistryObject<EntityType<SlimeballEntity>> SLIMEBALL
             = registerEntity(EntityType.Builder.<SlimeballEntity>of(SlimeballEntity::new,
             MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(SlimeballEntity::new), "slimeball");
-
-    //This might need to be 0.5F, 0.5F sized
-    public static final RegistryObject<EntityType<ExperienceStreamEntity>> EXPERIENCE_BEAM
-            = registerEntity(EntityType.Builder.<ExperienceStreamEntity>of(ExperienceStreamEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(ExperienceStreamEntity::new), "experience_beam");
 
     public static final RegistryObject<EntityType<SpellPearlEntity>> SPELL_PEARL
             = registerEntity(EntityType.Builder.<SpellPearlEntity>of(SpellPearlEntity::new,

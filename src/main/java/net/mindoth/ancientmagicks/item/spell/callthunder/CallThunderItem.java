@@ -29,7 +29,7 @@ public class CallThunderItem extends SpellItem {
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        float power = 10.0F;
+        float power = 20.0F;
         float range = 64.0F;
         if ( owner != caster ) range = 0.0F;
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, true, true, true, true);
@@ -41,7 +41,7 @@ public class CallThunderItem extends SpellItem {
             if ( lightningbolt != null && !level.isClientSide ) {
                 lightningbolt.moveTo(blockPos.getCenter().x, blockPos.getCenter().y - 0.5D, blockPos.getCenter().z);
                 lightningbolt.setCause(caster instanceof ServerPlayer ? (ServerPlayer)caster : null);
-                lightningbolt.setDamage(power);
+                lightningbolt.setDamage(getPowerInRange(2.0F, power));
                 level.addFreshEntity(lightningbolt);
                 state = true;
             }
