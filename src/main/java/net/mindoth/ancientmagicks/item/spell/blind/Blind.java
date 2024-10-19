@@ -13,8 +13,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class Blind extends SpellItem {
 
-    public Blind(Properties pProperties) {
-        super(pProperties);
+    public Blind(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

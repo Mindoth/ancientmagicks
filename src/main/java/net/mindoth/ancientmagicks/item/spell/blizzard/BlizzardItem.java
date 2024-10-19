@@ -13,8 +13,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class BlizzardItem extends SpellItem {
 
-    public BlizzardItem(Properties pProperties) {
-        super(pProperties);
+    public BlizzardItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

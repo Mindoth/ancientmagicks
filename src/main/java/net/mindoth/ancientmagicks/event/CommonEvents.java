@@ -117,14 +117,14 @@ public class CommonEvents {
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event) {
         for ( SpellItem spell : AncientMagicks.SPELL_LIST ) {
-            if ( spell.isFolk() ) {
+            if ( spell.spellTier <= 3 ) {
                 if ( event.getType() == VillagerProfession.LIBRARIAN ) {
                     Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
                     ItemStack stack = new ItemStack(spell, 1);
 
                     for ( int i = 3; i < 5; i++ ) {
                         trades.get(i).add((trader, rand) -> new MerchantOffer(
-                                new ItemStack(Items.EMERALD, 16),
+                                new ItemStack(Items.EMERALD, 16 * spell.spellTier),
                                 stack, 1, 30, 0.05F));
                     }
                 }

@@ -9,8 +9,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class FireballItem extends SpellItem {
 
-    public FireballItem(Properties pProperties) {
-        super(pProperties);
+    public FireballItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

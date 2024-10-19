@@ -16,10 +16,10 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class DeafeningBlast extends SpellItem {
+public class DeafeningBlastItem extends SpellItem {
 
-    public DeafeningBlast(Properties pProperties) {
-        super(pProperties);
+    public DeafeningBlastItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

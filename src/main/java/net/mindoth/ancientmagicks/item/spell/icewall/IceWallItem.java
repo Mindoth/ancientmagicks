@@ -16,8 +16,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class IceWallItem extends SpellItem {
 
-    public IceWallItem(Properties pProperties) {
-        super(pProperties);
+    public IceWallItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

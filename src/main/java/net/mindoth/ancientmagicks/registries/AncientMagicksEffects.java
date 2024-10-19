@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityEffect;
-import net.mindoth.ancientmagicks.item.spell.flight.FlightEffect;
+import net.mindoth.ancientmagicks.item.spell.fly.FlightEffect;
 import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkEffect;
 import net.mindoth.ancientmagicks.item.spell.magearmor.MageArmorEffect;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;

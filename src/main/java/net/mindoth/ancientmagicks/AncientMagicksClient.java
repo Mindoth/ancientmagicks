@@ -9,7 +9,7 @@ import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleRenderer;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballRenderer;
 import net.mindoth.ancientmagicks.item.spell.spellpearl.SpellPearlRenderer;
-import net.mindoth.ancientmagicks.item.spell.witchspark.WitchSparkRenderer;
+import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchSparkRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendRuneData;
 import net.mindoth.ancientmagicks.registries.AncientMagicksContainers;

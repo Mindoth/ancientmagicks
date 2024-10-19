@@ -14,8 +14,8 @@ import java.util.List;
 
 public class WindBurstItem extends SpellItem {
 
-    public WindBurstItem(Properties pProperties) {
-        super(pProperties);
+    public WindBurstItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

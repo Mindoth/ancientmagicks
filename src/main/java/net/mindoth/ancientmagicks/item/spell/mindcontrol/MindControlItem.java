@@ -14,13 +14,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class MindControlItem extends SpellItem {
 
-    public MindControlItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @Override
-    public boolean isAncient() {
-        return true;
+    public MindControlItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

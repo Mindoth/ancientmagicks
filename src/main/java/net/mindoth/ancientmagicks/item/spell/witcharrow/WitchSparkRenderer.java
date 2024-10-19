@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.witchspark;
+package net.mindoth.ancientmagicks.item.spell.witcharrow;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.mindoth.ancientmagicks.AncientMagicks;

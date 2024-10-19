@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.flight;
+package net.mindoth.ancientmagicks.item.spell.fly;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
@@ -11,20 +11,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class FlightItem extends SpellItem {
+public class FlyItem extends SpellItem {
 
-    public FlightItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @Override
-    public boolean isAncient() {
-        return true;
+    public FlyItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override
     public int getCooldown() {
-        return 1200;
+        return 200;
     }
 
     @Override
@@ -32,7 +27,7 @@ public class FlightItem extends SpellItem {
         boolean state = false;
         Level level = caster.level();
 
-        int life = 200;
+        int life = 1200;
         float range = 14.0F;
         float size = range * 0.5F;
 

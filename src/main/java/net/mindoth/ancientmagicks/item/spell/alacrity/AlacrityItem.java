@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class AlacrityItem extends SpellItem {
 
-    public AlacrityItem(Properties pProperties) {
-        super(pProperties);
+    public AlacrityItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

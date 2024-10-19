@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.icicle;
+package net.mindoth.ancientmagicks.item.spell.slimeball;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
@@ -7,10 +7,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class Icicle extends SpellItem {
+public class SlimeballItem extends SpellItem {
 
-    public Icicle(Properties pProperties) {
-        super(pProperties);
+    public SlimeballItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override
@@ -23,9 +23,9 @@ public class Icicle extends SpellItem {
             adjuster = -1;
             down = 0.0F;
         }
-        AbstractSpellEntity projectile = new IcicleEntity(level, owner, caster, this);
+        AbstractSpellEntity projectile = new SlimeballEntity(level, owner, caster, this);
 
-        projectile.setColor(AbstractSpellEntity.getSpellColor("white"), 0.3F);
+        projectile.setColor(AbstractSpellEntity.getSpellColor("green"), 0.8F);
         projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
         projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
         level.addFreshEntity(projectile);

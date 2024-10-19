@@ -12,10 +12,10 @@ import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class Collapse extends SpellItem {
+public class CollapseItem extends SpellItem {
 
-    public Collapse(Properties pProperties) {
-        super(pProperties);
+    public CollapseItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

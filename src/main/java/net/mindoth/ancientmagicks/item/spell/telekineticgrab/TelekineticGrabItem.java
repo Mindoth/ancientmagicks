@@ -20,13 +20,8 @@ import java.util.List;
 
 public class TelekineticGrabItem extends SpellItem {
 
-    public TelekineticGrabItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @Override
-    public boolean isFolk() {
-        return true;
+    public TelekineticGrabItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

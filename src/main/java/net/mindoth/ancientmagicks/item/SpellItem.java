@@ -47,13 +47,39 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SpellItem extends RuneItem {
+    public final int spellTier;
 
-    public boolean isFolk() {
-        return false;
+    public SpellItem(Properties pProperties, int spellTier) {
+        super(pProperties);
+        this.spellTier = spellTier;
     }
 
-    public boolean isAncient() {
-        return false;
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
+        int spellTier = ((SpellItem)stack.getItem()).spellTier;
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.tier").append(Component.literal(": " + spellTier)).withStyle(ChatFormatting.GRAY));
+        if ( !Screen.hasShiftDown() ) {
+            tooltip.add(Component.translatable("tooltip.ancientmagicks.shift"));
+        }
+        else if ( Screen.hasShiftDown() ) {
+            String modid = ForgeRegistries.ITEMS.getKey(stack.getItem()).toString().split(":")[0];
+            if ( modid != null ) tooltip.add(Component.translatable("tooltip." + modid + "." + stack.getItem()).withStyle(ChatFormatting.GRAY));
+        }
+        if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(this) && Minecraft.getInstance().player != null ) {
+            if ( ClientSpellData.isSpellKnown(this) || Minecraft.getInstance().player.isCreative() ) {
+                StringBuilder tooltipString = new StringBuilder();
+                List<ColorRuneItem> list = ColorRuneItem.stringListToActualList(ColorRuneItem.CURRENT_COMBO_MAP.get(this).toString());
+                for ( ColorRuneItem rune : list ) {
+                    String color = rune.color + "0" + "\u00A7r";
+                    tooltipString.append(color);
+                }
+
+                tooltip.add(Component.literal(String.valueOf(tooltipString)));
+            }
+        }
+
+        super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
     public int getCooldown() {
@@ -112,42 +138,13 @@ public class SpellItem extends RuneItem {
         minion.spawnAnim();
     }
 
-    public SpellItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        if ( !Screen.hasShiftDown() ) {
-            tooltip.add(Component.translatable("tooltip.ancientmagicks.shift"));
-        }
-        else if ( Screen.hasShiftDown() ) {
-            String modid = ForgeRegistries.ITEMS.getKey(stack.getItem()).toString().split(":")[0];
-            if ( modid != null ) tooltip.add(Component.translatable("tooltip." + modid + "." + stack.getItem()).withStyle(ChatFormatting.GRAY));
-        }
-        if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(this) && Minecraft.getInstance().player != null ) {
-            if ( ClientSpellData.isSpellKnown(this) || Minecraft.getInstance().player.isCreative() ) {
-                StringBuilder tooltipString = new StringBuilder();
-                List<ColorRuneItem> list = ColorRuneItem.stringListToActualList(ColorRuneItem.CURRENT_COMBO_MAP.get(this).toString());
-                for ( ColorRuneItem rune : list ) {
-                    String color = rune.color + "0" + "\u00A7r";
-                    tooltipString.append(color);
-                }
-
-                tooltip.add(Component.literal(String.valueOf(tooltipString)));
-            }
-        }
-
-        super.appendHoverText(stack, world, tooltip, flagIn);
-    }
-
     @Override
     public void onDestroyed(ItemEntity entity, DamageSource damageSource) {
         Level level = entity.level();
         if ( level.isClientSide ) return;
         if ( damageSource.type() != entity.damageSources().lava().type() && damageSource.type() != entity.damageSources().onFire().type() ) return;
-        int amount = ThreadLocalRandom.current().nextInt(1, 4 + 1);
+        SpellItem spellItem = (SpellItem)entity.getItem().getItem();
+        int amount = ThreadLocalRandom.current().nextInt(1, spellItem.spellTier + 1);
         float randX = ThreadLocalRandom.current().nextFloat(-0.3F, 0.3F);
         float randZ = ThreadLocalRandom.current().nextFloat(-0.3F, 0.3F);
         ItemStack newStack = new ItemStack(AncientMagicksItems.SPELL_FRAGMENT.get(), amount);

@@ -14,13 +14,8 @@ import java.util.List;
 
 public class FeatherFallItem extends SpellItem {
 
-    public FeatherFallItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @Override
-    public boolean isFolk() {
-        return true;
+    public FeatherFallItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

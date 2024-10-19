@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.calllightning;
+package net.mindoth.ancientmagicks.item.spell.callthunder;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -14,10 +14,10 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class CallLightningItem extends SpellItem {
+public class CallThunderItem extends SpellItem {
 
-    public CallLightningItem(Properties pProperties) {
-        super(pProperties);
+    public CallThunderItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.witchspark;
+package net.mindoth.ancientmagicks.item.spell.witcharrow;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;

@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class NumbPainItem extends SpellItem {
 
-    public NumbPainItem(Properties pProperties) {
-        super(pProperties);
+    public NumbPainItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

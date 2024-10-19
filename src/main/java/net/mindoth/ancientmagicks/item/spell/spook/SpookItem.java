@@ -12,13 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class SpookItem extends SpellItem {
 
-    public SpookItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @Override
-    public boolean isFolk() {
-        return true;
+    public SpookItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

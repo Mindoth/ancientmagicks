@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class MageArmorItem extends SpellItem {
 
-    public MageArmorItem(Properties pProperties) {
-        super(pProperties);
+    public MageArmorItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

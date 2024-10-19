@@ -1,18 +1,16 @@
-package net.mindoth.ancientmagicks.item.spell.witchspark;
+package net.mindoth.ancientmagicks.item.spell.icicle;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class WitchSparkItem extends SpellItem {
+public class IcicleItem extends SpellItem {
 
-    public WitchSparkItem(Properties pProperties) {
-        super(pProperties);
+    public IcicleItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override
@@ -25,16 +23,10 @@ public class WitchSparkItem extends SpellItem {
             adjuster = -1;
             down = 0.0F;
         }
+        AbstractSpellEntity projectile = new IcicleEntity(level, owner, caster, this);
 
-        float range = 64.0F;
-        if ( owner != caster ) range = 0.0F;
-
-        AbstractSpellEntity projectile = new WitchSparkEntity(level, owner, caster, this);
-
-        projectile.setColor(AbstractSpellEntity.getSpellColor("dark_purple"), 0.2F);
+        projectile.setColor(AbstractSpellEntity.getSpellColor("white"), 0.3F);
         projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
-        Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, caster == owner, true);
-        if ( target != null && target != caster && (target instanceof LivingEntity living && !isAlly(owner, living)) ) projectile.target = target;
         projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
         level.addFreshEntity(projectile);
         state = true;

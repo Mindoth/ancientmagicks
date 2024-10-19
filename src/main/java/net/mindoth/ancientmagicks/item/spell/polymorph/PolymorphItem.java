@@ -12,13 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class PolymorphItem extends SpellItem {
 
-    public PolymorphItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @Override
-    public boolean isAncient() {
-        return true;
+    public PolymorphItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

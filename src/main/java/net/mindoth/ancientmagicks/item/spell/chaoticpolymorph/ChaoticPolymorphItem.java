@@ -16,13 +16,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ChaoticPolymorphItem extends SpellItem {
 
-    public ChaoticPolymorphItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @Override
-    public boolean isAncient() {
-        return true;
+    public ChaoticPolymorphItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

@@ -7,13 +7,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class EndlessBreathItem extends SpellItem {
 
-    public EndlessBreathItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @Override
-    public boolean isFolk() {
-        return true;
+    public EndlessBreathItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

@@ -14,8 +14,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class SleepItem extends SpellItem {
 
-    public SleepItem(Properties pProperties) {
-        super(pProperties);
+    public SleepItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

@@ -8,10 +8,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class ExperienceStream extends SpellItem {
+public class ExperienceStreamItem extends SpellItem {
 
-    public ExperienceStream(Properties pProperties) {
-        super(pProperties);
+    public ExperienceStreamItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

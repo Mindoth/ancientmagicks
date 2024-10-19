@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.flight;
+package net.mindoth.ancientmagicks.item.spell.fly;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;

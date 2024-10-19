@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.blink;
+package net.mindoth.ancientmagicks.item.spell.teleport;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -7,15 +7,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class BlinkItem extends SpellItem {
+public class TeleportItem extends SpellItem {
 
-    public BlinkItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @Override
-    public boolean isAncient() {
-        return true;
+    public TeleportItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

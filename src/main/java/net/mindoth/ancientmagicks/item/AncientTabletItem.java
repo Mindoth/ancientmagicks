@@ -55,7 +55,7 @@ public class AncientTabletItem extends Item {
 
     private static CompoundTag createSpellToDiscover(CompoundTag tag) {
         List<SpellItem> list = AncientMagicks.SPELL_LIST;
-        list.removeIf(spell -> !spell.isAncient());
+        list.removeIf(spell -> spell.spellTier < 4 || spell.spellTier > 6);
         int index = ThreadLocalRandom.current().nextInt(0, list.size());
         SpellItem item = list.get(index);
         tag.putString("am_secretspell", ForgeRegistries.ITEMS.getKey(item).toString());

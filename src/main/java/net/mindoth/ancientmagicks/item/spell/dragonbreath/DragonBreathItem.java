@@ -19,13 +19,8 @@ import java.util.stream.Stream;
 
 public class DragonBreathItem extends SpellItem {
 
-    public DragonBreathItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @Override
-    public boolean isAncient() {
-        return true;
+    public DragonBreathItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override

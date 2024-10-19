@@ -17,13 +17,8 @@ import java.util.List;
 
 public class ExtinguishItem extends SpellItem {
 
-    public ExtinguishItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @Override
-    public boolean isFolk() {
-        return true;
+    public ExtinguishItem(Properties pProperties, int spellLevel) {
+        super(pProperties, spellLevel);
     }
 
     @Override
