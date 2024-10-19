@@ -68,7 +68,7 @@ public class PlayerSpell {
         this.white_rune = white_rune;
     }
 
-    private boolean brown_rune;
+    /*private boolean brown_rune;
     public boolean getBrown() {
         return this.brown_rune;
     }
@@ -82,7 +82,7 @@ public class PlayerSpell {
     }
     public void setRed(boolean red_rune) {
         this.red_rune = red_rune;
-    }
+    }*/
 
     public void copyFrom(PlayerSpell source) {
         this.knownSpells = source.knownSpells;
@@ -93,8 +93,8 @@ public class PlayerSpell {
         this.green_rune = source.green_rune;
         this.black_rune = source.black_rune;
         this.white_rune = source.white_rune;
-        this.brown_rune = source.brown_rune;
-        this.red_rune = source.red_rune;
+        /*this.brown_rune = source.brown_rune;
+        this.red_rune = source.red_rune;*/
     }
 
     public void saveNBTData(CompoundTag tag) {
@@ -106,8 +106,8 @@ public class PlayerSpell {
         tag.putBoolean("am_green_rune", this.green_rune);
         tag.putBoolean("am_black_rune", this.black_rune);
         tag.putBoolean("am_white_rune", this.white_rune);
-        tag.putBoolean("am_brown_rune", this.brown_rune);
-        tag.putBoolean("am_red_rune", this.red_rune);
+        /*tag.putBoolean("am_brown_rune", this.brown_rune);
+        tag.putBoolean("am_red_rune", this.red_rune);*/
     }
 
     public void loadNBTData(CompoundTag tag) {
@@ -119,7 +119,7 @@ public class PlayerSpell {
         this.green_rune = tag.getBoolean("am_green_rune");
         this.black_rune = tag.getBoolean("am_black_rune");
         this.white_rune = tag.getBoolean("am_white_rune");
-        this.brown_rune = tag.getBoolean("am_brown_rune");
-        this.red_rune = tag.getBoolean("am_red_rune");
+        /*this.brown_rune = tag.getBoolean("am_brown_rune");
+        this.red_rune = tag.getBoolean("am_red_rune");*/
     }
 }

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
@@ -58,6 +59,7 @@ public class GuiSpellWheel extends Screen {
     private SpellItem comboResult;
     private final boolean discoveryMode;
     private final InteractionHand hand;
+    private final String hotbar;
 
     public GuiSpellWheel(List<ItemStack> stackList, @Nullable CompoundTag tag, boolean isOffhand) {
         super(Component.literal(""));
@@ -70,6 +72,11 @@ public class GuiSpellWheel extends Screen {
         if ( this.discoveryMode ) this.tag = tag;
         else this.tag = null;
         this.hand = isOffhand ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+        int size = AncientMagicks.comboSizeCalc();
+        if ( size == 4 ) this.hotbar = "hotbar4.png";
+        else if ( size == 5 ) this.hotbar = "hotbar5.png";
+        else if ( size == 6 ) this.hotbar = "hotbar6.png";
+        else this.hotbar = "hotbar3.png";
     }
 
     public static void open(List<ItemStack> itemList, @Nullable CompoundTag tag, boolean isOffHand) {
@@ -89,7 +96,7 @@ public class GuiSpellWheel extends Screen {
         if ( this.selectedItem != -1 ) {
             ItemStack clickedItem = this.itemList.get(this.selectedItem);
             if ( clickedItem.getItem() instanceof ColorRuneItem ) {
-                if ( this.comboList.size() < 3 ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
+                if ( this.comboList.size() < AncientMagicks.comboSizeCalc() ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
                 else {
                     this.comboList.remove(0);
                     this.comboList.add((ColorRuneItem)clickedItem.getItem());
@@ -141,11 +148,12 @@ public class GuiSpellWheel extends Screen {
         }
 
         //Show comboList on new Hotbar
-        int comboX = (this.minecraft.getWindow().getGuiScaledWidth() / 2) - 31;
+        int comboX = (this.minecraft.getWindow().getGuiScaledWidth() / 2) - 31 - (10 * (AncientMagicks.comboSizeCalc() - 3));
         int comboY = this.minecraft.getWindow().getGuiScaledHeight() - 22;
+        int fileWidth = 62 + (20 * (AncientMagicks.comboSizeCalc() - 3));
 
-        GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/gui/hotbar.png"),
-                comboX, comboY, 0, 0, 62, 22, 62, 22, graphics);
+        GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/gui/" + this.hotbar),
+                comboX, comboY, 0, 0, fileWidth, 22, fileWidth, 22, graphics);
         if ( !this.comboList.isEmpty() ) {
             for ( int i = 0; i < this.comboList.size(); ++i ) {
                 int ingX = comboX + 3 + (i * 20);

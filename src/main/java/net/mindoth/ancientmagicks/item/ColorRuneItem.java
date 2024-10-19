@@ -117,8 +117,8 @@ public class ColorRuneItem extends RuneItem {
                     if ( stack.getItem() == AncientMagicksItems.GREEN_RUNE.get() ) cap.ifPresent(rune -> rune.setGreen(!rune.getGreen()));
                     if ( stack.getItem() == AncientMagicksItems.BLACK_RUNE.get() ) cap.ifPresent(rune -> rune.setBlack(!rune.getBlack()));
                     if ( stack.getItem() == AncientMagicksItems.WHITE_RUNE.get() ) cap.ifPresent(rune -> rune.setWhite(!rune.getWhite()));
-                    if ( stack.getItem() == AncientMagicksItems.BROWN_RUNE.get() ) cap.ifPresent(rune -> rune.setBrown(!rune.getBrown()));
-                    if ( stack.getItem() == AncientMagicksItems.RED_RUNE.get() ) cap.ifPresent(rune -> rune.setRed(!rune.getRed()));
+                    /*if ( stack.getItem() == AncientMagicksItems.BROWN_RUNE.get() ) cap.ifPresent(rune -> rune.setBrown(!rune.getBrown()));
+                    if ( stack.getItem() == AncientMagicksItems.RED_RUNE.get() ) cap.ifPresent(rune -> rune.setRed(!rune.getRed()));*/
                     if ( !player.isCreative() ) event.getResultStack().shrink(1);
                     Vec3 center = ShadowEvents.getEntityCenter(event.getEntity());
                     player.level().playSound(null, center.x, center.y, center.z, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5F, 0.25F);
@@ -129,30 +129,30 @@ public class ColorRuneItem extends RuneItem {
 
     public static List<ItemStack> getColorRuneList(Player player, PlayerSpell spell) {
         List<ItemStack> runeList = Lists.newArrayList();
-        if ( (spell.getBlue() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.BLUE_RUNE.get()) ) {
+        if ( (spell.getBlue() || player.isCreative()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.BLUE_RUNE.get()));
         }
-        if ( (spell.getPurple() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.PURPLE_RUNE.get()) ) {
+        if ( (spell.getPurple() || player.isCreative()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()));
         }
-        if ( (spell.getYellow() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.YELLOW_RUNE.get()) ) {
+        if ( (spell.getYellow() || player.isCreative()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
         }
-        if ( (spell.getGreen() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.GREEN_RUNE.get()) ) {
+        if ( (spell.getGreen() || player.isCreative()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
         }
-        if ( (spell.getBlack() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.BLACK_RUNE.get()) ) {
+        if ( (spell.getBlack() || player.isCreative()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
         }
-        if ( (spell.getWhite() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.WHITE_RUNE.get()) ) {
+        if ( (spell.getWhite() || player.isCreative()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
         }
-        if ( (spell.getBrown() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.BROWN_RUNE.get()) ) {
+        /*if ( (spell.getBrown() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.BROWN_RUNE.get()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.BROWN_RUNE.get()));
         }
         if ( (spell.getRed() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.RED_RUNE.get()) ) {
             runeList.add(new ItemStack(AncientMagicksItems.RED_RUNE.get()));
-        }
+        }*/
         return runeList;
     }
 }

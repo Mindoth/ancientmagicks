@@ -28,6 +28,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -65,10 +66,7 @@ public class AncientMagicks {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if ( event.getTab() == AncientMagicksTab.ANCIENTMAGICKS_TAB.get() ) {
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
-                if ( item.get() instanceof ColorRuneItem rune ) {
-                    if ( COLOR_RUNE_LIST.contains(rune) ) event.accept(item);
-                }
-                else if ( item.get() instanceof SpellItem spell ) {
+                if ( item.get() instanceof SpellItem spell ) {
                     if ( isSpellEnabled(spell) ) event.accept(item);
                 }
                 else if ( item.get() != AncientMagicksItems.TABLET_BAG.get() ) event.accept(item);
@@ -76,7 +74,7 @@ public class AncientMagicks {
         }
     }
 
-    //Spell list stuff
+    //List stuff
     public static List<Item> ITEM_LIST = Lists.newArrayList();
     public static List<EntityType<?>> MOB_LIST = Lists.newArrayList();
     public static List<EntityType<?>> DISABLED_POLYMOBS = Lists.newArrayList();
@@ -94,27 +92,11 @@ public class AncientMagicks {
         if ( !COMBO_MAP.isEmpty() ) COMBO_MAP.clear();
         createSpellDisableList();
         for ( Item item : ITEM_LIST ) if ( item instanceof SpellItem spellItem && isSpellEnabled(spellItem) ) SPELL_LIST.add(spellItem);
-        createColorRuneList();
+        for ( Item item : ITEM_LIST ) if ( item instanceof ColorRuneItem colorRuneItem ) COLOR_RUNE_LIST.add(colorRuneItem);
     }
 
     public static boolean isSpellEnabled(SpellItem spell) {
         return DISABLED_SPELLS.isEmpty() || !DISABLED_SPELLS.contains(spell);
-    }
-
-    public static boolean isColorRuneEnabled(Item item) {
-        return item instanceof ColorRuneItem rune && COLOR_RUNE_LIST.contains(rune);
-    }
-
-    private static void createColorRuneList() {
-        int n = -1;
-        for ( Item item : ITEM_LIST ) {
-            if ( item instanceof ColorRuneItem ) {
-                if ( (n * (n + 2) * (n + 1)) < (6 * SPELL_LIST.size()) ) {
-                    COLOR_RUNE_LIST.add((ColorRuneItem)item);
-                    n++;
-                }
-            }
-        }
     }
 
     private static void createSpellDisableList() {
@@ -146,6 +128,29 @@ public class AncientMagicks {
     public static List<SpellItem> DISABLED_SPELLS = Lists.newArrayList();
     public static HashMap<SpellItem, List<ColorRuneItem>> COMBO_MAP = new HashMap<>();
 
+    private static List<List<ColorRuneItem>> createTempList(List<List<ColorRuneItem>> comboList, int i, int j, int k, @Nullable Integer l, @Nullable Integer m, @Nullable Integer n) {
+        List<ColorRuneItem> tempList = Lists.newArrayList();
+        tempList.add(COLOR_RUNE_LIST.get(i));
+        tempList.add(COLOR_RUNE_LIST.get(j));
+        tempList.add(COLOR_RUNE_LIST.get(k));
+        if ( l != null ) tempList.add(COLOR_RUNE_LIST.get(l));
+        if ( m != null ) tempList.add(COLOR_RUNE_LIST.get(m));
+        if ( n != null ) tempList.add(COLOR_RUNE_LIST.get(n));
+        if ( hasNoDupeInList(comboList, tempList) ) comboList.add(tempList);
+        return comboList;
+    }
+
+    //Check how many Color Runes should be in a Spell Code. The amount increases depending on how many Spells are registered.
+    public static int comboSizeCalc() {
+        //return (n * (n + 2) * (n + 1)) >= (6 * SPELL_LIST.size());
+        int returnValue = 0;
+        if ( (56 * (56 + 2) * (56 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 3;
+        else if ( (126 * (126 + 2) * (126 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 4;
+        else if ( (252 * (252 + 2) * (252 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 5;
+        else if ( (462 * (462 + 2) * (462 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 6;
+        return returnValue;
+    }
+
     public static void randomizeSpells() {
         Logger logger = getLogger();
 
@@ -153,16 +158,24 @@ public class AncientMagicks {
         for ( int i = 0; i < COLOR_RUNE_LIST.size(); i++ ) {
             for ( int j = 0; j < COLOR_RUNE_LIST.size(); j++ ) {
                 for ( int k = 0; k < COLOR_RUNE_LIST.size(); k++ ) {
-                    List<ColorRuneItem> tempList = Lists.newArrayList();
-                    tempList.add(COLOR_RUNE_LIST.get(i));
-                    tempList.add(COLOR_RUNE_LIST.get(j));
-                    tempList.add(COLOR_RUNE_LIST.get(k));
-                    if ( hasNoDupeInList(comboList, tempList) ) comboList.add(tempList);
+                    if ( comboSizeCalc() == 3 ) createTempList(comboList, i, j, k, null, null, null);
+                    for ( int l = 0; l < COLOR_RUNE_LIST.size(); l++ ) {
+                        if ( comboSizeCalc() == 3 ) break;
+                        else if ( comboSizeCalc() == 4 ) createTempList(comboList, i, j, k, l, null, null);
+                        for ( int m = 0; m < COLOR_RUNE_LIST.size(); m++ ) {
+                            if ( comboSizeCalc() == 4 ) break;
+                            else if ( comboSizeCalc() == 5 ) createTempList(comboList, i, j, k, l, m, null);
+                            for ( int n = 0; n < COLOR_RUNE_LIST.size(); n++ ) {
+                                if ( comboSizeCalc() == 5 ) break;
+                                else if ( comboSizeCalc() == 6 ) createTempList(comboList, i, j, k, l, m, n);
+                            }
+                        }
+                    }
                 }
             }
         }
         if ( comboList.size() < SPELL_LIST.size() ) {
-            logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY SPELL. EITHER YOU HAVE 100+ SPELLS OR SOMETHING'S WRONG");
+            logger.warn("WARN! THERE ARE NOT ENOUGH SPELL COMBINATIONS FOR EVERY SPELL. SOMETHING'S WRONG");
         }
         else {
             if ( !SPELL_LIST.isEmpty() ) {
