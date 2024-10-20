@@ -42,7 +42,7 @@ public class FreezeLanceEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultPower() {
-        return 10.0F;
+        return 16.0F;
     }
 
     @Override

@@ -24,7 +24,7 @@ public class TeleportItem extends SpellItem {
         boolean state = false;
         Level level = caster.level();
 
-        float range = 14.0F;
+        float range = 32.0F;
         if ( owner != caster ) range = 0.0F;
 
         Vec3 pos;

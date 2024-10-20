@@ -42,7 +42,7 @@ public class BurnLanceEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultPower() {
-        return 10.0F;
+        return 16.0F;
     }
 
     @Override

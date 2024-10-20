@@ -37,7 +37,7 @@ public class FireballEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultPower() {
-        return 20.0F;
+        return 24.0F;
     }
 
     @Override
