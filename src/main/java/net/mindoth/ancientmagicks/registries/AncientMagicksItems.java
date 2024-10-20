@@ -9,30 +9,37 @@ import net.mindoth.ancientmagicks.item.TabletBag;
 import net.mindoth.ancientmagicks.item.castingitem.InvocationStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellPearlItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
-import net.mindoth.ancientmagicks.item.spell.blind.BlindTablet;
-import net.mindoth.ancientmagicks.item.spell.icicle.IcicleItem;
-import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballItem;
-import net.mindoth.ancientmagicks.item.spell.summondeathknight.SummonDeathKnightItem;
-import net.mindoth.ancientmagicks.item.spell.teleport.TeleportItem;
+import net.mindoth.ancientmagicks.item.spell.blind.BlindItem;
 import net.mindoth.ancientmagicks.item.spell.blizzard.BlizzardItem;
+import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceItem;
 import net.mindoth.ancientmagicks.item.spell.callthunder.CallThunderItem;
 import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphItem;
+import net.mindoth.ancientmagicks.item.spell.controlweather.ControlWeatherItem;
+import net.mindoth.ancientmagicks.item.spell.darkvision.DarkvisionItem;
 import net.mindoth.ancientmagicks.item.spell.dragonbreath.DragonBreathItem;
 import net.mindoth.ancientmagicks.item.spell.endlessbreath.EndlessBreathItem;
 import net.mindoth.ancientmagicks.item.spell.extinguish.ExtinguishItem;
 import net.mindoth.ancientmagicks.item.spell.featherfall.FeatherFallItem;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballItem;
 import net.mindoth.ancientmagicks.item.spell.fly.FlyItem;
+import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceItem;
 import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkItem;
 import net.mindoth.ancientmagicks.item.spell.icewall.IceWallItem;
+import net.mindoth.ancientmagicks.item.spell.icicle.IcicleItem;
 import net.mindoth.ancientmagicks.item.spell.magearmor.MageArmorItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlItem;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainItem;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphItem;
 import net.mindoth.ancientmagicks.item.spell.sleep.SleepItem;
+import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballItem;
 import net.mindoth.ancientmagicks.item.spell.spook.SpookItem;
+import net.mindoth.ancientmagicks.item.spell.summondeathknight.SummonDeathKnightItem;
 import net.mindoth.ancientmagicks.item.spell.summonzombie.SummonZombieItem;
+import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockItem;
 import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabItem;
+import net.mindoth.ancientmagicks.item.spell.teleport.TeleportItem;
+import net.mindoth.ancientmagicks.item.spell.thunderball.ThunderballItem;
+import net.mindoth.ancientmagicks.item.spell.verminbane.VerminBaneItem;
 import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstItem;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowItem;
 import net.minecraft.world.item.Item;
@@ -104,9 +111,6 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> MAGE_ARMOR_ITEM = ITEMS.register("mage_armor",
             () -> new MageArmorItem(new Item.Properties(), 1));
 
-    public static final RegistryObject<Item> ALACRITY_ITEM = ITEMS.register("alacrity",
-            () -> new AlacrityItem(new Item.Properties(), 1));
-
     public static final RegistryObject<Item> SLEEP_ITEM = ITEMS.register("sleep",
             () -> new SleepItem(new Item.Properties(), 1));
 
@@ -115,9 +119,6 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> ICICLE_ITEM = ITEMS.register("icicle",
             () -> new IcicleItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> SLIMEBALL_ITEM = ITEMS.register("slimeball",
-            () -> new SlimeballItem(new Item.Properties(), 1));
 
     public static final RegistryObject<Item> ENDLESS_BREATH_ITEM = ITEMS.register("endless_breath",
             () -> new EndlessBreathItem(new Item.Properties(), 2));
@@ -129,7 +130,19 @@ public class AncientMagicksItems {
             () -> new TeleportItem(new Item.Properties(), 2));
 
     public static final RegistryObject<Item> BLIND_ITEM = ITEMS.register("blind",
-            () -> new BlindTablet(new Item.Properties(), 2));
+            () -> new BlindItem(new Item.Properties(), 2));
+
+    public static final RegistryObject<Item> DARKVISION_ITEM = ITEMS.register("darkvision",
+            () -> new DarkvisionItem(new Item.Properties(), 2));
+
+    public static final RegistryObject<Item> SLIMEBALL_ITEM = ITEMS.register("slimeball",
+            () -> new SlimeballItem(new Item.Properties(), 2));
+
+    public static final RegistryObject<Item> TELEBLOCK_ITEM = ITEMS.register("teleblock",
+            () -> new TeleblockItem(new Item.Properties(), 2));
+
+    public static final RegistryObject<Item> ALACRITY_ITEM = ITEMS.register("alacrity",
+            () -> new AlacrityItem(new Item.Properties(), 3));
 
     public static final RegistryObject<Item> FIREBALL_ITEM = ITEMS.register("fireball",
             () -> new FireballItem(new Item.Properties(), 3));
@@ -143,6 +156,9 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> FLY_ITEM = ITEMS.register("fly",
             () -> new FlyItem(new Item.Properties(), 3));
 
+    public static final RegistryObject<Item> THUNDERBALL_ITEM = ITEMS.register("thunderball",
+            () -> new ThunderballItem(new Item.Properties(), 3));
+
     public static final RegistryObject<Item> BLIZZARD_ITEM = ITEMS.register("blizzard",
             () -> new BlizzardItem(new Item.Properties(), 4));
 
@@ -151,6 +167,12 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> GHOSTWALK_ITEM = ITEMS.register("ghostwalk",
             () -> new GhostwalkItem(new Item.Properties(), 4));
+
+    public static final RegistryObject<Item> FREEZE_LANCE_ITEM = ITEMS.register("freeze_lance",
+            () -> new FreezeLanceItem(new Item.Properties(), 4));
+
+    public static final RegistryObject<Item> BURN_LANCE_ITEM = ITEMS.register("burn_lance",
+            () -> new BurnLanceItem(new Item.Properties(), 4));
 
     public static final RegistryObject<Item> CHAOTIC_POLYMORPH_ITEM = ITEMS.register("chaotic_polymorph",
             () -> new ChaoticPolymorphItem(new Item.Properties(), 5));
@@ -161,9 +183,15 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> SUMMON_DEATH_KNIGHT_ITEM = ITEMS.register("summon_death_knight",
             () -> new SummonDeathKnightItem(new Item.Properties(), 5));
 
+    public static final RegistryObject<Item> VERMIN_BANE_ITEM = ITEMS.register("vermin_bane",
+            () -> new VerminBaneItem(new Item.Properties(), 5));
+
     public static final RegistryObject<Item> DRAGON_BREATH_ITEM = ITEMS.register("dragon_breath",
             () -> new DragonBreathItem(new Item.Properties(), 6));
 
     public static final RegistryObject<Item> ICE_WALL_ITEM = ITEMS.register("ice_wall",
             () -> new IceWallItem(new Item.Properties(), 6));
+
+    public static final RegistryObject<Item> CONTROL_WEATHER_ITEM = ITEMS.register("control_weather",
+            () -> new ControlWeatherItem(new Item.Properties(), 6));
 }

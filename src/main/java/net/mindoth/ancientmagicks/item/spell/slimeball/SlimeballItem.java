@@ -30,7 +30,7 @@ public class SlimeballItem extends SpellItem {
         }
         AbstractSpellEntity projectile = new SlimeballEntity(level, owner, caster, this);
 
-        projectile.setColor(AbstractSpellEntity.getSpellColor("green"), 0.8F);
+        projectile.setColor(AbstractSpellEntity.getSpellColor("green"));
         projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
         projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
         level.addFreshEntity(projectile);

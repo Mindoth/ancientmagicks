@@ -30,7 +30,7 @@ public class IcicleItem extends SpellItem {
         }
         AbstractSpellEntity projectile = new IcicleEntity(level, owner, caster, this);
 
-        projectile.setColor(AbstractSpellEntity.getSpellColor("white"), 0.3F);
+        projectile.setColor(AbstractSpellEntity.getSpellColor("aqua"));
         projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
         projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
         level.addFreshEntity(projectile);

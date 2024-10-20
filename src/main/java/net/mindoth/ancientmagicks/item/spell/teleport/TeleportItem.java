@@ -6,6 +6,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.EntityTeleportEvent;
 
 public class TeleportItem extends SpellItem {
 
@@ -36,9 +37,12 @@ public class TeleportItem extends SpellItem {
         pos = new Vec3(pos.x, pos.y - 0.5D, pos.z);
 
         //TODO maybe try teleportToWithTicket?
-        if ( owner == caster ) caster.teleportTo(pos.x, pos.y, pos.z);
-        else if ( owner != null && owner.level() == caster.level() ) owner.teleportTo(pos.x, pos.y, pos.z);
-        state = true;
+        EntityTeleportEvent.TeleportCommand event = net.minecraftforge.event.ForgeEventFactory.onEntityTeleportCommand(caster, pos.x, pos.y, pos.z);
+        if ( !event.isCanceled() ) {
+            if ( owner == caster ) caster.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+            else if ( owner != null && owner.level() == caster.level() ) owner.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+            state = true;
+        }
 
         if ( state ) playTeleportSound(level, pos);
 

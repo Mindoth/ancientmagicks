@@ -10,18 +10,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.network.PlayMessages;
 
-public class WitchSparkEntity extends AbstractSpellEntity {
+public class WitchArrowEntity extends AbstractSpellEntity {
 
-    public WitchSparkEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
-        this(AncientMagicksEntities.WITCH_SPARK.get(), level);
+    public WitchArrowEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
+        this(AncientMagicksEntities.WITCH_ARROW.get(), level);
     }
 
-    public WitchSparkEntity(EntityType<WitchSparkEntity> entityType, Level level) {
+    public WitchArrowEntity(EntityType<WitchArrowEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public WitchSparkEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
-        super(AncientMagicksEntities.WITCH_SPARK.get(), level, owner, caster, rune);
+    public WitchArrowEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
+        super(AncientMagicksEntities.WITCH_ARROW.get(), level, owner, caster, rune);
     }
 
     @Override
@@ -32,6 +32,11 @@ public class WitchSparkEntity extends AbstractSpellEntity {
     @Override
     public float getDefaultSpeed() {
         return 1.6F;
+    }
+
+    @Override
+    public float getDefaultSize() {
+        return 0.2F;
     }
 
     @Override

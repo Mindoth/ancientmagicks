@@ -76,6 +76,20 @@
   "tooltip.ancientmagicks.icicle": "Launches an icicle that damages enemies",
   "item.ancientmagicks.slimeball": "Slimeball",
   "tooltip.ancientmagicks.slimeball": "Launches a Slimeball that bounces from walls and other surfaces and damages hit enemies",
+  "item.ancientmagicks.vermin_bane": "Vermin bane",
+  "tooltip.ancientmagicks.vermin_bane": "Spew forth a mist that only damages arthropods",
+  "item.ancientmagicks.control_weather": "Control Weather",
+  "tooltip.ancientmagicks.control_weather": "Change the Weather",
+  "item.ancientmagicks.darkvision": "Darkvision",
+  "tooltip.ancientmagicks.darkvision": "Enable an ally or yourself to see clearly in the dark",
+  "item.ancientmagicks.freeze_lance": "Freeze Lance",
+  "tooltip.ancientmagicks.freeze_lance": "Launches a freezing lance that damages and pierces an enemy",
+  "item.ancientmagicks.burn_lance": "Burn Lance",
+  "tooltip.ancientmagicks.burn_lance": "Launches a burning lance that damages and pierces an enemy",
+  "item.ancientmagicks.thunderball": "Thunderball",
+  "tooltip.ancientmagicks.thunderball": "Launches a ball of lightning that strikes enemies in an area",
+  "item.ancientmagicks.teleblock": "Teleblock",
+  "tooltip.ancientmagicks.teleblock": "Prevent a target from teleporting for a short duration",
 
 
   "effect.ancientmagicks.mage_armor": "Mage Armor",
@@ -85,6 +99,7 @@
   "effect.ancientmagicks.spook": "Spook",
   "effect.ancientmagicks.ghostwalk": "Ghostwalk",
   "effect.ancientmagicks.sleep": "Sleep",
+  "effect.ancientmagicks.teleblock": "Teleblock",
 
 
   "tooltip.ancientmagicks.tier": "\u00A77Spell Tier\u00A7r",

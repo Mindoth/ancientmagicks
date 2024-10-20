@@ -18,7 +18,7 @@ public class AlacrityItem extends SpellItem {
 
     @Override
     public int getCooldown() {
-        return 1200;
+        return 200;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class AlacrityItem extends SpellItem {
         boolean state = false;
         Level level = caster.level();
 
-        int life = 1200;
+        int life = 4800;
         float range = 14.0F;
         float size = range * 0.5F;
 

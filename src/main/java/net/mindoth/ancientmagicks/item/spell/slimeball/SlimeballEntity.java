@@ -38,12 +38,17 @@ public class SlimeballEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultPower() {
-        return 4.0F;
+        return 8.0F;
     }
 
     @Override
     public float getDefaultSpeed() {
         return 1.2F;
+    }
+
+    @Override
+    public float getDefaultSize() {
+        return 0.8F;
     }
 
     @Override
@@ -55,7 +60,7 @@ public class SlimeballEntity extends AbstractSpellEntity {
     protected void doMobEffects(EntityHitResult result) {
         if ( this.power > 0 && !isAlly((LivingEntity)result.getEntity()) ) {
             LivingEntity living = (LivingEntity)result.getEntity();
-            dealDamage(living, 1.0F);
+            dealDamage(living, 2.0F);
         }
     }
 

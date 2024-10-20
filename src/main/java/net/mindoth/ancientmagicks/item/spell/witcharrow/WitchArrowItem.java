@@ -34,9 +34,9 @@ public class WitchArrowItem extends SpellItem {
         float range = 64.0F;
         if ( owner != caster ) range = 0.0F;
 
-        AbstractSpellEntity projectile = new WitchSparkEntity(level, owner, caster, this);
+        AbstractSpellEntity projectile = new WitchArrowEntity(level, owner, caster, this);
 
-        projectile.setColor(AbstractSpellEntity.getSpellColor("dark_purple"), 0.2F);
+        projectile.setColor(AbstractSpellEntity.getSpellColor("dark_purple"));
         projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
         Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, caster == owner, true);
         if ( target != null && target != caster && (target instanceof LivingEntity living && !isAlly(owner, living)) ) projectile.target = target;

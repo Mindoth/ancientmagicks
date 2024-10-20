@@ -56,7 +56,7 @@ public class BlizzardItem extends SpellItem {
     private void spawnIcicles(Player owner, Entity caster, Level level, Vec3 center, float yRot, int adjuster, int useTime) {
         AbstractSpellEntity projectile = new IcicleEntity(level, owner, caster, this);
         projectile.speed *= 0.5F;
-        projectile.setColor(AbstractSpellEntity.getSpellColor("white"), 0.3F);
+        projectile.setColor(AbstractSpellEntity.getSpellColor("white"));
         if ( useTime % 20 == 0 ) projectile.setPos(center.x, getHeight(level, center), center.z);
         else {
             Vec3 setPos = new Vec3(center.x + getRandomPos().x, getHeight(level, center), center.z + getRandomPos().z);

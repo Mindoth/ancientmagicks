@@ -287,7 +287,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         double d6 = vec3.y;
         double d1 = vec3.z;
         for ( int j = -4; j < 0; j++ ) {
-            if ( -this.tickCount - 2 < j ) {
+            if ( -this.tickCount < j ) {
                 //Main body
                 float particleSize = Math.min(this.entityData.get(SIZE), (this.entityData.get(SIZE) * 0.1F) * this.tickCount);
                 for ( int i = 0; i < 2; i++ ) {
@@ -370,11 +370,11 @@ public abstract class AbstractSpellEntity extends Projectile {
         return new ParticleColor(this.entityData.get(RED), this.entityData.get(GREEN), this.entityData.get(BLUE));
     }
 
-    public void setColor(ParticleColor.IntWrapper colors, float size) {
+    public void setColor(ParticleColor.IntWrapper colors) {
         this.entityData.set(RED, colors.r);
         this.entityData.set(GREEN, colors.g);
         this.entityData.set(BLUE, colors.b);
-        this.entityData.set(SIZE, size);
+        this.entityData.set(SIZE, this.getDefaultSize());
     }
 
     @Override

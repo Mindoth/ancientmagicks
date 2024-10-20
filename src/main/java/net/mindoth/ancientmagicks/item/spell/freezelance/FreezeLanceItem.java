@@ -1,15 +1,16 @@
-package net.mindoth.ancientmagicks.item.spell.fireball;
+package net.mindoth.ancientmagicks.item.spell.freezelance;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class FireballItem extends SpellItem {
+public class FreezeLanceItem extends SpellItem {
 
-    public FireballItem(Properties pProperties, int spellLevel) {
+    public FreezeLanceItem(Properties pProperties, int spellLevel) {
         super(pProperties, spellLevel);
     }
 
@@ -28,15 +29,15 @@ public class FireballItem extends SpellItem {
             adjuster = -1;
             down = 0.0F;
         }
-        AbstractSpellEntity projectile = new FireballEntity(level, owner, caster, this);
+        AbstractSpellEntity projectile = new FreezeLanceEntity(level, owner, caster, this);
 
-        projectile.setColor(AbstractSpellEntity.getSpellColor("gold"));
+        projectile.setColor(AbstractSpellEntity.getSpellColor("aqua"));
         projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
         projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
         level.addFreshEntity(projectile);
         state = true;
 
-        if ( state ) playFireShootSound(level, center);
+        if ( state ) playMagicShootSound(level, center);
 
         return state;
     }
