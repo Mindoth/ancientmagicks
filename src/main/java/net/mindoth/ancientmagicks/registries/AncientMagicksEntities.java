@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.registries;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceEntity;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
+import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltEntity;
 import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceEntity;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballEntity;
@@ -50,6 +51,10 @@ public class AncientMagicksEntities {
     public static final RegistryObject<EntityType<ThunderballEntity>> THUNDERBALL
             = registerEntity(EntityType.Builder.<ThunderballEntity>of(ThunderballEntity::new,
             MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(ThunderballEntity::new), "thunderball");
+
+    public static final RegistryObject<EntityType<FireBoltEntity>> FIRE_BOLT
+            = registerEntity(EntityType.Builder.<FireBoltEntity>of(FireBoltEntity::new,
+            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(FireBoltEntity::new), "fire_bolt");
 
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntity(EntityType.Builder<T> builder, String entityName) {

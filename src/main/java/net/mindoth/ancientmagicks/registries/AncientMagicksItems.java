@@ -21,6 +21,7 @@ import net.mindoth.ancientmagicks.item.spell.endlessbreath.EndlessBreathItem;
 import net.mindoth.ancientmagicks.item.spell.extinguish.ExtinguishItem;
 import net.mindoth.ancientmagicks.item.spell.featherfall.FeatherFallItem;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballItem;
+import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltItem;
 import net.mindoth.ancientmagicks.item.spell.fly.FlyItem;
 import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceItem;
 import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkItem;
@@ -119,6 +120,9 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> ICICLE_ITEM = ITEMS.register("icicle",
             () -> new IcicleItem(new Item.Properties(), 1));
+
+    public static final RegistryObject<Item> FIRE_BOLT_ITEM = ITEMS.register("fire_bolt",
+            () -> new FireBoltItem(new Item.Properties(), 1));
 
     public static final RegistryObject<Item> ENDLESS_BREATH_ITEM = ITEMS.register("endless_breath",
             () -> new EndlessBreathItem(new Item.Properties(), 2));

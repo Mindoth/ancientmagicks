@@ -90,6 +90,8 @@
   "tooltip.ancientmagicks.thunderball": "Launches a ball of lightning that strikes enemies in an area",
   "item.ancientmagicks.teleblock": "Teleblock",
   "tooltip.ancientmagicks.teleblock": "Prevent a target from teleporting for a short duration",
+  "item.ancientmagicks.fire_bolt": "Fire Bolt",
+  "tooltip.ancientmagicks.fire_bolt": "Launches a small fiery bolt that damages and burns hit enemies",
 
 
   "effect.ancientmagicks.mage_armor": "Mage Armor",
