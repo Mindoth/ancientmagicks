@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.icicle;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.minecraft.world.entity.Entity;
@@ -9,13 +10,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class IcicleItem extends SpellItem {
 
-    public IcicleItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 20;
+    public IcicleItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -36,7 +32,10 @@ public class IcicleItem extends SpellItem {
         level.addFreshEntity(projectile);
         state = true;
 
-        if ( state ) playMagicShootSound(level, center);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playMagicShootSound(level, center);
+        }
 
         return state;
     }

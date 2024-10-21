@@ -1,8 +1,7 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.RuneItem;
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
@@ -45,7 +44,6 @@ public class CastingItem extends Item {
                 makePearls(owner, caster, spell, pearlStack);
             }
             else {
-                if ( useTime == 0 && caster == owner ) extractCost(owner);
                 if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) && castingItem != null ) {
                     if ( !spell.isChannel() ) handleCooldownsAndStuff(owner, castingItem, spell, hasAlacrity);
                 }
@@ -65,13 +63,9 @@ public class CastingItem extends Item {
             owner.stopUsingItem();
         }
         else {
-            addCastingCooldown(owner, spell, getCastingCooldown(spell.getCooldown(), hasAlacrity));
+            addCastingCooldown(owner, spell, getCastingCooldown(spell.cooldown, hasAlacrity));
             owner.stopUsingItem();
         }
-    }
-
-    public static void extractCost(Player owner) {
-        if ( !AncientMagicksCommonConfig.FREE_SPELLS.get() && !owner.isCreative() ) owner.giveExperiencePoints(-1);
     }
 
     public static int getCastingCooldown(int defaultCooldown, boolean hasAlacrity) {
@@ -80,27 +74,25 @@ public class CastingItem extends Item {
     }
 
     public static void whiffSpell(Player owner, Entity caster, SpellItem tablet) {
-        RuneItem.playWhiffSound(caster);
+        SpellItem.playWhiffSound(caster);
         addCastingCooldown(owner, tablet, 20);
         owner.stopUsingItem();
     }
 
     public static void makePearls(Player owner, Entity caster, SpellItem spell, ItemStack pearlStack) {
         if ( !AncientMagicks.isSpellEnabled(spell) ) return;
-        if ( AncientMagicksCommonConfig.FREE_SPELLS.get() || owner.totalExperience >= 1 || owner.isCreative() ) {
-            if ( !AncientMagicksCommonConfig.FREE_SPELLS.get() && !owner.isCreative() ) extractCost(owner);
-            ItemStack dropStack = pearlStack.copyWithCount(1);
-            CompoundTag tag = dropStack.getOrCreateTag();
-            tag.putString("spell_pearl", ForgeRegistries.ITEMS.getKey(spell).toString());
-            pearlStack.shrink(1);
-            Vec3 spawnPos = ShadowEvents.getEntityCenter(owner);
-            ItemEntity drop = new ItemEntity(owner.level(), spawnPos.x, spawnPos.y, spawnPos.z, dropStack);
-            drop.setDeltaMovement(0, 0, 0);
-            drop.setNoPickUpDelay();
-            caster.level().addFreshEntity(drop);
-            addCastingCooldown(owner, spell, spell.getCooldown());
-            owner.stopUsingItem();
-        }
+        if ( !owner.isCreative() ) ManaEvents.changeMana(owner, -spell.manaCost);
+        ItemStack dropStack = pearlStack.copyWithCount(1);
+        CompoundTag tag = dropStack.getOrCreateTag();
+        tag.putString("spell_pearl", ForgeRegistries.ITEMS.getKey(spell).toString());
+        pearlStack.shrink(1);
+        Vec3 spawnPos = ShadowEvents.getEntityCenter(owner);
+        ItemEntity drop = new ItemEntity(owner.level(), spawnPos.x, spawnPos.y, spawnPos.z, dropStack);
+        drop.setDeltaMovement(0, 0, 0);
+        drop.setNoPickUpDelay();
+        caster.level().addFreshEntity(drop);
+        addCastingCooldown(owner, spell, spell.cooldown);
+        owner.stopUsingItem();
     }
 
     public static void addCastingCooldown(Player player, SpellItem spell, int cooldown) {

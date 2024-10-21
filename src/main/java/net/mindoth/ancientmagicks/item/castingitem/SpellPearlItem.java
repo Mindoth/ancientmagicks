@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.item.spell.spellpearl.SpellPearlEntity;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -57,19 +57,16 @@ public class SpellPearlItem extends CastingItem {
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(pearl.getTag().getString("spell_pearl")));
                 if ( item instanceof SpellItem spell ) {
                     if ( !player.getCooldowns().isOnCooldown(pearl.getItem()) ) {
-                        if ( !player.isCrouching() ) {
-                            level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
-                            Vec3 center = player.getEyePosition();
-                            SpellPearlEntity spellPearl = new SpellPearlEntity(level, player, player, spell);
-                            spellPearl.setPos(center.x, center.y - 0.2F, center.z);
-                            spellPearl.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, Math.max(0, spellPearl.speed), 1.0F);
-                            level.addFreshEntity(spellPearl);
-                            pearl.shrink(1);
-                            player.getCooldowns().addCooldown(AncientMagicksItems.SPELL_PEARL.get(), 120);
+                        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+                        Vec3 center = player.getEyePosition();
+                        SpellPearlEntity spellPearl = new SpellPearlEntity(level, player, player, spell);
+                        spellPearl.setPos(center.x, center.y - 0.2F, center.z);
+                        spellPearl.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, Math.max(0, spellPearl.speed), 1.0F);
+                        level.addFreshEntity(spellPearl);
+                        pearl.shrink(1);
+                        player.getCooldowns().addCooldown(AncientMagicksItems.SPELL_PEARL.get(), 120);
 
-                            result = InteractionResultHolder.success(player.getItemInHand(hand));
-                        }
-                        else player.startUsingItem(hand);
+                        result = InteractionResultHolder.success(player.getItemInHand(hand));
                     }
                 }
             }

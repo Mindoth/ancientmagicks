@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.teleport;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
@@ -10,13 +11,8 @@ import net.minecraftforge.event.entity.EntityTeleportEvent;
 
 public class TeleportItem extends SpellItem {
 
-    public TeleportItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 80;
+    public TeleportItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -44,7 +40,10 @@ public class TeleportItem extends SpellItem {
             state = true;
         }
 
-        if ( state ) playTeleportSound(level, pos);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playTeleportSound(level, pos);
+        }
 
         return state;
     }

@@ -12,7 +12,7 @@ import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSetSpell;
 import net.mindoth.ancientmagicks.network.PacketSolveAncientTablet;
-import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
+import net.mindoth.ancientmagicks.network.capabilities.playermagic.ClientMagicData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
@@ -105,14 +105,14 @@ public class GuiSpellWheel extends Screen {
             SpellItem secretSpell = null;
             if ( this.tag != null ) secretSpell = (SpellItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.tag.getString("am_secretspell")));
             SpellItem spellItem = ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell);
-            if ( spellItem != null && ((ClientSpellData.isSpellKnown(spellItem) || MINECRAFT.player.isCreative()) || this.discoveryMode) ) {
+            if ( spellItem != null && ((ClientMagicData.isSpellKnown(spellItem) || MINECRAFT.player.isCreative()) || this.discoveryMode) ) {
                 this.comboResult = ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell);
                 if ( !this.discoveryMode ) {
                     String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
                     CompoundTag tag = new CompoundTag();
                     tag.putString("am_spell", spellString);
                     AncientMagicksNetwork.sendToServer(new PacketSetSpell(tag));
-                    ClientSpellData.setCurrentSpell(spellString);
+                    ClientMagicData.setCurrentSpell(spellString);
                 }
             }
             else this.comboResult = null;

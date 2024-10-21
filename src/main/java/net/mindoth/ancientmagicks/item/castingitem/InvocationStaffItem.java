@@ -1,9 +1,7 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
-import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
+import net.mindoth.ancientmagicks.network.capabilities.playermagic.PlayerMagicProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -28,13 +26,13 @@ public class InvocationStaffItem extends CastingItem {
         if ( !level.isClientSide ) {
             ItemStack staff = player.getItemInHand(hand);
             if ( isValidCastingItem(staff) ) {
-                player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
-                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
-                    if ( item instanceof SpellItem spellItem && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellItem) ) {
-                        if ( player.totalExperience >= 1 || player.isCreative() || AncientMagicksCommonConfig.FREE_SPELLS.get() ) player.startUsingItem(hand);
+                player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
+                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
+                    if ( item instanceof SpellItem spell && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spell) ) {
+                        if ( magic.getCurrentMana() >= spell.manaCost || player.isCreative() ) player.startUsingItem(hand);
                         else {
-                            addCastingCooldown(player, spellItem, 20);
-                            RuneItem.playWhiffSound(player);
+                            addCastingCooldown(player, spell, 20);
+                            SpellItem.playWhiffSound(player);
                         }
                     }
                 });
@@ -48,13 +46,12 @@ public class InvocationStaffItem extends CastingItem {
         if ( level.isClientSide ) return;
         if ( living instanceof Player player ) {
             if ( isValidCastingItem(wand) ) {
-                player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
-                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
-                    if ( item instanceof SpellItem spellItem) {
-                        /*if ( getHeldSlateItem(player).getItem() == AncientMagicksItems.STONE_SLATE.get() ) makeTablets(player, player, spellTabletItem, getHeldSlateItem(player));
-                        else doSpell(player, player, wand, spellTabletItem, getUseDuration(wand) - timeLeft);*/
-                        doSpell(player, player, wand, spellItem, getUseDuration(wand) - timeLeft);
+                player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
+                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
+                    if ( item instanceof SpellItem spell && (magic.getCurrentMana() >= spell.manaCost || player.isCreative()) ) {
+                        doSpell(player, player, wand, spell, getUseDuration(wand) - timeLeft);
                     }
+                    else living.stopUsingItem();
                 });
             }
         }

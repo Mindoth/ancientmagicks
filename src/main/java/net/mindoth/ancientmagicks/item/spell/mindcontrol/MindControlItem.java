@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.mindcontrol;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -14,13 +15,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class MindControlItem extends SpellItem {
 
-    public MindControlItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 1200;
+    public MindControlItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -46,7 +42,10 @@ public class MindControlItem extends SpellItem {
             state = true;
         }
 
-        if ( state ) playMagicSound(level, center);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playMagicSound(level, center);
+        }
 
         return state;
     }

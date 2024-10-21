@@ -1,8 +1,8 @@
 package net.mindoth.ancientmagicks.item.spell.burnlance;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -10,13 +10,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class BurnLanceItem extends SpellItem {
 
-    public BurnLanceItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 60;
+    public BurnLanceItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -37,7 +32,10 @@ public class BurnLanceItem extends SpellItem {
         level.addFreshEntity(projectile);
         state = true;
 
-        if ( state ) playFireShootSound(level, center);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playFireShootSound(level, center);
+        }
 
         return state;
     }

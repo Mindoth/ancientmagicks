@@ -3,7 +3,6 @@ package net.mindoth.ancientmagicks.item;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketReceiveRuneData;
-import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -44,10 +43,8 @@ public class AncientTabletItem extends Item {
             ItemStack stack = serverPlayer.getItemInHand(handIn);
             final CompoundTag finalTag = stack.getTag();
             if ( finalTag != null && finalTag.contains("am_secretspell") ) {
-                serverPlayer.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
-                    List<ItemStack> runeList = ColorRuneItem.getColorRuneList(player, spell);
-                    AncientMagicksNetwork.sendToPlayer(new PacketReceiveRuneData(runeList, finalTag, handIn == InteractionHand.OFF_HAND), serverPlayer);
-                });
+                List<ItemStack> runeList = ColorRuneItem.getColorRuneList(player);
+                AncientMagicksNetwork.sendToPlayer(new PacketReceiveRuneData(runeList, finalTag, handIn == InteractionHand.OFF_HAND), serverPlayer);
             }
         }
         return result;
@@ -96,8 +93,6 @@ public class AncientTabletItem extends Item {
         if ( rune == AncientMagicksItems.GREEN_RUNE.get() ) serverLevel.sendParticles(type, pos.x, pos.y, pos.z, 0, 0, 1, 0, 1);
         if ( rune == AncientMagicksItems.BLACK_RUNE.get() ) serverLevel.sendParticles(type, pos.x, pos.y, pos.z, 0, 0, 0, 0, 1);
         if ( rune == AncientMagicksItems.WHITE_RUNE.get() ) serverLevel.sendParticles(type, pos.x, pos.y, pos.z, 0, 1, 1, 0, 1);
-        /*if ( rune == AncientMagicksItems.BROWN_RUNE.get() ) serverLevel.sendParticles(type, pos.x, pos.y, pos.z, 0, 122F / 255F, 70F / 255F, 33F / 255F, 1);
-        if ( rune == AncientMagicksItems.RED_RUNE.get() ) serverLevel.sendParticles(type, pos.x, pos.y, pos.z, 0, 1, 0, 0, 1);*/
     }
 
     @SubscribeEvent

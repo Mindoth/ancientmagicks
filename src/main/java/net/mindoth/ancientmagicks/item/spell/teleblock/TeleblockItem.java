@@ -1,11 +1,11 @@
 package net.mindoth.ancientmagicks.item.spell.teleblock;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -14,13 +14,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class TeleblockItem extends SpellItem {
 
-    public TeleblockItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 800;
+    public TeleblockItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -36,12 +31,17 @@ public class TeleblockItem extends SpellItem {
         if ( caster == owner ) target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, range, 0.5F, caster == owner, true);
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
 
-        target.addEffect(new MobEffectInstance(AncientMagicksEffects.TELEBLOCK.get(), life));
-        ShadowEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, ShadowEvents.getEntityCenter(caster), target.getEyePosition(),
-                0, 1, 85F / 255F, 1, 1);
-        state = true;
+        if ( !isAlly(owner, target) ) {
+            target.addEffect(new MobEffectInstance(AncientMagicksEffects.TELEBLOCK.get(), life));
+            ShadowEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, ShadowEvents.getEntityCenter(caster), target.getEyePosition(),
+                    0, 1, 85F / 255F, 1, 1);
+            state = true;
+        }
 
-        if ( state ) playMagicSound(level, center);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playMagicSound(level, center);
+        }
 
         return state;
     }

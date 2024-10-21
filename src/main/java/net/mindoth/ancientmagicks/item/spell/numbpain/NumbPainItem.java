@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.numbpain;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -12,13 +13,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class NumbPainItem extends SpellItem {
 
-    public NumbPainItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 400;
+    public NumbPainItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -36,7 +32,10 @@ public class NumbPainItem extends SpellItem {
         target.addEffect(new MobEffectInstance(AncientMagicksEffects.NUMBNESS.get(), life, 0));
         state = true;
 
-        if ( state ) playMagicSound(level, center);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playMagicSound(level, center);
+        }
 
         return state;
     }

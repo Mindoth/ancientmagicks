@@ -63,10 +63,16 @@ public class AncientMagicksNetwork {
                 .consumerMainThread(PacketSyncSpellCombos::handle)
                 .add();
 
-        net.messageBuilder(PacketSyncClientSpell.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketSyncClientSpell::new)
-                .encoder(PacketSyncClientSpell::encode)
-                .consumerMainThread(PacketSyncClientSpell::handle)
+        net.messageBuilder(PacketSyncClientMagic.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketSyncClientMagic::new)
+                .encoder(PacketSyncClientMagic::encode)
+                .consumerMainThread(PacketSyncClientMagic::handle)
+                .add();
+
+        net.messageBuilder(PacketSyncClientMana.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketSyncClientMana::new)
+                .encoder(PacketSyncClientMana::encode)
+                .consumerMainThread(PacketSyncClientMana::handle)
                 .add();
 
         net.messageBuilder(PacketSolveAncientTablet.class, id(), NetworkDirection.PLAY_TO_SERVER)

@@ -7,7 +7,7 @@ import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltEntity;
 import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceEntity;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballEntity;
-import net.mindoth.ancientmagicks.item.spell.spellpearl.SpellPearlEntity;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.item.spell.thunderball.ThunderballEntity;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowEntity;
 import net.minecraft.world.entity.Entity;

@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.network;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
+import net.mindoth.ancientmagicks.network.capabilities.playermagic.ClientMagicData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -29,14 +29,14 @@ public class PacketUpdateKnownSpells {
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         contextSupplier.get().enqueueWork(() -> {
-            if ( ClientSpellData.getKnownSpells() != null && this.spellTag.contains("am_secretspell") ) {
+            if ( ClientMagicData.getKnownSpells() != null && this.spellTag.contains("am_secretspell") ) {
                 final String spellString = this.spellTag.getString("am_secretspell");
                 final SpellItem item = (SpellItem) ForgeRegistries.ITEMS.getValue(new ResourceLocation(spellString));
-                if ( Objects.equals(ClientSpellData.getKnownSpells(), "") ) {
-                    ClientSpellData.setKnownSpells(spellString);
+                if ( Objects.equals(ClientMagicData.getKnownSpells(), "") ) {
+                    ClientMagicData.setKnownSpells(spellString);
                 }
-                else if ( !ClientSpellData.stringListToSpellList(ClientSpellData.getKnownSpells()).contains(item) ) {
-                    ClientSpellData.setKnownSpells(ClientSpellData.getKnownSpells() + "," + spellString);
+                else if ( !ClientMagicData.stringListToSpellList(ClientMagicData.getKnownSpells()).contains(item) ) {
+                    ClientMagicData.setKnownSpells(ClientMagicData.getKnownSpells() + "," + spellString);
                 }
             }
         });

@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.blind;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -13,13 +14,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class BlindItem extends SpellItem {
 
-    public BlindItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 200;
+    public BlindItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -42,7 +38,10 @@ public class BlindItem extends SpellItem {
             state = true;
         }
 
-        if ( state ) playMagicSound(level, center);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playMagicSound(level, center);
+        }
 
         return state;
     }

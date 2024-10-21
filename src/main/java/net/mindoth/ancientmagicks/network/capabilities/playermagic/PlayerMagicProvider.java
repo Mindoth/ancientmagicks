@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.network.capabilities.playerspell;
+package net.mindoth.ancientmagicks.network.capabilities.playermagic;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -11,33 +11,33 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PlayerSpellProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+public class PlayerMagicProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-    public static Capability<PlayerSpell> PLAYER_SPELL = CapabilityManager.get(new CapabilityToken<PlayerSpell>() {});
+    public static Capability<PlayerMagic> PLAYER_MAGIC = CapabilityManager.get(new CapabilityToken<PlayerMagic>() {});
 
-    private PlayerSpell spell = null;
-    private final LazyOptional<PlayerSpell> optional = LazyOptional.of(this::createPlayerSpell);
+    private PlayerMagic magic = null;
+    private final LazyOptional<PlayerMagic> optional = LazyOptional.of(this::createPlayerMagic);
 
-    private PlayerSpell createPlayerSpell() {
-        if ( this.spell == null ) this.spell = new PlayerSpell();
-        return this.spell;
+    private PlayerMagic createPlayerMagic() {
+        if ( this.magic == null ) this.magic = new PlayerMagic();
+        return this.magic;
     }
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if ( cap == PLAYER_SPELL ) return optional.cast();
+        if ( cap == PLAYER_MAGIC ) return optional.cast();
         return LazyOptional.empty();
     }
 
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        createPlayerSpell().saveNBTData(tag);
+        createPlayerMagic().saveNBTData(tag);
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        createPlayerSpell().loadNBTData(tag);
+        createPlayerMagic().loadNBTData(tag);
     }
 }

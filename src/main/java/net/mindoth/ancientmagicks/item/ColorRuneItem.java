@@ -3,8 +3,6 @@ package net.mindoth.ancientmagicks.item;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpell;
-import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.nbt.CompoundTag;
@@ -14,11 +12,11 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -31,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
-public class ColorRuneItem extends RuneItem {
+public class ColorRuneItem extends Item {
     public String color;
 
     public ColorRuneItem(Properties pProperties, String color) {
@@ -110,15 +108,12 @@ public class ColorRuneItem extends RuneItem {
             if ( !player.level().isClientSide ) {
                 ItemStack stack = event.getItem();
                 if ( stack.getItem() instanceof ColorRuneItem ) {
-                    LazyOptional<PlayerSpell> cap = player.getCapability(PlayerSpellProvider.PLAYER_SPELL);
-                    if ( stack.getItem() == AncientMagicksItems.BLUE_RUNE.get() ) cap.ifPresent(rune -> rune.setBlue(!rune.getBlue()));
-                    if ( stack.getItem() == AncientMagicksItems.PURPLE_RUNE.get() ) cap.ifPresent(rune -> rune.setPurple(!rune.getPurple()));
-                    if ( stack.getItem() == AncientMagicksItems.YELLOW_RUNE.get() ) cap.ifPresent(rune -> rune.setYellow(!rune.getYellow()));
-                    if ( stack.getItem() == AncientMagicksItems.GREEN_RUNE.get() ) cap.ifPresent(rune -> rune.setGreen(!rune.getGreen()));
-                    if ( stack.getItem() == AncientMagicksItems.BLACK_RUNE.get() ) cap.ifPresent(rune -> rune.setBlack(!rune.getBlack()));
-                    if ( stack.getItem() == AncientMagicksItems.WHITE_RUNE.get() ) cap.ifPresent(rune -> rune.setWhite(!rune.getWhite()));
-                    /*if ( stack.getItem() == AncientMagicksItems.BROWN_RUNE.get() ) cap.ifPresent(rune -> rune.setBrown(!rune.getBrown()));
-                    if ( stack.getItem() == AncientMagicksItems.RED_RUNE.get() ) cap.ifPresent(rune -> rune.setRed(!rune.getRed()));*/
+                    CompoundTag playerData = player.getPersistentData();
+                    CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
+
+                    data.putBoolean(stack.getItem().toString(), !data.getBoolean(stack.getItem().toString()));
+                    playerData.put(Player.PERSISTED_NBT_TAG, data);
+
                     if ( !player.isCreative() ) event.getResultStack().shrink(1);
                     Vec3 center = ShadowEvents.getEntityCenter(event.getEntity());
                     player.level().playSound(null, center.x, center.y, center.z, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5F, 0.25F);
@@ -127,32 +122,17 @@ public class ColorRuneItem extends RuneItem {
         }
     }
 
-    public static List<ItemStack> getColorRuneList(Player player, PlayerSpell spell) {
+    public static List<ItemStack> getColorRuneList(Player player) {
         List<ItemStack> runeList = Lists.newArrayList();
-        if ( (spell.getBlue() || player.isCreative()) ) {
-            runeList.add(new ItemStack(AncientMagicksItems.BLUE_RUNE.get()));
-        }
-        if ( (spell.getPurple() || player.isCreative()) ) {
-            runeList.add(new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()));
-        }
-        if ( (spell.getYellow() || player.isCreative()) ) {
-            runeList.add(new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
-        }
-        if ( (spell.getGreen() || player.isCreative()) ) {
-            runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
-        }
-        if ( (spell.getBlack() || player.isCreative()) ) {
-            runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
-        }
-        if ( (spell.getWhite() || player.isCreative()) ) {
-            runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
-        }
-        /*if ( (spell.getBrown() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.BROWN_RUNE.get()) ) {
-            runeList.add(new ItemStack(AncientMagicksItems.BROWN_RUNE.get()));
-        }
-        if ( (spell.getRed() || player.isCreative()) && AncientMagicks.isColorRuneEnabled(AncientMagicksItems.RED_RUNE.get()) ) {
-            runeList.add(new ItemStack(AncientMagicksItems.RED_RUNE.get()));
-        }*/
+        CompoundTag playerData = player.getPersistentData();
+        CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
+
+        if ( data.getBoolean("blue_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLUE_RUNE.get()));
+        if ( data.getBoolean("purple_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()));
+        if ( data.getBoolean("yellow_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
+        if ( data.getBoolean("green_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
+        if ( data.getBoolean("black_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
+        if ( data.getBoolean("white_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
         return runeList;
     }
 }

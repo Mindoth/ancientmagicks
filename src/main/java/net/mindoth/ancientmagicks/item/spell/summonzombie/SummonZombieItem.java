@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.summonzombie;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -13,13 +14,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class SummonZombieItem extends SpellItem {
 
-    public SummonZombieItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 600;
+    public SummonZombieItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -42,7 +38,10 @@ public class SummonZombieItem extends SpellItem {
         summonMinion(minion, owner, owner.level());
         state = true;
 
-        if ( state ) playMagicSummonSound(level, center);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playMagicSummonSound(level, center);
+        }
 
         return state;
     }

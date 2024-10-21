@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.network.capabilities.playerspell;
+package net.mindoth.ancientmagicks.network.capabilities.playermagic;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.SpellItem;
@@ -8,22 +8,30 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
-public class ClientSpellData {
+public class ClientMagicData {
 
-    private static String CURRENT_SPELL;
-    public static void setCurrentSpell(String spell) {
-        ClientSpellData.CURRENT_SPELL = spell;
-    }
+    private static String currentSpell;
     public static String getCurrentSpell() {
-        return CURRENT_SPELL;
+        return currentSpell;
+    }
+    public static void setCurrentSpell(String spell) {
+        ClientMagicData.currentSpell = spell;
     }
 
-    private static String KNOWN_SPELLS;
-    public static void setKnownSpells(String knownSpells) {
-        ClientSpellData.KNOWN_SPELLS = knownSpells;
-    }
+    private static String knownSpells;
     public static String getKnownSpells() {
-        return KNOWN_SPELLS;
+        return knownSpells;
+    }
+    public static void setKnownSpells(String knownSpells) {
+        ClientMagicData.knownSpells = knownSpells;
+    }
+
+    private static double currentMana;
+    public static double getCurrentMana() {
+        return currentMana;
+    }
+    public static void setCurrentMana(double currentMana) {
+        ClientMagicData.currentMana = currentMana;
     }
 
 
@@ -31,7 +39,7 @@ public class ClientSpellData {
         boolean state = false;
 
         if ( getKnownSpells() != null ) {
-            List<SpellItem> spellList = stringListToSpellList(ClientSpellData.getKnownSpells());
+            List<SpellItem> spellList = stringListToSpellList(ClientMagicData.getKnownSpells());
             if ( spellList.contains(spellToCheck) ) state = true;
         }
 
@@ -42,7 +50,7 @@ public class ClientSpellData {
         List<SpellItem> spellList = Lists.newArrayList();
         for ( String string : List.of(list.split(",")) ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-            if ( item instanceof SpellItem spellItem) spellList.add(spellItem);
+            if ( item instanceof SpellItem spellItem ) spellList.add(spellItem);
         }
         return spellList;
     }

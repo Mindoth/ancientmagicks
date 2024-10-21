@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.spellpearl;
+package net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;

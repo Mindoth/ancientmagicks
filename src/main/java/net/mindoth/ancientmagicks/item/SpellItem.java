@@ -6,8 +6,8 @@ import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketItemActivationAnimation;
 import net.mindoth.ancientmagicks.network.PacketUpdateKnownSpells;
-import net.mindoth.ancientmagicks.network.capabilities.playerspell.ClientSpellData;
-import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
+import net.mindoth.ancientmagicks.network.capabilities.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.network.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.ChatFormatting;
@@ -28,6 +28,7 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
@@ -47,12 +48,20 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class SpellItem extends RuneItem {
+public class SpellItem extends Item {
     public final int spellTier;
+    public final int manaCost;
+    public final int cooldown;
 
-    public SpellItem(Properties pProperties, int spellTier) {
+    public SpellItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties);
         this.spellTier = spellTier;
+        this.manaCost = manaCost;
+        this.cooldown = cooldown;
+    }
+
+    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+        return false;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -60,15 +69,18 @@ public class SpellItem extends RuneItem {
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         int spellTier = ((SpellItem)stack.getItem()).spellTier;
         tooltip.add(Component.translatable("tooltip.ancientmagicks.tier").append(Component.literal(": " + spellTier)).withStyle(ChatFormatting.GRAY));
-        if ( !Screen.hasShiftDown() ) {
-            tooltip.add(Component.translatable("tooltip.ancientmagicks.shift"));
-        }
+        int manaCost = ((SpellItem)stack.getItem()).manaCost;
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)).withStyle(ChatFormatting.GRAY));
+        int cooldown = ((SpellItem)stack.getItem()).cooldown;
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.cooldown").append(Component.literal(": " + cooldown)).withStyle(ChatFormatting.GRAY));
+
+        if ( !Screen.hasShiftDown() ) tooltip.add(Component.translatable("tooltip.ancientmagicks.shift"));
         else if ( Screen.hasShiftDown() ) {
             String modid = ForgeRegistries.ITEMS.getKey(stack.getItem()).toString().split(":")[0];
             if ( modid != null ) tooltip.add(Component.translatable("tooltip." + modid + "." + stack.getItem()).withStyle(ChatFormatting.GRAY));
         }
         if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(this) && Minecraft.getInstance().player != null ) {
-            if ( ClientSpellData.isSpellKnown(this) || Minecraft.getInstance().player.isCreative() ) {
+            if ( ClientMagicData.isSpellKnown(this) || Minecraft.getInstance().player.isCreative() ) {
                 StringBuilder tooltipString = new StringBuilder();
                 List<ColorRuneItem> list = ColorRuneItem.stringListToActualList(ColorRuneItem.CURRENT_COMBO_MAP.get(this).toString());
                 for ( ColorRuneItem rune : list ) {
@@ -81,10 +93,6 @@ public class SpellItem extends RuneItem {
         }
 
         super.appendHoverText(stack, world, tooltip, flagIn);
-    }
-
-    public int getCooldown() {
-        return 20;
     }
 
     public boolean isChannel() {
@@ -176,7 +184,7 @@ public class SpellItem extends RuneItem {
     public static void learnSpell(ServerPlayer serverPlayer, ItemStack stack) {
         SpellItem spellTablet = (SpellItem)stack.getItem();
         final String spellString = ForgeRegistries.ITEMS.getKey(spellTablet).toString();
-        serverPlayer.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
+        serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(spell -> {
             CompoundTag tag = new CompoundTag();
             tag.putString("am_secretspell", spellString);
             if ( Objects.equals(spell.getKnownSpells(), "") ) {
@@ -184,7 +192,7 @@ public class SpellItem extends RuneItem {
                 AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
                 playLearnEffects(serverPlayer, stack);
             }
-            else if ( !ClientSpellData.stringListToSpellList(spell.getKnownSpells()).contains(spellTablet) ) {
+            else if ( !ClientMagicData.stringListToSpellList(spell.getKnownSpells()).contains(spellTablet) ) {
                 spell.setKnownSpells(spell.getKnownSpells() + "," + spellString);
                 AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
                 playLearnEffects(serverPlayer, stack);
@@ -213,5 +221,59 @@ public class SpellItem extends RuneItem {
     @Override
     public UseAnim getUseAnimation(ItemStack pStack) {
         return UseAnim.BOW;
+    }
+
+    public static void playWhiffSound(Entity caster) {
+        if ( caster instanceof Player player ) player.playNotifySound(SoundEvents.NOTE_BLOCK_SNARE.get(), SoundSource.PLAYERS, 0.5F, 1.0F);
+    }
+
+    public static void playMagicSound(Level level, Vec3 center) {
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 0.25F, 2.0F);
+    }
+
+    public static void playMagicShootSound(Level level, Vec3 center) {
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.ENDER_PEARL_THROW, SoundSource.PLAYERS, 0.25F, 1.0F);
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 0.25F, 2.0F);
+    }
+
+    public static void playMagicSummonSound(Level level, Vec3 center) {
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.PLAYERS, 0.25F, 2.0F);
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 0.25F, 2.0F);
+    }
+
+    public static void playFireShootSound(Level level, Vec3 center) {
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.ENDER_PEARL_THROW, SoundSource.PLAYERS, 0.25F, 1.0F);
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 0.25F, 1.0F);
+    }
+
+    public static void playWindSound(Level level, Vec3 center) {
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.HORSE_BREATHE, SoundSource.PLAYERS, 2.0F, 0.02F);
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.HORSE_BREATHE, SoundSource.PLAYERS, 2.0F, 0.03F);
+    }
+
+    public static void playStormShootSound(Level level, Vec3 center) {
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.ENDER_PEARL_THROW, SoundSource.PLAYERS, 0.5F, 1.0F);
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.PLAYERS, 0.35F, 2.0F);
+    }
+
+    public static void playTeleportSound(Level level, Vec3 center) {
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
+    }
+
+    public static void playXpSound(Level level, Vec3 center) {
+        level.playSound(null, center.x, center.y, center.z,
+                SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.25F, (new Random().nextFloat() - new Random().nextFloat()) * 0.35F + 0.9F);
     }
 }

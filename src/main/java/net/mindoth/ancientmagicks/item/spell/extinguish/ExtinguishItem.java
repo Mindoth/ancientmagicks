@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.extinguish;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -17,13 +18,8 @@ import java.util.List;
 
 public class ExtinguishItem extends SpellItem {
 
-    public ExtinguishItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 40;
+    public ExtinguishItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -57,6 +53,7 @@ public class ExtinguishItem extends SpellItem {
         }
 
         if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
             level.playSound(null, center.x, center.y, center.z,
                     SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS, 0.25F, 1.0F);
         }

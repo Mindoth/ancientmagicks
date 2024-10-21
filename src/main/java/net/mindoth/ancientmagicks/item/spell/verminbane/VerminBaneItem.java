@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.verminbane;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -18,13 +19,8 @@ import java.util.stream.Stream;
 
 public class VerminBaneItem extends SpellItem {
 
-    public VerminBaneItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 40;
+    public VerminBaneItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -70,6 +66,7 @@ public class VerminBaneItem extends SpellItem {
         state = true;
 
         if ( state ) {
+            if ( useTime % 10 == 0 ) ManaEvents.changeMana(owner, -this.manaCost);
             if ( useTime % 3 == 0 ) playWindSound(level, center);
         }
 

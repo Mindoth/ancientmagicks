@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.dragonbreath;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,18 +15,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DragonBreathItem extends SpellItem {
 
-    public DragonBreathItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 40;
+    public DragonBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -72,7 +67,10 @@ public class DragonBreathItem extends SpellItem {
 
         if ( state ) {
             if ( useTime % 3 == 0 ) playWindSound(level, center);
-            if ( useTime % 10 == 0 ) level.playSound(null, center.x, center.y, center.z, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 0.25F, 1.0F);
+            if ( useTime % 10 == 0 ) {
+                ManaEvents.changeMana(owner, -this.manaCost);
+                level.playSound(null, center.x, center.y, center.z, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 0.25F, 1.0F);
+            }
         }
 
         return state;

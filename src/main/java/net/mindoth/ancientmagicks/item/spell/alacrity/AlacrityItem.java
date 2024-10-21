@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.alacrity;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -12,13 +13,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class AlacrityItem extends SpellItem {
 
-    public AlacrityItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 200;
+    public AlacrityItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -31,7 +27,7 @@ public class AlacrityItem extends SpellItem {
         float size = range * 0.5F;
 
         LivingEntity target;
-        if ( caster == owner ) target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
+        if ( caster == owner ) target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
 
         if ( target instanceof Player && isAlly(owner, target)) {
@@ -40,7 +36,10 @@ public class AlacrityItem extends SpellItem {
 
         state = true;
 
-        if ( state ) playMagicSound(level, center);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playMagicSound(level, center);
+        }
 
         return state;
     }

@@ -7,10 +7,12 @@ import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellPearlItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketSyncClientSpell;
+import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
+import net.mindoth.ancientmagicks.network.PacketSyncClientMagic;
 import net.mindoth.ancientmagicks.network.PacketSyncSpellCombos;
-import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
+import net.mindoth.ancientmagicks.network.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.ancientmagicks.registries.attributes.AncientMagicksAttributes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -41,18 +43,32 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class CommonEvents {
 
+    public static final String TAG_NOT_FIRST_LOGIN = ("notFirstLogIn");
+
     @SubscribeEvent
     public static void onPlayerJoin(final PlayerEvent.PlayerLoggedInEvent event) {
-        if ( event.getEntity() instanceof ServerPlayer player ) {
-            AncientMagicksNetwork.sendToPlayer(new PacketSyncSpellCombos(ColorRuneItem.CURRENT_COMBO_TAG), player);
-            player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
+        if ( event.getEntity().level().isClientSide ) return;
+        Player player = event.getEntity();
+        CompoundTag playerData = player.getPersistentData();
+        CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
+        if ( event.getEntity() instanceof ServerPlayer serverPlayer ) {
+            AncientMagicksNetwork.sendToPlayer(new PacketSyncSpellCombos(ColorRuneItem.CURRENT_COMBO_TAG), serverPlayer);
+            serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                 CompoundTag tag = new CompoundTag();
-                if ( spell.getCurrentSpell() != null ) tag.putString("am_spell", spell.getCurrentSpell());
-                else spell.setCurrentSpell("minecraft:air");
-                if ( spell.getKnownSpells() != null ) tag.putString("am_known_spells", spell.getKnownSpells());
-                else spell.setKnownSpells("");
-                AncientMagicksNetwork.sendToPlayer(new PacketSyncClientSpell(tag), player);
+                if ( magic.getCurrentSpell() != null ) tag.putString("am_spell", magic.getCurrentSpell());
+                else magic.setCurrentSpell("minecraft:air");
+                if ( magic.getKnownSpells() != null ) tag.putString("am_known_spells", magic.getKnownSpells());
+                else magic.setKnownSpells("");
+                AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMagic(tag), serverPlayer);
+                if ( data.getBoolean(TAG_NOT_FIRST_LOGIN) ) AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMana(magic.getCurrentMana()), serverPlayer);
+                else ManaEvents.changeMana(serverPlayer, serverPlayer.getAttributeValue(AncientMagicksAttributes.MAX_MANA.get()));
             });
+        }
+
+        //KEEP THIS LAST
+        if ( !data.getBoolean(TAG_NOT_FIRST_LOGIN) ) {
+            data.putBoolean(TAG_NOT_FIRST_LOGIN, true);
+            playerData.put(Player.PERSISTED_NBT_TAG, data);
         }
     }
 
@@ -93,21 +109,19 @@ public class CommonEvents {
             if ( !player.level().isClientSide ) {
                 ItemStack stack = event.getItem();
                 Item castingItem = stack.getItem();
-                if ( castingItem instanceof SpellPearlItem spellPearlItem ) {
+                if ( castingItem instanceof SpellPearlItem ) {
                     if ( stack.getTag() != null && stack.getTag().contains("spell_pearl") ) {
                         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(stack.getTag().getString("spell_pearl")));
-                        if ( item instanceof SpellItem spellItem) {
-                            player.getCooldowns().addCooldown(spellItem, spellItem.getCooldown());
+                        if ( item instanceof SpellItem spellItem ) {
+                            player.getCooldowns().addCooldown(spellItem, spellItem.cooldown);
                             if ( !player.isCreative() ) stack.shrink(1);
                         }
                     }
                 }
                 else if ( castingItem instanceof CastingItem ) {
-                    player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> {
-                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(spell.getCurrentSpell()));
-                        if ( item instanceof SpellItem spellItem) {
-                            player.getCooldowns().addCooldown(spellItem, spellItem.getCooldown());
-                        }
+                    player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
+                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
+                        if ( item instanceof SpellItem spellItem ) player.getCooldowns().addCooldown(spellItem, spellItem.cooldown);
                     });
                 }
             }

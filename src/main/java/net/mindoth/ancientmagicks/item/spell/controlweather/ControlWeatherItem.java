@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.controlweather;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -8,13 +9,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class ControlWeatherItem extends SpellItem {
 
-    public ControlWeatherItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 200;
+    public ControlWeatherItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -26,7 +22,10 @@ public class ControlWeatherItem extends SpellItem {
         else if ( level.getLevelData().isRaining() || level.getLevelData().isThundering() ) level.getLevelData().setRaining(false);
         state = true;
 
-        if ( state ) playMagicSound(level, center);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playMagicSound(level, center);
+        }
 
         return state;
     }

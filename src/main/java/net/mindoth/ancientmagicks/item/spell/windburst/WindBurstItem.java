@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.windburst;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,13 +15,8 @@ import java.util.List;
 
 public class WindBurstItem extends SpellItem {
 
-    public WindBurstItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 40;
+    public WindBurstItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -31,7 +27,7 @@ public class WindBurstItem extends SpellItem {
 
         float range = 2.0F;
         float size = 2.0F;
-        float power = 2;
+        float power = 2.0F;
 
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true, false);
         List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + size, point.y + size, point.z + size),
@@ -46,6 +42,7 @@ public class WindBurstItem extends SpellItem {
         }
 
         if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
             Vec3 particlePoint = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true, false);
             addParticles(level, casterPos, particlePoint);
             playWindSound(level, center);

@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.polymorph;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,13 +13,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class PolymorphItem extends SpellItem {
 
-    public PolymorphItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 200;
+    public PolymorphItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -43,7 +39,10 @@ public class PolymorphItem extends SpellItem {
             }
         }
 
-        if ( state ) playMagicSound(level, center);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playMagicSound(level, center);
+        }
 
         return state;
     }

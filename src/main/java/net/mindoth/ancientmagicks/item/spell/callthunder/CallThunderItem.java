@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.callthunder;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -16,13 +17,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class CallThunderItem extends SpellItem {
 
-    public CallThunderItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 60;
+    public CallThunderItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -46,6 +42,8 @@ public class CallThunderItem extends SpellItem {
                 state = true;
             }
         }
+
+        if ( state ) ManaEvents.changeMana(owner, -this.manaCost);
 
         return state;
     }

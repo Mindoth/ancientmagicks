@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.blizzard;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
@@ -13,13 +14,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class BlizzardItem extends SpellItem {
 
-    public BlizzardItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 40;
+    public BlizzardItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -47,6 +43,7 @@ public class BlizzardItem extends SpellItem {
         state = true;
 
         if ( state ) {
+            if ( useTime % 10 == 0 ) ManaEvents.changeMana(owner, -this.manaCost);
             if ( useTime % 3 == 0 ) playWindSound(level, pos);
         }
 

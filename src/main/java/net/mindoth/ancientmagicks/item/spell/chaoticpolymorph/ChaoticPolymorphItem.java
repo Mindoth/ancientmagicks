@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.chaoticpolymorph;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,13 +17,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ChaoticPolymorphItem extends SpellItem {
 
-    public ChaoticPolymorphItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 60;
+    public ChaoticPolymorphItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -52,7 +48,10 @@ public class ChaoticPolymorphItem extends SpellItem {
             }
         }
 
-        if ( state ) playMagicSound(level, center);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playMagicSound(level, center);
+        }
 
         return state;
     }

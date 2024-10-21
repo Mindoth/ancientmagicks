@@ -1,8 +1,8 @@
 package net.mindoth.ancientmagicks.item.spell.firebolt;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -10,13 +10,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class FireBoltItem extends SpellItem {
 
-    public FireBoltItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 20;
+    public FireBoltItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -37,7 +32,10 @@ public class FireBoltItem extends SpellItem {
         level.addFreshEntity(projectile);
         state = true;
 
-        if ( state ) playFireShootSound(level, center);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playFireShootSound(level, center);
+        }
 
         return state;
     }

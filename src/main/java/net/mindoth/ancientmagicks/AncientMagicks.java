@@ -8,6 +8,7 @@ import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.loot.AncientMagicksModifiers;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
+import net.mindoth.ancientmagicks.registries.attributes.AncientMagicksAttributes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -57,6 +58,7 @@ public class AncientMagicks {
         AncientMagicksParticles.PARTICLES.register(modEventBus);
         AncientMagicksContainers.CONTAINERS.register(modEventBus);
         AncientMagicksModifiers.LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
+        AncientMagicksAttributes.ATTRIBUTES.register(modEventBus);
 
         //KEEP THESE LAST
         modEventBus.addListener(this::addCreative);

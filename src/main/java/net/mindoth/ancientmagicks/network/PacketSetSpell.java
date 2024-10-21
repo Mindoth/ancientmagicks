@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.network;
 
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.network.capabilities.playerspell.PlayerSpellProvider;
+import net.mindoth.ancientmagicks.network.capabilities.playermagic.PlayerMagicProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,7 +33,7 @@ public class PacketSetSpell {
                     ItemStack wand = CastingItem.getHeldCastingItem(player);
                     if ( CastingItem.isValidCastingItem(wand) ) {
                         String spellString = this.selectedItem.getString("am_spell");
-                        player.getCapability(PlayerSpellProvider.PLAYER_SPELL).ifPresent(spell -> spell.setCurrentSpell(spellString));
+                        player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(spell -> spell.setCurrentSpell(spellString));
                     }
                 }
             }

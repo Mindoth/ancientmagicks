@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks;
 import net.mindoth.ancientmagicks.client.gui.CurrentSpellHud;
 import net.mindoth.ancientmagicks.client.gui.GuiAMBag;
 import net.mindoth.ancientmagicks.client.gui.GuiSpellWheel;
+import net.mindoth.ancientmagicks.client.gui.ManaHud;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
@@ -10,7 +11,7 @@ import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltRenderer;
 import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceRenderer;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleRenderer;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballRenderer;
-import net.mindoth.ancientmagicks.item.spell.spellpearl.SpellPearlRenderer;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlRenderer;
 import net.mindoth.ancientmagicks.item.spell.thunderball.ThunderballRenderer;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
@@ -26,6 +27,7 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -90,6 +92,7 @@ public class AncientMagicksClient {
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
             event.registerAboveAll("current_spell_hud", CurrentSpellHud.OVERLAY);
+            event.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "mana_hud", ManaHud.OVERLAY);
         }
     }
 }

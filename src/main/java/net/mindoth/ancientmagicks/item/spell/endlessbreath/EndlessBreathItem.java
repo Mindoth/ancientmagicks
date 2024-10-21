@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.endlessbreath;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -7,13 +8,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class EndlessBreathItem extends SpellItem {
 
-    public EndlessBreathItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 40;
+    public EndlessBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -26,7 +22,10 @@ public class EndlessBreathItem extends SpellItem {
         boolean state = caster == owner && owner.getAirSupply() < owner.getMaxAirSupply();
 
         if ( state ) {
-            if ( useTime % 10 == 0 ) owner.setAirSupply(Math.min(owner.getAirSupply() + 39, owner.getMaxAirSupply()));
+            if ( useTime % 10 == 0 ) {
+                ManaEvents.changeMana(owner, -this.manaCost);
+                owner.setAirSupply(Math.min(owner.getAirSupply() + 39, owner.getMaxAirSupply()));
+            }
         }
 
         return state;

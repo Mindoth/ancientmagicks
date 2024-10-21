@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.telekineticgrab;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -20,13 +21,8 @@ import java.util.List;
 
 public class TelekineticGrabItem extends SpellItem {
 
-    public TelekineticGrabItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 20;
+    public TelekineticGrabItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -75,7 +71,10 @@ public class TelekineticGrabItem extends SpellItem {
             }
         }
 
-        if ( state ) playMagicShootSound(level, soundPos);
+        if ( state ) {
+            ManaEvents.changeMana(owner, -this.manaCost);
+            playMagicShootSound(level, soundPos);
+        }
 
         return state;
     }

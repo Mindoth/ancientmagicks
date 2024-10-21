@@ -6,16 +6,12 @@ public class AncientMagicksCommonConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
-    public static final ForgeConfigSpec.ConfigValue<Boolean> FREE_SPELLS;
     public static final ForgeConfigSpec.ConfigValue<Boolean> PVP;
     public static final ForgeConfigSpec.ConfigValue<String> DISABLED_SPELLS;
     public static final ForgeConfigSpec.ConfigValue<String> DISABLED_POLYMOBS;
 
     static {
         BUILDER.push("Configs for Ancient Magicks");
-
-        FREE_SPELLS = BUILDER.comment("true = Spellcasting is free. false = Spellcasting is not free (Default = true)")
-                .define("freespells", true);
 
         PVP = BUILDER.comment("true = Harmful spells can hurt and target other players. false = Harmful spells will ignore players (Default = true)")
                 .define("pvp", true);

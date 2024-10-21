@@ -1,6 +1,8 @@
 package net.mindoth.ancientmagicks.item.spell.icewall;
 
+import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,13 +18,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class IceWallItem extends SpellItem {
 
-    public IceWallItem(Properties pProperties, int spellLevel) {
-        super(pProperties, spellLevel);
-    }
-
-    @Override
-    public int getCooldown() {
-        return 40;
+    public IceWallItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -33,6 +30,7 @@ public class IceWallItem extends SpellItem {
     @Override
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
+        boolean mpDrain = false;
         Level level = caster.level();
         float down = -0.2F;
         if ( caster != owner ) {
@@ -61,12 +59,14 @@ public class IceWallItem extends SpellItem {
                     BlockState tempState = level.getBlockState(tempPos);
                     if ( !tempState.isSolid() || tempState.canBeReplaced() ) {
                         level.setBlockAndUpdate(tempPos, wallMaterial.defaultBlockState());
+                        mpDrain = true;
                     }
                 }
             }
         }
 
         if ( state ) {
+            if ( mpDrain ) ManaEvents.changeMana(owner, -this.manaCost);
             ServerLevel serverLevel = (ServerLevel)level;
             Vec3 lookVec = caster.getLookAngle();
             serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, center.x, center.y + down, center.z, 0, lookVec.x, lookVec.y, lookVec.z, 0.5D);

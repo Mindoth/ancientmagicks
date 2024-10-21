@@ -89,7 +89,7 @@
   "item.ancientmagicks.thunderball": "Thunderball",
   "tooltip.ancientmagicks.thunderball": "Launches a ball of lightning that strikes enemies in an area",
   "item.ancientmagicks.teleblock": "Teleblock",
-  "tooltip.ancientmagicks.teleblock": "Prevent a target from teleporting for a short duration",
+  "tooltip.ancientmagicks.teleblock": "Prevent a target enemy from teleporting for a short duration",
   "item.ancientmagicks.fire_bolt": "Fire Bolt",
   "tooltip.ancientmagicks.fire_bolt": "Launches a small fiery bolt that damages and burns hit enemies",
 
@@ -105,5 +105,7 @@
 
 
   "tooltip.ancientmagicks.tier": "\u00A77Spell Tier\u00A7r",
+  "tooltip.ancientmagicks.mana_cost": "\u00A77Mana Cost\u00A7r",
+  "tooltip.ancientmagicks.cooldown": "\u00A77Cooldown\u00A7r",
   "tooltip.ancientmagicks.shift": "\u00A77Hold SHIFT to read Spell effects\u00A7r"
 }
