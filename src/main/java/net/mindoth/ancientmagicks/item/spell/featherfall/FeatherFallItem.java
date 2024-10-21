@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.featherfall;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -30,13 +29,15 @@ public class FeatherFallItem extends SpellItem {
         List<Entity> list = ShadowEvents.getEntitiesAround(caster, size, size, size);
         if ( caster instanceof LivingEntity living ) list.add(living);
         for ( Entity entity : list ) {
-            if ( entity instanceof LivingEntity living ) living.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, life, 0, false, false));
+            if ( entity instanceof LivingEntity living ) {
+                living.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, life, 0, false, false));
+                addEnchantParticles(living, 170, 25, 170, 0.15F, 8, true);
+            }
         }
 
         state = true;
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
             playMagicSound(level, center);
         }
 

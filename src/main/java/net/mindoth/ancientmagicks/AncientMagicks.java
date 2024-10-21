@@ -56,7 +56,6 @@ public class AncientMagicks {
         AncientMagicksEntities.ENTITIES.register(modEventBus);
         AncientMagicksEffects.EFFECTS.register(modEventBus);
         AncientMagicksParticles.PARTICLES.register(modEventBus);
-        AncientMagicksContainers.CONTAINERS.register(modEventBus);
         AncientMagicksModifiers.LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
         AncientMagicksAttributes.ATTRIBUTES.register(modEventBus);
 
@@ -71,7 +70,7 @@ public class AncientMagicks {
                 if ( item.get() instanceof SpellItem spell ) {
                     if ( isSpellEnabled(spell) ) event.accept(item);
                 }
-                else if ( item.get() != AncientMagicksItems.TABLET_BAG.get() ) event.accept(item);
+                else event.accept(item);
             }
         }
     }

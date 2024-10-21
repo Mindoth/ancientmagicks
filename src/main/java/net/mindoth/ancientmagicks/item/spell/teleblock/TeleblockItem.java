@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.teleblock;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -33,13 +32,11 @@ public class TeleblockItem extends SpellItem {
 
         if ( !isAlly(owner, target) ) {
             target.addEffect(new MobEffectInstance(AncientMagicksEffects.TELEBLOCK.get(), life));
-            ShadowEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, ShadowEvents.getEntityCenter(caster), target.getEyePosition(),
-                    0, 1, 85F / 255F, 1, 1);
             state = true;
         }
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
+            addEnchantParticles(target, 170, 25, 170, 0.15F, 8, true);
             playMagicSound(level, center);
         }
 

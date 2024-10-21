@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.polymorph;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -33,14 +32,12 @@ public class PolymorphItem extends SpellItem {
             if ( target instanceof Mob && !(target instanceof Sheep) ) {
                 Sheep sheep = ((Mob)target).convertTo(EntityType.SHEEP, false);
                 sheep.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
-                ShadowEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, ShadowEvents.getEntityCenter(caster), ShadowEvents.getEntityCenter(sheep),
-                        0, 1, 85F / 255F, 1, 1);
+                addEnchantParticles(sheep, 170, 25, 170, 0.15F, 8, true);
                 state = true;
             }
         }
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
             playMagicSound(level, center);
         }
 

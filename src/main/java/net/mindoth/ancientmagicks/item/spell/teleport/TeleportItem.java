@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.teleport;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
@@ -41,7 +40,6 @@ public class TeleportItem extends SpellItem {
         }
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
             playTeleportSound(level, pos);
         }
 

@@ -5,6 +5,7 @@ import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketItemActivationAnimation;
+import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.ancientmagicks.network.PacketUpdateKnownSpells;
 import net.mindoth.ancientmagicks.network.capabilities.playermagic.ClientMagicData;
 import net.mindoth.ancientmagicks.network.capabilities.playermagic.PlayerMagicProvider;
@@ -57,7 +58,7 @@ public class SpellItem extends Item {
         super(pProperties);
         this.spellTier = spellTier;
         this.manaCost = manaCost;
-        this.cooldown = cooldown;
+        this.cooldown = cooldown * 20;
     }
 
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
@@ -71,8 +72,8 @@ public class SpellItem extends Item {
         tooltip.add(Component.translatable("tooltip.ancientmagicks.tier").append(Component.literal(": " + spellTier)).withStyle(ChatFormatting.GRAY));
         int manaCost = ((SpellItem)stack.getItem()).manaCost;
         tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)).withStyle(ChatFormatting.GRAY));
-        int cooldown = ((SpellItem)stack.getItem()).cooldown;
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.cooldown").append(Component.literal(": " + cooldown)).withStyle(ChatFormatting.GRAY));
+        int cooldown = ((SpellItem)stack.getItem()).cooldown / 20;
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.cooldown").append(Component.literal(": " + cooldown + "s")).withStyle(ChatFormatting.GRAY));
 
         if ( !Screen.hasShiftDown() ) tooltip.add(Component.translatable("tooltip.ancientmagicks.shift"));
         else if ( Screen.hasShiftDown() ) {
@@ -104,6 +105,41 @@ public class SpellItem extends Item {
         if ( level.isClientSide ) return;
         if ( living instanceof Player player && tablet.getItem() instanceof SpellItem spellItem) {
             CastingItem.doSpell(player, player, tablet, spellItem, getUseDuration(tablet) - timeLeft);
+        }
+    }
+
+    protected void addEnchantParticles(Entity target, int r, int g, int b, float size, int age, boolean mask) {
+        for ( int i = 0; i < 4; i++ ) {
+            double randX = target.getBoundingBox().maxX;
+            double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
+            double randZ = target.getBoundingBox().minZ + (target.getBoundingBox().maxZ - target.getBoundingBox().minZ) * new Random().nextDouble();
+            Vec3 pos = new Vec3(randX, randY, randZ);
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, mask,
+                    pos.x, pos.y, pos.z, target.getDeltaMovement().x, 0.25D, target.getDeltaMovement().z), target, true);
+        }
+        for ( int i = 0; i < 4; i++ ) {
+            double randX = target.getBoundingBox().minX;
+            double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
+            double randZ = target.getBoundingBox().minZ + (target.getBoundingBox().maxZ - target.getBoundingBox().minZ) * new Random().nextDouble();
+            Vec3 pos = new Vec3(randX, randY, randZ);
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, mask,
+                    pos.x, pos.y, pos.z, target.getDeltaMovement().x, 0.25D, target.getDeltaMovement().z), target, true);
+        }
+        for ( int i = 0; i < 4; i++ ) {
+            double randX = target.getBoundingBox().minX + (target.getBoundingBox().maxX - target.getBoundingBox().minX) * new Random().nextDouble();
+            double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
+            double randZ = target.getBoundingBox().minZ;
+            Vec3 pos = new Vec3(randX, randY, randZ);
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, mask,
+                    pos.x, pos.y, pos.z, target.getDeltaMovement().x, 0.25D, target.getDeltaMovement().z), target, true);
+        }
+        for ( int i = 0; i < 4; i++ ) {
+            double randX = target.getBoundingBox().minX + (target.getBoundingBox().maxX - target.getBoundingBox().minX) * new Random().nextDouble();
+            double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
+            double randZ = target.getBoundingBox().maxZ;
+            Vec3 pos = new Vec3(randX, randY, randZ);
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, mask,
+                    pos.x, pos.y, pos.z, target.getDeltaMovement().x, 0.25D, target.getDeltaMovement().z), target, true);
         }
     }
 

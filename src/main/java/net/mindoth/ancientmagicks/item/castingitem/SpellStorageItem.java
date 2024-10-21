@@ -24,17 +24,19 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class SpellPearlItem extends CastingItem {
+public class SpellStorageItem extends CastingItem {
 
-    public SpellPearlItem(Properties pProperties) {
+    public SpellStorageItem(Properties pProperties) {
         super(pProperties);
     }
+
+    public static final String TAG_STORED_SPELL = ("stored_spell");
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        if ( stack.getTag() != null && stack.getTag().contains("spell_pearl") ) {
-            String itemId = stack.getTag().getString("spell_pearl");
+        if ( stack.getTag() != null && stack.getTag().contains(TAG_STORED_SPELL) ) {
+            String itemId = stack.getTag().getString(TAG_STORED_SPELL);
             String modid = ForgeRegistries.ITEMS.getKey(stack.getItem()).toString().split(":")[0];
             String itemName = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId)).toString();
             tooltip.add(Component.translatable("item." + modid + "." + itemName).withStyle(ChatFormatting.GRAY));
@@ -45,29 +47,31 @@ public class SpellPearlItem extends CastingItem {
 
     @Override
     public boolean isFoil(ItemStack pStack) {
-        return pStack.isEnchanted() || (pStack.getTag() != null && pStack.getTag().contains("spell_pearl"));
+        return pStack.isEnchanted() || (pStack.getTag() != null && pStack.getTag().contains(TAG_STORED_SPELL));
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(hand));
-        ItemStack pearl = player.getItemInHand(hand);
+        ItemStack vessel = player.getItemInHand(hand);
         if ( !level.isClientSide ) {
-            if ( pearl.getTag() != null && pearl.getTag().contains("spell_pearl") ) {
-                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(pearl.getTag().getString("spell_pearl")));
-                if ( item instanceof SpellItem spell ) {
-                    if ( !player.getCooldowns().isOnCooldown(pearl.getItem()) ) {
-                        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+            if ( vessel.getTag() != null && vessel.getTag().contains(TAG_STORED_SPELL) ) {
+                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(vessel.getTag().getString(TAG_STORED_SPELL)));
+                if ( item instanceof SpellItem spell && !player.getCooldowns().isOnCooldown(vessel.getItem()) ) {
+                    if ( vessel.getItem() == AncientMagicksItems.SPELL_PEARL.get() ) {
+                        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                                SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
                         Vec3 center = player.getEyePosition();
                         SpellPearlEntity spellPearl = new SpellPearlEntity(level, player, player, spell);
                         spellPearl.setPos(center.x, center.y - 0.2F, center.z);
                         spellPearl.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, Math.max(0, spellPearl.speed), 1.0F);
                         level.addFreshEntity(spellPearl);
-                        pearl.shrink(1);
+                        vessel.shrink(1);
                         player.getCooldowns().addCooldown(AncientMagicksItems.SPELL_PEARL.get(), 120);
 
                         result = InteractionResultHolder.success(player.getItemInHand(hand));
                     }
+                    if ( vessel.getItem() == AncientMagicksItems.SPELL_SCROLL.get() ) player.startUsingItem(hand);
                 }
             }
         }
@@ -78,9 +82,9 @@ public class SpellPearlItem extends CastingItem {
     @Override
     public void onUseTick(Level level, LivingEntity living, ItemStack castingItem, int timeLeft) {
         if ( level.isClientSide ) return;
-        if ( living instanceof Player player && castingItem.getTag() != null && castingItem.getTag().contains("spell_pearl") ) {
-            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(castingItem.getTag().getString("spell_pearl")));
-            if ( item instanceof SpellItem spellItem) {
+        if ( living instanceof Player player && castingItem.getTag() != null && castingItem.getTag().contains(TAG_STORED_SPELL) ) {
+            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(castingItem.getTag().getString(TAG_STORED_SPELL)));
+            if ( item instanceof SpellItem spellItem ) {
                 doSpell(player, player, castingItem, spellItem, getUseDuration(castingItem) - timeLeft);
             }
         }

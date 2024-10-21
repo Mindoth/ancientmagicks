@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.controlweather;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +22,6 @@ public class ControlWeatherItem extends SpellItem {
         state = true;
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
             playMagicSound(level, center);
         }
 

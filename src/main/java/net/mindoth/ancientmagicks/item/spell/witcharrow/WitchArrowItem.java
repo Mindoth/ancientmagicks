@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.witcharrow;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -41,7 +40,6 @@ public class WitchArrowItem extends SpellItem {
         state = true;
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
             playMagicShootSound(level, center);
         }
 

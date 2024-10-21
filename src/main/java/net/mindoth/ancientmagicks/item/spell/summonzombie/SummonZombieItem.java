@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.summonzombie;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -39,7 +38,6 @@ public class SummonZombieItem extends SpellItem {
         state = true;
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
             playMagicSummonSound(level, center);
         }
 

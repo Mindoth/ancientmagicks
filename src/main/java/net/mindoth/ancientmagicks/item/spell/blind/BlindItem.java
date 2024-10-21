@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.blind;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -33,13 +32,11 @@ public class BlindItem extends SpellItem {
 
         if ( !isAlly(owner, target) ) {
             target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, life));
-            ShadowEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, ShadowEvents.getEntityCenter(caster), target.getEyePosition(),
-                    0, 0, 0, 0, 1);
             state = true;
         }
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
+            addEnchantParticles(target, 0, 0, 0, 0.15F, 8, false);
             playMagicSound(level, center);
         }
 

@@ -1,15 +1,20 @@
 package net.mindoth.ancientmagicks.item.spell.alacrity;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
+import net.mindoth.ancientmagicks.network.PacketSetSpell;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.Random;
 
 public class AlacrityItem extends SpellItem {
 
@@ -32,12 +37,11 @@ public class AlacrityItem extends SpellItem {
 
         if ( target instanceof Player && isAlly(owner, target)) {
             target.addEffect(new MobEffectInstance(AncientMagicksEffects.ALACRITY.get(), life, 0, false, false));
+            state = true;
         }
 
-        state = true;
-
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
+            addEnchantParticles(target, 170, 25, 170, 0.15F, 8, true);
             playMagicSound(level, center);
         }
 

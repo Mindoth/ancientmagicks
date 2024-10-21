@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.endlessbreath;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +22,6 @@ public class EndlessBreathItem extends SpellItem {
 
         if ( state ) {
             if ( useTime % 10 == 0 ) {
-                ManaEvents.changeMana(owner, -this.manaCost);
                 owner.setAirSupply(Math.min(owner.getAirSupply() + 39, owner.getMaxAirSupply()));
             }
         }

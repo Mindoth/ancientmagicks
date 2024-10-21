@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.blizzard;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
@@ -43,7 +42,6 @@ public class BlizzardItem extends SpellItem {
         state = true;
 
         if ( state ) {
-            if ( useTime % 10 == 0 ) ManaEvents.changeMana(owner, -this.manaCost);
             if ( useTime % 3 == 0 ) playWindSound(level, pos);
         }
 

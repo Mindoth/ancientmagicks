@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.dragonbreath;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -68,7 +67,6 @@ public class DragonBreathItem extends SpellItem {
         if ( state ) {
             if ( useTime % 3 == 0 ) playWindSound(level, center);
             if ( useTime % 10 == 0 ) {
-                ManaEvents.changeMana(owner, -this.manaCost);
                 level.playSound(null, center.x, center.y, center.z, SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 0.25F, 1.0F);
             }
         }

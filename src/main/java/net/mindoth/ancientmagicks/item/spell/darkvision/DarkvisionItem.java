@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.darkvision;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -37,7 +36,7 @@ public class DarkvisionItem extends SpellItem {
         state = true;
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
+            addEnchantParticles(target, 0, 0, 0, 0.15F, 8, false);
             playMagicSound(level, center);
         }
 

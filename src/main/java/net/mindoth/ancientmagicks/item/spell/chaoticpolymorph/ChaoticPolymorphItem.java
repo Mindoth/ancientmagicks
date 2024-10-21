@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.chaoticpolymorph;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -41,15 +40,13 @@ public class ChaoticPolymorphItem extends SpellItem {
             if ( entity instanceof Mob newMob ) {
                 Mob mob = convertMob(oldMob, newMob, serverLevel, false);
                 if ( mob.isAddedToWorld() ) {
-                    ShadowEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, ShadowEvents.getEntityCenter(caster), ShadowEvents.getEntityCenter(mob),
-                            0, 1, 85F / 255F, 1, 1);
+                    addEnchantParticles(mob, 170, 25, 170, 0.15F, 8, true);
                     state = true;
                 }
             }
         }
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
             playMagicSound(level, center);
         }
 

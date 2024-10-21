@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.telekineticgrab;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -72,7 +71,6 @@ public class TelekineticGrabItem extends SpellItem {
         }
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
             playMagicShootSound(level, soundPos);
         }
 

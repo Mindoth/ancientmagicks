@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.burnlance;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.minecraft.world.entity.Entity;
@@ -33,7 +32,6 @@ public class BurnLanceItem extends SpellItem {
         state = true;
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
             playFireShootSound(level, center);
         }
 

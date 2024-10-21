@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks;
 
 import net.mindoth.ancientmagicks.client.gui.CurrentSpellHud;
-import net.mindoth.ancientmagicks.client.gui.GuiAMBag;
 import net.mindoth.ancientmagicks.client.gui.GuiSpellWheel;
 import net.mindoth.ancientmagicks.client.gui.ManaHud;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
@@ -16,11 +15,9 @@ import net.mindoth.ancientmagicks.item.spell.thunderball.ThunderballRenderer;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendRuneData;
-import net.mindoth.ancientmagicks.registries.AncientMagicksContainers;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.ancientmagicks.registries.AncientMagicksKeyBinds;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -31,19 +28,13 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 public class AncientMagicksClient {
 
     public static void registerHandlers() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modBus.addListener(AncientMagicksClient::clientSetup);
         modBus.addListener(AncientMagicksClient::registerEntityRenderers);
-    }
-
-    private static void clientSetup(final FMLClientSetupEvent event) {
-        MenuScreens.register(AncientMagicksContainers.AMBAG_CONTAINER.get(), GuiAMBag::new);
     }
 
     private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {

@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.extinguish;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -53,7 +52,6 @@ public class ExtinguishItem extends SpellItem {
         }
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
             level.playSound(null, center.x, center.y, center.z,
                     SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS, 0.25F, 1.0F);
         }

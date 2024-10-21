@@ -26,7 +26,7 @@ public class WitchArrowEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultPower() {
-        return 4.0F;
+        return 6.0F;
     }
 
     @Override

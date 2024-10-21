@@ -33,18 +33,21 @@ public class CastingItem extends Item {
         //Check casting bonuses
         boolean hasAlacrity = caster == owner && owner.hasEffect(AncientMagicksEffects.ALACRITY.get());
 
-        //This actually casts the given Spell
+        //Cast the given Spell
         if ( AncientMagicks.isSpellEnabled(spell) ) {
-            if ( caster == owner && owner.isHolding((item) -> item.getItem() == AncientMagicksItems.SPELL_PEARL.get()
-                    && (!item.hasTag() || (item.getTag() != null && !item.getTag().contains("spell_pearl"))))
-                    && owner.isHolding((item) -> item.getItem() instanceof CastingItem && !(item.getItem() instanceof SpellPearlItem)) ) {
-                ItemStack pearlStack;
-                if ( owner.getMainHandItem().getItem() == AncientMagicksItems.SPELL_PEARL.get() ) pearlStack = owner.getMainHandItem();
-                else pearlStack = owner.getOffhandItem();
-                makePearls(owner, caster, spell, pearlStack);
+            //Store Spell into item
+            if ( caster == owner && owner.isHolding((item) -> item.getItem() instanceof SpellStorageItem
+                    && (!item.hasTag() || (item.getTag() != null && !item.getTag().contains(SpellStorageItem.TAG_STORED_SPELL))))
+                    && owner.isHolding((item) -> item.getItem() instanceof CastingItem && !(item.getItem() instanceof SpellStorageItem)) ) {
+                ItemStack vessel;
+                if ( owner.getMainHandItem().getItem() instanceof SpellStorageItem ) vessel = owner.getMainHandItem();
+                else vessel = owner.getOffhandItem();
+                storeSpell(owner, caster, spell, vessel);
             }
+            //ACTUALLY cast the spell
             else {
                 if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) && castingItem != null ) {
+                    if ( caster == owner && castingItem.getItem() instanceof StaffItem && useTime % 10 == 0 ) ManaEvents.changeMana(owner, -spell.manaCost);
                     if ( !spell.isChannel() ) handleCooldownsAndStuff(owner, castingItem, spell, hasAlacrity);
                 }
                 else {
@@ -57,15 +60,31 @@ public class CastingItem extends Item {
     }
 
     private static void handleCooldownsAndStuff(Player owner, ItemStack castingItem, SpellItem spell, boolean hasAlacrity) {
-        if ( castingItem.getItem() instanceof SpellPearlItem ) {
+        if ( castingItem.getItem() instanceof SpellStorageItem ) {
             if ( !owner.isCreative() ) castingItem.shrink(1);
-            owner.getCooldowns().addCooldown(AncientMagicksItems.SPELL_PEARL.get(), 120);
+            owner.getCooldowns().addCooldown(AncientMagicksItems.SPELL_SCROLL.get(), 120);
             owner.stopUsingItem();
         }
         else {
             addCastingCooldown(owner, spell, getCastingCooldown(spell.cooldown, hasAlacrity));
             owner.stopUsingItem();
         }
+    }
+
+    public static void storeSpell(Player owner, Entity caster, SpellItem spell, ItemStack vessel) {
+        if ( !AncientMagicks.isSpellEnabled(spell) ) return;
+        if ( !owner.isCreative() ) ManaEvents.changeMana(owner, -spell.manaCost);
+        ItemStack dropStack = vessel.copyWithCount(1);
+        CompoundTag tag = dropStack.getOrCreateTag();
+        tag.putString(SpellStorageItem.TAG_STORED_SPELL, ForgeRegistries.ITEMS.getKey(spell).toString());
+        vessel.shrink(1);
+        Vec3 spawnPos = ShadowEvents.getEntityCenter(owner);
+        ItemEntity drop = new ItemEntity(owner.level(), spawnPos.x, spawnPos.y, spawnPos.z, dropStack);
+        drop.setDeltaMovement(0, 0, 0);
+        drop.setNoPickUpDelay();
+        caster.level().addFreshEntity(drop);
+        addCastingCooldown(owner, spell, spell.cooldown);
+        owner.stopUsingItem();
     }
 
     public static int getCastingCooldown(int defaultCooldown, boolean hasAlacrity) {
@@ -76,22 +95,6 @@ public class CastingItem extends Item {
     public static void whiffSpell(Player owner, Entity caster, SpellItem tablet) {
         SpellItem.playWhiffSound(caster);
         addCastingCooldown(owner, tablet, 20);
-        owner.stopUsingItem();
-    }
-
-    public static void makePearls(Player owner, Entity caster, SpellItem spell, ItemStack pearlStack) {
-        if ( !AncientMagicks.isSpellEnabled(spell) ) return;
-        if ( !owner.isCreative() ) ManaEvents.changeMana(owner, -spell.manaCost);
-        ItemStack dropStack = pearlStack.copyWithCount(1);
-        CompoundTag tag = dropStack.getOrCreateTag();
-        tag.putString("spell_pearl", ForgeRegistries.ITEMS.getKey(spell).toString());
-        pearlStack.shrink(1);
-        Vec3 spawnPos = ShadowEvents.getEntityCenter(owner);
-        ItemEntity drop = new ItemEntity(owner.level(), spawnPos.x, spawnPos.y, spawnPos.z, dropStack);
-        drop.setDeltaMovement(0, 0, 0);
-        drop.setNoPickUpDelay();
-        caster.level().addFreshEntity(drop);
-        addCastingCooldown(owner, spell, spell.cooldown);
         owner.stopUsingItem();
     }
 
@@ -110,7 +113,7 @@ public class CastingItem extends Item {
     }
 
     public static boolean isValidCastingItem(ItemStack castingItem) {
-        return castingItem.getItem() instanceof CastingItem && !(castingItem.getItem() instanceof SpellPearlItem);
+        return castingItem.getItem() instanceof CastingItem && !(castingItem.getItem() instanceof SpellStorageItem);
     }
 
     @Override

@@ -14,8 +14,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
-public class InvocationStaffItem extends CastingItem {
-    public InvocationStaffItem(Properties pProperties) {
+public class StaffItem extends CastingItem {
+
+    public StaffItem(Properties pProperties) {
         super(pProperties);
     }
 

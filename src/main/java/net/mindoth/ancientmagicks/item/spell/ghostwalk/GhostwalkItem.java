@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.ghostwalk;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -38,7 +37,7 @@ public class GhostwalkItem extends SpellItem {
         }
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
+            addEnchantParticles(target, 170, 25, 170, 0.15F, 8, true);
             playMagicSound(level, center);
         }
 

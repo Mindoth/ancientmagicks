@@ -6,12 +6,13 @@
   "key.ancientmagicks.spellselector": "Rune Selector",
 
 
-  "item.ancientmagicks.invocation_staff": "Invocation Staff",
+  "item.ancientmagicks.wizard_staff": "Wizard Staff",
   "item.ancientmagicks.tablet_bag": "Tablet Bag",
   "item.ancientmagicks.empty_rune": "Stone Slate",
   "item.ancientmagicks.ancient_tablet": "Ancient Tablet",
   "item.ancientmagicks.spell_fragment": "Spell Fragment",
   "item.ancientmagicks.spell_pearl": "Spell Pearl",
+  "item.ancientmagicks.spell_scroll": "Spell Scroll",
 
   "item.ancientmagicks.blue_rune": "Blue Rune",
   "item.ancientmagicks.purple_rune": "Purple Rune",
@@ -36,7 +37,7 @@
   "tooltip.ancientmagicks.teleport": "Teleport a short distance towards anywhere you can see",
   "item.ancientmagicks.wind_burst": "Wind Burst",
   "tooltip.ancientmagicks.wind_burst": "Causes a sudden burst of wind to blow past you and towards where you're looking at lifting ANYONE caught in it into the air",
-  "item.ancientmagicks.mage_armor": "Mage Armor",
+  "item.ancientmagicks.witch_armor": "Witch Armor",
   "tooltip.ancientmagicks.mage_armor": "Grant yourself or an unarmored target ally some protection. Protection ends if any armor is worn",
   "item.ancientmagicks.call_thunder": "Call Thunder",
   "tooltip.ancientmagicks.call_thunder": "Direct a powerful lightning strike towards where you're looking. The lightning will always hit a surface",

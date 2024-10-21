@@ -5,7 +5,7 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.SpellPearlItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMagic;
@@ -109,9 +109,9 @@ public class CommonEvents {
             if ( !player.level().isClientSide ) {
                 ItemStack stack = event.getItem();
                 Item castingItem = stack.getItem();
-                if ( castingItem instanceof SpellPearlItem ) {
-                    if ( stack.getTag() != null && stack.getTag().contains("spell_pearl") ) {
-                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(stack.getTag().getString("spell_pearl")));
+                if ( castingItem instanceof SpellStorageItem ) {
+                    if ( stack.getTag() != null && stack.getTag().contains(SpellStorageItem.TAG_STORED_SPELL) ) {
+                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(stack.getTag().getString(SpellStorageItem.TAG_STORED_SPELL)));
                         if ( item instanceof SpellItem spellItem ) {
                             player.getCooldowns().addCooldown(spellItem, spellItem.cooldown);
                             if ( !player.isCreative() ) stack.shrink(1);

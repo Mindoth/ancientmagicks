@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.verminbane;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -66,7 +65,6 @@ public class VerminBaneItem extends SpellItem {
         state = true;
 
         if ( state ) {
-            if ( useTime % 10 == 0 ) ManaEvents.changeMana(owner, -this.manaCost);
             if ( useTime % 3 == 0 ) playWindSound(level, center);
         }
 

@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.windburst;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -42,7 +41,6 @@ public class WindBurstItem extends SpellItem {
         }
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
             Vec3 particlePoint = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true, false);
             addParticles(level, casterPos, particlePoint);
             playWindSound(level, center);

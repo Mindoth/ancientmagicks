@@ -1,6 +1,5 @@
-package net.mindoth.ancientmagicks.item.spell.magearmor;
+package net.mindoth.ancientmagicks.item.spell.witcharmor;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -11,9 +10,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class MageArmorItem extends SpellItem {
+public class WitchArmorItem extends SpellItem {
 
-    public MageArmorItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+    public WitchArmorItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
     }
 
@@ -34,11 +33,11 @@ public class MageArmorItem extends SpellItem {
 
         if ( isAlly(owner, target) && target.getArmorCoverPercentage() == 0 ) {
             state = true;
-            target.addEffect(new MobEffectInstance(AncientMagicksEffects.MAGE_ARMOR.get(), life, 0, false, false));
+            target.addEffect(new MobEffectInstance(AncientMagicksEffects.WITCH_ARMOR.get(), life, 0, false, false));
         }
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
+            addEnchantParticles(target, 170, 25, 170, 0.15F, 8, true);
             playMagicSound(level, center);
         }
 

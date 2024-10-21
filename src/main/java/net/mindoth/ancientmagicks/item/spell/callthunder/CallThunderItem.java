@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.callthunder;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -42,8 +41,6 @@ public class CallThunderItem extends SpellItem {
                 state = true;
             }
         }
-
-        if ( state ) ManaEvents.changeMana(owner, -this.manaCost);
 
         return state;
     }

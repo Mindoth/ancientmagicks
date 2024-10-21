@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.numbpain;
 
-import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -33,7 +32,7 @@ public class NumbPainItem extends SpellItem {
         state = true;
 
         if ( state ) {
-            ManaEvents.changeMana(owner, -this.manaCost);
+            addEnchantParticles(target, 255, 255, 255, 0.15F, 8, true);
             playMagicSound(level, center);
         }
 

@@ -4,7 +4,7 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityEffect;
 import net.mindoth.ancientmagicks.item.spell.fly.FlightEffect;
 import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkEffect;
-import net.mindoth.ancientmagicks.item.spell.magearmor.MageArmorEffect;
+import net.mindoth.ancientmagicks.item.spell.witcharmor.WitchArmorEffect;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbnessEffect;
 import net.mindoth.ancientmagicks.item.spell.sleep.SleepEffect;
@@ -21,7 +21,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class AncientMagicksEffects {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, AncientMagicks.MOD_ID);
 
-    public static final RegistryObject<MageArmorEffect> MAGE_ARMOR = EFFECTS.register("mage_armor", () -> new MageArmorEffect(MobEffectCategory.BENEFICIAL, 16733695));
+    public static final RegistryObject<WitchArmorEffect> WITCH_ARMOR = EFFECTS.register("witch_armor", () -> new WitchArmorEffect(MobEffectCategory.BENEFICIAL, 16733695));
     public static final RegistryObject<FlightEffect> FLIGHT = EFFECTS.register("flight", () -> new FlightEffect(MobEffectCategory.BENEFICIAL, 16733695));
     public static final RegistryObject<NumbnessEffect> NUMBNESS = EFFECTS.register("numbness", () -> new NumbnessEffect(MobEffectCategory.BENEFICIAL, 16777215));
     public static final RegistryObject<SpookEffect> SPOOK = EFFECTS.register("spook", () -> new SpookEffect(MobEffectCategory.BENEFICIAL, 0));
