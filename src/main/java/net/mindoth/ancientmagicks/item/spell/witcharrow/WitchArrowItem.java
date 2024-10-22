@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item.spell.witcharrow;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.registries.attributes.AncientMagicksAttributes;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,6 +37,7 @@ public class WitchArrowItem extends SpellItem {
         Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, caster == owner, true);
         if ( target != null && target != caster && (target instanceof LivingEntity living && !isAlly(owner, living)) ) projectile.target = target;
         projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
+        projectile.power *= (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
         level.addFreshEntity(projectile);
         state = true;
 

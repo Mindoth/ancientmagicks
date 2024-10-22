@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item.spell.firebolt;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.registries.attributes.AncientMagicksAttributes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -28,6 +29,7 @@ public class FireBoltItem extends SpellItem {
         projectile.setColor(AbstractSpellEntity.getSpellColor("gold"));
         projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
         projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
+        projectile.power *= (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
         level.addFreshEntity(projectile);
         state = true;
 

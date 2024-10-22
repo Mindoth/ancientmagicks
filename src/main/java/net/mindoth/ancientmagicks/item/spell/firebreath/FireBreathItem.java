@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.firebreath;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.registries.attributes.AncientMagicksAttributes;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -41,7 +42,7 @@ public class FireBreathItem extends SpellItem {
         float range = 2.5F;
         if ( owner != caster ) range = 0.0F;
         float size = 1.5F;
-        float power = 4.0F;
+        float power = 4.0F * (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
 
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, false, true, false);
         List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + size, point.y + size, point.z + size),

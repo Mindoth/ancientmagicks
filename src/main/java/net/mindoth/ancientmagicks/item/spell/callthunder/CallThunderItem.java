@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.callthunder;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.registries.attributes.AncientMagicksAttributes;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,7 +25,7 @@ public class CallThunderItem extends SpellItem {
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        float power = 20.0F;
+        float power = 20.0F * (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
         float range = 64.0F;
         if ( owner != caster ) range = 0.0F;
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, true, true, true, true);
