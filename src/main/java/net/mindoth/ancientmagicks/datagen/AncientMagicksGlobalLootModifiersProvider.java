@@ -33,7 +33,7 @@ public class AncientMagicksGlobalLootModifiersProvider extends GlobalLootModifie
                 getList(new String[] {
                         "witch", "evoker", "illusioner"
                 }, "entities/"), LootItemRandomChanceCondition.randomChance(1.0F).build()
-        }, AncientMagicksItems.SPELL_FRAGMENT.get()));
+        }, AncientMagicksItems.ARCANE_DUST.get()));
     }
 
     private LootItemCondition getList(String[] tables, String dest) {

@@ -10,7 +10,7 @@
   "item.ancientmagicks.tablet_bag": "Tablet Bag",
   "item.ancientmagicks.empty_rune": "Stone Slate",
   "item.ancientmagicks.ancient_tablet": "Ancient Tablet",
-  "item.ancientmagicks.spell_fragment": "Spell Fragment",
+  "item.ancientmagicks.arcane_dust": "Arcane Dust",
   "item.ancientmagicks.spell_pearl": "Spell Pearl",
   "item.ancientmagicks.spell_scroll": "Spell Scroll",
 
@@ -115,5 +115,9 @@
   "tooltip.ancientmagicks.tier": "\u00A77Spell Tier\u00A7r",
   "tooltip.ancientmagicks.mana_cost": "\u00A77Mana Cost\u00A7r",
   "tooltip.ancientmagicks.cooldown": "\u00A77Cooldown\u00A7r",
-  "tooltip.ancientmagicks.shift": "\u00A77Hold SHIFT to read Spell effects\u00A7r"
+  "tooltip.ancientmagicks.shift": "\u00A77Hold SHIFT to read Spell effects\u00A7r",
+
+  "attribute.ancientmagicks.max_mana": "\u00A79Maximum Mana\u00A7r",
+  "attribute.ancientmagicks.mana_regen": "\u00A79Mana Regeneration\u00A7r",
+  "attribute.ancientmagicks.spell_power": "\u00A79Spell Power\u00A7r"
 }

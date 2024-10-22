@@ -68,22 +68,23 @@ public class SpellItem extends Item {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        int spellTier = ((SpellItem)stack.getItem()).spellTier;
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.tier").append(Component.literal(": " + spellTier)).withStyle(ChatFormatting.GRAY));
-        if ( stack.getItem() instanceof SpellItem spellItem && spellItem.isChannel() ) {
-            int manaCost = ((SpellItem)stack.getItem()).manaCost * 2;
-            tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)
-                    .append(Component.literal("/s"))).withStyle(ChatFormatting.GRAY));
+        if ( !Screen.hasShiftDown() ) {
+            int spellTier = ((SpellItem)stack.getItem()).spellTier;
+            tooltip.add(Component.translatable("tooltip.ancientmagicks.tier").append(Component.literal(": " + spellTier)).withStyle(ChatFormatting.GRAY));
+            if ( stack.getItem() instanceof SpellItem spellItem && spellItem.isChannel() ) {
+                int manaCost = ((SpellItem)stack.getItem()).manaCost * 2;
+                tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)
+                        .append(Component.literal("/s"))).withStyle(ChatFormatting.GRAY));
+            }
+            else {
+                int manaCost = ((SpellItem)stack.getItem()).manaCost;
+                tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)).withStyle(ChatFormatting.GRAY));
+            }
+            int cooldown = ((SpellItem)stack.getItem()).cooldown / 20;
+            tooltip.add(Component.translatable("tooltip.ancientmagicks.cooldown").append(Component.literal(": " + cooldown + "s")).withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("tooltip.ancientmagicks.shift"));
         }
         else {
-            int manaCost = ((SpellItem)stack.getItem()).manaCost;
-            tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)).withStyle(ChatFormatting.GRAY));
-        }
-        int cooldown = ((SpellItem)stack.getItem()).cooldown / 20;
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.cooldown").append(Component.literal(": " + cooldown + "s")).withStyle(ChatFormatting.GRAY));
-
-        if ( !Screen.hasShiftDown() ) tooltip.add(Component.translatable("tooltip.ancientmagicks.shift"));
-        else if ( Screen.hasShiftDown() ) {
             String modid = ForgeRegistries.ITEMS.getKey(stack.getItem()).toString().split(":")[0];
             if ( modid != null ) tooltip.add(Component.translatable("tooltip." + modid + "." + stack.getItem()).withStyle(ChatFormatting.GRAY));
         }
@@ -204,7 +205,7 @@ public class SpellItem extends Item {
         int amount = ThreadLocalRandom.current().nextInt(1, spellItem.spellTier + 1);
         float randX = ThreadLocalRandom.current().nextFloat(-0.3F, 0.3F);
         float randZ = ThreadLocalRandom.current().nextFloat(-0.3F, 0.3F);
-        ItemStack newStack = new ItemStack(AncientMagicksItems.SPELL_FRAGMENT.get(), amount);
+        ItemStack newStack = new ItemStack(AncientMagicksItems.ARCANE_DUST.get(), amount);
         ItemEntity drop = new ItemEntity(level, entity.position().x, entity.position().y, entity.position().z, newStack);
         drop.setDeltaMovement(randX, 0.3F, randZ);
         drop.setPickUpDelay(40);

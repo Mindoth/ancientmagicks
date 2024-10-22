@@ -92,7 +92,7 @@ public class AncientTabletItem extends Item {
         if ( rune == AncientMagicksItems.YELLOW_RUNE.get() ) serverLevel.sendParticles(type, pos.x, pos.y, pos.z, 0, 1, 1, 0, 1);
         if ( rune == AncientMagicksItems.GREEN_RUNE.get() ) serverLevel.sendParticles(type, pos.x, pos.y, pos.z, 0, 0, 1, 0, 1);
         if ( rune == AncientMagicksItems.BLACK_RUNE.get() ) serverLevel.sendParticles(type, pos.x, pos.y, pos.z, 0, 0, 0, 0, 1);
-        if ( rune == AncientMagicksItems.WHITE_RUNE.get() ) serverLevel.sendParticles(type, pos.x, pos.y, pos.z, 0, 1, 1, 0, 1);
+        if ( rune == AncientMagicksItems.WHITE_RUNE.get() ) serverLevel.sendParticles(type, pos.x, pos.y, pos.z, 0, 1, 1, 1, 1);
     }
 
     @SubscribeEvent

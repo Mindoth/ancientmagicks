@@ -43,10 +43,15 @@ import net.mindoth.ancientmagicks.item.spell.verminbane.VerminBaneItem;
 import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstItem;
 import net.mindoth.ancientmagicks.item.spell.witcharmor.WitchArmorItem;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowItem;
+import net.mindoth.ancientmagicks.registries.attributes.AncientMagicksAttributes;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.Map;
+import java.util.UUID;
 
 public class AncientMagicksItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, AncientMagicks.MOD_ID);
@@ -79,9 +84,11 @@ public class AncientMagicksItems {
             () -> new SpellStorageItem(new Item.Properties()));
 
     public static final RegistryObject<Item> WIZARD_STAFF = ITEMS.register("wizard_staff",
-            () -> new StaffItem(new Item.Properties().stacksTo(1)));
+            () -> new StaffItem(new Item.Properties().stacksTo(1), 0.0D, -3.0D,
+            Map.of(AncientMagicksAttributes.MANA_REGEN.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
+                    "Staff Modifier", 0.25D, AttributeModifier.Operation.MULTIPLY_BASE))));
 
-    public static final RegistryObject<Item> SPELL_FRAGMENT = ITEMS.register("spell_fragment",
+    public static final RegistryObject<Item> ARCANE_DUST = ITEMS.register("arcane_dust",
             () -> new Item(new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",

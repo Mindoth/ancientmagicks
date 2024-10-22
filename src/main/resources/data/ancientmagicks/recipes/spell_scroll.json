@@ -1,20 +1,16 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " F ",
-    " # ",
-    " F "
-  ],
-  "key": {
-    "#": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
       "item": "minecraft:leather"
     },
-    "F": {
-      "item": "ancientmagicks:spell_fragment"
+    {
+      "item": "ancientmagicks:arcane_dust"
     }
-  },
+  ],
+
   "result": {
     "item": "ancientmagicks:spell_scroll",
-    "count": 8
+    "count": 1
   }
 }
