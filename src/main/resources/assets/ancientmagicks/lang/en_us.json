@@ -68,7 +68,7 @@
   "item.ancientmagicks.endless_breath": "Endless Breath",
   "tooltip.ancientmagicks.endless_breath": "Channel to restore your breath",
   "item.ancientmagicks.dragon_breath": "Dragon Breath",
-  "tooltip.ancientmagicks.dragon_breath": "Channel to breathe damaging flames like a dragon",
+  "tooltip.ancientmagicks.dragon_breath": "Channel to spew out damaging dragon flames",
   "item.ancientmagicks.summon_death_knight": "Summon Death Knight",
   "tooltip.ancientmagicks.summon_death_knight": "Summons a subservient Death Knight next to you",
   "item.ancientmagicks.blind": "Blind",
@@ -93,6 +93,8 @@
   "tooltip.ancientmagicks.teleblock": "Prevent a target enemy from teleporting for a short duration",
   "item.ancientmagicks.fire_bolt": "Fire Bolt",
   "tooltip.ancientmagicks.fire_bolt": "Launches a small fiery bolt that damages and burns hit enemies",
+  "item.ancientmagicks.fire_breath": "Fire Breath",
+  "tooltip.ancientmagicks.fire_breath": "Channel to spew out damaging flames",
 
 
   "effect.ancientmagicks.mage_armor": "Mage Armor",

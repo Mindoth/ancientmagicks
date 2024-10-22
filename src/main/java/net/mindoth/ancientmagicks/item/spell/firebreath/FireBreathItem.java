@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.dragonbreath;
+package net.mindoth.ancientmagicks.item.spell.firebreath;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -16,9 +16,9 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class DragonBreathItem extends SpellItem {
+public class FireBreathItem extends SpellItem {
 
-    public DragonBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+    public FireBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
     }
 
@@ -41,7 +41,7 @@ public class DragonBreathItem extends SpellItem {
         float range = 2.5F;
         if ( owner != caster ) range = 0.0F;
         float size = 1.5F;
-        float power = 8.0F;
+        float power = 4.0F;
 
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, false, true, false);
         List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + size, point.y + size, point.z + size),
@@ -58,6 +58,7 @@ public class DragonBreathItem extends SpellItem {
         for ( Entity target : doubleList ) {
             if ( target != caster && target instanceof LivingEntity living && !isAlly(owner, living) && hasLineOfSight(caster, target) ) {
                 attackEntityWithoutKnockback(owner, caster, target, getPowerInRange(1.0F, power));
+                target.setSecondsOnFire(8);
             }
         }
 
@@ -80,7 +81,7 @@ public class DragonBreathItem extends SpellItem {
         Vec3 lookVec = caster.getLookAngle();
         double arc = 25;
         for ( int i = 0; i < 16; i++ ) {
-            world.sendParticles(ParticleTypes.DRAGON_BREATH, center.x, center.y + down, center.z, 0,
+            world.sendParticles(ParticleTypes.FLAME, center.x, center.y + down, center.z, 0,
                     lookVec.x + level.random.triangle(0.0D, 0.0172275D * arc),
                     lookVec.y + level.random.triangle(0.0D, 0.0172275D * arc),
                     lookVec.z + level.random.triangle(0.0D, 0.0172275D * arc),

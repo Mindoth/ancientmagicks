@@ -3,8 +3,8 @@ package net.mindoth.ancientmagicks.registries;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
+import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindItem;
 import net.mindoth.ancientmagicks.item.spell.blizzard.BlizzardItem;
@@ -19,12 +19,12 @@ import net.mindoth.ancientmagicks.item.spell.extinguish.ExtinguishItem;
 import net.mindoth.ancientmagicks.item.spell.featherfall.FeatherFallItem;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballItem;
 import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltItem;
+import net.mindoth.ancientmagicks.item.spell.firebreath.FireBreathItem;
 import net.mindoth.ancientmagicks.item.spell.fly.FlyItem;
 import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceItem;
 import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkItem;
 import net.mindoth.ancientmagicks.item.spell.icewall.IceWallItem;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleItem;
-import net.mindoth.ancientmagicks.item.spell.witcharmor.WitchArmorItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlItem;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainItem;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphItem;
@@ -39,6 +39,7 @@ import net.mindoth.ancientmagicks.item.spell.teleport.TeleportItem;
 import net.mindoth.ancientmagicks.item.spell.thunderball.ThunderballItem;
 import net.mindoth.ancientmagicks.item.spell.verminbane.VerminBaneItem;
 import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstItem;
+import net.mindoth.ancientmagicks.item.spell.witcharmor.WitchArmorItem;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
@@ -162,6 +163,9 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> BURN_LANCE_ITEM = ITEMS.register("burn_lance",
             () -> new BurnLanceItem(new Item.Properties(), 4, 40, 10));
+
+    public static final RegistryObject<Item> FIRE_BREATH_ITEM = ITEMS.register("fire_breath",
+            () -> new FireBreathItem(new Item.Properties(), 4, 4, 2));
 
     public static final RegistryObject<Item> TELEPORT_ITEM = ITEMS.register("teleport",
             () -> new TeleportItem(new Item.Properties(), 5, 60, 3));
