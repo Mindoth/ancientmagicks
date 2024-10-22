@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.client.gui;
+package net.mindoth.ancientmagicks.client.screen;
 
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.network.capabilities.playermagic.ClientMagicData;
@@ -11,9 +11,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
-public class ManaHud implements IGuiOverlay {
+public class HudMana implements IGuiOverlay {
 
-    public static final ManaHud OVERLAY = new ManaHud();
+    public static final HudMana OVERLAY = new HudMana();
     private static final Minecraft MINECRAFT = Minecraft.getInstance();
 
     @Override

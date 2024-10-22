@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.network;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.client.gui.GuiSpellWheel;
+import net.mindoth.ancientmagicks.client.screen.GuiSpellWheel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;

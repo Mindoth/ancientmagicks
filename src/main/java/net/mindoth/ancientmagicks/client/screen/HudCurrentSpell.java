@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.client.gui;
+package net.mindoth.ancientmagicks.client.screen;
 
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
@@ -14,9 +14,9 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class CurrentSpellHud {
+public class HudCurrentSpell {
 
-    public static final IGuiOverlay OVERLAY = CurrentSpellHud::renderOverlay;
+    public static final IGuiOverlay OVERLAY = HudCurrentSpell::renderOverlay;
     private static final Minecraft MINECRAFT = Minecraft.getInstance();
     public static final ResourceLocation SLOT_TEXTURE = new ResourceLocation("textures/gui/widgets.png");
 

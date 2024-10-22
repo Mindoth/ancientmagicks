@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.client.gui;
+package net.mindoth.ancientmagicks.client.screen;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -132,7 +132,7 @@ public class GuiSpellWheel extends Screen {
 
         float animProgress = Mth.clamp(openAnimation, 0, 1);
         animProgress = (float) (1 - Math.pow(1 - animProgress, 3));
-        float radiusIn = Math.max(0.1F, 45 * animProgress);
+        float radiusIn = Math.max(0.1F, 45 * animProgress) + 7;
         float radiusOut = radiusIn * 2;
         float itemRadius = (radiusIn + radiusOut) * 0.5F;
         int x = width / 2;
@@ -213,13 +213,13 @@ public class GuiSpellWheel extends Screen {
             //Spell name
             String name = I18n.get(slot.getDescriptionId());
             graphics.drawCenteredString(this.font, name, width / 2, (height - this.font.lineHeight) / 2 - 8, 16777215);
+            //graphics.drawCenteredString(this.font, name, width / 2, MINECRAFT.getWindow().getGuiScaledHeight() - 34, 16777215);
 
             //Square slot
             GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/gui/square.png"),
                     resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
 
             //Item and its decorations
-            //graphics.renderItem(slot, posX, posY);
             String id = slot.getItem().toString();
             String modid = ForgeRegistries.ITEMS.getKey(slot.getItem()).toString().split(":")[0];
             GuiSpellWheel.drawSlotTexture(new ResourceLocation(modid, "textures/spell/" + id + ".png"),
