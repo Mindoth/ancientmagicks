@@ -70,8 +70,15 @@ public class SpellItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         int spellTier = ((SpellItem)stack.getItem()).spellTier;
         tooltip.add(Component.translatable("tooltip.ancientmagicks.tier").append(Component.literal(": " + spellTier)).withStyle(ChatFormatting.GRAY));
-        int manaCost = ((SpellItem)stack.getItem()).manaCost;
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)).withStyle(ChatFormatting.GRAY));
+        if ( stack.getItem() instanceof SpellItem spellItem && spellItem.isChannel() ) {
+            int manaCost = ((SpellItem)stack.getItem()).manaCost * 2;
+            tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)
+                    .append(Component.literal("/s"))).withStyle(ChatFormatting.GRAY));
+        }
+        else {
+            int manaCost = ((SpellItem)stack.getItem()).manaCost;
+            tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)).withStyle(ChatFormatting.GRAY));
+        }
         int cooldown = ((SpellItem)stack.getItem()).cooldown / 20;
         tooltip.add(Component.translatable("tooltip.ancientmagicks.cooldown").append(Component.literal(": " + cooldown + "s")).withStyle(ChatFormatting.GRAY));
 

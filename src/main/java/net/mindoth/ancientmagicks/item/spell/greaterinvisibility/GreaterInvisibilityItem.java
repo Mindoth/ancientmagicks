@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.spook;
+package net.mindoth.ancientmagicks.item.spell.greaterinvisibility;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
@@ -10,9 +10,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class SpookItem extends SpellItem {
+public class GreaterInvisibilityItem extends SpellItem {
 
-    public SpookItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+    public GreaterInvisibilityItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
     }
 
@@ -26,14 +26,12 @@ public class SpookItem extends SpellItem {
         float size = range * 0.5F;
 
         LivingEntity target;
-        if ( caster == owner ) target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
+        if ( caster == owner ) target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
 
-        if ( caster == owner && !isAlly(owner, target) ) target = owner;
-
-        if ( isAlly(owner, target) ) {
+        if ( target instanceof Player && isAlly(owner, target)) {
+            target.addEffect(new MobEffectInstance(AncientMagicksEffects.GREATER_INVISIBILITY.get(), life, 0, false, false));
             state = true;
-            target.addEffect(new MobEffectInstance(AncientMagicksEffects.SPOOK.get(), life, 0, false, false));
         }
 
         if ( state ) {

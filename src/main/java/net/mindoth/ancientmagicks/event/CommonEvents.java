@@ -75,6 +75,7 @@ public class CommonEvents {
     @SubscribeEvent
     public static void hideWithGhostwalk(LivingEvent.LivingVisibilityEvent event) {
         if ( event.getEntity().hasEffect(AncientMagicksEffects.GHOSTWALK.get()) ) event.modifyVisibility(0);
+        if ( event.getEntity().hasEffect(AncientMagicksEffects.GREATER_INVISIBILITY.get()) ) event.modifyVisibility(0);
     }
 
     @SubscribeEvent

@@ -95,6 +95,10 @@
   "tooltip.ancientmagicks.fire_bolt": "Launches a small fiery bolt that damages and burns hit enemies",
   "item.ancientmagicks.fire_breath": "Fire Breath",
   "tooltip.ancientmagicks.fire_breath": "Channel to spew out damaging flames",
+  "item.ancientmagicks.invisibility": "Invisibility",
+  "tooltip.ancientmagicks.invisibility": "Grant invisibility to an ally",
+  "item.ancientmagicks.greater_invisibility": "Greater Invisibility",
+  "tooltip.ancientmagicks.greater_invisibility": "Grant greater invisibility to an ally",
 
 
   "effect.ancientmagicks.mage_armor": "Mage Armor",
@@ -105,6 +109,7 @@
   "effect.ancientmagicks.ghostwalk": "Ghostwalk",
   "effect.ancientmagicks.sleep": "Sleep",
   "effect.ancientmagicks.teleblock": "Teleblock",
+  "effect.ancientmagicks.greater_invisibility": "Greater Invisibility",
 
 
   "tooltip.ancientmagicks.tier": "\u00A77Spell Tier\u00A7r",

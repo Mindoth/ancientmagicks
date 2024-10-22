@@ -21,7 +21,7 @@ public class DarkvisionItem extends SpellItem {
         boolean state = false;
         Level level = caster.level();
 
-        int life = 4800;
+        int life = 2400;
         float range = 14.0F;
         float size = range * 0.5F;
 

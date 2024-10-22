@@ -89,7 +89,6 @@ public class GhostwalkEffect extends MobEffect {
         }
     }
 
-    //TODO: Sync visual effect to clients for Ghostwalk
     @SubscribeEvent
     public static void interruptRender(RenderLivingEvent.Pre<? extends LivingEntity, ? extends EntityModel<? extends LivingEntity>> event) {
         LivingEntity living = event.getEntity();
