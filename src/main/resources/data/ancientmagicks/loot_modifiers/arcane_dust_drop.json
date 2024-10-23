@@ -23,5 +23,5 @@
       "condition": "minecraft:random_chance"
     }
   ],
-  "item": "ancientmagicks:spell_fragment"
+  "item": "ancientmagicks:arcane_dust"
 }

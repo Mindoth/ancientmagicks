@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.datagen;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.loot.AddItemModifier;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.data.PackOutput;
@@ -19,17 +20,21 @@ public class AncientMagicksGlobalLootModifiersProvider extends GlobalLootModifie
 
     @Override
     protected void start() {
-        add("dungeon_loot", new AddItemModifier(new LootItemCondition[] {
+        /*add("ancient_loot", new AddItemModifier(new LootItemCondition[] {
                 getList(new String[] {
-                        "simple_dungeon", "jungle_temple", "abandoned_mineshaft",
-                        "bastion_treasure", "bastion_bridge", "bastion_hoglin_stable", "bastion_other",
-                        "desert_pyramid", "end_city_treasure", "nether_bridge",
+                        "abandoned_mineshaft", "simple_dungeon", "igloo_chest", "pillager_outpost",
+                        "shipwreck_supply", "shipwreck_treasure",
+                }, "chests/"), LootItemRandomChanceCondition.randomChance(0.50F).build()
+        }, AncientMagicksItems.ANCIENT_TABLET.get()));*/
+        add("ancient_loot", new AddItemModifier(new LootItemCondition[] {
+                getList(new String[] {
+                        "jungle_temple", "desert_pyramid", "underwater_ruin_big", "underwater_ruin_small",
+                        "bastion_treasure", "bastion_bridge", "bastion_other",  "nether_bridge",
                         "stronghold_corridor", "stronghold_crossing", "stronghold_library",
-                        "woodland_mansion", "underwater_ruin_big", "underwater_ruin_small", "shipwreck_treasure",
-                        "ancient_city"
-                }, "chests/"), LootItemRandomChanceCondition.randomChance(0.25F).build()
+                        "end_city_treasure", "ancient_city"
+                }, "chests/"), LootItemRandomChanceCondition.randomChance(0.75F).build()
         }, AncientMagicksItems.ANCIENT_TABLET.get()));
-        add("spell_fragment_drop", new AddItemModifier(new LootItemCondition[] {
+        add("arcane_dust_drop", new AddItemModifier(new LootItemCondition[] {
                 getList(new String[] {
                         "witch", "evoker", "illusioner"
                 }, "entities/"), LootItemRandomChanceCondition.randomChance(1.0F).build()
@@ -45,12 +50,4 @@ public class AncientMagicksGlobalLootModifiersProvider extends GlobalLootModifie
         }
         return condition.build();
     }
-
-    /*@Override
-    protected void start() {
-        add("tablet_from_simple_dungeon", new AddItemModifier(new LootItemCondition[] {
-                new LootTableIdCondition.Builder(new ResourceLocation("chests/simple_dungeon")).build(),
-                LootItemRandomChanceCondition.randomChance(1.0F).build()
-        }, AncientMagicksItems.ANCIENT_TABLET.get()));
-    }*/
 }

@@ -68,28 +68,28 @@ public class SpellItem extends Item {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        if ( !Screen.hasShiftDown() ) {
-            int spellTier = ((SpellItem)stack.getItem()).spellTier;
-            tooltip.add(Component.translatable("tooltip.ancientmagicks.tier").append(Component.literal(": " + spellTier)).withStyle(ChatFormatting.GRAY));
-            if ( stack.getItem() instanceof SpellItem spellItem && spellItem.isChannel() ) {
-                int manaCost = ((SpellItem)stack.getItem()).manaCost * 2;
-                tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)
-                        .append(Component.literal("/s"))).withStyle(ChatFormatting.GRAY));
+        if ( stack.getItem() instanceof SpellItem spellItem ) {
+            if ( !Screen.hasShiftDown() ) {
+                int spellTier = spellItem.spellTier;
+                tooltip.add(Component.translatable("tooltip.ancientmagicks.tier").append(Component.literal(": " + spellTier)).withStyle(ChatFormatting.GRAY));
+                if ( spellItem.isChannel() ) {
+                    int manaCost = spellItem.manaCost * 2;
+                    tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)
+                            .append(Component.literal("/s"))).withStyle(ChatFormatting.GRAY));
+                }
+                else {
+                    int manaCost = spellItem.manaCost;
+                    tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)).withStyle(ChatFormatting.GRAY));
+                }
+                int cooldown = spellItem.cooldown / 20;
+                tooltip.add(Component.translatable("tooltip.ancientmagicks.cooldown").append(Component.literal(": " + cooldown + "s")).withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.translatable("tooltip.ancientmagicks.shift"));
             }
             else {
-                int manaCost = ((SpellItem)stack.getItem()).manaCost;
-                tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)).withStyle(ChatFormatting.GRAY));
+                String modid = ForgeRegistries.ITEMS.getKey(spellItem).toString().split(":")[0];
+                if ( modid != null ) tooltip.add(Component.translatable("tooltip." + modid + "." + stack.getItem()).withStyle(ChatFormatting.GRAY));
             }
-            int cooldown = ((SpellItem)stack.getItem()).cooldown / 20;
-            tooltip.add(Component.translatable("tooltip.ancientmagicks.cooldown").append(Component.literal(": " + cooldown + "s")).withStyle(ChatFormatting.GRAY));
-            tooltip.add(Component.translatable("tooltip.ancientmagicks.shift"));
-        }
-        else {
-            String modid = ForgeRegistries.ITEMS.getKey(stack.getItem()).toString().split(":")[0];
-            if ( modid != null ) tooltip.add(Component.translatable("tooltip." + modid + "." + stack.getItem()).withStyle(ChatFormatting.GRAY));
-        }
-        if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(this) && Minecraft.getInstance().player != null ) {
-            if ( ClientMagicData.isSpellKnown(this) || Minecraft.getInstance().player.isCreative() ) {
+            if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(spellItem) && Minecraft.getInstance().player != null ) {
                 StringBuilder tooltipString = new StringBuilder();
                 List<ColorRuneItem> list = ColorRuneItem.stringListToActualList(ColorRuneItem.CURRENT_COMBO_MAP.get(this).toString());
                 for ( ColorRuneItem rune : list ) {
@@ -117,34 +117,39 @@ public class SpellItem extends Item {
     }
 
     protected void addEnchantParticles(Entity target, int r, int g, int b, float size, int age, boolean mask) {
+        double var = 0.15D;
+        double maxX = target.getBoundingBox().maxX + var;
+        double minX = target.getBoundingBox().minX - var;
+        double maxZ = target.getBoundingBox().maxZ + var;
+        double minZ = target.getBoundingBox().minZ - var;
         for ( int i = 0; i < 4; i++ ) {
-            double randX = target.getBoundingBox().maxX;
+            double randX = maxX;
             double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
-            double randZ = target.getBoundingBox().minZ + (target.getBoundingBox().maxZ - target.getBoundingBox().minZ) * new Random().nextDouble();
+            double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
             AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, mask,
                     pos.x, pos.y, pos.z, target.getDeltaMovement().x, 0.25D, target.getDeltaMovement().z), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
-            double randX = target.getBoundingBox().minX;
+            double randX = minX;
             double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
-            double randZ = target.getBoundingBox().minZ + (target.getBoundingBox().maxZ - target.getBoundingBox().minZ) * new Random().nextDouble();
+            double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
             AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, mask,
                     pos.x, pos.y, pos.z, target.getDeltaMovement().x, 0.25D, target.getDeltaMovement().z), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
-            double randX = target.getBoundingBox().minX + (target.getBoundingBox().maxX - target.getBoundingBox().minX) * new Random().nextDouble();
+            double randX = minX + (maxX - minX) * new Random().nextDouble();
             double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
-            double randZ = target.getBoundingBox().minZ;
+            double randZ = minZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
             AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, mask,
                     pos.x, pos.y, pos.z, target.getDeltaMovement().x, 0.25D, target.getDeltaMovement().z), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
-            double randX = target.getBoundingBox().minX + (target.getBoundingBox().maxX - target.getBoundingBox().minX) * new Random().nextDouble();
+            double randX = minX + (maxX - minX) * new Random().nextDouble();
             double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
-            double randZ = target.getBoundingBox().maxZ;
+            double randZ = maxZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
             AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, mask,
                     pos.x, pos.y, pos.z, target.getDeltaMovement().x, 0.25D, target.getDeltaMovement().z), target, true);

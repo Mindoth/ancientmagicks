@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.registries;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
+import net.mindoth.ancientmagicks.item.armor.AncientMagicsArmorMaterials;
 import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
@@ -45,6 +46,7 @@ import net.mindoth.ancientmagicks.item.spell.witcharmor.WitchArmorItem;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowItem;
 import net.mindoth.ancientmagicks.registries.attributes.AncientMagicksAttributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -89,6 +91,12 @@ public class AncientMagicksItems {
                     "Weapon modifier", 0.25D, AttributeModifier.Operation.MULTIPLY_BASE),
                     AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                     "Weapon modifier", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE))));
+
+    /*public static final RegistryObject<Item> CLOTH_HOOD = ITEMS.register("cloth_hood",
+            () -> new ArmorItem(AncientMagicsArmorMaterials.CLOTH, ArmorItem.Type.HELMET, new Item.Properties()));
+
+    public static final RegistryObject<Item> CLOTH_ROBE = ITEMS.register("cloth_robe",
+            () -> new ArmorItem(AncientMagicsArmorMaterials.CLOTH, ArmorItem.Type.CHESTPLATE, new Item.Properties()));*/
 
     public static final RegistryObject<Item> ARCANE_DUST = ITEMS.register("arcane_dust",
             () -> new Item(new Item.Properties().fireResistant()));
@@ -170,10 +178,10 @@ public class AncientMagicksItems {
             () -> new PolymorphItem(new Item.Properties(), 4, 80, 10));
 
     public static final RegistryObject<Item> FREEZE_LANCE_ITEM = ITEMS.register("freeze_lance",
-            () -> new FreezeLanceItem(new Item.Properties(), 4, 40, 10));
+            () -> new FreezeLanceItem(new Item.Properties(), 4, 40, 4));
 
     public static final RegistryObject<Item> BURN_LANCE_ITEM = ITEMS.register("burn_lance",
-            () -> new BurnLanceItem(new Item.Properties(), 4, 40, 10));
+            () -> new BurnLanceItem(new Item.Properties(), 4, 40, 4));
 
     public static final RegistryObject<Item> FIRE_BREATH_ITEM = ITEMS.register("fire_breath",
             () -> new FireBreathItem(new Item.Properties(), 4, 4, 2));

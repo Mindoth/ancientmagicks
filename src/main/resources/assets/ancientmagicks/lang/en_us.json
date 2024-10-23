@@ -13,6 +13,8 @@
   "item.ancientmagicks.arcane_dust": "Arcane Dust",
   "item.ancientmagicks.spell_pearl": "Spell Pearl",
   "item.ancientmagicks.spell_scroll": "Spell Scroll",
+  "item.ancientmagicks.cloth_hood": "Cloth Hood",
+  "item.ancientmagicks.cloth_robe": "Cloth Robe",
 
   "item.ancientmagicks.blue_rune": "Blue Rune",
   "item.ancientmagicks.purple_rune": "Purple Rune",
@@ -38,7 +40,7 @@
   "item.ancientmagicks.wind_burst": "Wind Burst",
   "tooltip.ancientmagicks.wind_burst": "Causes a sudden burst of wind to blow past you and towards where you're looking at lifting ANYONE caught in it into the air",
   "item.ancientmagicks.witch_armor": "Witch Armor",
-  "tooltip.ancientmagicks.mage_armor": "Grant yourself or an unarmored target ally some protection. Protection ends if any armor is worn",
+  "tooltip.ancientmagicks.witch_armor": "Grant yourself or an unarmored target ally some protection. Protection ends if any armor is worn",
   "item.ancientmagicks.call_thunder": "Call Thunder",
   "tooltip.ancientmagicks.call_thunder": "Direct a powerful lightning strike towards where you're looking. The lightning will always hit a surface",
   "item.ancientmagicks.polymorph": "Polymorph",
@@ -77,7 +79,7 @@
   "tooltip.ancientmagicks.icicle": "Launches an icicle that damages enemies",
   "item.ancientmagicks.slimeball": "Slimeball",
   "tooltip.ancientmagicks.slimeball": "Launches a Slimeball that bounces from walls and other surfaces and damages hit enemies",
-  "item.ancientmagicks.vermin_bane": "Vermin bane",
+  "item.ancientmagicks.vermin_bane": "Vermin Bane",
   "tooltip.ancientmagicks.vermin_bane": "Spew forth a mist that only damages arthropods",
   "item.ancientmagicks.control_weather": "Control Weather",
   "tooltip.ancientmagicks.control_weather": "Change the Weather",
@@ -101,7 +103,7 @@
   "tooltip.ancientmagicks.greater_invisibility": "Grant greater invisibility to an ally",
 
 
-  "effect.ancientmagicks.mage_armor": "Mage Armor",
+  "effect.ancientmagicks.witch_armor": "Witch Armor",
   "effect.ancientmagicks.flight": "Flight",
   "effect.ancientmagicks.numbness": "Numbness",
   "effect.ancientmagicks.alacrity": "Alacrity",

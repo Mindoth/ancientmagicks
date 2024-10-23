@@ -22,7 +22,7 @@ public class BurnLanceRenderer extends EntityRenderer<BurnLanceEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(BurnLanceEntity entity) {
-        return new ResourceLocation(AncientMagicks.MOD_ID, "textures/entity/burn_lance.png");
+        return new ResourceLocation(AncientMagicks.MOD_ID, "textures/models/entity/burn_lance.png");
     }
 
     public void render(BurnLanceEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {

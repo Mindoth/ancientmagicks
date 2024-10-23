@@ -6,15 +6,19 @@
       "terms": [
         {
           "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/simple_dungeon"
-        },
-        {
-          "condition": "forge:loot_table_id",
           "loot_table_id": "minecraft:chests/jungle_temple"
         },
         {
           "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/abandoned_mineshaft"
+          "loot_table_id": "minecraft:chests/desert_pyramid"
+        },
+        {
+          "condition": "forge:loot_table_id",
+          "loot_table_id": "minecraft:chests/underwater_ruin_big"
+        },
+        {
+          "condition": "forge:loot_table_id",
+          "loot_table_id": "minecraft:chests/underwater_ruin_small"
         },
         {
           "condition": "forge:loot_table_id",
@@ -26,19 +30,7 @@
         },
         {
           "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/bastion_hoglin_stable"
-        },
-        {
-          "condition": "forge:loot_table_id",
           "loot_table_id": "minecraft:chests/bastion_other"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/desert_pyramid"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/end_city_treasure"
         },
         {
           "condition": "forge:loot_table_id",
@@ -58,19 +50,7 @@
         },
         {
           "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/woodland_mansion"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/underwater_ruin_big"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/underwater_ruin_small"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/shipwreck_treasure"
+          "loot_table_id": "minecraft:chests/end_city_treasure"
         },
         {
           "condition": "forge:loot_table_id",
@@ -79,9 +59,9 @@
       ]
     },
     {
-      "chance": 0.25,
+      "chance": 0.75,
       "condition": "minecraft:random_chance"
     }
   ],
-  "item": "ancientmagicks:ancient_tablet"
+  "key": "ancientmagicks:ancient_tablet"
 }

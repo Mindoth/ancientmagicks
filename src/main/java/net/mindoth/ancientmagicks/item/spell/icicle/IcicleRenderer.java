@@ -22,7 +22,7 @@ public class IcicleRenderer extends EntityRenderer<IcicleEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(IcicleEntity entity) {
-        return new ResourceLocation(AncientMagicks.MOD_ID, "textures/entity/icicle.png");
+        return new ResourceLocation(AncientMagicks.MOD_ID, "textures/models/entity/icicle.png");
     }
 
     public void render(IcicleEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {

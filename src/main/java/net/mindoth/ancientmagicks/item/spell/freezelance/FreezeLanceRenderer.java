@@ -22,7 +22,7 @@ public class FreezeLanceRenderer extends EntityRenderer<FreezeLanceEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(FreezeLanceEntity entity) {
-        return new ResourceLocation(AncientMagicks.MOD_ID, "textures/entity/freeze_lance.png");
+        return new ResourceLocation(AncientMagicks.MOD_ID, "textures/models/entity/freeze_lance.png");
     }
 
     public void render(FreezeLanceEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {

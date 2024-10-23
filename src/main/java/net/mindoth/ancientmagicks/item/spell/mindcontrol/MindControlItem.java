@@ -35,8 +35,6 @@ public class MindControlItem extends SpellItem {
             mob.getPersistentData().putUUID(MindControlEffect.NBT_KEY, owner.getUUID());
             mob.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), life));
             //if ( mob instanceof PathfinderMob pthMob ) mob.goalSelector.addGoal(0, new MeleeAttackGoal(pthMob, 1.0F, true));
-            ShadowEvents.summonParticleLine(ParticleTypes.ENTITY_EFFECT, caster, ShadowEvents.getEntityCenter(caster), ShadowEvents.getEntityCenter(mob),
-                    0, 0, 0, 0, 1);
             mob.setTarget(MindControlEffect.findMindControlTarget(mob, owner, mob.level()));
             state = true;
         }

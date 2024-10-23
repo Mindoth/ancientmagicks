@@ -1,7 +1,7 @@
 {
   "entries": [
-    "ancientmagicks:dungeon_loot",
-    "ancientmagicks:spell_fragment_drop"
+    "ancientmagicks:arcane_dust_drop",
+    "ancientmagicks:ancient_loot"
   ],
   "replace": false
 }
