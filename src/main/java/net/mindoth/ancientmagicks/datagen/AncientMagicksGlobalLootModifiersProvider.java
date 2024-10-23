@@ -25,7 +25,7 @@ public class AncientMagicksGlobalLootModifiersProvider extends GlobalLootModifie
                         "abandoned_mineshaft", "simple_dungeon", "igloo_chest", "pillager_outpost",
                         "shipwreck_supply", "shipwreck_treasure",
                 }, "chests/"), LootItemRandomChanceCondition.randomChance(0.50F).build()
-        }, AncientMagicksItems.ANCIENT_TABLET.get()));*/
+        }, AncientMagicksItems.ANCIENT_TABLET.get()));
         add("ancient_loot", new AddItemModifier(new LootItemCondition[] {
                 getList(new String[] {
                         "jungle_temple", "desert_pyramid", "underwater_ruin_big", "underwater_ruin_small",
@@ -38,7 +38,7 @@ public class AncientMagicksGlobalLootModifiersProvider extends GlobalLootModifie
                 getList(new String[] {
                         "witch", "evoker", "illusioner"
                 }, "entities/"), LootItemRandomChanceCondition.randomChance(1.0F).build()
-        }, AncientMagicksItems.ARCANE_DUST.get()));
+        }, AncientMagicksItems.ARCANE_DUST.get()));*/
     }
 
     private LootItemCondition getList(String[] tables, String dest) {

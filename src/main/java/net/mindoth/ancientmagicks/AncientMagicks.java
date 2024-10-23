@@ -5,7 +5,7 @@ import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.loot.AncientMagicksModifiers;
+import net.mindoth.ancientmagicks.registries.AncientMagicksModifiers;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
 import net.mindoth.ancientmagicks.registries.attributes.AncientMagicksAttributes;
@@ -57,6 +57,7 @@ public class AncientMagicks {
         AncientMagicksEffects.EFFECTS.register(modEventBus);
         AncientMagicksParticles.PARTICLES.register(modEventBus);
         AncientMagicksModifiers.LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
+        AncientMagicksModifiers.LOOT_FUNCTIONS.register(modEventBus);
         AncientMagicksAttributes.ATTRIBUTES.register(modEventBus);
 
         //KEEP THESE LAST

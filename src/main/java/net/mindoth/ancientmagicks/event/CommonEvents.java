@@ -141,7 +141,7 @@ public class CommonEvents {
                         if ( spell.spellTier == i ) {
                             trades.get(i + 1).add((trader, rand) -> new MerchantOffer(
                                     new ItemStack(Items.EMERALD, 16 * spell.spellTier),
-                                    stack, 1, 30, 0.05F));
+                                    stack, 1, 16 * spell.spellTier, 0.05F));
                         }
                     }
                 }

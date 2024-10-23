@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -19,25 +20,23 @@ import java.util.function.Supplier;
 
 public class AddItemModifier extends LootModifier {
     public static final Supplier<Codec<AddItemModifier>> CODEC = Suppliers.memoize(
-            () -> RecordCodecBuilder.create(inst -> codecStart(inst).and(ForgeRegistries.ITEMS.getCodec()
-                    .fieldOf("item").forGetter(m -> m.item)).apply(inst, AddItemModifier::new)));
+            () -> RecordCodecBuilder.create(inst -> codecStart(inst).and(Codec.STRING
+                    .fieldOf("key").forGetter(m -> m.resourceLocationKey)).apply(inst, AddItemModifier::new)));
 
-    private final Item item;
+    private final String resourceLocationKey;
 
-    public AddItemModifier(LootItemCondition[] conditionsIn, Item item) {
+    public AddItemModifier(LootItemCondition[] conditionsIn, String resourceLocationKey) {
         super(conditionsIn);
-        this.item = item;
+        this.resourceLocationKey = resourceLocationKey;
     }
 
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-        for ( LootItemCondition condition : this.conditions ) if ( !condition.test(context) ) return generatedLoot;
-
-        if ( this.item == AncientMagicksItems.ARCANE_DUST.get() ) {
-            int amount = ThreadLocalRandom.current().nextInt(1, 4);
-            for ( int i = 0; i < amount; i++ ) generatedLoot.add(new ItemStack(this.item));
-        }
-        else generatedLoot.add(new ItemStack(this.item));
+        ResourceLocation path = new ResourceLocation(this.resourceLocationKey);
+        var lootTable = context.getLevel().getServer().getLootData().getLootTable(path);
+        ObjectArrayList<ItemStack> objectarraylist = new ObjectArrayList<>();
+        lootTable.getRandomItemsRaw(context, objectarraylist::add);
+        generatedLoot.addAll(objectarraylist);
 
         return generatedLoot;
     }

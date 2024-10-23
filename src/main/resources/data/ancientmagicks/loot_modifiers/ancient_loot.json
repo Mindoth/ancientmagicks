@@ -57,11 +57,7 @@
           "loot_table_id": "minecraft:chests/ancient_city"
         }
       ]
-    },
-    {
-      "chance": 0.75,
-      "condition": "minecraft:random_chance"
     }
   ],
-  "key": "ancientmagicks:ancient_tablet"
+  "key": "ancientmagicks:chests/ancient_loot"
 }
