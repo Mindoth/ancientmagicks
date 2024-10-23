@@ -1,11 +1,11 @@
-package net.mindoth.ancientmagicks.network.capabilities;
+package net.mindoth.ancientmagicks.util.capabilities;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMagic;
-import net.mindoth.ancientmagicks.network.capabilities.playermagic.PlayerMagic;
-import net.mindoth.ancientmagicks.network.capabilities.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.util.capabilities.playermagic.PlayerMagic;
+import net.mindoth.ancientmagicks.util.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

@@ -4,7 +4,7 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
-import net.mindoth.ancientmagicks.network.capabilities.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.util.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;

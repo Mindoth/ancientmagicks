@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.client.screen;
 
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.network.capabilities.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.util.capabilities.playermagic.ClientMagicData;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;

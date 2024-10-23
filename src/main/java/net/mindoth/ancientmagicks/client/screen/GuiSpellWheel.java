@@ -12,7 +12,7 @@ import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSetSpell;
 import net.mindoth.ancientmagicks.network.PacketSolveAncientTablet;
-import net.mindoth.ancientmagicks.network.capabilities.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.util.capabilities.playermagic.ClientMagicData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;

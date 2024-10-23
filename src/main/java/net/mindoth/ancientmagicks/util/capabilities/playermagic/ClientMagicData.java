@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.network.capabilities.playermagic;
+package net.mindoth.ancientmagicks.util.capabilities.playermagic;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.SpellItem;

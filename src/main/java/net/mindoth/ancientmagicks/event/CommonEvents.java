@@ -10,7 +10,7 @@ import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMagic;
 import net.mindoth.ancientmagicks.network.PacketSyncSpellCombos;
-import net.mindoth.ancientmagicks.network.capabilities.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.util.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.nbt.CompoundTag;
