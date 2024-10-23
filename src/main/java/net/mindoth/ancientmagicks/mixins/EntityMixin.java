@@ -34,7 +34,7 @@ public class EntityMixin {
         Entity entity = (Entity)(Object)this;
         if ( entity instanceof LivingEntity living ) {
             AttributeInstance nameTagDistance = living.getAttribute(ForgeMod.NAMETAG_DISTANCE.get());
-            if ( nameTagDistance != null && nameTagDistance.hasModifier(GhostwalkEffect.DECREASED_NAMETAG_DISTANCE) ) callback.setReturnValue(false);
+            if ( nameTagDistance != null && nameTagDistance.hasModifier(GhostwalkEffect.DECREASED_NAME_TAG_DISTANCE) ) callback.setReturnValue(false);
         }
     }
 }

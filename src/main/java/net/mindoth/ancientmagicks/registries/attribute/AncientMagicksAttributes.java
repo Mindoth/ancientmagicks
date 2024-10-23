@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.registries.attributes;
+package net.mindoth.ancientmagicks.registries.attribute;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.minecraft.world.entity.ai.attributes.Attribute;

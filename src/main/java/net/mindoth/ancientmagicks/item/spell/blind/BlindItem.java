@@ -35,6 +35,7 @@ public class BlindItem extends SpellItem {
         LivingEntity target;
         if ( caster == owner ) target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
+        if ( caster == owner && !isAlly(owner, target) ) target = owner;
 
         if ( !isAlly(owner, target) ) {
             target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, life));

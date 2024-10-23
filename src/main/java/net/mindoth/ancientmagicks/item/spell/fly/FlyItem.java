@@ -29,11 +29,11 @@ public class FlyItem extends SpellItem {
         LivingEntity target;
         if ( caster == owner ) target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
+        if ( caster == owner && !isAlly(owner, target) ) target = owner;
 
         if ( target instanceof Player && isAlly(owner, target)) {
             target.addEffect(new MobEffectInstance(AncientMagicksEffects.FLIGHT.get(), life, 0, false, false));
         }
-        else target.addEffect(new MobEffectInstance(MobEffects.LEVITATION, life));
 
         state = true;
 

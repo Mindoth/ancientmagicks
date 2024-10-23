@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.ghostwalk;
 
+import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -15,6 +16,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -27,14 +29,7 @@ public class GhostwalkEffect extends MobEffect {
         super(pCategory, pColor);
     }
 
-    @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
-        return true;
-    }
-
-    int LASTHURTTIME;
-
-    public static final AttributeModifier DECREASED_NAMETAG_DISTANCE = new AttributeModifier(UUID.fromString("3a531960-6840-410e-a694-a006b8e8548a"),
+    public static final AttributeModifier DECREASED_NAME_TAG_DISTANCE = new AttributeModifier(UUID.fromString("3a531960-6840-410e-a694-a006b8e8548a"),
             "Ghostwalk Invisible Equipment", 0.0D, AttributeModifier.Operation.ADDITION);
 
     @Override
@@ -46,26 +41,25 @@ public class GhostwalkEffect extends MobEffect {
         living.level().getNearbyEntities(Mob.class, targetingCondition, living, living.getBoundingBox().inflate(64.0D))
                 .forEach(target -> {
                     target.setTarget(null);
-                    target.setLastHurtMob(null);
-                    target.setLastHurtByMob(null);
                     target.targetSelector.getAvailableGoals().forEach(WrappedGoal::stop);
                     target.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
                 });
-        this.LASTHURTTIME = living.getLastHurtMobTimestamp();
         AttributeInstance nameTagDistance = living.getAttribute(ForgeMod.NAMETAG_DISTANCE.get());
-        if ( nameTagDistance != null && !nameTagDistance.hasModifier(DECREASED_NAMETAG_DISTANCE) ) nameTagDistance.addPermanentModifier(DECREASED_NAMETAG_DISTANCE);
+        if ( nameTagDistance != null && !nameTagDistance.hasModifier(DECREASED_NAME_TAG_DISTANCE) ) nameTagDistance.addPermanentModifier(DECREASED_NAME_TAG_DISTANCE);
     }
 
-    @Override
-    public void applyEffectTick(LivingEntity living, int amp) {
-        if ( !living.level().isClientSide && this.LASTHURTTIME != living.getLastHurtMobTimestamp() ) living.removeEffect(this);
+    @SubscribeEvent
+    public static void loseGhostwalkOnAttack(final LivingAttackEvent event) {
+        if ( !(event.getSource().getEntity() instanceof LivingEntity source) || event.getEntity().level().isClientSide || !source.hasEffect(AncientMagicksEffects.GHOSTWALK.get()) ) return;
+        AttributeInstance nameTagDistance = source.getAttribute(ForgeMod.NAMETAG_DISTANCE.get());
+        if ( nameTagDistance != null && nameTagDistance.hasModifier(DECREASED_NAME_TAG_DISTANCE) ) source.removeEffect(AncientMagicksEffects.GHOSTWALK.get());
     }
 
     @Override
     public void removeAttributeModifiers(LivingEntity living, AttributeMap map, int pAmplifier) {
         super.removeAttributeModifiers(living, map, pAmplifier);
         AttributeInstance nameTagDistance = living.getAttribute(ForgeMod.NAMETAG_DISTANCE.get());
-        if ( nameTagDistance != null && nameTagDistance.hasModifier(DECREASED_NAMETAG_DISTANCE) ) nameTagDistance.removeModifier(DECREASED_NAMETAG_DISTANCE);
+        if ( nameTagDistance != null && nameTagDistance.hasModifier(DECREASED_NAME_TAG_DISTANCE) ) nameTagDistance.removeModifier(DECREASED_NAME_TAG_DISTANCE);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -73,6 +67,6 @@ public class GhostwalkEffect extends MobEffect {
     public static void interruptRender(RenderLivingEvent.Pre<? extends LivingEntity, ? extends EntityModel<? extends LivingEntity>> event) {
         LivingEntity living = event.getEntity();
         AttributeInstance nameTagDistance = living.getAttribute(ForgeMod.NAMETAG_DISTANCE.get());
-        if ( nameTagDistance != null && nameTagDistance.hasModifier(DECREASED_NAMETAG_DISTANCE) ) event.setCanceled(true);
+        if ( nameTagDistance != null && nameTagDistance.hasModifier(DECREASED_NAME_TAG_DISTANCE) ) event.setCanceled(true);
     }
 }
