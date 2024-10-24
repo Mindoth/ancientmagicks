@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item.spell.abstractspell;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -56,6 +57,10 @@ public class AbstractSpellSummon extends SpellItem {
                     newPos = new Vec3(event.getTargetX(), event.getTargetY(), event.getTargetZ());
                     minion.randomTeleport(newPos.x, newPos.y, newPos.z, true);
                 }
+                float range = 64.0F;
+                if ( owner != caster ) range = 0.0F;
+                Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, caster == owner, true);
+                if ( target != null && target != caster && (target instanceof LivingEntity living && !isAlly(owner, living)) ) minion.setTarget(living);
                 summonMinion(minion, owner, owner.level());
                 playSound(level, minion.position());
             }

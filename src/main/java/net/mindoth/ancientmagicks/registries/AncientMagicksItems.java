@@ -91,7 +91,7 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> WIZARD_STAFF = ITEMS.register("wizard_staff",
             () -> new ColorableStaffItem(new Item.Properties().stacksTo(1), 0.0D, -3.0D,
             Map.of(AncientMagicksAttributes.MANA_REGENERATION.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                    "Weapon modifier", 0.25D, AttributeModifier.Operation.MULTIPLY_BASE),
+                    "Weapon modifier", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE),
                     AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                     "Weapon modifier", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE))));
 
