@@ -8,6 +8,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Map;
 import java.util.UUID;
@@ -38,6 +39,11 @@ public class ColorableMagicArmorItem extends ArmorItem implements DyeableLeather
             builder.put(modifierEntry.getKey(), modifier);
         }
         this.defaultModifiers = builder.build();
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack pStack) {
+        return true;
     }
 
     @Override
