@@ -1,8 +1,8 @@
 package net.mindoth.ancientmagicks.client.screen;
 
+import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -21,7 +21,7 @@ public class HudMana implements IGuiOverlay {
     public void render(ForgeGui gui, GuiGraphics graphics, float pt, int width, int height) {
         Player player = MINECRAFT.player;
         if ( player == null ) return;
-        if ( !shouldDisplayMana(player) ) return;
+        if ( !shouldDisplayMana() ) return;
         double maxMana = player.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get());
         double currentMana = ClientMagicData.getCurrentMana();
         String mana = (int)currentMana + "/" + (int)maxMana;
@@ -30,9 +30,10 @@ public class HudMana implements IGuiOverlay {
         graphics.drawString(gui.getFont(), mana, posX, posY, ChatFormatting.AQUA.getColor());
     }
 
-    private static boolean shouldDisplayMana(Player player) {
-        ItemStack main = MINECRAFT.player.getMainHandItem();
-        ItemStack off = MINECRAFT.player.getOffhandItem();
+    private static boolean shouldDisplayMana() {
+        Player player = MINECRAFT.player;
+        ItemStack main = player.getMainHandItem();
+        ItemStack off = player.getOffhandItem();
         return !(MINECRAFT.screen instanceof GuiSpellWheel || player.isSpectator() || player.isCreative())
                 && (ClientMagicData.getCurrentMana() < player.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get())
                 || CastingItem.isValidCastingItem(main) || CastingItem.isValidCastingItem(off) || isWearingMagicArmor(player));

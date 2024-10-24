@@ -5,6 +5,7 @@ import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityEffect;
 import net.mindoth.ancientmagicks.item.spell.fly.FlightEffect;
 import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkEffect;
 import net.mindoth.ancientmagicks.item.spell.greaterinvisibility.GreaterInvisibilityEffect;
+import net.mindoth.ancientmagicks.item.spell.manashield.ManaShieldEffect;
 import net.mindoth.ancientmagicks.item.spell.witcharmor.WitchArmorEffect;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbnessEffect;
@@ -35,4 +36,5 @@ public class AncientMagicksEffects {
     public static final RegistryObject<TeleblockEffect> TELEBLOCK = EFFECTS.register("teleblock", () -> new TeleblockEffect(MobEffectCategory.HARMFUL, 16733695));
     public static final RegistryObject<GreaterInvisibilityEffect> GREATER_INVISIBILITY = EFFECTS.register("greater_invisibility",
             () -> new GreaterInvisibilityEffect(MobEffectCategory.BENEFICIAL, 16733695));
+    public static final RegistryObject<ManaShieldEffect> MANA_SHIELD = EFFECTS.register("mana_shield", () -> new ManaShieldEffect(MobEffectCategory.BENEFICIAL, 5592575));
 }

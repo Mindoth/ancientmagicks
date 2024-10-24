@@ -105,6 +105,8 @@
   "tooltip.ancientmagicks.summon_bees": "Summons bees to fight for you",
   "item.ancientmagicks.acid_arrow": "Acid Arrow",
   "tooltip.ancientmagicks.acid_arrow": "Launches a caustic magical damaging arrow",
+  "item.ancientmagicks.mana_shield": "Mana Shield",
+  "tooltip.ancientmagicks.mana_shield": "Shield yourself from damage by draining mana",
 
 
   "effect.ancientmagicks.witch_armor": "Witch Armor",
@@ -116,6 +118,7 @@
   "effect.ancientmagicks.sleep": "Sleep",
   "effect.ancientmagicks.teleblock": "Teleblock",
   "effect.ancientmagicks.greater_invisibility": "Greater Invisibility",
+  "effect.ancientmagicks.mana_shield": "Mana Shield",
 
 
   "tooltip.ancientmagicks.tier": "\u00A77Spell Tier\u00A7r",

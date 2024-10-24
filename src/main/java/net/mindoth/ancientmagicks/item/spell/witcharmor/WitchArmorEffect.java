@@ -7,6 +7,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -30,7 +31,7 @@ public class WitchArmorEffect extends MobEffect {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void mageArmorDamageResistance(final LivingDamageEvent event) {
+    public static void mageArmorDamageResistance(final LivingHurtEvent event) {
         LivingEntity living = event.getEntity();
         DamageType type = event.getSource().type();
         final float damageAmount = event.getAmount();

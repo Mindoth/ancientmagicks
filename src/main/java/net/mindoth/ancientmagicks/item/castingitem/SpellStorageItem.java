@@ -6,6 +6,7 @@ import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -72,6 +73,7 @@ public class SpellStorageItem extends CastingItem {
                         result = InteractionResultHolder.success(player.getItemInHand(hand));
                     }
                     if ( vessel.getItem() == AncientMagicksItems.SPELL_SCROLL.get() ) player.startUsingItem(hand);
+                    if ( vessel.getItem() == AncientMagicksItems.ANCIENT_TABLET.get() && player instanceof ServerPlayer serverPlayer ) SpellItem.learnSpell(serverPlayer, vessel);
                 }
             }
         }

@@ -1,12 +1,13 @@
 package net.mindoth.ancientmagicks.client.screen;
 
-import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -36,10 +37,11 @@ public class HudCurrentSpell {
     }
 
     public static boolean shouldDisplaySlot() {
-        ItemStack main = MINECRAFT.player.getMainHandItem();
-        ItemStack off = MINECRAFT.player.getOffhandItem();
+        Player player = MINECRAFT.player;
+        ItemStack main = player.getMainHandItem();
+        ItemStack off = player.getOffhandItem();
 
-        return !(MINECRAFT.screen instanceof GuiSpellWheel) && (CastingItem.isValidCastingItem(main) || CastingItem.isValidCastingItem(off));
+        return !(MINECRAFT.screen instanceof GuiSpellWheel || player.isSpectator()) && (CastingItem.isValidCastingItem(main) || CastingItem.isValidCastingItem(off));
     }
 
     public static ItemStack currentSpell() {

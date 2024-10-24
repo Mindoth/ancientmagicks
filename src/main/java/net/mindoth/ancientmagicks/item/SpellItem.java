@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item;
 
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketItemActivationAnimation;
@@ -16,6 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -192,7 +194,7 @@ public class SpellItem extends Item {
         return start.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, start)).getType() == HitResult.Type.MISS;
     }
 
-    @Override
+    /*@Override
     public void onDestroyed(ItemEntity entity, DamageSource damageSource) {
         Level level = entity.level();
         if ( level.isClientSide ) return;
@@ -206,7 +208,7 @@ public class SpellItem extends Item {
         drop.setDeltaMovement(randX, 0.3F, randZ);
         drop.setPickUpDelay(40);
         level.addFreshEntity(drop);
-    }
+    }*/
 
     @Override
     @Nonnull
@@ -222,7 +224,16 @@ public class SpellItem extends Item {
     }
 
     public static void learnSpell(ServerPlayer serverPlayer, ItemStack stack) {
-        SpellItem spellTablet = (SpellItem)stack.getItem();
+        SpellItem stackItem = null;
+        if ( stack.getItem() instanceof SpellItem ) stackItem = (SpellItem)stack.getItem();
+        else if ( stack.getItem() instanceof SpellStorageItem ) {
+            if ( stack.getTag() != null && stack.getTag().contains(SpellStorageItem.TAG_STORED_SPELL) ) {
+                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(stack.getTag().getString(SpellStorageItem.TAG_STORED_SPELL)));
+                if ( item instanceof SpellItem spell ) stackItem = spell;
+            }
+        }
+        final SpellItem spellTablet = stackItem;
+        if ( spellTablet == null ) return;
         final String spellString = ForgeRegistries.ITEMS.getKey(spellTablet).toString();
         serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(spell -> {
             CompoundTag tag = new CompoundTag();

@@ -73,13 +73,13 @@ public class CommonEvents {
     }
 
     @SubscribeEvent
-    public static void hideWithGhostwalk(LivingEvent.LivingVisibilityEvent event) {
+    public static void hideWithGhostwalk(final LivingEvent.LivingVisibilityEvent event) {
         if ( event.getEntity().hasEffect(AncientMagicksEffects.GHOSTWALK.get()) ) event.modifyVisibility(0);
         if ( event.getEntity().hasEffect(AncientMagicksEffects.GREATER_INVISIBILITY.get()) ) event.modifyVisibility(0);
     }
 
     @SubscribeEvent
-    public static void onLivingFallSpook(LivingFallEvent event) {
+    public static void onLivingFallSpook(final LivingFallEvent event) {
         LivingEntity living = event.getEntity();
         if ( living.hasEffect(AncientMagicksEffects.SPOOK.get()) ) {
             if ( calculateFallDamage(living, event.getDistance(), event.getDamageMultiplier()) < living.getHealth() ) {
@@ -101,7 +101,7 @@ public class CommonEvents {
     @SubscribeEvent
     public static void disableInteraction(final PlayerInteractEvent.EntityInteract event) {
         Player player = event.getEntity();
-        if ( !CastingItem.getHeldCastingItem(player).isEmpty() || !CastingItem.getHeldTabletItem(player).isEmpty() ) event.setCanceled(true);
+        if ( !CastingItem.getHeldCastingItem(player).isEmpty() ) event.setCanceled(true);
     }
 
     @SubscribeEvent
@@ -130,7 +130,7 @@ public class CommonEvents {
     }
 
     @SubscribeEvent
-    public static void addCustomTrades(VillagerTradesEvent event) {
+    public static void addCustomTrades(final VillagerTradesEvent event) {
         for ( SpellItem spell : AncientMagicks.SPELL_LIST ) {
             if ( spell.spellTier < 4 ) {
                 if ( event.getType() == VillagerProfession.LIBRARIAN ) {

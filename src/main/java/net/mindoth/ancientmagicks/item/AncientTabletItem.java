@@ -29,13 +29,13 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
+//@Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class AncientTabletItem extends Item {
     public AncientTabletItem(Properties pProperties) {
         super(pProperties.stacksTo(1));
     }
 
-    @Override
+    /*@Override
     @Nonnull
     public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
@@ -111,5 +111,5 @@ public class AncientTabletItem extends Item {
                 level.addFreshEntity(drop);
             }
         }
-    }
+    }*/
 }

@@ -30,6 +30,7 @@ import net.mindoth.ancientmagicks.item.spell.greaterinvisibility.GreaterInvisibi
 import net.mindoth.ancientmagicks.item.spell.icewall.IceWallItem;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleItem;
 import net.mindoth.ancientmagicks.item.spell.invisibility.InvisibilityItem;
+import net.mindoth.ancientmagicks.item.spell.manashield.ManaShieldItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlItem;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainItem;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphItem;
@@ -61,9 +62,6 @@ import java.util.UUID;
 public class AncientMagicksItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, AncientMagicks.MOD_ID);
 
-    public static final RegistryObject<Item> STONE_SLATE = ITEMS.register("empty_rune",
-            () -> new Item(new Item.Properties()));
-
     public static final RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A7b"));
 
@@ -88,6 +86,15 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> SPELL_PEARL = ITEMS.register("spell_pearl",
             () -> new SpellStorageItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
+            () -> new SpellStorageItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> ARCANE_DUST = ITEMS.register("arcane_dust",
+            () -> new Item(new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> STONE_SLATE = ITEMS.register("empty_rune",
+            () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> WIZARD_STAFF = ITEMS.register("wizard_staff",
             () -> new ColorableStaffItem(new Item.Properties().stacksTo(1), 0.0D, -3.0D,
             Map.of(AncientMagicksAttributes.MANA_REGENERATION.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
@@ -100,12 +107,6 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> CLOAK = ITEMS.register("cloak",
             () -> new ColorableMagicArmorItem(AncientMagicsArmorMaterials.CLOTH, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-
-    public static final RegistryObject<Item> ARCANE_DUST = ITEMS.register("arcane_dust",
-            () -> new Item(new Item.Properties().fireResistant()));
-
-    public static final RegistryObject<Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
-            () -> new AncientTabletItem(new Item.Properties()));
 
     //Magic Spells
     public static final RegistryObject<Item> FEATHER_FALL_ITEM = ITEMS.register("feather_fall",
@@ -215,6 +216,9 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> VERMIN_BANE_ITEM = ITEMS.register("vermin_bane",
             () -> new VerminBaneItem(new Item.Properties(), 5, 10, 2));
+
+    public static final RegistryObject<Item> MANA_SHIELD_ITEM = ITEMS.register("mana_shield",
+            () -> new ManaShieldItem(new Item.Properties(), 5, 100, 10));
 
     public static final RegistryObject<Item> GHOSTWALK_ITEM = ITEMS.register("ghostwalk",
             () -> new GhostwalkItem(new Item.Properties(), 6, 120, 10));

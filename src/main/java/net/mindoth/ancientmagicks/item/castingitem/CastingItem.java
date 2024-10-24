@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
@@ -8,6 +9,7 @@ import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -72,20 +74,32 @@ public class CastingItem extends Item {
         }
     }
 
-    public static void storeSpell(Player owner, Entity caster, SpellItem spell, ItemStack vessel) {
-        if ( !AncientMagicks.isSpellEnabled(spell) ) return;
-        if ( !owner.isCreative() ) ManaEvents.changeMana(owner, -spell.manaCost);
-        ItemStack dropStack = vessel.copyWithCount(1);
-        CompoundTag tag = dropStack.getOrCreateTag();
-        tag.putString(SpellStorageItem.TAG_STORED_SPELL, ForgeRegistries.ITEMS.getKey(spell).toString());
-        vessel.shrink(1);
-        Vec3 spawnPos = ShadowEvents.getEntityCenter(owner);
-        ItemEntity drop = new ItemEntity(owner.level(), spawnPos.x, spawnPos.y, spawnPos.z, dropStack);
-        drop.setDeltaMovement(0, 0, 0);
-        drop.setNoPickUpDelay();
-        caster.level().addFreshEntity(drop);
-        addCastingCooldown(owner, spell, spell.cooldown);
-        owner.stopUsingItem();
+    public static void storeSpell(Player player, Entity caster, SpellItem spell, ItemStack vessel) {
+        if ( !(player instanceof ServerPlayer owner) ) return;
+        owner.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
+            boolean state = AncientMagicks.isSpellEnabled(spell);
+            int manaCost = 0;
+            if ( !owner.isCreative() ) {
+                manaCost += spell.manaCost;
+                if ( vessel.getItem() == AncientMagicksItems.ANCIENT_TABLET.get() ) manaCost += spell.spellTier * 100;
+            }
+            if ( magic.getCurrentMana() < manaCost ) state = false;
+            if ( state ) {
+                if ( !owner.isCreative() ) ManaEvents.changeMana(owner, -manaCost);
+                ItemStack dropStack = vessel.copyWithCount(1);
+                CompoundTag tag = dropStack.getOrCreateTag();
+                tag.putString(SpellStorageItem.TAG_STORED_SPELL, ForgeRegistries.ITEMS.getKey(spell).toString());
+                vessel.shrink(1);
+                Vec3 spawnPos = ShadowEvents.getEntityCenter(owner);
+                ItemEntity drop = new ItemEntity(owner.level(), spawnPos.x, spawnPos.y, spawnPos.z, dropStack);
+                drop.setDeltaMovement(0, 0, 0);
+                drop.setNoPickUpDelay();
+                caster.level().addFreshEntity(drop);
+                addCastingCooldown(owner, spell, spell.cooldown);
+                owner.stopUsingItem();
+            }
+            else whiffSpell(owner, caster, spell);
+        });
     }
 
     public static int getCastingCooldown(int defaultCooldown, boolean hasAlacrity) {
@@ -101,11 +115,6 @@ public class CastingItem extends Item {
 
     public static void addCastingCooldown(Player player, SpellItem spell, int cooldown) {
         player.getCooldowns().addCooldown(spell, cooldown);
-    }
-
-    public static @Nonnull ItemStack getHeldTabletItem(Player playerEntity) {
-        ItemStack tablet = playerEntity.getMainHandItem().getItem() instanceof SpellItem ? playerEntity.getMainHandItem() : null;
-        return tablet == null ? (playerEntity.getOffhandItem().getItem() instanceof SpellItem ? playerEntity.getOffhandItem() : ItemStack.EMPTY) : tablet;
     }
 
     public static @Nonnull ItemStack getHeldCastingItem(Player playerEntity) {
