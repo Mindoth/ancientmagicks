@@ -192,15 +192,6 @@ public class SpellItem extends Item {
         return start.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, start)).getType() == HitResult.Type.MISS;
     }
 
-    public void summonMinion(Mob minion, LivingEntity owner, Level level) {
-        minion.getPersistentData().putUUID(MindControlEffect.NBT_KEY, owner.getUUID());
-        minion.getPersistentData().putBoolean("am_is_minion", true);
-        minion.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), 4800));
-        ForgeEventFactory.onFinalizeSpawn(minion, (ServerLevel)level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-        level.addFreshEntity(minion);
-        minion.spawnAnim();
-    }
-
     @Override
     public void onDestroyed(ItemEntity entity, DamageSource damageSource) {
         Level level = entity.level();

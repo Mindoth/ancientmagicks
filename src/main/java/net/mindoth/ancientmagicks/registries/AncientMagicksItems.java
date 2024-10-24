@@ -5,6 +5,7 @@ import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicsArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
+import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
@@ -87,7 +88,7 @@ public class AncientMagicksItems {
             () -> new SpellStorageItem(new Item.Properties()));
 
     public static final RegistryObject<Item> WIZARD_STAFF = ITEMS.register("wizard_staff",
-            () -> new StaffItem(new Item.Properties().stacksTo(1), 0.0D, -3.0D,
+            () -> new ColorableStaffItem(new Item.Properties().stacksTo(1), 0.0D, -3.0D,
             Map.of(AncientMagicksAttributes.MANA_REGENERATION.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                     "Weapon modifier", 0.25D, AttributeModifier.Operation.MULTIPLY_BASE),
                     AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
@@ -179,10 +180,10 @@ public class AncientMagicksItems {
             () -> new PolymorphItem(new Item.Properties(), 4, 80, 10));
 
     public static final RegistryObject<Item> FREEZE_LANCE_ITEM = ITEMS.register("freeze_lance",
-            () -> new FreezeLanceItem(new Item.Properties(), 4, 40, 4));
+            () -> new FreezeLanceItem(new Item.Properties(), 4, 40, 3));
 
     public static final RegistryObject<Item> BURN_LANCE_ITEM = ITEMS.register("burn_lance",
-            () -> new BurnLanceItem(new Item.Properties(), 4, 40, 4));
+            () -> new BurnLanceItem(new Item.Properties(), 4, 40, 3));
 
     public static final RegistryObject<Item> FIRE_BREATH_ITEM = ITEMS.register("fire_breath",
             () -> new FireBreathItem(new Item.Properties(), 4, 4, 2));

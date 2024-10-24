@@ -1,46 +1,46 @@
 package net.mindoth.ancientmagicks.item.spell.polymorph;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.shadowizardlib.event.ShadowEvents;
-import net.minecraft.core.particles.ParticleTypes;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
-public class PolymorphItem extends SpellItem {
+public class PolymorphItem extends AbstractSpellRayCast {
 
     public PolymorphItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
-    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
-        boolean state = false;
-        Level level = caster.level();
+    protected boolean isHarmful() {
+        return true;
+    }
 
-        float range = 14.0F;
-        float size = 7.0F;
+    @Override
+    protected boolean canApply(Level level, Player owner, Entity caster, LivingEntity target) {
+        return level instanceof ServerLevel && target instanceof Mob && !(target instanceof Sheep);
+    }
 
-        LivingEntity target;
-        if ( caster == owner ) target = (LivingEntity)ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
-        else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
+    @Override
+    protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
+        Sheep sheep = ((Mob)target).convertTo(EntityType.SHEEP, false);
+        sheep.finalizeSpawn((ServerLevel)level, ((ServerLevel)level).getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
+    }
 
-        if ( level instanceof ServerLevel serverLevel ) {
-            if ( target instanceof Mob && !(target instanceof Sheep) ) {
-                Sheep sheep = ((Mob)target).convertTo(EntityType.SHEEP, false);
-                sheep.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
-                addEnchantParticles(sheep, 170, 25, 170, 0.15F, 8, true);
-                state = true;
-            }
-        }
+    @Override
+    protected int getRed() {
+        return 170;
+    }
 
-        if ( state ) {
-            playMagicSound(level, center);
-        }
+    @Override
+    protected int getGreen() {
+        return 25;
+    }
 
-        return state;
+    @Override
+    protected int getBlue() {
+        return 170;
     }
 }

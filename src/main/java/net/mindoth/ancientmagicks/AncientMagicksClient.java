@@ -5,6 +5,7 @@ import net.mindoth.ancientmagicks.client.screen.GuiSpellWheel;
 import net.mindoth.ancientmagicks.client.screen.HudMana;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
 import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltRenderer;
@@ -17,8 +18,10 @@ import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendRuneData;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
+import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.ancientmagicks.registries.AncientMagicksKeyBinds;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -40,10 +43,10 @@ public class AncientMagicksClient {
 
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         for ( Item item : ForgeRegistries.ITEMS.getValues() ) {
-            if ( item instanceof ColorableMagicArmorItem colorableMagicArmorItem) {
+            if ( item instanceof ColorableMagicArmorItem || item instanceof ColorableStaffItem ) {
                 event.getItemColors().register((color, armor) -> {
-                    return armor > 0 ? -1 : ((ColorableMagicArmorItem)color.getItem()).getColor(color);
-                }, colorableMagicArmorItem);
+                    return armor > 0 ? -1 : ((DyeableLeatherItem)color.getItem()).getColor(color);
+                }, item);
             }
         }
     }

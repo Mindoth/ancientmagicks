@@ -1,9 +1,12 @@
 package net.mindoth.ancientmagicks.item.spell.mindcontrol;
 
+import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,38 +18,55 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class MindControlItem extends SpellItem {
+import java.util.concurrent.ThreadLocalRandom;
+
+public class MindControlItem extends AbstractSpellRayCast {
 
     public MindControlItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
-    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
-        boolean state = false;
-        Level level = caster.level();
+    protected boolean isHarmful() {
+        return true;
+    }
 
-        int life = 600;
-        float range = 14.0F;
-        float size = range * 0.5F;
+    @Override
+    protected int getLife() {
+        return 600;
+    }
 
-        LivingEntity target;
-        if ( caster == owner ) target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, range, 0.25F, caster == owner, true);
-        else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, size, null);
+    @Override
+    protected boolean canApply(Level level, Player owner, Entity caster, LivingEntity target) {
+        return target instanceof Mob mob && !isAlly(owner, mob);
+    }
 
-        if ( target instanceof Mob mob && !isAlly(owner, mob) ) {
-            mob.getPersistentData().putUUID(MindControlEffect.NBT_KEY, owner.getUUID());
-            mob.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), life));
-            //if ( mob instanceof PathfinderMob pthMob ) mob.goalSelector.addGoal(0, new MeleeAttackGoal(pthMob, 1.0F, true));
-            mob.setTarget(MindControlEffect.findMindControlTarget(mob, owner, mob.level()));
-            state = true;
-        }
+    @Override
+    protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
+        Mob mob = (Mob)target;
+        mob.getPersistentData().putUUID(MindControlEffect.NBT_KEY, owner.getUUID());
+        mob.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), getLife()));
+        //if ( mob instanceof PathfinderMob pthMob ) mob.goalSelector.addGoal(0, new MeleeAttackGoal(pthMob, 1.0F, true));
+        mob.setTarget(MindControlEffect.findMindControlTarget(mob, owner, mob.level()));
+    }
 
-        if ( state ) {
-            addEnchantParticles(target, 0, 0, 0, 0.15F, 8, false);
-            playMagicSound(level, center);
-        }
+    @Override
+    protected int getRed() {
+        return 0;
+    }
 
-        return state;
+    @Override
+    protected int getGreen() {
+        return 0;
+    }
+
+    @Override
+    protected int getBlue() {
+        return 0;
+    }
+
+    @Override
+    protected boolean hasMask() {
+        return false;
     }
 }

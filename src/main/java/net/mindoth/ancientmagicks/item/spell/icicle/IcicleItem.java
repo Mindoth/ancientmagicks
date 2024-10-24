@@ -1,42 +1,25 @@
 package net.mindoth.ancientmagicks.item.spell.icicle;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellProjectile;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
-public class IcicleItem extends SpellItem {
+public class IcicleItem extends AbstractSpellProjectile {
 
     public IcicleItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
-    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
-        boolean state = false;
-        Level level = caster.level();
-        int adjuster = 1;
-        float down = -0.2F;
-        if ( caster != owner ) {
-            adjuster = -1;
-            down = 0.0F;
-        }
-        AbstractSpellEntity projectile = new IcicleEntity(level, owner, caster, this);
+    protected AbstractSpellEntity getProjectile(Level level, Player owner, Entity caster) {
+        return new IcicleEntity(level, owner, caster, this);
+    }
 
-        projectile.setColor(AbstractSpellEntity.getSpellColor("aqua"));
-        projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
-        projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
-        projectile.power *= (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
-        level.addFreshEntity(projectile);
-        state = true;
-
-        if ( state ) {
-            playMagicShootSound(level, center);
-        }
-
-        return state;
+    @Override
+    protected ParticleColor.IntWrapper getColor() {
+        return AbstractSpellEntity.getSpellColor("aqua");
     }
 }
