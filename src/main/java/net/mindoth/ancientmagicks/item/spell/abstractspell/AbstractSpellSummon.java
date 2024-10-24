@@ -7,20 +7,24 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 
-public class AbstractSpellMinion extends SpellItem {
-    public AbstractSpellMinion(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+public class AbstractSpellSummon extends SpellItem {
+    public AbstractSpellSummon(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
     }
 
     protected int getLife() {
         return 2400;
+    }
+
+    protected int getAmount() {
+        return 1;
     }
 
     protected Mob getMinion(Level level) {
@@ -38,20 +42,23 @@ public class AbstractSpellMinion extends SpellItem {
         state = true;
 
         if ( state ) {
-            Mob minion = getMinion(level);
-            Vec3 pos = caster.position();
-            Vec3 newPos = null;
-            while ( newPos == null || !minion.position().equals(newPos) ) {
-                double d3 = pos.x + (minion.getRandom().nextDouble() - 0.5D) * 3.0D;
-                double d4 = Mth.clamp(pos.y + (double)(minion.getRandom().nextInt(4) - 2),
-                        (double)owner.level().getMinBuildHeight(), (double)(owner.level().getMinBuildHeight() + ((ServerLevel)owner.level()).getLogicalHeight() - 1));
-                double d5 = pos.z + (minion.getRandom().nextDouble() - 0.5D) * 3.0D;
-                net.minecraftforge.event.entity.EntityTeleportEvent.ChorusFruit event = net.minecraftforge.event.ForgeEventFactory.onChorusFruitTeleport(owner, d3, d4, d5);
-                newPos = new Vec3(event.getTargetX(), event.getTargetY(), event.getTargetZ());
-                minion.randomTeleport(newPos.x, newPos.y, newPos.z, true);
+            for ( int i = 0; i < getAmount(); i++ ) {
+                Mob minion = getMinion(level);
+                boolean isFlying = minion instanceof FlyingMob || minion instanceof FlyingAnimal;
+                Vec3 pos = caster.position();
+                Vec3 newPos = null;
+                while ( newPos == null || !minion.position().equals(newPos) ) {
+                    double d3 = pos.x + (minion.getRandom().nextDouble() - 0.5D) * 3.0D;
+                    double d4 = Mth.clamp(pos.y + (double)(minion.getRandom().nextInt(4) - 2),
+                            (double)owner.level().getMinBuildHeight(), (double)(owner.level().getMinBuildHeight() + ((ServerLevel)owner.level()).getLogicalHeight() - 1));
+                    double d5 = pos.z + (minion.getRandom().nextDouble() - 0.5D) * 3.0D;
+                    net.minecraftforge.event.entity.EntityTeleportEvent.ChorusFruit event = net.minecraftforge.event.ForgeEventFactory.onChorusFruitTeleport(owner, d3, d4, d5);
+                    newPos = new Vec3(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+                    minion.randomTeleport(newPos.x, newPos.y, newPos.z, true);
+                }
+                summonMinion(minion, owner, owner.level());
+                playSound(level, minion.position());
             }
-            summonMinion(minion, owner, owner.level());
-            playSound(level, minion.position());
         }
 
         return state;

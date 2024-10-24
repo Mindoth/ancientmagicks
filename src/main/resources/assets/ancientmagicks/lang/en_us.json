@@ -26,7 +26,7 @@
   "item.ancientmagicks.red_rune": "Red Rune",
 
   "item.ancientmagicks.witch_arrow": "Witch Arrow",
-  "tooltip.ancientmagicks.witch_arrow": "Launches a small damaging magical projectile that flies towards enemies",
+  "tooltip.ancientmagicks.witch_arrow": "Launches a damaging magical arrow that flies towards enemies",
   "item.ancientmagicks.fireball": "Fireball",
   "tooltip.ancientmagicks.fireball": "Launches a fiery orb that explodes into flames upon collision",
   "item.ancientmagicks.telekinetic_grab": "Telekinetic Grab",
@@ -34,7 +34,7 @@
   "item.ancientmagicks.fly": "Fly",
   "tooltip.ancientmagicks.fly": "Grant yourself or target ally the ability to fly or force a target enemy to slowly rise into the air for a brief moment",
   "item.ancientmagicks.summon_zombie": "Summon Zombie",
-  "tooltip.ancientmagicks.summon_zombie": "Summons a subservient Zombie next to you",
+  "tooltip.ancientmagicks.summon_zombie": "Summons a subservient Zombie to fight for you",
   "item.ancientmagicks.teleport": "Teleport",
   "tooltip.ancientmagicks.teleport": "Teleport a short distance towards anywhere you can see",
   "item.ancientmagicks.wind_burst": "Wind Burst",
@@ -72,7 +72,7 @@
   "item.ancientmagicks.dragon_breath": "Dragon Breath",
   "tooltip.ancientmagicks.dragon_breath": "Channel to spew out damaging dragon flames",
   "item.ancientmagicks.summon_death_knight": "Summon Death Knight",
-  "tooltip.ancientmagicks.summon_death_knight": "Summons a subservient Death Knight next to you",
+  "tooltip.ancientmagicks.summon_death_knight": "Summons a subservient Death Knight to fight for you",
   "item.ancientmagicks.blind": "Blind",
   "tooltip.ancientmagicks.blind": "Blind a target creature",
   "item.ancientmagicks.icicle": "Icicle",
@@ -101,6 +101,10 @@
   "tooltip.ancientmagicks.invisibility": "Grant invisibility to an ally",
   "item.ancientmagicks.greater_invisibility": "Greater Invisibility",
   "tooltip.ancientmagicks.greater_invisibility": "Grant greater invisibility to an ally",
+  "item.ancientmagicks.summon_bees": "Summon Bees",
+  "tooltip.ancientmagicks.summon_bees": "Summons bees to fight for you",
+  "item.ancientmagicks.acid_arrow": "Acid Arrow",
+  "tooltip.ancientmagicks.acid_arrow": "Launches a caustic magical damaging arrow",
 
 
   "effect.ancientmagicks.witch_armor": "Witch Armor",

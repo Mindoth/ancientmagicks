@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowEntity;
 import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceEntity;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
 import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltEntity;
@@ -50,11 +51,15 @@ public class AncientMagicksEntities {
 
     public static final RegistryObject<EntityType<ThunderballEntity>> THUNDERBALL
             = registerEntity(EntityType.Builder.<ThunderballEntity>of(ThunderballEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(ThunderballEntity::new), "thunderball");
+            MobCategory.MISC).sized(0.8F, 0.8F).setCustomClientFactory(ThunderballEntity::new), "thunderball");
 
     public static final RegistryObject<EntityType<FireBoltEntity>> FIRE_BOLT
             = registerEntity(EntityType.Builder.<FireBoltEntity>of(FireBoltEntity::new,
             MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(FireBoltEntity::new), "fire_bolt");
+
+    public static final RegistryObject<EntityType<AcidArrowEntity>> ACID_ARROW
+            = registerEntity(EntityType.Builder.<AcidArrowEntity>of(AcidArrowEntity::new,
+            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(AcidArrowEntity::new), "acid_arrow");
 
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntity(EntityType.Builder<T> builder, String entityName) {

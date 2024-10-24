@@ -6,6 +6,7 @@ import net.mindoth.ancientmagicks.client.screen.HudMana;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
+import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowRenderer;
 import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
 import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltRenderer;
@@ -61,6 +62,7 @@ public class AncientMagicksClient {
         event.registerEntityRenderer(AncientMagicksEntities.BURN_LANCE.get(), BurnLanceRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.THUNDERBALL.get(), ThunderballRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.FIRE_BOLT.get(), FireBoltRenderer::new);
+        event.registerEntityRenderer(AncientMagicksEntities.ACID_ARROW.get(), AcidArrowRenderer::new);
     }
 
     @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID, value = Dist.CLIENT)

@@ -7,6 +7,7 @@ import net.mindoth.ancientmagicks.item.armor.AncientMagicsArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
+import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindItem;
 import net.mindoth.ancientmagicks.item.spell.blizzard.BlizzardItem;
@@ -35,6 +36,7 @@ import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphItem;
 import net.mindoth.ancientmagicks.item.spell.sleep.SleepItem;
 import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballItem;
 import net.mindoth.ancientmagicks.item.spell.spook.SpookItem;
+import net.mindoth.ancientmagicks.item.spell.summonbees.SummonBeesItem;
 import net.mindoth.ancientmagicks.item.spell.summondeathknight.SummonDeathKnightItem;
 import net.mindoth.ancientmagicks.item.spell.summonzombie.SummonZombieItem;
 import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockItem;
@@ -153,6 +155,12 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> INVISIBILITY_ITEM = ITEMS.register("invisibility",
             () -> new InvisibilityItem(new Item.Properties(), 2, 40, 10));
+
+    public static final RegistryObject<Item> SUMMON_BEES_ITEM = ITEMS.register("summon_bees",
+            () -> new SummonBeesItem(new Item.Properties(), 2, 40, 10));
+
+    public static final RegistryObject<Item> ACID_ARROW_ITEM = ITEMS.register("acid_arrow",
+            () -> new AcidArrowItem(new Item.Properties(), 2, 10, 2));
 
     public static final RegistryObject<Item> ALACRITY_ITEM = ITEMS.register("alacrity",
             () -> new AlacrityItem(new Item.Properties(), 3, 60, 10));

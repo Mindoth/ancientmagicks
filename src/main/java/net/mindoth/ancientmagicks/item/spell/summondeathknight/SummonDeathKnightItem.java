@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.summondeathknight;
 
-import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellMinion;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellSummon;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-public class SummonDeathKnightItem extends AbstractSpellMinion {
+public class SummonDeathKnightItem extends AbstractSpellSummon {
 
     public SummonDeathKnightItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);

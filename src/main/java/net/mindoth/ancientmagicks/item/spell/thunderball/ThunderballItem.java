@@ -2,12 +2,12 @@ package net.mindoth.ancientmagicks.item.spell.thunderball;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellProjectile;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellShoot;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public class ThunderballItem extends AbstractSpellProjectile {
+public class ThunderballItem extends AbstractSpellShoot {
 
     public ThunderballItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
@@ -20,6 +20,6 @@ public class ThunderballItem extends AbstractSpellProjectile {
 
     @Override
     protected ParticleColor.IntWrapper getColor() {
-        return AbstractSpellEntity.getSpellColor("blue");
+        return AbstractSpellEntity.getSpellColor("aqua");
     }
 }

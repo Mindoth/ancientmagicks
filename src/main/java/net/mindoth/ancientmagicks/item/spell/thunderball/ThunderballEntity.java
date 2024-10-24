@@ -55,7 +55,7 @@ public class ThunderballEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultSize() {
-        return 0.5F;
+        return 0.8F;
     }
 
     private void causeDamage(LivingEntity target) {

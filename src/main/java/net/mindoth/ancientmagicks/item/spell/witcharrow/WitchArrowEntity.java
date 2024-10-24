@@ -22,6 +22,12 @@ public class WitchArrowEntity extends AbstractSpellEntity {
 
     public WitchArrowEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
         super(AncientMagicksEntities.WITCH_ARROW.get(), level, owner, caster, rune);
+        this.setNoGravity(false);
+    }
+
+    @Override
+    protected float getGravity() {
+        return 0.03F;
     }
 
     @Override
@@ -32,11 +38,6 @@ public class WitchArrowEntity extends AbstractSpellEntity {
     @Override
     public float getDefaultSpeed() {
         return 1.6F;
-    }
-
-    @Override
-    public float getDefaultSize() {
-        return 0.2F;
     }
 
     @Override

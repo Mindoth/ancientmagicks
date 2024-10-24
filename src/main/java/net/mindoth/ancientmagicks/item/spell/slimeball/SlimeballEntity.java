@@ -38,7 +38,7 @@ public class SlimeballEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultPower() {
-        return 8.0F;
+        return 6.0F;
     }
 
     @Override

@@ -64,7 +64,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     public float getDefaultSize() {
-        return 1.0F;
+        return 0.2F;
     }
 
     public int getDefaultBounce() {

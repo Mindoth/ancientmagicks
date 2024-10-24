@@ -9,9 +9,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractSpellProjectile extends SpellItem {
+public abstract class AbstractSpellShoot extends SpellItem {
 
-    public AbstractSpellProjectile(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+    public AbstractSpellShoot(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
     }
 
