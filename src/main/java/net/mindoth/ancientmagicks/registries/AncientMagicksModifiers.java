@@ -5,7 +5,6 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.loot.AddItemModifier;
 import net.mindoth.ancientmagicks.loot.RandomizeSpellFunction;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.registries.DeferredRegister;

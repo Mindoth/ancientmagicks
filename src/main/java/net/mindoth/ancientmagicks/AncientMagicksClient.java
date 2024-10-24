@@ -18,7 +18,6 @@ import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendRuneData;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.ancientmagicks.registries.AncientMagicksKeyBinds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.DyeableLeatherItem;

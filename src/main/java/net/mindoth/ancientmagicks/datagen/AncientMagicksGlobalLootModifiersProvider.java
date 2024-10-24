@@ -1,13 +1,9 @@
 package net.mindoth.ancientmagicks.datagen;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.loot.AddItemModifier;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraftforge.common.data.GlobalLootModifierProvider;
 import net.minecraftforge.common.loot.LootTableIdCondition;
 import org.apache.commons.lang3.Validate;

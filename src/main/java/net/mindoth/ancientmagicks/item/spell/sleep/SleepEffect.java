@@ -2,7 +2,6 @@ package net.mindoth.ancientmagicks.item.spell.sleep;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;

@@ -1,24 +1,13 @@
 package net.mindoth.ancientmagicks.item.spell.mindcontrol;
 
-import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
-import net.mindoth.shadowizardlib.event.ShadowEvents;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 public class MindControlItem extends AbstractSpellRayCast {
 
