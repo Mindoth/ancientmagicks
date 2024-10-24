@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.util.capabilities.playermagic;
+package net.mindoth.ancientmagicks.capabilities.playermagic;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

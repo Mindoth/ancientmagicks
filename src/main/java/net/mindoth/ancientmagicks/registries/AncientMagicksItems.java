@@ -4,7 +4,7 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicsArmorMaterials;
-import net.mindoth.ancientmagicks.item.armor.CustomColorArmor;
+import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
@@ -48,7 +48,6 @@ import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowItem;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.DyeableArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -89,16 +88,16 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> WIZARD_STAFF = ITEMS.register("wizard_staff",
             () -> new StaffItem(new Item.Properties().stacksTo(1), 0.0D, -3.0D,
-            Map.of(AncientMagicksAttributes.MANA_REGEN.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
+            Map.of(AncientMagicksAttributes.MANA_REGENERATION.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                     "Weapon modifier", 0.25D, AttributeModifier.Operation.MULTIPLY_BASE),
                     AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                     "Weapon modifier", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE))));
 
     public static final RegistryObject<Item> HOOD = ITEMS.register("hood",
-            () -> new CustomColorArmor(AncientMagicsArmorMaterials.CLOTH, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new ColorableMagicArmorItem(AncientMagicsArmorMaterials.CLOTH, ArmorItem.Type.HELMET, new Item.Properties()));
 
     public static final RegistryObject<Item> CLOAK = ITEMS.register("cloak",
-            () -> new CustomColorArmor(AncientMagicsArmorMaterials.CLOTH, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new ColorableMagicArmorItem(AncientMagicsArmorMaterials.CLOTH, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
 
     public static final RegistryObject<Item> ARCANE_DUST = ITEMS.register("arcane_dust",
             () -> new Item(new Item.Properties().fireResistant()));

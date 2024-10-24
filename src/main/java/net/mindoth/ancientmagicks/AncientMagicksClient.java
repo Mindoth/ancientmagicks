@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks;
 import net.mindoth.ancientmagicks.client.screen.HudCurrentSpell;
 import net.mindoth.ancientmagicks.client.screen.GuiSpellWheel;
 import net.mindoth.ancientmagicks.client.screen.HudMana;
-import net.mindoth.ancientmagicks.item.armor.CustomColorArmor;
+import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
@@ -17,12 +17,8 @@ import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendRuneData;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.ancientmagicks.registries.AncientMagicksKeyBinds;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.client.color.item.ItemColors;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -31,7 +27,6 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -45,10 +40,10 @@ public class AncientMagicksClient {
 
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         for ( Item item : ForgeRegistries.ITEMS.getValues() ) {
-            if ( item instanceof CustomColorArmor customColorArmor ) {
+            if ( item instanceof ColorableMagicArmorItem colorableMagicArmorItem) {
                 event.getItemColors().register((color, armor) -> {
-                    return armor > 0 ? -1 : ((CustomColorArmor)color.getItem()).getColor(color);
-                }, customColorArmor);
+                    return armor > 0 ? -1 : ((ColorableMagicArmorItem)color.getItem()).getColor(color);
+                }, colorableMagicArmorItem);
             }
         }
     }

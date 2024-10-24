@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.client.screen;
 
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.util.capabilities.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;

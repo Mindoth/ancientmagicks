@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.network;
 
-import net.mindoth.ancientmagicks.util.capabilities.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 

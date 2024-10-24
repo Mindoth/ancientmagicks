@@ -1,18 +1,24 @@
 package net.mindoth.ancientmagicks.item.armor;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
-public enum AncientMagicsArmorMaterials implements ArmorMaterial {
+public enum AncientMagicsArmorMaterials implements CustomArmorMaterial {
     CLOTH("amcloth", 0, new int[]{ 0, 0, 0, 0 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
-            0, 0, () -> Ingredient.of(Items.STRING));
+            0, 0, () -> Ingredient.of(Items.STRING), Map.of(
+            AncientMagicksAttributes.MANA_REGENERATION.get(), new AttributeModifier("Mana Regeneration", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE),
+            AncientMagicksAttributes.MANA_MAXIMUM.get(), new AttributeModifier("Mana Maximum", 50.0D, AttributeModifier.Operation.ADDITION)
+    ));
 
     private final String name;
     private final int durabilityModifier;
@@ -22,10 +28,11 @@ public enum AncientMagicsArmorMaterials implements ArmorMaterial {
     private final float toughness;
     private final float knockbackResistance;
     private final Supplier<Ingredient> repairIngredient;
+    private final Map<Attribute, AttributeModifier> additionalAttributes;
 
     private static final int[] BASE_DURABILITY = { 0, 0, 0, 0 };
 
-    AncientMagicsArmorMaterials(String name, int durabilityModifier, int[] protectionAmounts, int enchantmentValue, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient) {
+    AncientMagicsArmorMaterials(String name, int durabilityModifier, int[] protectionAmounts, int enchantmentValue, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient, Map<Attribute, AttributeModifier> additionalAttributes) {
         this.name = name;
         this.durabilityModifier = durabilityModifier;
         this.protectionAmounts = protectionAmounts;
@@ -34,6 +41,7 @@ public enum AncientMagicsArmorMaterials implements ArmorMaterial {
         this.toughness = toughness;
         this.knockbackResistance = knockbackResistance;
         this.repairIngredient = repairIngredient;
+        this.additionalAttributes = additionalAttributes;
     }
 
     @Override
@@ -74,5 +82,10 @@ public enum AncientMagicsArmorMaterials implements ArmorMaterial {
     @Override
     public float getKnockbackResistance() {
         return this.knockbackResistance;
+    }
+
+    @Override
+    public Map<Attribute, AttributeModifier> getAdditionalAttributes() {
+        return this.additionalAttributes;
     }
 }

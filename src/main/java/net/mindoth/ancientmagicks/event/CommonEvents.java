@@ -10,7 +10,7 @@ import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMagic;
 import net.mindoth.ancientmagicks.network.PacketSyncSpellCombos;
-import net.mindoth.ancientmagicks.util.capabilities.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.nbt.CompoundTag;
@@ -61,7 +61,7 @@ public class CommonEvents {
                 else magic.setKnownSpells("");
                 AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMagic(tag), serverPlayer);
                 if ( data.getBoolean(TAG_NOT_FIRST_LOGIN) ) AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMana(magic.getCurrentMana()), serverPlayer);
-                else ManaEvents.changeMana(serverPlayer, serverPlayer.getAttributeValue(AncientMagicksAttributes.MAX_MANA.get()));
+                else ManaEvents.changeMana(serverPlayer, serverPlayer.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get()));
             });
         }
 

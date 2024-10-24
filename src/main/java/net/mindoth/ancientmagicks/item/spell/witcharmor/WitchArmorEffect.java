@@ -24,7 +24,7 @@ public class WitchArmorEffect extends MobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity living, int pAmplifier) {
-        if ( living.hasEffect(AncientMagicksEffects.WITCH_ARMOR.get()) && living.getArmorCoverPercentage() > 0 ) {
+        if ( living.hasEffect(AncientMagicksEffects.WITCH_ARMOR.get()) && WitchArmorItem.hasHeavyArmor(living) ) {
             living.removeEffect(AncientMagicksEffects.WITCH_ARMOR.get());
         }
     }

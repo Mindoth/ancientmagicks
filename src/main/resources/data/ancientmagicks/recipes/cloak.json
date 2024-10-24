@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "# #",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "ancientmagicks:cloak",
+    "count": 1
+  }
+}

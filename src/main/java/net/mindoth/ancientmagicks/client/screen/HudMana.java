@@ -1,7 +1,8 @@
 package net.mindoth.ancientmagicks.client.screen;
 
+import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.util.capabilities.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -21,7 +22,7 @@ public class HudMana implements IGuiOverlay {
         Player player = MINECRAFT.player;
         if ( player == null ) return;
         if ( !shouldDisplayMana(player) ) return;
-        double maxMana = player.getAttributeValue(AncientMagicksAttributes.MAX_MANA.get());
+        double maxMana = player.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get());
         double currentMana = ClientMagicData.getCurrentMana();
         String mana = (int)currentMana + "/" + (int)maxMana;
         int posX = (MINECRAFT.getWindow().getGuiScaledWidth() / 2) + 30;
@@ -33,7 +34,12 @@ public class HudMana implements IGuiOverlay {
         ItemStack main = MINECRAFT.player.getMainHandItem();
         ItemStack off = MINECRAFT.player.getOffhandItem();
         return !(MINECRAFT.screen instanceof GuiSpellWheel || player.isSpectator() || player.isCreative())
-                && (ClientMagicData.getCurrentMana() < player.getAttributeValue(AncientMagicksAttributes.MAX_MANA.get())
-                || CastingItem.isValidCastingItem(main) || CastingItem.isValidCastingItem(off));
+                && (ClientMagicData.getCurrentMana() < player.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get())
+                || CastingItem.isValidCastingItem(main) || CastingItem.isValidCastingItem(off) || isWearingMagicArmor(player));
+    }
+
+    private static boolean isWearingMagicArmor(Player player) {
+        for ( ItemStack slot : player.getArmorSlots() ) if ( slot.getItem() instanceof ColorableMagicArmorItem) return true;
+        return false;
     }
 }

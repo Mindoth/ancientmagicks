@@ -1,11 +1,11 @@
-package net.mindoth.ancientmagicks.util.capabilities;
+package net.mindoth.ancientmagicks.capabilities;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.event.ManaEvents;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMagic;
-import net.mindoth.ancientmagicks.util.capabilities.playermagic.PlayerMagic;
-import net.mindoth.ancientmagicks.util.capabilities.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagic;
+import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -41,7 +41,7 @@ public class AncientMagicksCapabilities {
                     tag.putString("am_spell", oldStore.getCurrentSpell());
                     tag.putString("am_known_spells", oldStore.getKnownSpells());
                     AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMagic(tag), serverPlayer);
-                    ManaEvents.changeMana(serverPlayer, serverPlayer.getAttributeValue(AncientMagicksAttributes.MAX_MANA.get()));
+                    ManaEvents.changeMana(serverPlayer, serverPlayer.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get()));
                 });
             });
             event.getOriginal().invalidateCaps();
