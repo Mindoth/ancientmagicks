@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " #G",
     " ##",
+    " S ",
     "#  "
   ],
   "key": {
     "#": {
       "tag": "forge:rods/wooden"
     },
-    "G": {
-      "item": "minecraft:glass"
+    "S": {
+      "tag": "forge:string"
     }
   },
   "result": {
