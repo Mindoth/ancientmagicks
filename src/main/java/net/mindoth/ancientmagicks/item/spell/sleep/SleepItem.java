@@ -11,8 +11,8 @@ import net.minecraft.world.level.Level;
 
 public class SleepItem extends AbstractSpellRayCast {
 
-    public SleepItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public SleepItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override
@@ -33,20 +33,5 @@ public class SleepItem extends AbstractSpellRayCast {
     @Override
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
         target.addEffect(new MobEffectInstance(AncientMagicksEffects.SLEEP.get(), getLife(), 0, false, false));
-    }
-
-    @Override
-    protected int getRed() {
-        return 170;
-    }
-
-    @Override
-    protected int getGreen() {
-        return 25;
-    }
-
-    @Override
-    protected int getBlue() {
-        return 170;
     }
 }

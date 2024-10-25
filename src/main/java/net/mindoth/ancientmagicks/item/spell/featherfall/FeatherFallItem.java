@@ -17,8 +17,8 @@ import java.util.List;
 
 public class FeatherFallItem extends AbstractSpellRayCast {
 
-    public FeatherFallItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public FeatherFallItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override

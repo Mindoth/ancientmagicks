@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractSpellRayCast extends SpellItem {
 
-    public AbstractSpellRayCast(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public AbstractSpellRayCast(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     protected boolean isHarmful() {
@@ -40,18 +40,6 @@ public abstract class AbstractSpellRayCast extends SpellItem {
         target.addEffect(new MobEffectInstance(MobEffects.GLOWING, getLife(), 0, false, isHarmful()));
     }
 
-    protected int getRed() {
-        return 255;
-    }
-
-    protected int getGreen() {
-        return 255;
-    }
-
-    protected int getBlue() {
-        return 255;
-    }
-
     protected boolean hasMask() {
         return true;
     }
@@ -68,7 +56,7 @@ public abstract class AbstractSpellRayCast extends SpellItem {
         LivingEntity target;
         if ( caster == owner ) target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, getRange(), 0.25F, caster == owner, true);
         else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, getSize(), null);
-        if ( !isHarmful() && caster == owner && !isAlly(owner, target) ) target = owner;
+        if ( caster == owner && !isHarmful() && !isAlly(owner, target) ) target = owner;
 
         if ( canApply(level, owner, caster, target) ) {
             applyEffect(level, owner, caster, target);

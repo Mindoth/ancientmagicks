@@ -11,8 +11,8 @@ import net.minecraft.world.level.Level;
 
 public class SummonDeathKnightItem extends AbstractSpellSummon {
 
-    public SummonDeathKnightItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public SummonDeathKnightItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override

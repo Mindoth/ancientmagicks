@@ -14,8 +14,8 @@ import net.minecraft.world.level.Level;
 
 public class WitchArmorItem extends AbstractSpellRayCast {
 
-    public WitchArmorItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public WitchArmorItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override
@@ -36,21 +36,6 @@ public class WitchArmorItem extends AbstractSpellRayCast {
     @Override
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
         target.addEffect(new MobEffectInstance(AncientMagicksEffects.WITCH_ARMOR.get(), getLife(), 0, false, false));
-    }
-
-    @Override
-    protected int getRed() {
-        return 170;
-    }
-
-    @Override
-    protected int getGreen() {
-        return 25;
-    }
-
-    @Override
-    protected int getBlue() {
-        return 170;
     }
 
     public static boolean hasHeavyArmor(LivingEntity living) {

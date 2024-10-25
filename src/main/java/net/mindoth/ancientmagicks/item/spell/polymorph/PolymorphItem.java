@@ -9,8 +9,8 @@ import net.minecraft.world.level.Level;
 
 public class PolymorphItem extends AbstractSpellRayCast {
 
-    public PolymorphItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public PolymorphItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override
@@ -27,20 +27,5 @@ public class PolymorphItem extends AbstractSpellRayCast {
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
         Sheep sheep = ((Mob)target).convertTo(EntityType.SHEEP, false);
         sheep.finalizeSpawn((ServerLevel)level, ((ServerLevel)level).getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
-    }
-
-    @Override
-    protected int getRed() {
-        return 170;
-    }
-
-    @Override
-    protected int getGreen() {
-        return 25;
-    }
-
-    @Override
-    protected int getBlue() {
-        return 170;
     }
 }

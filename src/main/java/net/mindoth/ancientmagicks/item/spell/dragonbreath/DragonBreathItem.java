@@ -19,8 +19,8 @@ import java.util.stream.Stream;
 
 public class DragonBreathItem extends SpellItem {
 
-    public DragonBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public DragonBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override

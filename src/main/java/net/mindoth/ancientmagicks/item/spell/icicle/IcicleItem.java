@@ -9,8 +9,8 @@ import net.minecraft.world.level.Level;
 
 public class IcicleItem extends AbstractSpellShoot {
 
-    public IcicleItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public IcicleItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override

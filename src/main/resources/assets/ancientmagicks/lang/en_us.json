@@ -121,6 +121,15 @@
   "effect.ancientmagicks.mana_shield": "Mana Shield",
 
 
+  "tooltip.ancientmagicks.ICE": "\u00A7bIce\u00A7r",
+  "tooltip.ancientmagicks.ARCANE": "\u00A75Arcane\u00A7r",
+  "tooltip.ancientmagicks.FIRE": "\u00A76Fire\u00A7r",
+  "tooltip.ancientmagicks.NATURE": "\u00A72Nature\u00A7r",
+  "tooltip.ancientmagicks.SHADOW": "\u00A78Shadow\u00A7r",
+  "tooltip.ancientmagicks.LIGHT": "\u00A7fLight\u00A7r",
+
+
+  "tooltip.ancientmagicks.spell_school": "\u00A77Spell School\u00A7r",
   "tooltip.ancientmagicks.tier": "\u00A77Spell Tier\u00A7r",
   "tooltip.ancientmagicks.mana_cost": "\u00A77Mana Cost\u00A7r",
   "tooltip.ancientmagicks.cooldown": "\u00A77Cooldown\u00A7r",

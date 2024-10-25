@@ -10,8 +10,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class BurnLanceItem extends AbstractSpellShoot {
 
-    public BurnLanceItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public BurnLanceItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override

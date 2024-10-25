@@ -10,8 +10,8 @@ import net.minecraft.world.level.Level;
 
 public class AcidArrowItem extends AbstractSpellShoot {
 
-    public AcidArrowItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public AcidArrowItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override

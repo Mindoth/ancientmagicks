@@ -11,21 +11,17 @@ import net.mindoth.ancientmagicks.network.PacketUpdateKnownSpells;
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -41,7 +37,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -49,15 +44,25 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class SpellItem extends Item {
+    public final SpellSchool spellSchool;
     public final int spellTier;
     public final int manaCost;
     public final int cooldown;
 
-    public SpellItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+    public enum SpellSchool {
+        ICE,
+        ARCANE,
+        FIRE,
+        NATURE,
+        SHADOW,
+        LIGHT
+    }
+
+    public SpellItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
         super(pProperties);
+        this.spellSchool = spellSchool;
         this.spellTier = spellTier;
         this.manaCost = manaCost;
         this.cooldown = cooldown * 20;
@@ -72,6 +77,9 @@ public class SpellItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         if ( stack.getItem() instanceof SpellItem spellItem ) {
             if ( !Screen.hasShiftDown() ) {
+                String spellSchool = "tooltip.ancientmagicks." + this.spellSchool.toString();
+                tooltip.add(Component.translatable("tooltip.ancientmagicks.spell_school").withStyle(ChatFormatting.GRAY).append(Component.literal(": "))
+                        .append(Component.translatable(spellSchool)));
                 int spellTier = spellItem.spellTier;
                 tooltip.add(Component.translatable("tooltip.ancientmagicks.tier").append(Component.literal(": " + spellTier)).withStyle(ChatFormatting.GRAY));
                 if ( spellItem.isChannel() ) {
@@ -108,6 +116,39 @@ public class SpellItem extends Item {
 
     public boolean isChannel() {
         return false;
+    }
+
+    protected int getRed() {
+        int r = 255;
+        if ( this.spellSchool.equals(SpellSchool.ICE) ) r = 85;
+        if ( this.spellSchool.equals(SpellSchool.ARCANE) ) r = 170;
+        if ( this.spellSchool.equals(SpellSchool.FIRE) ) r = 255;
+        if ( this.spellSchool.equals(SpellSchool.NATURE) ) r = 85;
+        if ( this.spellSchool.equals(SpellSchool.SHADOW) ) r = 0;
+        if ( this.spellSchool.equals(SpellSchool.LIGHT) ) r = 255;
+        return r;
+    }
+
+    protected int getGreen() {
+        int r = 255;
+        if ( this.spellSchool.equals(SpellSchool.ICE) ) r = 255;
+        if ( this.spellSchool.equals(SpellSchool.ARCANE) ) r = 25;
+        if ( this.spellSchool.equals(SpellSchool.FIRE) ) r = 170;
+        if ( this.spellSchool.equals(SpellSchool.NATURE) ) r = 255;
+        if ( this.spellSchool.equals(SpellSchool.SHADOW) ) r = 0;
+        if ( this.spellSchool.equals(SpellSchool.LIGHT) ) r = 255;
+        return r;
+    }
+
+    protected int getBlue() {
+        int r = 255;
+        if ( this.spellSchool.equals(SpellSchool.ICE) ) r = 255;
+        if ( this.spellSchool.equals(SpellSchool.ARCANE) ) r = 170;
+        if ( this.spellSchool.equals(SpellSchool.FIRE) ) r = 25;
+        if ( this.spellSchool.equals(SpellSchool.NATURE) ) r = 85;
+        if ( this.spellSchool.equals(SpellSchool.SHADOW) ) r = 0;
+        if ( this.spellSchool.equals(SpellSchool.LIGHT) ) r = 255;
+        return r;
     }
 
     @Override

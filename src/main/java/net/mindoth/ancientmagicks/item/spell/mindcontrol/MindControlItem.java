@@ -11,8 +11,8 @@ import net.minecraft.world.level.Level;
 
 public class MindControlItem extends AbstractSpellRayCast {
 
-    public MindControlItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public MindControlItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override
@@ -37,21 +37,6 @@ public class MindControlItem extends AbstractSpellRayCast {
         mob.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), getLife()));
         //if ( mob instanceof PathfinderMob pthMob ) mob.goalSelector.addGoal(0, new MeleeAttackGoal(pthMob, 1.0F, true));
         mob.setTarget(MindControlEffect.findMindControlTarget(mob, owner, mob.level()));
-    }
-
-    @Override
-    protected int getRed() {
-        return 0;
-    }
-
-    @Override
-    protected int getGreen() {
-        return 0;
-    }
-
-    @Override
-    protected int getBlue() {
-        return 0;
     }
 
     @Override

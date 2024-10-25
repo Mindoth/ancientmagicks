@@ -10,8 +10,8 @@ import net.minecraftforge.event.entity.EntityTeleportEvent;
 
 public class TeleportItem extends SpellItem {
 
-    public TeleportItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public TeleportItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override

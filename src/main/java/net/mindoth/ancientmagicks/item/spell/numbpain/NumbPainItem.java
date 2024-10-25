@@ -10,8 +10,8 @@ import net.minecraft.world.level.Level;
 
 public class NumbPainItem extends AbstractSpellRayCast {
 
-    public NumbPainItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public NumbPainItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override

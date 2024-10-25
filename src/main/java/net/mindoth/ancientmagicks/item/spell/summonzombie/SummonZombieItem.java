@@ -8,8 +8,8 @@ import net.minecraft.world.level.Level;
 
 public class SummonZombieItem extends AbstractSpellSummon {
 
-    public SummonZombieItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public SummonZombieItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override

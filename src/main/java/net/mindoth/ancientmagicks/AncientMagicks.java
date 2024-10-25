@@ -68,10 +68,25 @@ public class AncientMagicks {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if ( event.getTab() == AncientMagicksTab.ANCIENTMAGICKS_TAB.get() ) {
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
-                if ( item.get() instanceof SpellItem spell ) {
-                    if ( isSpellEnabled(spell) ) event.accept(item);
-                }
-                else event.accept(item);
+                if ( !(item.get() instanceof SpellItem) ) event.accept(item);
+            }
+            for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
+                if ( item.spellSchool == SpellItem.SpellSchool.ICE ) event.accept(item);
+            }
+            for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
+                if ( item.spellSchool == SpellItem.SpellSchool.ARCANE ) event.accept(item);
+            }
+            for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
+                if ( item.spellSchool == SpellItem.SpellSchool.FIRE ) event.accept(item);
+            }
+            for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
+                if ( item.spellSchool == SpellItem.SpellSchool.NATURE ) event.accept(item);
+            }
+            for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
+                if ( item.spellSchool == SpellItem.SpellSchool.SHADOW ) event.accept(item);
+            }
+            for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
+                if ( item.spellSchool == SpellItem.SpellSchool.LIGHT ) event.accept(item);
             }
         }
     }

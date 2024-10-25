@@ -10,27 +10,12 @@ import net.minecraft.world.level.Level;
 
 public class AlacrityItem extends AbstractSpellRayCast {
 
-    public AlacrityItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public AlacrityItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
         target.addEffect(new MobEffectInstance(AncientMagicksEffects.ALACRITY.get(), getLife(), 0, false, isHarmful()));
-    }
-
-    @Override
-    protected int getRed() {
-        return 170;
-    }
-
-    @Override
-    protected int getGreen() {
-        return 25;
-    }
-
-    @Override
-    protected int getBlue() {
-        return 170;
     }
 }

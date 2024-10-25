@@ -17,8 +17,8 @@ import java.util.List;
 
 public class ExtinguishItem extends SpellItem {
 
-    public ExtinguishItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public ExtinguishItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 
     @Override
