@@ -1,6 +1,7 @@
-package net.mindoth.ancientmagicks.item;
+package net.mindoth.ancientmagicks.item.spell.abstractspell;
 
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
@@ -116,6 +117,10 @@ public class SpellItem extends Item {
 
     public boolean isChannel() {
         return false;
+    }
+
+    protected boolean isHarmful() {
+        return true;
     }
 
     protected int getRed() {
@@ -319,6 +324,10 @@ public class SpellItem extends Item {
     @Override
     public UseAnim getUseAnimation(ItemStack pStack) {
         return UseAnim.BOW;
+    }
+
+    protected void playSound(Level level, Vec3 center) {
+        playMagicSound(level, center);
     }
 
     public static void playWhiffSound(Entity caster) {

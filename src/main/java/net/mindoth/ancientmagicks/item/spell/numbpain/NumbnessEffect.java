@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.numbpain;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageType;

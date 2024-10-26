@@ -7,7 +7,7 @@ import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
 import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltEntity;
 import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceEntity;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
-import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballEntity;
+import net.mindoth.ancientmagicks.item.spell.waterbolt.WaterBoltEntity;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.item.spell.thunderball.ThunderballEntity;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowEntity;
@@ -29,9 +29,9 @@ public class AncientMagicksEntities {
             = registerEntity(EntityType.Builder.<FireballEntity>of(FireballEntity::new,
             MobCategory.MISC).sized(0.8F, 0.8F).setCustomClientFactory(FireballEntity::new), "fireball");
 
-    public static final RegistryObject<EntityType<SlimeballEntity>> SLIMEBALL
-            = registerEntity(EntityType.Builder.<SlimeballEntity>of(SlimeballEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(SlimeballEntity::new), "slimeball");
+    public static final RegistryObject<EntityType<WaterBoltEntity>> WATER_BOLT
+            = registerEntity(EntityType.Builder.<WaterBoltEntity>of(WaterBoltEntity::new,
+            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(WaterBoltEntity::new), "water_bolt");
 
     public static final RegistryObject<EntityType<SpellPearlEntity>> SPELL_PEARL
             = registerEntity(EntityType.Builder.<SpellPearlEntity>of(SpellPearlEntity::new,

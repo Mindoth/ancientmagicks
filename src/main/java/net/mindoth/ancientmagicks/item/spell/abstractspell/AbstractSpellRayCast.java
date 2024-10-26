@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -14,10 +13,6 @@ public abstract class AbstractSpellRayCast extends SpellItem {
 
     public AbstractSpellRayCast(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
         super(pProperties, spellTier, manaCost, cooldown, spellSchool);
-    }
-
-    protected boolean isHarmful() {
-        return false;
     }
 
     protected int getLife() {
@@ -42,10 +37,6 @@ public abstract class AbstractSpellRayCast extends SpellItem {
 
     protected boolean hasMask() {
         return true;
-    }
-
-    protected void playSound(Level level, Vec3 center) {
-        playMagicSound(level, center);
     }
 
     @Override

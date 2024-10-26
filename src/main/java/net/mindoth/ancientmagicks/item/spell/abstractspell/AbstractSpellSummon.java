@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -32,6 +31,7 @@ public class AbstractSpellSummon extends SpellItem {
         return new Sheep(EntityType.SHEEP, level);
     }
 
+    @Override
     protected void playSound(Level level, Vec3 center) {
         playMagicSummonSound(level, center);
     }

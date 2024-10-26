@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.firebolt;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.minecraft.world.entity.Entity;
@@ -36,9 +36,9 @@ public class FireBoltEntity extends AbstractSpellEntity {
 
     @Override
     protected void doMobEffects(EntityHitResult result) {
-        if ( this.power > 0 && !SpellItem.isAlly(this.owner, (LivingEntity)result.getEntity()) ) {
+        if ( this.getPower() > 0 && !SpellItem.isAlly(this.owner, (LivingEntity)result.getEntity()) ) {
             LivingEntity target = (LivingEntity)result.getEntity();
-            SpellItem.attackEntity(this.owner, target, this, this.power, 1.0F);
+            SpellItem.attackEntity(this.owner, target, this, this.getPower(), 1.0F);
             target.setSecondsOnFire(8);
         }
     }

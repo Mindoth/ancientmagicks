@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.client.screen;
 
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

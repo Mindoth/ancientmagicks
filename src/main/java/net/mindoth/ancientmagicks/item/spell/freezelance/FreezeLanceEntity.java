@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.freezelance;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -17,7 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PlayMessages;
 
@@ -53,9 +52,9 @@ public class FreezeLanceEntity extends AbstractSpellEntity {
 
     @Override
     protected void doMobEffects(EntityHitResult result) {
-        if ( this.power > 0 && !SpellItem.isAlly(this.owner, (LivingEntity)result.getEntity()) ) {
+        if ( this.getPower() > 0 && !SpellItem.isAlly(this.owner, (LivingEntity)result.getEntity()) ) {
             LivingEntity target = (LivingEntity)result.getEntity();
-            SpellItem.attackEntity(this.owner, target, this, this.power, 4.0F);
+            SpellItem.attackEntity(this.owner, target, this, this.getPower(), 4.0F);
             if ( target.getTicksFrozen() < 1440 ) target.setTicksFrozen(1440);
             spawnParticles();
         }

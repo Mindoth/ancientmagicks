@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicsArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
@@ -35,7 +35,7 @@ import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlItem;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainItem;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphItem;
 import net.mindoth.ancientmagicks.item.spell.sleep.SleepItem;
-import net.mindoth.ancientmagicks.item.spell.slimeball.SlimeballItem;
+import net.mindoth.ancientmagicks.item.spell.waterbolt.WaterBoltItem;
 import net.mindoth.ancientmagicks.item.spell.spook.SpookItem;
 import net.mindoth.ancientmagicks.item.spell.summonbees.SummonBeesItem;
 import net.mindoth.ancientmagicks.item.spell.summondeathknight.SummonDeathKnightItem;
@@ -139,6 +139,9 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> FIRE_BOLT_ITEM = ITEMS.register("fire_bolt",
             () -> new FireBoltItem(new Item.Properties(), 1, 10, 1, SpellItem.SpellSchool.FIRE));
 
+    public static final RegistryObject<Item> WATER_BOLT_ITEM = ITEMS.register("water_bolt",
+            () -> new WaterBoltItem(new Item.Properties(), 1, 10, 1, SpellItem.SpellSchool.NATURE));
+
     public static final RegistryObject<Item> ENDLESS_BREATH_ITEM = ITEMS.register("endless_breath",
             () -> new EndlessBreathItem(new Item.Properties(), 2, 4, 2, SpellItem.SpellSchool.NATURE));
 
@@ -150,9 +153,6 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> DARKVISION_ITEM = ITEMS.register("darkvision",
             () -> new DarkvisionItem(new Item.Properties(), 2, 20, 10, SpellItem.SpellSchool.SHADOW));
-
-    public static final RegistryObject<Item> SLIMEBALL_ITEM = ITEMS.register("slimeball",
-            () -> new SlimeballItem(new Item.Properties(), 2, 20, 2, SpellItem.SpellSchool.NATURE));
 
     public static final RegistryObject<Item> INVISIBILITY_ITEM = ITEMS.register("invisibility",
             () -> new InvisibilityItem(new Item.Properties(), 2, 40, 10, SpellItem.SpellSchool.ARCANE));

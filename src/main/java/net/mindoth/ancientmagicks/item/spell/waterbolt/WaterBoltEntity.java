@@ -1,7 +1,7 @@
-package net.mindoth.ancientmagicks.item.spell.witcharrow;
+package net.mindoth.ancientmagicks.item.spell.waterbolt;
 
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -10,34 +10,38 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.network.PlayMessages;
 
-public class WitchArrowEntity extends AbstractSpellEntity {
+public class WaterBoltEntity extends AbstractSpellEntity {
 
-    public WitchArrowEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
-        this(AncientMagicksEntities.WITCH_ARROW.get(), level);
+    public WaterBoltEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
+        this(AncientMagicksEntities.WATER_BOLT.get(), level);
     }
 
-    public WitchArrowEntity(EntityType<WitchArrowEntity> entityType, Level level) {
+    public WaterBoltEntity(EntityType<WaterBoltEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public WitchArrowEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
-        super(AncientMagicksEntities.WITCH_ARROW.get(), level, owner, caster, rune);
-        this.setNoGravity(false);
+    public WaterBoltEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
+        super(AncientMagicksEntities.WATER_BOLT.get(), level, owner, caster, rune);
     }
 
     @Override
     public float getDefaultPower() {
-        return 6.0F;
+        return 4.0F;
     }
 
     @Override
     public float getDefaultSpeed() {
-        return 1.6F;
+        return 0.8F;
     }
 
     @Override
-    public boolean getDefaultHoming() {
-        return true;
+    public int getDefaultLife() {
+        return 100;
+    }
+
+    @Override
+    public int getDefaultEnemyPierce() {
+        return Integer.MAX_VALUE;
     }
 
     @Override

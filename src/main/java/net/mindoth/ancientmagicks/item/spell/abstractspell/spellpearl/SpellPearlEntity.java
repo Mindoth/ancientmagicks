@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
@@ -32,7 +32,7 @@ public class SpellPearlEntity extends AbstractSpellEntity {
     }
 
     @Override
-    protected float getGravity() {
+    public float getDefaultGravity() {
         return 0.03F;
     }
 
@@ -77,7 +77,7 @@ public class SpellPearlEntity extends AbstractSpellEntity {
         else if (face == Direction.DOWN) {
             motionY = -motionY;
         }
-        shoot(motionX, motionY, motionZ, this.speed * 0.5F, 0);
+        shoot(motionX, motionY, motionZ, this.getSpeed() * 0.5F, 0);
 
         CastingItem.doSpell(player, this, null, this.spell, 0);
     }

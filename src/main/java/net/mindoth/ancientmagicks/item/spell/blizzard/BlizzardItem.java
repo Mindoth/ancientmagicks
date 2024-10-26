@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.blizzard;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -50,8 +50,10 @@ public class BlizzardItem extends SpellItem {
 
     private void spawnIcicles(Player owner, Entity caster, Level level, Vec3 center, float yRot, int adjuster, int useTime) {
         AbstractSpellEntity projectile = new IcicleEntity(level, owner, caster, this);
-        projectile.speed *= 0.5F;
-        projectile.setColor(AbstractSpellEntity.getSpellColor("white"));
+        float speed = projectile.getSpeed();
+        speed *= 0.5F;
+        projectile.getEntityData().set(AbstractSpellEntity.SPEED, speed);
+        projectile.setAdditionalData(AbstractSpellEntity.getSpellColor("white"));
         if ( useTime % 20 == 0 ) projectile.setPos(center.x, getHeight(level, center), center.z);
         else {
             Vec3 setPos = new Vec3(center.x + getRandomPos().x, getHeight(level, center), center.z + getRandomPos().z);
@@ -62,7 +64,7 @@ public class BlizzardItem extends SpellItem {
             }*/
             projectile.setPos(setPos);
         }
-        projectile.anonShootFromRotation(90, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
+        projectile.anonShootFromRotation(90, yRot * adjuster, 0F, Math.max(0, projectile.getSpeed()), 0.0F);
         level.addFreshEntity(projectile);
     }
 

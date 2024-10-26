@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
-import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowEntity;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.world.entity.Entity;
@@ -23,10 +22,6 @@ public abstract class AbstractSpellShoot extends SpellItem {
         return AbstractSpellEntity.getSpellColor("dark_purple");
     }
 
-    protected void playSound(Level level, Vec3 center) {
-        playMagicSound(level, center);
-    }
-
     @Override
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
@@ -41,10 +36,12 @@ public abstract class AbstractSpellShoot extends SpellItem {
 
         if ( state ) {
             AbstractSpellEntity projectile = getProjectile(level, owner, caster);
-            projectile.setColor(getColor());
+            projectile.setAdditionalData(getColor());
             projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
-            projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.speed), 0.0F);
-            projectile.power *= (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
+            projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.getSpeed()), 0.0F);
+            float power = projectile.getPower();
+            power *= (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
+            projectile.getEntityData().set(AbstractSpellEntity.POWER, power);
             level.addFreshEntity(projectile);
 
             playSound(level, center);

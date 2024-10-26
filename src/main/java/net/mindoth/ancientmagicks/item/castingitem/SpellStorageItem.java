@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.ChatFormatting;
@@ -65,7 +65,7 @@ public class SpellStorageItem extends CastingItem {
                         Vec3 center = player.getEyePosition();
                         SpellPearlEntity spellPearl = new SpellPearlEntity(level, player, player, spell);
                         spellPearl.setPos(center.x, center.y - 0.2F, center.z);
-                        spellPearl.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, Math.max(0, spellPearl.speed), 1.0F);
+                        spellPearl.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, Math.max(0, spellPearl.getSpeed()), 1.0F);
                         level.addFreshEntity(spellPearl);
                         vessel.shrink(1);
                         player.getCooldowns().addCooldown(AncientMagicksItems.SPELL_PEARL.get(), 120);

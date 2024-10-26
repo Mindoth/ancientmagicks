@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.fireball;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -52,7 +52,7 @@ public class FireballEntity extends AbstractSpellEntity {
 
     private void causeDamage(LivingEntity target) {
         if ( !SpellItem.isAlly(this.owner, target) ) {
-            SpellItem.attackEntity(this.owner, target, this, this.power, 8.0F);
+            SpellItem.attackEntity(this.owner, target, this, this.getPower(), 8.0F);
             target.setSecondsOnFire(8);
         }
     }
@@ -60,15 +60,15 @@ public class FireballEntity extends AbstractSpellEntity {
     @Override
     protected void doMobEffects(EntityHitResult result) {
         LivingEntity target = (LivingEntity)result.getEntity();
-        if ( this.power > 0 ) {
-            if ( this.enemyPierce == 0 ) doSplashDamage(target);
+        if ( this.getPower() > 0 ) {
+            if ( this.entityData.get(ENEMY_PIERCE) <= 0 ) doSplashDamage(target);
             else causeDamage(target);
         }
     }
 
     @Override
     protected void doDeathEffects() {
-        if ( this.power > 0 ) {
+        if ( this.getPower() > 0 ) {
             doSplashDamage(null);
             doSplashEffects();
         }
@@ -82,7 +82,7 @@ public class FireballEntity extends AbstractSpellEntity {
             causeDamage(hitTarget);
             exceptions.add(hitTarget);
         }
-        ArrayList<LivingEntity> list = ShadowEvents.getEntitiesAround(this, this.level(), Math.max(0, this.size + 1), exceptions);
+        ArrayList<LivingEntity> list = ShadowEvents.getEntitiesAround(this, this.level(), Math.max(0, this.getSize() + 1), exceptions);
         for ( LivingEntity target : list ) {
             causeDamage(target);
         }
@@ -94,8 +94,8 @@ public class FireballEntity extends AbstractSpellEntity {
         world.sendParticles(ParticleTypes.EXPLOSION, pos.x, this.getY(), pos.z,
                 0, 0, 0, 0, 0);
         for ( int i = 0; i < 360; i++ ) {
-            if ( i % (int)(6 / Math.max(1, this.size)) == 0 ) {
-                float size = this.size + 1;
+            if ( i % (int)(6 / Math.max(1, this.getSize())) == 0 ) {
+                float size = this.getSize() + 1;
                 float randX = (float)((Math.random() * (size - (-size))) + (-size));
                 float randY = (float)((Math.random() * (size - (-size))) + (-size));
                 float randZ = (float)((Math.random() * (size - (-size))) + (-size));
