@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.featherfall;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;

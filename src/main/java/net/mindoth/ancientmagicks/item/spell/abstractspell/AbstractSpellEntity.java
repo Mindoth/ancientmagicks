@@ -319,24 +319,24 @@ public abstract class AbstractSpellEntity extends Projectile {
         return this.entityData.get(SIZE);
     }
 
-    public static ParticleColor.IntWrapper getSpellColor(String element) {
+    public static ParticleColor.IntWrapper getSpellColor(ColorCode color) {
         ParticleColor.IntWrapper returnColor = null;
-        if ( element.equals("dark_red") ) returnColor = new ParticleColor.IntWrapper(170, 25, 25);
-        if ( element.equals("red") ) returnColor = new ParticleColor.IntWrapper(255, 85, 85);
-        if ( element.equals("gold") ) returnColor = new ParticleColor.IntWrapper(255, 170, 25);
-        if ( element.equals("yellow") ) returnColor = new ParticleColor.IntWrapper(255, 255, 85);
-        if ( element.equals("dark_green") ) returnColor = new ParticleColor.IntWrapper(25, 170, 25);
-        if ( element.equals("green") ) returnColor = new ParticleColor.IntWrapper(85, 225, 85);
-        if ( element.equals("aqua") ) returnColor = new ParticleColor.IntWrapper(85, 255, 255);
-        if ( element.equals("dark_aqua") ) returnColor = new ParticleColor.IntWrapper(25, 170, 170);
-        if ( element.equals("dark_blue") ) returnColor = new ParticleColor.IntWrapper(25, 25, 170);
-        if ( element.equals("blue") ) returnColor = new ParticleColor.IntWrapper(85, 85, 255);
-        if ( element.equals("light_purple") ) returnColor = new ParticleColor.IntWrapper(255, 85, 255);
-        if ( element.equals("dark_purple") ) returnColor = new ParticleColor.IntWrapper(170, 25, 170);
-        if ( element.equals("white") ) returnColor = new ParticleColor.IntWrapper(255, 255, 255);
-        if ( element.equals("gray") ) returnColor = new ParticleColor.IntWrapper(170, 170, 170);
-        if ( element.equals("dark_gray") ) returnColor = new ParticleColor.IntWrapper(85, 85, 85);
-        if ( element.equals("black") ) returnColor = new ParticleColor.IntWrapper(25, 25, 25);
+        if ( color.equals(ColorCode.DARK_RED) ) returnColor = new ParticleColor.IntWrapper(170, 25, 25);
+        if ( color.equals(ColorCode.RED) ) returnColor = new ParticleColor.IntWrapper(255, 85, 85);
+        if ( color.equals(ColorCode.GOLD) ) returnColor = new ParticleColor.IntWrapper(255, 170, 25);
+        if ( color.equals(ColorCode.YELLOW) ) returnColor = new ParticleColor.IntWrapper(255, 255, 85);
+        if ( color.equals(ColorCode.DARK_GREEN) ) returnColor = new ParticleColor.IntWrapper(25, 170, 25);
+        if ( color.equals(ColorCode.GREEN) ) returnColor = new ParticleColor.IntWrapper(85, 225, 85);
+        if ( color.equals(ColorCode.AQUA) ) returnColor = new ParticleColor.IntWrapper(85, 255, 255);
+        if ( color.equals(ColorCode.DARK_AQUA) ) returnColor = new ParticleColor.IntWrapper(25, 170, 170);
+        if ( color.equals(ColorCode.DARK_BLUE) ) returnColor = new ParticleColor.IntWrapper(25, 25, 170);
+        if ( color.equals(ColorCode.BLUE) ) returnColor = new ParticleColor.IntWrapper(85, 85, 255);
+        if ( color.equals(ColorCode.LIGHT_PURPLE) ) returnColor = new ParticleColor.IntWrapper(255, 85, 255);
+        if ( color.equals(ColorCode.DARK_PURPLE) ) returnColor = new ParticleColor.IntWrapper(170, 25, 170);
+        if ( color.equals(ColorCode.WHITE) ) returnColor = new ParticleColor.IntWrapper(255, 255, 255);
+        if ( color.equals(ColorCode.GRAY) ) returnColor = new ParticleColor.IntWrapper(170, 170, 170);
+        if ( color.equals(ColorCode.DARK_GRAY) ) returnColor = new ParticleColor.IntWrapper(85, 85, 85);
+        if ( color.equals(ColorCode.BLACK) ) returnColor = new ParticleColor.IntWrapper(25, 25, 25);
         return returnColor;
     }
 

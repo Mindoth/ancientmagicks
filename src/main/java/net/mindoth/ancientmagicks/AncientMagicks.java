@@ -5,6 +5,7 @@ import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
@@ -71,24 +72,12 @@ public class AncientMagicks {
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
                 if ( !(item.get() instanceof SpellItem) ) event.accept(item);
             }
-            for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
-                if ( item.spellSchool == SpellItem.SpellSchool.FROST) event.accept(item);
-            }
-            for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
-                if ( item.spellSchool == SpellItem.SpellSchool.ARCANE ) event.accept(item);
-            }
-            for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
-                if ( item.spellSchool == SpellItem.SpellSchool.FIRE ) event.accept(item);
-            }
-            for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
-                if ( item.spellSchool == SpellItem.SpellSchool.NATURE ) event.accept(item);
-            }
-            for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
-                if ( item.spellSchool == SpellItem.SpellSchool.SHADOW ) event.accept(item);
-            }
-            for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
-                if ( item.spellSchool == SpellItem.SpellSchool.LIGHT ) event.accept(item);
-            }
+            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.FROST ) event.accept(item);
+            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.ARCANE ) event.accept(item);
+            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.FIRE ) event.accept(item);
+            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.NATURE ) event.accept(item);
+            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.SHADOW ) event.accept(item);
+            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.LIGHT ) event.accept(item);
         }
     }
 

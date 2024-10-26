@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.polymorph;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Sheep;

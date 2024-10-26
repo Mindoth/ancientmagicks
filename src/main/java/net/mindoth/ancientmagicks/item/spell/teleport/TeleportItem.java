@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.teleport;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;

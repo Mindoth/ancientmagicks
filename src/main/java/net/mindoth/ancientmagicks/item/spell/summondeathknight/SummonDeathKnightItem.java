@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.summondeathknight;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellSummon;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;

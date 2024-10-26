@@ -19,7 +19,7 @@ public abstract class AbstractSpellShoot extends SpellItem {
     }
 
     protected ParticleColor.IntWrapper getColor() {
-        return AbstractSpellEntity.getSpellColor("dark_purple");
+        return AbstractSpellEntity.getSpellColor(ColorCode.DARK_PURPLE);
     }
 
     @Override

@@ -3,6 +3,8 @@ package net.mindoth.ancientmagicks.item.spell.acidarrow;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellShoot;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -21,6 +23,6 @@ public class AcidArrowItem extends AbstractSpellShoot {
 
     @Override
     protected ParticleColor.IntWrapper getColor() {
-        return AbstractSpellEntity.getSpellColor("dark_green");
+        return AbstractSpellEntity.getSpellColor(ColorCode.DARK_GREEN);
     }
 }

@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item.spell.frostarmor;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractArmorEffect;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;

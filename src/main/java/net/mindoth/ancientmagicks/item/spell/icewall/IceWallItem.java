@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.icewall;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

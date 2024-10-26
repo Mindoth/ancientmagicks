@@ -1,5 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell;
 
+import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
@@ -9,8 +11,6 @@ import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketItemActivationAnimation;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.ancientmagicks.network.PacketUpdateKnownSpells;
-import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
-import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -23,7 +23,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.item.PrimedTnt;
@@ -51,15 +54,6 @@ public class SpellItem extends Item {
     public final int spellTier;
     public final int manaCost;
     public final int cooldown;
-
-    public enum SpellSchool {
-        FROST,
-        ARCANE,
-        FIRE,
-        NATURE,
-        SHADOW,
-        LIGHT
-    }
 
     public SpellItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
         super(pProperties);

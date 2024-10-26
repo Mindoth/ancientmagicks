@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.summonbees;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellSummon;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.FloatGoal;

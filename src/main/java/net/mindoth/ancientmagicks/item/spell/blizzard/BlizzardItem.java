@@ -1,7 +1,9 @@
 package net.mindoth.ancientmagicks.item.spell.blizzard;
 
+import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -53,7 +55,7 @@ public class BlizzardItem extends SpellItem {
         float speed = projectile.getSpeed();
         speed *= 0.5F;
         projectile.getEntityData().set(AbstractSpellEntity.SPEED, speed);
-        projectile.setAdditionalData(AbstractSpellEntity.getSpellColor("white"));
+        projectile.setAdditionalData(AbstractSpellEntity.getSpellColor(ColorCode.WHITE));
         if ( useTime % 20 == 0 ) projectile.setPos(center.x, getHeight(level, center), center.z);
         else {
             Vec3 setPos = new Vec3(center.x + getRandomPos().x, getHeight(level, center), center.z + getRandomPos().z);

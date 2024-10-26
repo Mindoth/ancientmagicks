@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item.spell.witcharrow;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellShoot;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
