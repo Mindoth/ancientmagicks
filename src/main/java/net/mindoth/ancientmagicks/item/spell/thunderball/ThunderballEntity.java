@@ -54,7 +54,7 @@ public class ThunderballEntity extends AbstractSpellEntity {
     }
 
     private void causeDamage(LivingEntity target) {
-        if ( !isAlly(target) ) {
+        if ( !SpellItem.isAlly(this.owner, target) ) {
             SpellItem.attackEntity(this.owner, target, this, this.power, 8.0F);
         }
     }

@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -52,22 +53,20 @@ public class FreezeLanceEntity extends AbstractSpellEntity {
 
     @Override
     protected void doMobEffects(EntityHitResult result) {
-        if ( this.power > 0 && !isAlly((LivingEntity)result.getEntity()) ) {
+        if ( this.power > 0 && !SpellItem.isAlly(this.owner, (LivingEntity)result.getEntity()) ) {
             LivingEntity target = (LivingEntity)result.getEntity();
             SpellItem.attackEntity(this.owner, target, this, this.power, 4.0F);
             if ( target.getTicksFrozen() < 1440 ) target.setTicksFrozen(1440);
+            spawnParticles();
         }
     }
 
     @Override
-    protected void playHitSound() {
-        Vec3 center = ShadowEvents.getEntityCenter(this);
-        this.level().playSound(null, center.x, center.y, center.z,
-                SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+    protected void doBlockEffects(BlockHitResult result) {
+        spawnParticles();
     }
 
-    @Override
-    protected void doExtraServerEffects(HitResult result) {
+    protected void spawnParticles() {
         if ( this.level().isClientSide ) return;
         ServerLevel world = (ServerLevel)this.level();
         Vec3 center = ShadowEvents.getEntityCenter(this);
@@ -78,6 +77,13 @@ public class FreezeLanceEntity extends AbstractSpellEntity {
             float randZ = (float)((Math.random() * (size - (-size))) + (-size));
             world.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.PACKED_ICE.defaultBlockState()), center.x, center.y, center.z, 0, randX, randY, randZ, 0.1F);
         }
+    }
+
+    @Override
+    protected void playHitSound() {
+        Vec3 center = ShadowEvents.getEntityCenter(this);
+        this.level().playSound(null, center.x, center.y, center.z,
+                SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
     }
 
     @Override

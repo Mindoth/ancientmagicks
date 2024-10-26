@@ -3,13 +3,9 @@ package net.mindoth.ancientmagicks.item.spell.abstractspell;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
-import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -19,14 +15,17 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.EnderDragonPart;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.TheEndGatewayBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -34,13 +33,21 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
+import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 public abstract class AbstractSpellEntity extends Projectile {
 
     public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level level) {
         super(entityType, level);
+    }
+
+    protected boolean isIgnoredEntity(Entity entity) {
+        boolean state = false;
+        if ( entity instanceof EnderDragon || entity instanceof EnderDragonPart || entity instanceof ArmorStand ) {
+            state = true;
+        }
+        return state;
     }
 
     protected boolean isHarmful() {
@@ -124,34 +131,23 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.shoot((double)f, (double)f1, (double)f2, pVelocity, pInaccuracy);
     }
 
-    protected boolean isAlly(LivingEntity target) {
-        if ( this.owner == null || target == null ) return false;
-        if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) return true;
-        else return target == this.owner || !this.owner.canAttack(target) || this.owner.isAlliedTo(target)
-                || (target instanceof TamableAnimal pet && pet.isOwnedBy(this.owner)) || (target instanceof Mob mob && isMinionsOwner(mob));
-    }
-
-    protected boolean isMinionsOwner(Mob mob) {
-        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY)
-                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY).equals(this.owner.getUUID()) && mob.getTarget() != this.owner;
-    }
-
     @Override
     protected void onHit(HitResult result) {
-        if ( this.level().isClientSide ) {
-            doClientHitEffects();
-        }
-        if ( !this.level().isClientSide ) {
-            doExtraServerEffects(result);
-            if ( result.getType() == HitResult.Type.ENTITY && ((EntityHitResult)result).getEntity() instanceof LivingEntity ) {
-                doMobEffects((EntityHitResult)result);
-                if ( this.enemyPierce > 0 ) this.enemyPierce--;
-                else doDeathEffects();
+        if ( this.level().isClientSide ) doClientHitEffects();
+        else {
+            if ( result.getType() == HitResult.Type.ENTITY ) {
+                EntityHitResult entityHitResult = (EntityHitResult)result;
+                if ( isIgnoredEntity(entityHitResult.getEntity()) ) doDeathEffects();
+                if ( entityHitResult.getEntity() instanceof LivingEntity ) {
+                    doMobEffects((EntityHitResult)result);
+                    if ( this.enemyPierce > 0 ) this.enemyPierce--;
+                    else doDeathEffects();
+                }
             }
             if ( result.getType() == HitResult.Type.BLOCK ) {
-                doBlockEffects((BlockHitResult)result);
-                BlockHitResult traceResult = (BlockHitResult)result;
-                BlockState blockState = this.level().getBlockState(traceResult.getBlockPos());
+                BlockHitResult blockHitResult = (BlockHitResult)result;
+                doBlockEffects(blockHitResult);
+                BlockState blockState = this.level().getBlockState(blockHitResult.getBlockPos());
                 this.level().playSound(null, this.getX(), this.getY(), this.getZ(), blockState.getSoundType().getBreakSound(), SoundSource.PLAYERS, 0.3F, 2);
 
                 if ( this.blockPierce > 0 ) {
@@ -159,8 +155,8 @@ public abstract class AbstractSpellEntity extends Projectile {
                 }
                 else if ( this.bounce > 0 ) {
                     this.bounce--;
-                    Direction face = traceResult.getDirection();
-                    blockState.onProjectileHit(this.level(), blockState, traceResult, this);
+                    Direction face = blockHitResult.getDirection();
+                    blockState.onProjectileHit(this.level(), blockState, blockHitResult, this);
                     Vec3 motion = this.getDeltaMovement();
                     double motionX = motion.x();
                     double motionY = motion.y();
@@ -183,9 +179,7 @@ public abstract class AbstractSpellEntity extends Projectile {
                     else if (face == Direction.DOWN) {
                         motionY = -motionY;
                     }
-                    //this.setDeltaMovement(motionX, motionY, motionZ);
-
-                    //This seems to work better with low velocity projectiles
+                    //This seems to work better with low velocity projectiles than "this.setDeltaMovement(motionX, motionY, motionZ)";
                     shoot(motionX, motionY, motionZ, this.speed * 0.5F, 0);
                 }
                 else doDeathEffects();
@@ -203,15 +197,58 @@ public abstract class AbstractSpellEntity extends Projectile {
             if ( this.tickCount > this.life ) doExpirationEffects();
             if ( this.homing ) doHoming();
         }
-        handleHitDetection();
+        if ( !handleHitDetection() ) return;
         handleTravel();
     }
 
-    public void handleHitDetection() {
-        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+    public boolean handleHitDetection() {
+        Vec3 vec3 = this.getDeltaMovement();
+        Vec3 vec32 = this.position();
+        Vec3 vec33 = vec32.add(vec3);
+        HitResult result = this.level().clip(new ClipContext(vec32, vec33, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        if ( result.getType() != HitResult.Type.MISS ) vec33 = result.getLocation();
+        while ( !this.isRemoved() ) {
+            EntityHitResult entityhitresult = this.findHitEntity(vec32, vec33);
+            if ( entityhitresult != null ) result = entityhitresult;
+            if ( result != null && result.getType() == HitResult.Type.ENTITY ) {
+                Entity entity = ((EntityHitResult)result).getEntity();
+                Entity entity1 = this.getOwner();
+                if ( entity instanceof Player && entity1 instanceof Player && !((Player)entity1).canHarmPlayer((Player)entity) ) {
+                    result = null;
+                    entityhitresult = null;
+                }
+            }
+
+            if ( result != null && result.getType() != HitResult.Type.MISS ) {
+                switch ( net.minecraftforge.event.ForgeEventFactory.onProjectileImpactResult(this, result) ) {
+                    case SKIP_ENTITY:
+                        if ( result.getType() != HitResult.Type.ENTITY ) {
+                            this.onHit(result);
+                            this.hasImpulse = true;
+                            break;
+                        }
+                        entityhitresult = null;
+                        break;
+                    case STOP_AT_CURRENT_NO_DAMAGE:
+                        this.discard();
+                        entityhitresult = null;
+                        break;
+                    case STOP_AT_CURRENT:
+                        this.enemyPierce = 0;
+                    case DEFAULT:
+                        this.onHit(result);
+                        this.hasImpulse = true;
+                        break;
+                }
+            }
+            if ( entityhitresult == null || this.enemyPierce <= 0 ) break;
+            result = null;
+        }
+        return !this.isRemoved();
+        /*HitResult result = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         boolean flag = false;
-        if ( hitresult.getType() == HitResult.Type.BLOCK ) {
-            BlockPos blockpos = ((BlockHitResult)hitresult).getBlockPos();
+        if ( result.getType() == HitResult.Type.BLOCK ) {
+            BlockPos blockpos = ((BlockHitResult)result).getBlockPos();
             BlockState blockstate = this.level().getBlockState(blockpos);
             if ( blockstate.is(Blocks.NETHER_PORTAL) ) {
                 this.handleInsidePortal(blockpos);
@@ -226,10 +263,14 @@ public abstract class AbstractSpellEntity extends Projectile {
                 flag = true;
             }
         }
+        if ( result.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, result) ) {
+            this.onHit(result);
+        }*/
+    }
 
-        if ( hitresult.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult) ) {
-            this.onHit(hitresult);
-        }
+    @Nullable
+    protected EntityHitResult findHitEntity(Vec3 pStartVec, Vec3 pEndVec) {
+        return ProjectileUtil.getEntityHitResult(this.level(), this, pStartVec, pEndVec, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), this::canHitEntity);
     }
 
     public void handleTravel() {
@@ -243,11 +284,11 @@ public abstract class AbstractSpellEntity extends Projectile {
 
     private void doHoming() {
         int range = 3;
-        List<LivingEntity> entitiesAround = ShadowEvents.getEntitiesAround(this, this.level(), range, null);
         //Need to do this haxxy way to still exclude targeting allies
+        List<LivingEntity> entitiesAround = ShadowEvents.getEntitiesAround(this, this.level(), range, null);
         List<LivingEntity> excludeList = Lists.newArrayList();
         for ( LivingEntity exception : entitiesAround ) {
-            if ( (this.isHarmful && isAlly(exception)) || (!this.isHarmful && !isAlly(exception)) || exception.isDeadOrDying() || !exception.isAttackable() ) {
+            if ( (this.isHarmful && SpellItem.isAlly(this.owner, exception)) || (!this.isHarmful && !SpellItem.isAlly(this.owner, exception)) || exception.isDeadOrDying() || !exception.isAttackable() ) {
                 excludeList.add(exception);
             }
         }
@@ -317,21 +358,18 @@ public abstract class AbstractSpellEntity extends Projectile {
     protected void doBlockEffects(BlockHitResult result) {
     }
 
-    protected void doExtraServerEffects(HitResult result) {
-    }
-
     protected void playHitSound() {
     }
 
     protected void doTickEffects() {
     }
 
-    protected void doDeathEffects() {
-        this.discard();
-    }
-
     protected void doExpirationEffects() {
         doDeathEffects();
+    }
+
+    protected void doDeathEffects() {
+        this.discard();
     }
 
     public static ParticleColor.IntWrapper getSpellColor(String element) {

@@ -53,7 +53,7 @@ public class SlimeballEntity extends AbstractSpellEntity {
 
     @Override
     protected void doMobEffects(EntityHitResult result) {
-        if ( this.power > 0 && !isAlly((LivingEntity)result.getEntity()) ) {
+        if ( this.power > 0 && !SpellItem.isAlly(this.owner, (LivingEntity)result.getEntity()) ) {
             LivingEntity target = (LivingEntity)result.getEntity();
             SpellItem.attackEntity(this.owner, target, this, this.power, 2.0F);
         }
