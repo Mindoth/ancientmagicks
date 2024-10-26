@@ -39,8 +39,8 @@
   "tooltip.ancientmagicks.teleport": "Teleport a short distance towards anywhere you can see",
   "item.ancientmagicks.wind_burst": "Wind Burst",
   "tooltip.ancientmagicks.wind_burst": "Causes a sudden burst of wind to blow past you and towards where you're looking at lifting ANYONE caught in it into the air",
-  "item.ancientmagicks.witch_armor": "Witch Armor",
-  "tooltip.ancientmagicks.witch_armor": "Grant yourself or an unarmored target ally some protection. Protection ends if any armor is worn",
+  "item.ancientmagicks.frost_armor": "Frost Armor",
+  "tooltip.ancientmagicks.frost_armor": "Grant yourself or an unarmored target ally some protection",
   "item.ancientmagicks.call_thunder": "Call Thunder",
   "tooltip.ancientmagicks.call_thunder": "Direct a powerful lightning strike towards where you're looking. The lightning will always hit a surface",
   "item.ancientmagicks.polymorph": "Polymorph",
@@ -105,11 +105,11 @@
   "tooltip.ancientmagicks.summon_bees": "Summons bees to fight for you",
   "item.ancientmagicks.acid_arrow": "Acid Arrow",
   "tooltip.ancientmagicks.acid_arrow": "Launches a caustic magical damaging arrow",
-  "item.ancientmagicks.mana_shield": "Mana Shield",
-  "tooltip.ancientmagicks.mana_shield": "Shield yourself from damage by draining mana",
+  "item.ancientmagicks.witch_armor": "Witch Armor",
+  "tooltip.ancientmagicks.witch_armor": "Shield yourself from damage by draining mana",
 
 
-  "effect.ancientmagicks.witch_armor": "Witch Armor",
+  "effect.ancientmagicks.frost_armor": "Frost Armor",
   "effect.ancientmagicks.flight": "Flight",
   "effect.ancientmagicks.numbness": "Numbness",
   "effect.ancientmagicks.alacrity": "Alacrity",
@@ -118,10 +118,10 @@
   "effect.ancientmagicks.sleep": "Sleep",
   "effect.ancientmagicks.teleblock": "Teleblock",
   "effect.ancientmagicks.greater_invisibility": "Greater Invisibility",
-  "effect.ancientmagicks.mana_shield": "Mana Shield",
+  "effect.ancientmagicks.witch_armor": "Witch Armor",
 
 
-  "tooltip.ancientmagicks.ICE": "\u00A7bIce\u00A7r",
+  "tooltip.ancientmagicks.FROST": "\u00A7bFrost\u00A7r",
   "tooltip.ancientmagicks.ARCANE": "\u00A75Arcane\u00A7r",
   "tooltip.ancientmagicks.FIRE": "\u00A76Fire\u00A7r",
   "tooltip.ancientmagicks.NATURE": "\u00A72Nature\u00A7r",

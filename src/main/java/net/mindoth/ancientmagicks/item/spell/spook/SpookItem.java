@@ -15,6 +15,11 @@ public class SpookItem extends AbstractSpellRayCast {
     }
 
     @Override
+    protected boolean isHarmful() {
+        return false;
+    }
+
+    @Override
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
         target.addEffect(new MobEffectInstance(AncientMagicksEffects.SPOOK.get(), getLife(), 0, false, isHarmful()));
     }

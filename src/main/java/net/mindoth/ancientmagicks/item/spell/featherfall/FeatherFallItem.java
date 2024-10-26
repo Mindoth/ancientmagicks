@@ -18,6 +18,11 @@ public class FeatherFallItem extends AbstractSpellRayCast {
     }
 
     @Override
+    protected boolean isHarmful() {
+        return false;
+    }
+
+    @Override
     protected int getLife() {
         return 600;
     }

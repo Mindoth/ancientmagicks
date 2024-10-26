@@ -15,6 +15,11 @@ public class DarkvisionItem extends AbstractSpellRayCast {
     }
 
     @Override
+    protected boolean isHarmful() {
+        return false;
+    }
+
+    @Override
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
         target.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, getLife(), 0, false, isHarmful()));
     }

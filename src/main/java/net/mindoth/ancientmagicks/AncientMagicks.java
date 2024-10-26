@@ -72,7 +72,7 @@ public class AncientMagicks {
                 if ( !(item.get() instanceof SpellItem) ) event.accept(item);
             }
             for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
-                if ( item.spellSchool == SpellItem.SpellSchool.ICE ) event.accept(item);
+                if ( item.spellSchool == SpellItem.SpellSchool.FROST) event.accept(item);
             }
             for ( SpellItem item : AncientMagicks.SPELL_LIST ) {
                 if ( item.spellSchool == SpellItem.SpellSchool.ARCANE ) event.accept(item);

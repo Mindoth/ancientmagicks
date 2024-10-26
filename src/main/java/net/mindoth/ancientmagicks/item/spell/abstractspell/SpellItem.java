@@ -53,7 +53,7 @@ public class SpellItem extends Item {
     public final int cooldown;
 
     public enum SpellSchool {
-        ICE,
+        FROST,
         ARCANE,
         FIRE,
         NATURE,
@@ -125,7 +125,7 @@ public class SpellItem extends Item {
 
     protected int getRed() {
         int r = 255;
-        if ( this.spellSchool.equals(SpellSchool.ICE) ) r = 85;
+        if ( this.spellSchool.equals(SpellSchool.FROST) ) r = 85;
         if ( this.spellSchool.equals(SpellSchool.ARCANE) ) r = 170;
         if ( this.spellSchool.equals(SpellSchool.FIRE) ) r = 255;
         if ( this.spellSchool.equals(SpellSchool.NATURE) ) r = 85;
@@ -136,7 +136,7 @@ public class SpellItem extends Item {
 
     protected int getGreen() {
         int r = 255;
-        if ( this.spellSchool.equals(SpellSchool.ICE) ) r = 255;
+        if ( this.spellSchool.equals(SpellSchool.FROST) ) r = 255;
         if ( this.spellSchool.equals(SpellSchool.ARCANE) ) r = 25;
         if ( this.spellSchool.equals(SpellSchool.FIRE) ) r = 170;
         if ( this.spellSchool.equals(SpellSchool.NATURE) ) r = 255;
@@ -147,7 +147,7 @@ public class SpellItem extends Item {
 
     protected int getBlue() {
         int r = 255;
-        if ( this.spellSchool.equals(SpellSchool.ICE) ) r = 255;
+        if ( this.spellSchool.equals(SpellSchool.FROST) ) r = 255;
         if ( this.spellSchool.equals(SpellSchool.ARCANE) ) r = 170;
         if ( this.spellSchool.equals(SpellSchool.FIRE) ) r = 25;
         if ( this.spellSchool.equals(SpellSchool.NATURE) ) r = 85;
@@ -170,13 +170,16 @@ public class SpellItem extends Item {
         double minX = target.getBoundingBox().minX - var;
         double maxZ = target.getBoundingBox().maxZ + var;
         double minZ = target.getBoundingBox().minZ - var;
+        double vecX = target.getDeltaMovement().x;
+        double vecY = 0.25D;
+        double vecZ = target.getDeltaMovement().z;
         for ( int i = 0; i < 4; i++ ) {
             double randX = maxX;
             double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
             AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, mask,
-                    pos.x, pos.y, pos.z, target.getDeltaMovement().x, 0.25D, target.getDeltaMovement().z), target, true);
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
             double randX = minX;
@@ -184,7 +187,7 @@ public class SpellItem extends Item {
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
             AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, mask,
-                    pos.x, pos.y, pos.z, target.getDeltaMovement().x, 0.25D, target.getDeltaMovement().z), target, true);
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
             double randX = minX + (maxX - minX) * new Random().nextDouble();
@@ -192,7 +195,7 @@ public class SpellItem extends Item {
             double randZ = minZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
             AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, mask,
-                    pos.x, pos.y, pos.z, target.getDeltaMovement().x, 0.25D, target.getDeltaMovement().z), target, true);
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
             double randX = minX + (maxX - minX) * new Random().nextDouble();
@@ -200,7 +203,7 @@ public class SpellItem extends Item {
             double randZ = maxZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
             AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, mask,
-                    pos.x, pos.y, pos.z, target.getDeltaMovement().x, 0.25D, target.getDeltaMovement().z), target, true);
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
     }
 

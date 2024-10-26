@@ -1,15 +1,14 @@
 package net.mindoth.ancientmagicks.item.spell.witcharmor;
 
-import net.mindoth.ancientmagicks.item.armor.AncientMagicsArmorMaterials;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractArmorEffect;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
+import net.mindoth.ancientmagicks.item.spell.frostarmor.FrostArmorEffect;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterials;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class WitchArmorItem extends AbstractSpellRayCast {
@@ -19,31 +18,26 @@ public class WitchArmorItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected int getLife() {
-        return 72000;
+    protected boolean isHarmful() {
+        return false;
     }
 
     @Override
-    protected float getRange() {
-        return 7.0F;
+    protected int getLife() {
+        return 36000;
     }
 
     @Override
     protected boolean canApply(Level level, Player owner, Entity caster, LivingEntity target) {
-        return isAlly(owner, target) && !hasHeavyArmor(target);
+        return caster == owner;
     }
 
     @Override
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
-        target.addEffect(new MobEffectInstance(AncientMagicksEffects.WITCH_ARMOR.get(), getLife(), 0, false, false));
-    }
-
-    public static boolean hasHeavyArmor(LivingEntity living) {
-        for ( ItemStack slot : living.getArmorSlots() ) {
-            if ( slot.getItem() instanceof ArmorItem armor
-                    && armor.getMaterial() != ArmorMaterials.LEATHER
-                    && armor.getMaterial() != AncientMagicsArmorMaterials.CLOTH ) return true;
+        for ( MobEffectInstance effect : owner.getActiveEffects() ) {
+            MobEffect mobEffect = effect.getEffect();
+            if ( mobEffect instanceof AbstractArmorEffect ) owner.removeEffect(mobEffect);
         }
-        return false;
+        if ( !owner.hasEffect(AncientMagicksEffects.WITCH_ARMOR.get()) ) owner.addEffect(new MobEffectInstance(AncientMagicksEffects.WITCH_ARMOR.get(), getLife(), 0, false, isHarmful()));
     }
 }
