@@ -4,8 +4,8 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
+import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.ancientmagicks.registries.AncientMagicksModifiers;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
@@ -28,10 +28,9 @@ public class RandomizeSpellFunction extends LootItemConditionalFunction {
 
     @Override
     protected ItemStack run(ItemStack stack, LootContext context) {
-        if ( stack.getItem() instanceof AncientTabletItem ) {
+        if ( stack.getItem() == AncientMagicksItems.ANCIENT_TABLET.get() ) {
             int quality = this.qualityRange.getInt(context);
             List<SpellItem> list = AncientMagicks.SPELL_LIST.stream().filter(spell -> spell.spellTier == quality).toList();
-            System.out.println(list);
             if ( !list.isEmpty() ) {
                 SpellItem randomSpell = list.get(new Random().nextInt(list.size()));
                 stack = new ItemStack(randomSpell);

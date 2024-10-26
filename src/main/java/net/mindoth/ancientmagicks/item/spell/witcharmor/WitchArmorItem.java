@@ -38,7 +38,7 @@ public class WitchArmorItem extends AbstractSpellRayCast {
     @Override
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
         List<MobEffectInstance> list = owner.getActiveEffects().stream()
-                .filter(effect -> effect.getEffect() instanceof AbstractArmorEffect && effect.getEffect() != AncientMagicksEffects.FROST_ARMOR.get()).toList();
+                .filter(effect -> effect.getEffect() instanceof AbstractArmorEffect && effect.getEffect() != AncientMagicksEffects.WITCH_ARMOR.get()).toList();
         for ( MobEffectInstance effect : list ) owner.removeEffect(effect.getEffect());
         if ( !owner.hasEffect(AncientMagicksEffects.WITCH_ARMOR.get()) ) owner.addEffect(new MobEffectInstance(AncientMagicksEffects.WITCH_ARMOR.get(), getLife(), 0, false, isHarmful()));
     }

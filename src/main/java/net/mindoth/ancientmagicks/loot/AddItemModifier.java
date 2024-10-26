@@ -19,6 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
 public class AddItemModifier extends LootModifier {
+
     public static final Supplier<Codec<AddItemModifier>> CODEC = Suppliers.memoize(
             () -> RecordCodecBuilder.create(inst -> codecStart(inst).and(Codec.STRING
                     .fieldOf("key").forGetter(m -> m.resourceLocationKey)).apply(inst, AddItemModifier::new)));

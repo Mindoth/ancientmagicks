@@ -37,7 +37,7 @@ public class AncientMagicksGlobalLootModifiersProvider extends GlobalLootModifie
         }, AncientMagicksItems.ARCANE_DUST.get()));*/
     }
 
-    private LootItemCondition getList(String[] tables, String dest) {
+    /*private LootItemCondition getList(String[] tables, String dest) {
         Validate.isTrue(tables.length > 0);
         LootItemCondition.Builder condition = null;
         for ( String s : tables ) {
@@ -45,5 +45,5 @@ public class AncientMagicksGlobalLootModifiersProvider extends GlobalLootModifie
             condition = condition == null ? builder : condition.or(builder);
         }
         return condition.build();
-    }
+    }*/
 }
