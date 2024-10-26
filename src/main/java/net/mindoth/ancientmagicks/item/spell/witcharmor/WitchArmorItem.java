@@ -12,6 +12,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+import java.util.List;
+
 public class WitchArmorItem extends AbstractSpellRayCast {
 
     public WitchArmorItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
@@ -35,10 +37,9 @@ public class WitchArmorItem extends AbstractSpellRayCast {
 
     @Override
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
-        for ( MobEffectInstance effect : owner.getActiveEffects() ) {
-            MobEffect mobEffect = effect.getEffect();
-            if ( mobEffect instanceof AbstractArmorEffect ) owner.removeEffect(mobEffect);
-        }
+        List<MobEffectInstance> list = owner.getActiveEffects().stream()
+                .filter(effect -> effect.getEffect() instanceof AbstractArmorEffect && effect.getEffect() != AncientMagicksEffects.FROST_ARMOR.get()).toList();
+        for ( MobEffectInstance effect : list ) owner.removeEffect(effect.getEffect());
         if ( !owner.hasEffect(AncientMagicksEffects.WITCH_ARMOR.get()) ) owner.addEffect(new MobEffectInstance(AncientMagicksEffects.WITCH_ARMOR.get(), getLife(), 0, false, isHarmful()));
     }
 }
