@@ -5,10 +5,10 @@ import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.registries.AncientMagicksModifiers;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
+import net.mindoth.ancientmagicks.registries.recipe.AncientMagicksRecipes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -59,6 +59,7 @@ public class AncientMagicks {
         AncientMagicksModifiers.LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
         AncientMagicksModifiers.LOOT_FUNCTIONS.register(modEventBus);
         AncientMagicksAttributes.ATTRIBUTES.register(modEventBus);
+        AncientMagicksRecipes.SERIALIZERS.register(modEventBus);
 
         //KEEP THESE LAST
         modEventBus.addListener(this::addCreative);

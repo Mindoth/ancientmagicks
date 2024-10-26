@@ -36,11 +36,6 @@ public class FreezeLanceEntity extends AbstractSpellEntity {
     }
 
     @Override
-    protected float getGravity() {
-        return 0.03F;
-    }
-
-    @Override
     public float getDefaultPower() {
         return 24.0F;
     }

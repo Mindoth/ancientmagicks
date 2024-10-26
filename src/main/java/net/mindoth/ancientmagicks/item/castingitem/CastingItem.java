@@ -80,8 +80,8 @@ public class CastingItem extends Item {
             boolean state = AncientMagicks.isSpellEnabled(spell);
             int manaCost = 0;
             if ( !owner.isCreative() ) {
-                manaCost += spell.manaCost;
                 if ( vessel.getItem() == AncientMagicksItems.ANCIENT_TABLET.get() ) manaCost += spell.spellTier * 100;
+                else manaCost += spell.manaCost;
             }
             if ( magic.getCurrentMana() < manaCost ) state = false;
             if ( state ) {

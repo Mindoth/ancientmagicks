@@ -82,7 +82,7 @@ public class ColorRuneItem extends Item {
         return tempList;
     }
 
-    @Override
+    /*@Override
     public int getUseDuration(ItemStack pStack) {
         return 32;
     }
@@ -90,9 +90,9 @@ public class ColorRuneItem extends Item {
     @Override
     public UseAnim getUseAnimation(ItemStack pStack) {
         return UseAnim.EAT;
-    }
+    }*/
 
-    @Override
+    /*@Override
     @Nonnull
     public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
@@ -100,9 +100,9 @@ public class ColorRuneItem extends Item {
             if ( !player.isUsingItem() ) player.startUsingItem(handIn);
         }
         return result;
-    }
+    }*/
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public static void onRuneConsume(final LivingEntityUseItemEvent.Finish event) {
         if ( event.getEntity() instanceof Player player ) {
             if ( !player.level().isClientSide ) {
@@ -120,19 +120,19 @@ public class ColorRuneItem extends Item {
                 }
             }
         }
-    }
+    }*/
 
     public static List<ItemStack> getColorRuneList(Player player) {
         List<ItemStack> runeList = Lists.newArrayList();
-        CompoundTag playerData = player.getPersistentData();
-        CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
-
-        if ( data.getBoolean("blue_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLUE_RUNE.get()));
+        for ( ColorRuneItem rune : AncientMagicks.COLOR_RUNE_LIST ) runeList.add(new ItemStack(rune));
+        /*CompoundTag playerData = player.getPersistentData();
+        CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);*/
+        /*if ( data.getBoolean("blue_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLUE_RUNE.get()));
         if ( data.getBoolean("purple_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()));
         if ( data.getBoolean("yellow_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
         if ( data.getBoolean("green_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
         if ( data.getBoolean("black_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
-        if ( data.getBoolean("white_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
+        if ( data.getBoolean("white_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));*/
         return runeList;
     }
 }

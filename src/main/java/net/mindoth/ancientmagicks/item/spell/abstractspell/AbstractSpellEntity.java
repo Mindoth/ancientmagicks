@@ -48,7 +48,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     protected float getGravity() {
-        return 0.0F;
+        return 0.02F;
     }
 
     public float getDefaultPower() {
