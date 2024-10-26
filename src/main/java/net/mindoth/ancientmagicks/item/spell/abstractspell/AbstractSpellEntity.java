@@ -136,12 +136,6 @@ public abstract class AbstractSpellEntity extends Projectile {
                 && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY).equals(this.owner.getUUID()) && mob.getTarget() != this.owner;
     }
 
-    protected void dealDamage(LivingEntity target, float minPower) {
-        Random r = new Random();
-        float random = minPower + r.nextFloat() * (this.power - minPower);
-        target.hurt(target.damageSources().indirectMagic(this, this.owner), random);
-    }
-
     @Override
     protected void onHit(HitResult result) {
         if ( this.level().isClientSide ) {

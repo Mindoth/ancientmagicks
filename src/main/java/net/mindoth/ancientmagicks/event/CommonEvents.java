@@ -1,16 +1,15 @@
 package net.mindoth.ancientmagicks.event;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMagic;
+import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
 import net.mindoth.ancientmagicks.network.PacketSyncSpellCombos;
-import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.nbt.CompoundTag;
@@ -21,24 +20,17 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.List;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class CommonEvents {
@@ -124,26 +116,6 @@ public class CommonEvents {
                         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
                         if ( item instanceof SpellItem spellItem ) player.getCooldowns().addCooldown(spellItem, spellItem.cooldown);
                     });
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void addCustomTrades(final VillagerTradesEvent event) {
-        for ( SpellItem spell : AncientMagicks.SPELL_LIST ) {
-            if ( spell.spellTier < 4 ) {
-                if ( event.getType() == VillagerProfession.LIBRARIAN ) {
-                    Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-                    ItemStack stack = new ItemStack(spell, 1);
-
-                    for ( int i = 1; i < 4; i++ ) {
-                        if ( spell.spellTier == i ) {
-                            trades.get(i + 1).add((trader, rand) -> new MerchantOffer(
-                                    new ItemStack(Items.EMERALD, 8 * spell.spellTier),
-                                    stack, 1, 8 * spell.spellTier, 0.05F));
-                        }
-                    }
                 }
             }
         }

@@ -37,9 +37,9 @@ public class FireBoltEntity extends AbstractSpellEntity {
     @Override
     protected void doMobEffects(EntityHitResult result) {
         if ( this.power > 0 && !isAlly((LivingEntity)result.getEntity()) ) {
-            LivingEntity living = (LivingEntity)result.getEntity();
-            dealDamage(living, 1.0F);
-            living.setSecondsOnFire(8);
+            LivingEntity target = (LivingEntity)result.getEntity();
+            SpellItem.attackEntity(this.owner, target, this, this.power, 1.0F);
+            target.setSecondsOnFire(8);
         }
     }
 }

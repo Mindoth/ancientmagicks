@@ -54,7 +54,7 @@ public class BurnLanceEntity extends AbstractSpellEntity {
     protected void doMobEffects(EntityHitResult result) {
         if ( this.power > 0 && !isAlly((LivingEntity)result.getEntity()) ) {
             LivingEntity target = (LivingEntity)result.getEntity();
-            dealDamage(target, 4.0F);
+            SpellItem.attackEntity(this.owner, target, this, this.power, 4.0F);
             target.setSecondsOnFire(8);
         }
     }

@@ -181,6 +181,9 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> THUNDERBALL_ITEM = ITEMS.register("thunderball",
             () -> new ThunderballItem(new Item.Properties(), 3, 30, 4, SpellItem.SpellSchool.NATURE));
 
+    public static final RegistryObject<Item> FIRE_BREATH_ITEM = ITEMS.register("fire_breath",
+            () -> new FireBreathItem(new Item.Properties(), 3, 6, 2, SpellItem.SpellSchool.FIRE));
+
     public static final RegistryObject<Item> POLYMORPH_ITEM = ITEMS.register("polymorph",
             () -> new PolymorphItem(new Item.Properties(), 4, 80, 10, SpellItem.SpellSchool.ARCANE));
 
@@ -189,9 +192,6 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> BURN_LANCE_ITEM = ITEMS.register("burn_lance",
             () -> new BurnLanceItem(new Item.Properties(), 4, 40, 3, SpellItem.SpellSchool.FIRE));
-
-    public static final RegistryObject<Item> FIRE_BREATH_ITEM = ITEMS.register("fire_breath",
-            () -> new FireBreathItem(new Item.Properties(), 4, 8, 2, SpellItem.SpellSchool.FIRE));
 
     public static final RegistryObject<Item> GREATER_INVISIBILITY_ITEM = ITEMS.register("greater_invisibility",
             () -> new GreaterInvisibilityItem(new Item.Properties(), 4, 80, 10, SpellItem.SpellSchool.ARCANE));

@@ -43,8 +43,8 @@ public class WitchArrowEntity extends AbstractSpellEntity {
     @Override
     protected void doMobEffects(EntityHitResult result) {
         if ( this.power > 0 && !isAlly((LivingEntity)result.getEntity()) ) {
-            LivingEntity living = (LivingEntity)result.getEntity();
-            dealDamage(living, 1.0F);
+            LivingEntity target = (LivingEntity)result.getEntity();
+            SpellItem.attackEntity(this.owner, target, this, this.power, 1.0F);
         }
     }
 }

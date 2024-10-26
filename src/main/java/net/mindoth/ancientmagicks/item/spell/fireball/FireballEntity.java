@@ -50,10 +50,10 @@ public class FireballEntity extends AbstractSpellEntity {
         return 0.8F;
     }
 
-    private void causeDamage(LivingEntity living) {
-        if ( !isAlly(living) ) {
-            dealDamage(living, 8.0F);
-            living.setSecondsOnFire(8);
+    private void causeDamage(LivingEntity target) {
+        if ( !isAlly(target) ) {
+            SpellItem.attackEntity(this.owner, target, this, this.power, 8.0F);
+            target.setSecondsOnFire(8);
         }
     }
 
