@@ -21,6 +21,7 @@ import net.mindoth.ancientmagicks.network.PacketSendRuneData;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.ancientmagicks.registries.AncientMagicksKeyBinds;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -75,15 +76,15 @@ public class AncientMagicksClient {
             onInput(mc, event.getKey(), event.getAction());
         }
 
-        private static void onInput(Minecraft MINECRAFT, int key, int keyAction) {
-            int SPELLSELECTOR = AncientMagicksKeyBinds.SPELLSELECTOR.getKey().getValue();
-            int INVENTORY = MINECRAFT.options.keyInventory.getKey().getValue();
-            ItemStack wand = CastingItem.getHeldCastingItem(MINECRAFT.player);
-            if ( MINECRAFT.screen instanceof GuiSpellWheel ) {
-                if ( key == INVENTORY || (keyAction == 0 && key == SPELLSELECTOR) ) MINECRAFT.player.closeContainer();
+        private static void onInput(Minecraft mc, int key, int keyAction) {
+            int spellSelector = AncientMagicksKeyBinds.SPELL_SELECTOR.getKey().getValue();
+            int inventory = mc.options.keyInventory.getKey().getValue();
+            Player player = mc.player;
+            if ( mc.screen instanceof GuiSpellWheel ) {
+                if ( key == inventory || (keyAction == 0 && key == spellSelector) ) player.closeContainer();
             }
-            else if ( MINECRAFT.screen == null && key == SPELLSELECTOR && keyAction == 1 ) {
-                if ( CastingItem.isValidCastingItem(wand) ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());
+            else if ( mc.screen == null && key == spellSelector && keyAction == 1 ) {
+                if ( !CastingItem.getHeldCastingItem(player).isEmpty() ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());
             }
         }
     }
@@ -93,7 +94,7 @@ public class AncientMagicksClient {
 
         @SubscribeEvent
         public static void onKeyRegister(RegisterKeyMappingsEvent event) {
-            event.register(AncientMagicksKeyBinds.SPELLSELECTOR);
+            event.register(AncientMagicksKeyBinds.SPELL_SELECTOR);
         }
 
         @SubscribeEvent

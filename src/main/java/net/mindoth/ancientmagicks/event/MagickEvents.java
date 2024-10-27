@@ -3,9 +3,11 @@ package net.mindoth.ancientmagicks.event;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
+import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
+import net.mindoth.ancientmagicks.item.castingitem.WandItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMagic;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
@@ -19,10 +21,12 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -33,7 +37,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
-public class CommonEvents {
+public class MagickEvents {
 
     public static final String TAG_NOT_FIRST_LOGIN = ("notFirstLogIn");
 
@@ -53,7 +57,7 @@ public class CommonEvents {
                 else magic.setKnownSpells("");
                 AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMagic(tag), serverPlayer);
                 if ( data.getBoolean(TAG_NOT_FIRST_LOGIN) ) AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMana(magic.getCurrentMana()), serverPlayer);
-                else ManaEvents.changeMana(serverPlayer, serverPlayer.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get()));
+                else changeMana(serverPlayer, serverPlayer.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get()));
             });
         }
 
@@ -61,6 +65,59 @@ public class CommonEvents {
         if ( !data.getBoolean(TAG_NOT_FIRST_LOGIN) ) {
             data.putBoolean(TAG_NOT_FIRST_LOGIN, true);
             playerData.put(Player.PERSISTED_NBT_TAG, data);
+        }
+    }
+
+    @SubscribeEvent
+    public static void baseManaRegen(final TickEvent.LevelTickEvent event) {
+        if ( event.phase != TickEvent.Phase.END || event.level.isClientSide ) return;
+        event.level.players().stream().toList().forEach(player -> {
+            final double manaRegen = player.getAttributeValue(AncientMagicksAttributes.MANA_REGENERATION.get());
+            if ( !(player instanceof ServerPlayer serverPlayer ) || player.isRemoved() ) return;
+            serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
+                final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get());
+                final double currentMana = magic.getCurrentMana();
+                boolean isCasting = serverPlayer.isUsingItem() && serverPlayer.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof StaffItem;
+                if ( currentMana < maxMana ) {
+                    if ( player.tickCount % 10 == 0 && !isCasting ) changeMana(player, manaRegen);
+                }
+                else if ( currentMana > maxMana ) changeMana(player, maxMana - currentMana);
+            });
+        });
+    }
+
+    //ANY CHANGES IN A PLAYER'S MANA SHOULD BE DONE HERE
+    public static void changeMana(Player player, double addition) {
+        if ( !(player instanceof ServerPlayer serverPlayer ) || player.isRemoved() || (player.isCreative() && addition < 0) ) return;
+        serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
+            final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get());
+            final double currentMana = magic.getCurrentMana();
+            magic.setCurrentMana(Math.max(0.0D, Math.min(maxMana, currentMana + addition)));
+            AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMana(magic.getCurrentMana()), serverPlayer);
+        });
+    }
+
+    @SubscribeEvent
+    public static void onStopChannellingSpell(final LivingEntityUseItemEvent.Stop event) {
+        if ( event.getEntity() instanceof Player player ) {
+            if ( !player.level().isClientSide ) {
+                ItemStack stack = event.getItem();
+                Item castingItem = stack.getItem();
+                if ( castingItem instanceof StaffItem || castingItem instanceof WandItem ) {
+                    player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
+                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
+                        if ( item instanceof SpellItem spell ) player.getCooldowns().addCooldown(spell, spell.cooldown);
+                    });
+                    stack.hurtAndBreak(1, player, (holder) -> holder.broadcastBreakEvent(player.getUsedItemHand()));
+                }
+                else if ( castingItem instanceof SpellStorageItem ) {
+                    SpellItem spell = SpellStorageItem.getStoredSpell(stack) != null ? SpellStorageItem.getStoredSpell(stack) : null;
+                    if ( spell != null ) {
+                        player.getCooldowns().addCooldown(stack.getItem(), 120);
+                        if ( !player.isCreative() ) stack.shrink(1);
+                    }
+                }
+            }
         }
     }
 
@@ -94,30 +151,5 @@ public class CommonEvents {
     public static void disableInteraction(final PlayerInteractEvent.EntityInteract event) {
         Player player = event.getEntity();
         if ( !CastingItem.getHeldCastingItem(player).isEmpty() ) event.setCanceled(true);
-    }
-
-    @SubscribeEvent
-    public static void onStopChannellingSpell(final LivingEntityUseItemEvent.Stop event) {
-        if ( event.getEntity() instanceof Player player ) {
-            if ( !player.level().isClientSide ) {
-                ItemStack stack = event.getItem();
-                Item castingItem = stack.getItem();
-                if ( castingItem instanceof SpellStorageItem ) {
-                    if ( stack.getTag() != null && stack.getTag().contains(SpellStorageItem.TAG_STORED_SPELL) ) {
-                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(stack.getTag().getString(SpellStorageItem.TAG_STORED_SPELL)));
-                        if ( item instanceof SpellItem spellItem ) {
-                            player.getCooldowns().addCooldown(spellItem, spellItem.cooldown);
-                            if ( !player.isCreative() ) stack.shrink(1);
-                        }
-                    }
-                }
-                else if ( castingItem instanceof CastingItem ) {
-                    player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
-                        if ( item instanceof SpellItem spellItem ) player.getCooldowns().addCooldown(spellItem, spellItem.cooldown);
-                    });
-                }
-            }
-        }
     }
 }

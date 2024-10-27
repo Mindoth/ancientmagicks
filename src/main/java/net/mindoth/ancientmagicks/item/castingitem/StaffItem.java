@@ -15,13 +15,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Vanishable;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
 
-public class StaffItem extends CastingItem {
+public class StaffItem extends CastingItem implements Vanishable {
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
     public StaffItem(Properties pProperties, double attackDamage, double attackSpeed, Map<Attribute, AttributeModifier> additionalAttributes) {
@@ -63,14 +64,14 @@ public class StaffItem extends CastingItem {
     }
 
     @Override
-    public void onUseTick(Level level, LivingEntity living, ItemStack wand, int timeLeft) {
+    public void onUseTick(Level level, LivingEntity living, ItemStack staff, int timeLeft) {
         if ( level.isClientSide ) return;
         if ( living instanceof Player player ) {
-            if ( isValidCastingItem(wand) ) {
+            if ( isValidCastingItem(staff) ) {
                 player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
                     if ( item instanceof SpellItem spell && (magic.getCurrentMana() >= spell.manaCost || player.isCreative()) ) {
-                        doSpell(player, player, wand, spell, getUseDuration(wand) - timeLeft);
+                        doSpell(player, player, staff, spell, getUseDuration(staff) - timeLeft);
                     }
                     else living.stopUsingItem();
                 });

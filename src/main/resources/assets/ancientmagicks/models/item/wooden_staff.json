@@ -1,0 +1,7 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "ancientmagicks:item/wooden_staff_overlay",
+    "layer1": "ancientmagicks:item/wooden_staff"
+  }
+}

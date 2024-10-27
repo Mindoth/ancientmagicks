@@ -2,12 +2,11 @@ package net.mindoth.ancientmagicks.item.spell.witcharmor;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
-import net.mindoth.ancientmagicks.event.ManaEvents;
+import net.mindoth.ancientmagicks.event.MagickEvents;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractArmorEffect;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -34,7 +33,7 @@ public class WitchArmorEffect extends AbstractArmorEffect {
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                 final double damageAmount = event.getAmount() * 5;
                 if ( magic.getCurrentMana() >= damageAmount ) {
-                    ManaEvents.changeMana(serverPlayer, -damageAmount);
+                    MagickEvents.changeMana(serverPlayer, -damageAmount);
                     event.setAmount(0);
                 }
                 else if ( magic.getCurrentMana() < damageAmount ) serverPlayer.removeEffect(AncientMagicksEffects.WITCH_ARMOR.get());

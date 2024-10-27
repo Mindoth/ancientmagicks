@@ -3,16 +3,16 @@
 
 
   "key.category.ancientmagicks": "Ancient Magicks",
-  "key.ancientmagicks.spellselector": "Rune Selector",
+  "key.ancientmagicks.spell_selector": "Rune Selector",
 
 
-  "item.ancientmagicks.wizard_staff": "Wizard Staff",
-  "item.ancientmagicks.tablet_bag": "Tablet Bag",
+  "item.ancientmagicks.wooden_staff": "Wooden Staff",
   "item.ancientmagicks.empty_rune": "Stone Slate",
-  "item.ancientmagicks.ancient_tablet": "Ancient Tablet",
   "item.ancientmagicks.arcane_dust": "Arcane Dust",
   "item.ancientmagicks.spell_pearl": "Spell Pearl",
   "item.ancientmagicks.spell_scroll": "Spell Scroll",
+  "item.ancientmagicks.ancient_tablet": "Ancient Tablet",
+  "item.ancientmagicks.wooden_wand": "Wooden Wand",
   "item.ancientmagicks.hood": "Hood",
   "item.ancientmagicks.cloak": "Cloak",
 

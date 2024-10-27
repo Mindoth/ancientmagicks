@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public enum AncientMagicsArmorMaterials implements CustomArmorMaterial {
-    CLOTH("amcloth", 0, new int[]{ 0, 0, 0, 0 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
+    CLOTH("amcloth", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
             0, 0, () -> Ingredient.of(Items.STRING), Map.of(
             AncientMagicksAttributes.MANA_REGENERATION.get(), new AttributeModifier("Mana Regeneration", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE),
             AncientMagicksAttributes.MANA_MAXIMUM.get(), new AttributeModifier("Mana Maximum", 50.0D, AttributeModifier.Operation.ADDITION)
@@ -30,7 +30,7 @@ public enum AncientMagicsArmorMaterials implements CustomArmorMaterial {
     private final Supplier<Ingredient> repairIngredient;
     private final Map<Attribute, AttributeModifier> additionalAttributes;
 
-    private static final int[] BASE_DURABILITY = { 0, 0, 0, 0 };
+    private static final int[] BASE_DURABILITY = { 11, 16, 15, 13 };
 
     AncientMagicsArmorMaterials(String name, int durabilityModifier, int[] protectionAmounts, int enchantmentValue, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient, Map<Attribute, AttributeModifier> additionalAttributes) {
         this.name = name;
@@ -46,7 +46,7 @@ public enum AncientMagicsArmorMaterials implements CustomArmorMaterial {
 
     @Override
     public int getDurabilityForType(ArmorItem.Type pType) {
-        return BASE_DURABILITY[pType.ordinal() * this.durabilityModifier];
+        return BASE_DURABILITY[pType.ordinal()] * this.durabilityModifier;
     }
 
     @Override

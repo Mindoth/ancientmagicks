@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
+import net.mindoth.ancientmagicks.item.castingitem.WandItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicsArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
@@ -95,8 +96,11 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> STONE_SLATE = ITEMS.register("empty_rune",
             () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> WIZARD_STAFF = ITEMS.register("wizard_staff",
-            () -> new ColorableStaffItem(new Item.Properties().stacksTo(1), 0.0D, -3.0D,
+    public static final RegistryObject<Item> WOODEN_WAND = ITEMS.register("wooden_wand",
+            () -> new WandItem(new Item.Properties().durability(10)));
+
+    public static final RegistryObject<Item> WOODEN_STAFF = ITEMS.register("wooden_staff",
+            () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D,
             Map.of(AncientMagicksAttributes.MANA_REGENERATION.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                     "Weapon modifier", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE),
                     AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
