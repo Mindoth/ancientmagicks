@@ -26,7 +26,7 @@ public class SpellCraftingRecipe extends CustomRecipe {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() instanceof ColorRuneItem rune ) list.add(rune);
         }
-        return ColorRuneItem.checkForSpellCombo(list, null) != null;
+        return ColorRuneItem.checkForSpellCombo(list) != null;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class SpellCraftingRecipe extends CustomRecipe {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() instanceof ColorRuneItem rune ) list.add(rune);
         }
-        return new ItemStack(ColorRuneItem.checkForSpellCombo(list, null));
+        return new ItemStack(ColorRuneItem.checkForSpellCombo(list));
     }
 
     @Override

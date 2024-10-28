@@ -15,11 +15,6 @@ public class PolymorphItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected boolean isHarmful() {
-        return true;
-    }
-
-    @Override
     protected boolean canApply(Level level, Player owner, Entity caster, LivingEntity target) {
         return level instanceof ServerLevel && target instanceof Mob && !(target instanceof Sheep);
     }
@@ -28,5 +23,6 @@ public class PolymorphItem extends AbstractSpellRayCast {
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
         Sheep sheep = ((Mob)target).convertTo(EntityType.SHEEP, false);
         sheep.finalizeSpawn((ServerLevel)level, ((ServerLevel)level).getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
+        addEnchantParticles(sheep, getRed(), getGreen(), getBlue(), 0.15F, 8, hasMask());
     }
 }

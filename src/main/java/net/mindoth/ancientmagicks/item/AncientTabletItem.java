@@ -31,8 +31,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 //@Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class AncientTabletItem extends Item {
+
     public AncientTabletItem(Properties pProperties) {
-        super(pProperties.stacksTo(1));
+        super(pProperties);
     }
 
     /*@Override

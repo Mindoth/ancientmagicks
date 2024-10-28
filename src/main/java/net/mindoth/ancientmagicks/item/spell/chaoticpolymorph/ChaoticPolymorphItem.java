@@ -19,26 +19,22 @@ public class ChaoticPolymorphItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected boolean isHarmful() {
-        return true;
+    protected boolean canApply(Level level, Player owner, Entity caster, LivingEntity target) {
+        return target instanceof Mob;
     }
 
     @Override
-    protected boolean canApply(Level level, Player owner, Entity caster, LivingEntity target) {
-        if ( level instanceof ServerLevel serverLevel && target instanceof Mob oldMob ) {
+    protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
+        if ( level instanceof ServerLevel serverLevel ) {
+            Mob oldMob = (Mob)target;
             if ( AncientMagicks.MOB_LIST.isEmpty() ) AncientMagicks.createMobList(serverLevel);
             int index = ThreadLocalRandom.current().nextInt(0, AncientMagicks.MOB_LIST.size());
             Entity entity = AncientMagicks.MOB_LIST.get(index).create(level);
             if ( entity instanceof Mob newMob ) {
                 Mob mob = convertMob(oldMob, newMob, serverLevel, false);
-                if ( mob.isAddedToWorld() ) return true;
+                while ( !mob.isAddedToWorld() ) convertMob(oldMob, newMob, serverLevel, false);
             }
         }
-        return false;
-    }
-
-    @Override
-    protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
     }
 
     private Mob convertMob(Mob oldMob, Mob newMob, ServerLevel serverLevel, boolean pTransferInventory) {
@@ -49,37 +45,29 @@ public class ChaoticPolymorphItem extends AbstractSpellRayCast {
             newMob.setCustomName(oldMob.getCustomName());
             newMob.setCustomNameVisible(oldMob.isCustomNameVisible());
         }
-
-        if ( oldMob.isPersistenceRequired() ) {
-            newMob.setPersistenceRequired();
-        }
-
+        if ( oldMob.isPersistenceRequired() ) newMob.setPersistenceRequired();
         newMob.setInvulnerable(oldMob.isInvulnerable());
         if ( pTransferInventory ) {
             newMob.setCanPickUpLoot(oldMob.canPickUpLoot());
-
             for ( EquipmentSlot equipmentslot : EquipmentSlot.values() ) {
                 ItemStack itemstack = oldMob.getItemBySlot(equipmentslot);
                 if ( !itemstack.isEmpty() ) {
                     newMob.setItemSlot(equipmentslot, itemstack.copyAndClear());
-
                     //TODO Find a way to properly transfer dropChance
                     newMob.setDropChance(equipmentslot, 0);
                     //newMob.setDropChance(equipmentslot, oldMob.getEquipmentDropChance(equipmentslot));
                 }
             }
         }
-
         ForgeEventFactory.onFinalizeSpawn(newMob, serverLevel, serverLevel.getCurrentDifficultyAt(newMob.blockPosition()), MobSpawnType.CONVERSION, null, null);
         serverLevel.tryAddFreshEntityWithPassengers(newMob);
-        newMob.spawnAnim();
         if ( oldMob.isPassenger() ) {
             Entity entity = oldMob.getVehicle();
             oldMob.stopRiding();
             newMob.startRiding(entity, true);
         }
-
         oldMob.discard();
+        addEnchantParticles(newMob, getRed(), getGreen(), getBlue(), 0.15F, 8, hasMask());
         return newMob;
     }
 }

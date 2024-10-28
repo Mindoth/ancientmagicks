@@ -8,6 +8,7 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSetSpell;
@@ -54,23 +55,23 @@ public class GuiSpellWheel extends Screen {
     private float extraTick;
     private int selectedItem;
     private final List<ItemStack> itemList;
-    private final CompoundTag tag;
     private final List<ColorRuneItem> comboList = Lists.newArrayList();
     private SpellItem comboResult;
-    private final boolean discoveryMode;
     private final InteractionHand hand;
     private final String hotbar;
+    //private final CompoundTag tag;
+    //private final boolean discoveryMode;
 
-    public GuiSpellWheel(List<ItemStack> stackList, @Nullable CompoundTag tag, boolean isOffhand) {
+    public GuiSpellWheel(List<ItemStack> stackList,/* @Nullable CompoundTag tag,*/ boolean isOffhand) {
         super(Component.literal(""));
-        this.discoveryMode = tag != null;
+        //this.discoveryMode = tag != null;
         this.closing = false;
         this.minecraft = Minecraft.getInstance();
         this.selectedItem = -1;
         if ( !stackList.isEmpty() ) this.itemList = stackList;
         else this.itemList = List.of(new ItemStack(Items.AIR));
-        if ( this.discoveryMode ) this.tag = tag;
-        else this.tag = null;
+        //if ( this.discoveryMode ) this.tag = tag;
+        //else this.tag = null;
         this.hand = isOffhand ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
         int size = AncientMagicks.comboSizeCalc();
         if ( size == 4 ) this.hotbar = "hotbar4.png";
@@ -79,16 +80,11 @@ public class GuiSpellWheel extends Screen {
         else this.hotbar = "hotbar3.png";
     }
 
-    public static void open(List<ItemStack> itemList, @Nullable CompoundTag tag, boolean isOffHand) {
+    public static void open(List<ItemStack> itemList,/* @Nullable CompoundTag tag,*/ boolean isOffHand) {
         Minecraft MINECRAFT = Minecraft.getInstance();
         Player player = MINECRAFT.player;
-        if ( MINECRAFT.screen instanceof GuiSpellWheel ) {
-            player.closeContainer();
-            return;
-        }
-        if ( MINECRAFT.screen == null ) {
-            Minecraft.getInstance().setScreen(new GuiSpellWheel(itemList, tag, isOffHand));
-        }
+        if ( MINECRAFT.screen == null ) Minecraft.getInstance().setScreen(new GuiSpellWheel(itemList,/* tag,*/ isOffHand));
+        else if ( MINECRAFT.screen instanceof GuiSpellWheel ) player.closeContainer();
     }
 
     @Override
@@ -102,7 +98,7 @@ public class GuiSpellWheel extends Screen {
                     this.comboList.add((ColorRuneItem)clickedItem.getItem());
                 }
             }
-            SpellItem secretSpell = null;
+            /*SpellItem secretSpell = null;
             if ( this.tag != null ) secretSpell = (SpellItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.tag.getString("am_secretspell")));
             SpellItem spellItem = ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell);
             if ( spellItem != null && ((ClientMagicData.isSpellKnown(spellItem) || MINECRAFT.player.isCreative()) || this.discoveryMode) ) {
@@ -115,9 +111,54 @@ public class GuiSpellWheel extends Screen {
                     ClientMagicData.setCurrentSpell(spellString);
                 }
             }
-            else this.comboResult = null;
+            else this.comboResult = null;*/
+            SpellItem spell = ColorRuneItem.checkForSpellCombo(this.comboList);
+            if ( spell != null && (ClientMagicData.isSpellKnown(spell) || MINECRAFT.player.isCreative()) ) {
+                this.comboResult = ColorRuneItem.checkForSpellCombo(this.comboList);
+                String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
+                CompoundTag tag = new CompoundTag();
+                tag.putString("am_spell", spellString);
+                AncientMagicksNetwork.sendToServer(new PacketSetSpell(tag));
+                ClientMagicData.setCurrentSpell(spellString);
+            }
         }
         return true;
+    }
+
+    @Override
+    public void tick() {
+        if ( this.totalTime != this.OPEN_ANIMATION_LENGTH ) this.extraTick++;
+        Player player = MINECRAFT.player;
+        Item handItem = player.getItemInHand(this.hand).getItem();
+        if ( !(handItem instanceof StaffItem) ) player.closeContainer();
+        //if ( (!this.discoveryMode && !(handItem instanceof CastingItem)) || (this.discoveryMode && !(handItem instanceof AncientTabletItem)) ) player.closeContainer();
+    }
+
+    /*@Override
+    public void removed() {
+        Player player = MINECRAFT.player;
+        if ( this.discoveryMode && this.comboResult != null && player.getItemInHand(this.hand).getItem() instanceof AncientTabletItem ) {
+            player.playNotifySound(SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.PLAYERS, 1.0F, 1.0F);
+            AncientMagicksNetwork.sendToServer(new PacketSolveAncientTablet(new ItemStack(this.comboResult), this.hand == InteractionHand.OFF_HAND));
+        }
+    }*/
+
+    @SubscribeEvent
+    public static void overlayEvent(RenderGuiOverlayEvent.Pre event) {
+        if ( Minecraft.getInstance().screen instanceof GuiSpellWheel ) {
+            if ( event.getOverlay() == VanillaGuiOverlay.HOTBAR.type() || event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type() ) event.setCanceled(true);
+        }
+    }
+
+    @Override
+    public boolean keyPressed(int key, int scanCode, int modifiers) {
+        int adjustedKey = key - 48;
+        if ( adjustedKey >= 0 && adjustedKey < 10 ) {
+            this.selectedItem = adjustedKey == 0 ? 10 : adjustedKey;
+            mouseClicked(0,0,0);
+            return true;
+        }
+        return super.keyPressed(key, scanCode, modifiers);
     }
 
     @Override
@@ -267,34 +308,6 @@ public class GuiSpellWheel extends Screen {
         }
     }
 
-    @Override
-    public void tick() {
-        if ( this.totalTime != this.OPEN_ANIMATION_LENGTH ) {
-            this.extraTick++;
-        }
-        Player player = MINECRAFT.player;
-        Item handItem = player.getItemInHand(this.hand).getItem();
-        if ( (!this.discoveryMode && !(handItem instanceof CastingItem)) || (this.discoveryMode && !(handItem instanceof AncientTabletItem)) ) player.closeContainer();
-    }
-
-    @Override
-    public void removed() {
-        Player player = MINECRAFT.player;
-        if ( this.discoveryMode && this.comboResult != null && player.getItemInHand(this.hand).getItem() instanceof AncientTabletItem ) {
-            player.playNotifySound(SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.PLAYERS, 1.0F, 1.0F);
-            AncientMagicksNetwork.sendToServer(new PacketSolveAncientTablet(new ItemStack(this.comboResult), this.hand == InteractionHand.OFF_HAND));
-        }
-    }
-
-    @SubscribeEvent
-    public static void overlayEvent(RenderGuiOverlayEvent.Pre event) {
-        if ( Minecraft.getInstance().screen instanceof GuiSpellWheel ) {
-            if ( event.getOverlay() == VanillaGuiOverlay.HOTBAR.type() || event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type() ) {
-                event.setCanceled(true);
-            }
-        }
-    }
-
     private void drawSlice(BufferBuilder buffer, float x, float y, float z, float radiusIn, float radiusOut, float startAngle, float endAngle,
                            int r, int g, int b, int a) {
         float angle = endAngle - startAngle;
@@ -322,17 +335,6 @@ public class GuiSpellWheel extends Screen {
             buffer.vertex(pos2InX, pos2InY, z).color(r, g, b, a).endVertex();
             buffer.vertex(pos2OutX, pos2OutY, z).color(r, g, b, a).endVertex();
         }
-    }
-
-    @Override
-    public boolean keyPressed(int key, int scanCode, int modifiers) {
-        int adjustedKey = key - 48;
-        if ( adjustedKey >= 0 && adjustedKey < 10 ) {
-            this.selectedItem = adjustedKey == 0 ? 10 : adjustedKey;
-            mouseClicked(0,0,0);
-            return true;
-        }
-        return super.keyPressed(key, scanCode, modifiers);
     }
 
     @SubscribeEvent

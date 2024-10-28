@@ -29,7 +29,7 @@ public class PacketSendRuneData {
                 player.stopUsingItem();
                 boolean isOffHand = !(player.getMainHandItem().getItem() instanceof CastingItem);
                 List<ItemStack> runeList = ColorRuneItem.getColorRuneList(player);
-                AncientMagicksNetwork.sendToPlayer(new PacketReceiveRuneData(runeList, null, isOffHand), player);
+                AncientMagicksNetwork.sendToPlayer(new PacketReceiveRuneData(runeList,/* null,*/ isOffHand), player);
             }
         });
     }

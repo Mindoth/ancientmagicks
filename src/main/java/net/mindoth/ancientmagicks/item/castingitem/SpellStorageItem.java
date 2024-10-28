@@ -48,8 +48,33 @@ public class SpellStorageItem extends CastingItem {
     }
 
     @Override
-    public boolean isFoil(ItemStack pStack) {
-        return pStack.isEnchanted() || (pStack.getTag() != null && pStack.getTag().contains(TAG_STORED_SPELL));
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(hand));
+        ItemStack stack = player.getItemInHand(hand);
+        if ( !level.isClientSide ) {
+            SpellItem spell = SpellStorageItem.getStoredSpell(stack) != null ? SpellStorageItem.getStoredSpell(stack) : null;
+            Item vessel = stack.getItem();
+            if ( spell != null && !player.getCooldowns().isOnCooldown(vessel) ) {
+                if ( vessel == AncientMagicksItems.SPELL_PEARL.get() ) {
+                    level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                            SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+                    Vec3 center = player.getEyePosition();
+                    SpellPearlEntity spellPearl = new SpellPearlEntity(level, player, player, spell);
+                    spellPearl.setPos(center.x, center.y - 0.2F, center.z);
+                    spellPearl.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, Math.max(0, spellPearl.getSpeed()), 1.0F);
+                    level.addFreshEntity(spellPearl);
+                    stack.shrink(1);
+                    player.getCooldowns().addCooldown(AncientMagicksItems.SPELL_PEARL.get(), 120);
+                    result = InteractionResultHolder.success(player.getItemInHand(hand));
+                }
+                else if ( vessel == AncientMagicksItems.ANCIENT_TABLET.get() && player instanceof ServerPlayer serverPlayer ) SpellItem.learnSpell(serverPlayer, stack);
+                else if ( vessel instanceof WandItem ) {
+                    if ( !player.getCooldowns().isOnCooldown(spell) ) player.startUsingItem(hand);
+                }
+                else player.startUsingItem(hand);
+            }
+        }
+        return result;
     }
 
     public static SpellItem getStoredSpell(ItemStack vessel) {
@@ -61,44 +86,16 @@ public class SpellStorageItem extends CastingItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(hand));
-        ItemStack vessel = player.getItemInHand(hand);
-        if ( !level.isClientSide ) {
-            SpellItem spell = SpellStorageItem.getStoredSpell(vessel) != null ? SpellStorageItem.getStoredSpell(vessel) : null;
-            if ( spell != null && !player.getCooldowns().isOnCooldown(vessel.getItem()) ) {
-                if ( vessel.getItem() == AncientMagicksItems.SPELL_PEARL.get() ) {
-                    level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                            SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
-                    Vec3 center = player.getEyePosition();
-                    SpellPearlEntity spellPearl = new SpellPearlEntity(level, player, player, spell);
-                    spellPearl.setPos(center.x, center.y - 0.2F, center.z);
-                    spellPearl.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, Math.max(0, spellPearl.getSpeed()), 1.0F);
-                    level.addFreshEntity(spellPearl);
-                    vessel.shrink(1);
-                    player.getCooldowns().addCooldown(AncientMagicksItems.SPELL_PEARL.get(), 120);
-                    result = InteractionResultHolder.success(player.getItemInHand(hand));
-                }
-                else if ( vessel.getItem() == AncientMagicksItems.ANCIENT_TABLET.get() && player instanceof ServerPlayer serverPlayer ) SpellItem.learnSpell(serverPlayer, vessel);
-                else if ( vessel.getItem() instanceof WandItem ) {
-                    player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
-                        if ( item instanceof SpellItem storedSpell && !player.getCooldowns().isOnCooldown(storedSpell) ) player.startUsingItem(hand);
-                    });
-                }
-                else player.startUsingItem(hand);
-            }
-        }
-
-        return result;
-    }
-
-    @Override
     public void onUseTick(Level level, LivingEntity living, ItemStack castingItem, int timeLeft) {
         if ( level.isClientSide ) return;
         if ( living instanceof Player player && getStoredSpell(castingItem) != null ) {
             SpellItem spell = getStoredSpell(castingItem);
             doSpell(player, player, castingItem, spell, getUseDuration(castingItem) - timeLeft);
         }
+    }
+
+    @Override
+    public boolean isFoil(ItemStack pStack) {
+        return pStack.isEnchanted() || (pStack.getTag() != null && pStack.getTag().contains(TAG_STORED_SPELL));
     }
 }

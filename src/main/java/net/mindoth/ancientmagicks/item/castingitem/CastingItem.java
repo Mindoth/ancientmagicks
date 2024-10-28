@@ -28,7 +28,8 @@ public class CastingItem extends Item {
         super(pProperties);
     }
 
-    public static void doSpell(Player owner, Entity caster, @Nullable ItemStack castingItem, SpellItem spell, int useTime) {
+    public static void doSpell(Player owner, Entity caster, @Nullable ItemStack stack, SpellItem spell, int useTime) {
+        Item castingItem = stack != null ? stack.getItem() : null;
         float xRot = caster.getXRot();
         float yRot = caster.getYRot();
         Vec3 center = caster instanceof SpellPearlEntity ? caster.position() : caster.getEyePosition();
@@ -39,23 +40,21 @@ public class CastingItem extends Item {
         //Cast the given Spell
         if ( AncientMagicks.isSpellEnabled(spell) ) {
             //Store Spell into item
-            if ( caster == owner && owner.isHolding((item) -> item.getItem() instanceof SpellStorageItem
-                    && (!item.hasTag() || (item.getTag() != null && !item.getTag().contains(SpellStorageItem.TAG_STORED_SPELL))))
-                    && owner.isHolding((item) -> item.getItem() instanceof CastingItem && !(item.getItem() instanceof SpellStorageItem)) ) {
-                ItemStack vessel;
-                if ( owner.getMainHandItem().getItem() instanceof SpellStorageItem ) vessel = owner.getMainHandItem();
-                else vessel = owner.getOffhandItem();
+            if ( caster == owner
+                    && owner.isHolding((heldItem) -> heldItem.getItem() instanceof SpellStorageItem && SpellStorageItem.getStoredSpell(heldItem) == null)
+                    && owner.isHolding((heldItem) -> heldItem.getItem() instanceof StaffItem) ) {
+                ItemStack vessel = owner.getMainHandItem().getItem() instanceof SpellStorageItem ? owner.getMainHandItem() : owner.getOffhandItem();
                 storeSpell(owner, caster, spell, vessel);
             }
             //ACTUALLY cast the spell
             else {
-                if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) && castingItem != null ) {
-                    if ( caster == owner && castingItem.getItem() instanceof StaffItem && useTime % 10 == 0 ) MagickEvents.changeMana(owner, -spell.manaCost);
-                    if ( !spell.isChannel() ) handleCooldownsAndStuff(owner, castingItem, spell, hasAlacrity);
+                if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) && stack != null ) {
+                    if ( caster == owner && castingItem instanceof StaffItem && useTime % 10 == 0 ) MagickEvents.changeMana(owner, -spell.manaCost);
+                    if ( !spell.isChannel() ) handleCooldownsAndStuff(owner, stack, spell, hasAlacrity);
                 }
                 else {
                     if ( useTime == 0 ) whiffSpell(owner, caster, spell);
-                    else if ( caster == owner && castingItem != null ) handleCooldownsAndStuff(owner, castingItem, spell, hasAlacrity);
+                    else if ( caster == owner && stack != null ) handleCooldownsAndStuff(owner, stack, spell, hasAlacrity);
                 }
             }
         }
@@ -63,14 +62,16 @@ public class CastingItem extends Item {
     }
 
     private static void handleCooldownsAndStuff(Player owner, ItemStack castingItem, SpellItem spell, boolean hasAlacrity) {
+        Item item = castingItem.getItem();
         float alacrityBonus = hasAlacrity ? 0.5F : 1.0F;
         int spellCooldown = (int)(spell.cooldown * alacrityBonus);
-        if ( castingItem.getItem() instanceof StaffItem || castingItem.getItem() instanceof WandItem ) {
-            addCastingCooldown(owner, spell, spellCooldown);
+        if ( item instanceof StaffItem || item instanceof WandItem ) {
+            if ( item instanceof StaffItem ) addCastingCooldown(owner, spell, spellCooldown);
+            else addCastingCooldown(owner, SpellStorageItem.getStoredSpell(castingItem), spellCooldown);
             if ( !owner.isCreative() ) castingItem.hurtAndBreak(1, owner, (holder) -> holder.broadcastBreakEvent(owner.getUsedItemHand()));
         }
-        else if ( castingItem.getItem() instanceof SpellStorageItem ) {
-            owner.getCooldowns().addCooldown(castingItem.getItem(), 120);
+        else if ( item instanceof SpellStorageItem ) {
+            owner.getCooldowns().addCooldown(item, 120);
             if ( !owner.isCreative() ) castingItem.shrink(1);
         }
         owner.stopUsingItem();
@@ -108,10 +109,16 @@ public class CastingItem extends Item {
         });
     }
 
-    public static void whiffSpell(Player owner, Entity caster, SpellItem tablet) {
+    public static void whiffSpell(Player owner, Entity caster, SpellItem spell) {
         SpellItem.playWhiffSound(caster);
-        addCastingCooldown(owner, tablet, 20);
+        addCastingCooldown(owner, spell, 20);
         owner.stopUsingItem();
+    }
+
+    public static @Nonnull ItemStack getHeldStaff(Player playerEntity) {
+        ItemStack staff = playerEntity.getMainHandItem().getItem() instanceof StaffItem ? playerEntity.getMainHandItem() : ItemStack.EMPTY;
+        if ( staff == ItemStack.EMPTY ) staff = playerEntity.getOffhandItem().getItem() instanceof StaffItem ? playerEntity.getOffhandItem() : ItemStack.EMPTY;
+        return staff;
     }
 
     public static @Nonnull ItemStack getHeldCastingItem(Player playerEntity) {

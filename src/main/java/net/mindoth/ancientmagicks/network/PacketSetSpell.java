@@ -29,9 +29,9 @@ public class PacketSetSpell {
         context.get().enqueueWork(() -> {
             if ( context.get().getSender() != null ) {
                 ServerPlayer player = context.get().getSender();
-                if ( CastingItem.getHeldCastingItem(player).getItem() instanceof CastingItem ) {
-                    ItemStack wand = CastingItem.getHeldCastingItem(player);
-                    if ( CastingItem.isValidCastingItem(wand) ) {
+                if ( !CastingItem.getHeldStaff(player).isEmpty() ) {
+                    ItemStack castingItem = CastingItem.getHeldStaff(player);
+                    if ( CastingItem.isValidCastingItem(castingItem) ) {
                         String spellString = this.selectedItem.getString("am_spell");
                         player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(spell -> spell.setCurrentSpell(spellString));
                     }

@@ -31,8 +31,15 @@ public class ColorRuneItem extends Item {
     //Server- AND Client-sided Map used in GUI checks
     public static HashMap<SpellItem, List<ColorRuneItem>> CURRENT_COMBO_MAP = new HashMap<>();
 
-    public static SpellItem checkForSpellCombo(List<ColorRuneItem> comboToCheck, @Nullable SpellItem secretSpell) {
-        SpellItem spell = null;
+    @Nullable
+    public static SpellItem checkForSpellCombo(List<ColorRuneItem> comboToCheck/*, @Nullable SpellItem secretSpell*/) {
+        for ( Map.Entry<SpellItem, List<ColorRuneItem>> entry : CURRENT_COMBO_MAP.entrySet() ) {
+            SpellItem key = entry.getKey();
+            List<ColorRuneItem> value = entry.getValue();
+            if ( AncientMagicks.listsMatch(comboToCheck, value) ) return key;
+        }
+        return null;
+        /*SpellItem spell = null;
         if ( secretSpell == null ) {
             for ( Map.Entry<SpellItem, List<ColorRuneItem>> entry : CURRENT_COMBO_MAP.entrySet() ) {
                 SpellItem key = entry.getKey();
@@ -41,7 +48,7 @@ public class ColorRuneItem extends Item {
             }
         }
         else if ( AncientMagicks.listsMatch(comboToCheck, CURRENT_COMBO_MAP.get(secretSpell)) ) spell = secretSpell;
-        return spell;
+        return spell;*/
     }
 
     //This is some REALLY delicate String parsing. I'm no expert...

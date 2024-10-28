@@ -6,6 +6,7 @@ import net.mindoth.ancientmagicks.client.screen.HudMana;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
+import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowRenderer;
 import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
@@ -24,7 +25,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -84,7 +84,7 @@ public class AncientMagicksClient {
                 if ( key == inventory || (keyAction == 0 && key == spellSelector) ) player.closeContainer();
             }
             else if ( mc.screen == null && key == spellSelector && keyAction == 1 ) {
-                if ( !CastingItem.getHeldCastingItem(player).isEmpty() ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());
+                if ( !CastingItem.getHeldStaff(player).isEmpty() ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());
             }
         }
     }
