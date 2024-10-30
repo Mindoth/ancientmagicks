@@ -31,6 +31,7 @@ import net.mindoth.ancientmagicks.item.spell.greaterinvisibility.GreaterInvisibi
 import net.mindoth.ancientmagicks.item.spell.icewall.IceWallItem;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleItem;
 import net.mindoth.ancientmagicks.item.spell.invisibility.InvisibilityItem;
+import net.mindoth.ancientmagicks.item.spell.lifetap.LifeTapItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlItem;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainItem;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphItem;
@@ -197,6 +198,9 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> GREATER_INVISIBILITY_ITEM = ITEMS.register("greater_invisibility",
             () -> new GreaterInvisibilityItem(new Item.Properties(), 4, 80, 10, SpellSchool.ARCANE));
+
+    public static final RegistryObject<Item> LIFE_TAP_ITEM = ITEMS.register("life_tap",
+            () -> new LifeTapItem(new Item.Properties(), 4, 0, 1, SpellSchool.SHADOW));
 
     public static final RegistryObject<Item> BLIZZARD_ITEM = ITEMS.register("blizzard",
             () -> new BlizzardItem(new Item.Properties(), 5, 10, 2, SpellSchool.FROST));

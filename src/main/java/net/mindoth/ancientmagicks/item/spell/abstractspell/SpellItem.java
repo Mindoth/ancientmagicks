@@ -206,10 +206,8 @@ public class SpellItem extends Item {
         return minPower + r.nextFloat() * (maxPower - minPower);
     }
 
-    public static void attackEntity(LivingEntity owner, LivingEntity target, Entity source, float maxPower, float minPower) {
-        Random r = new Random();
-        float random = minPower + r.nextFloat() * (maxPower - minPower);
-        target.hurt(target.damageSources().indirectMagic(source, owner), random);
+    public static void attackEntity(LivingEntity owner, LivingEntity target, Entity source, float amount) {
+        target.hurt(target.damageSources().indirectMagic(source, owner), amount);
     }
 
     public static void attackEntityWithoutKnockback(LivingEntity owner, Entity caster, Entity target, float amount) {

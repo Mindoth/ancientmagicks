@@ -58,14 +58,14 @@ public class NumbnessEffect extends MobEffect {
             CompoundTag playerData = player.getPersistentData();
             CompoundTag tag = playerData.getCompound(Player.PERSISTED_NBT_TAG);
             final float damageAmount = tag.getFloat(NBT_KEY);
-            if ( damageAmount > 0 ) SpellItem.attackEntity(player, player, player, damageAmount, damageAmount);
+            if ( damageAmount > 0 ) SpellItem.attackEntity(player, player, player, damageAmount);
             tag.putFloat(NBT_KEY, 0);
             playerData.put(Player.PERSISTED_NBT_TAG, tag);
         }
         else if ( living instanceof Mob mob ) {
             CompoundTag tag = mob.getPersistentData();
             final float damageAmount = tag.getFloat(NBT_KEY);
-            if ( damageAmount > 0 ) SpellItem.attackEntity(mob, mob, mob, damageAmount, damageAmount);
+            if ( damageAmount > 0 ) SpellItem.attackEntity(mob, mob, mob, damageAmount);
             tag.putFloat(NBT_KEY, 0);
         }
     }

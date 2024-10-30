@@ -107,6 +107,8 @@
   "tooltip.ancientmagicks.acid_arrow": "Launches a caustic magical damaging arrow",
   "item.ancientmagicks.witch_armor": "Witch Armor",
   "tooltip.ancientmagicks.witch_armor": "Shield yourself from damage by draining mana",
+  "item.ancientmagicks.life_tap": "Life Tap",
+  "tooltip.ancientmagicks.life_tap": "Convert some of your health into mana",
 
 
   "effect.ancientmagicks.frost_armor": "Frost Armor",
