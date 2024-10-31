@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.teleport;
+package net.mindoth.ancientmagicks.item.spell.blink;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
@@ -9,9 +9,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 
-public class TeleportItem extends SpellItem {
+public class BlinkItem extends SpellItem {
 
-    public TeleportItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+    public BlinkItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
         super(pProperties, spellTier, manaCost, cooldown, spellSchool);
     }
 

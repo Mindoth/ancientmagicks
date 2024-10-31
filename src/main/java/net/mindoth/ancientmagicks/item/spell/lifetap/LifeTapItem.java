@@ -27,7 +27,17 @@ public class LifeTapItem extends AbstractSpellRayCast {
 
     @Override
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
-        attackEntityWithoutKnockback(owner, owner, owner, owner.getMaxHealth() * 0.20F);
+        final double vx = target.getDeltaMovement().x;
+        final double vy = target.getDeltaMovement().y;
+        final double vz = target.getDeltaMovement().z;
+        target.hurt(target.damageSources().wither(), owner.getMaxHealth() * 0.20F);
+        target.setDeltaMovement(vx, vy, vz);
+        target.hurtMarked = true;
         MagickEvents.changeMana(owner, owner.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get()) * 0.20F);
+    }
+
+    @Override
+    protected boolean hasMask() {
+        return false;
     }
 }

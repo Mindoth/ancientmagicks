@@ -43,7 +43,7 @@ import net.mindoth.ancientmagicks.item.spell.summondeathknight.SummonDeathKnight
 import net.mindoth.ancientmagicks.item.spell.summonzombie.SummonZombieItem;
 import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockItem;
 import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabItem;
-import net.mindoth.ancientmagicks.item.spell.teleport.TeleportItem;
+import net.mindoth.ancientmagicks.item.spell.blink.BlinkItem;
 import net.mindoth.ancientmagicks.item.spell.thunderball.ThunderballItem;
 import net.mindoth.ancientmagicks.item.spell.verminbane.VerminBaneItem;
 import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstItem;
@@ -166,6 +166,9 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> ACID_ARROW_ITEM = ITEMS.register("acid_arrow",
             () -> new AcidArrowItem(new Item.Properties(), 2, 20, 2, SpellSchool.NATURE));
 
+    public static final RegistryObject<Item> BLINK_ITEM = ITEMS.register("blink",
+            () -> new BlinkItem(new Item.Properties(), 2, 40, 3, SpellSchool.ARCANE));
+
     public static final RegistryObject<Item> ALACRITY_ITEM = ITEMS.register("alacrity",
             () -> new AlacrityItem(new Item.Properties(), 3, 60, 10, SpellSchool.ARCANE));
 
@@ -204,9 +207,6 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> BLIZZARD_ITEM = ITEMS.register("blizzard",
             () -> new BlizzardItem(new Item.Properties(), 5, 10, 2, SpellSchool.FROST));
-
-    public static final RegistryObject<Item> TELEPORT_ITEM = ITEMS.register("teleport",
-            () -> new TeleportItem(new Item.Properties(), 5, 100, 3, SpellSchool.ARCANE));
 
     public static final RegistryObject<Item> TELEBLOCK_ITEM = ITEMS.register("teleblock",
             () -> new TeleblockItem(new Item.Properties(), 5, 100, 10, SpellSchool.ARCANE));
