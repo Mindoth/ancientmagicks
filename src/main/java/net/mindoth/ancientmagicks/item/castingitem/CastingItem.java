@@ -145,4 +145,9 @@ public class CastingItem extends Item {
     public boolean isEnchantable(@Nonnull ItemStack stack) {
         return false;
     }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return false;
+    }
 }

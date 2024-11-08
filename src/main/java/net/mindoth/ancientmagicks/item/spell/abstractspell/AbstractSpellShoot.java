@@ -38,10 +38,11 @@ public abstract class AbstractSpellShoot extends SpellItem {
             AbstractSpellEntity projectile = getProjectile(level, owner, caster);
             projectile.setAdditionalData(getColor());
             projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
-            projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.getSpeed()), 0.0F);
             float power = projectile.getPower();
             power *= (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
             projectile.getEntityData().set(AbstractSpellEntity.POWER, power);
+            projectile.setNoGravity(false);
+            projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.getSpeed()), 0.0F);
             level.addFreshEntity(projectile);
 
             playSound(level, center);

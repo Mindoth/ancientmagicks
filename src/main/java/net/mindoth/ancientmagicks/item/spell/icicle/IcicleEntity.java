@@ -31,7 +31,6 @@ public class IcicleEntity extends AbstractSpellEntity {
 
     public IcicleEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
         super(AncientMagicksEntities.ICICLE.get(), level, owner, caster, rune);
-        this.setNoGravity(false);
     }
 
     @Override
@@ -41,7 +40,7 @@ public class IcicleEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultSpeed() {
-        return 1.6F;
+        return 0.8F;
     }
 
     @Override
