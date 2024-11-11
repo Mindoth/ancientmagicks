@@ -1,13 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "  #",
     " # ",
-    "#  "
+    " # ",
+    " D "
   ],
   "key": {
     "#": {
       "tag": "forge:rods/wooden"
+    },
+    "D": {
+      "item": "ancientmagicks:arcane_dust"
     }
   },
   "result": {
