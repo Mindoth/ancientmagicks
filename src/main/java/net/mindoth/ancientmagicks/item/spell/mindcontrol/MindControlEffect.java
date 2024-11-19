@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -103,17 +104,17 @@ public class MindControlEffect extends MobEffect {
     @SubscribeEvent
     public static void onMindControlExpiration(final MobEffectEvent.Expired event) {
         if ( event.getEntity().level().isClientSide ) return;
-        onMindControlEnd(event.getEffectInstance().getEffect(), event.getEntity());
+        onMindControlEnd(event.getEffectInstance(), event.getEntity());
     }
 
     @SubscribeEvent
     public static void onMindControlRemoved(final MobEffectEvent.Remove event) {
         if ( event.getEntity().level().isClientSide ) return;
-        onMindControlEnd(event.getEffectInstance().getEffect(), event.getEntity());
+        onMindControlEnd(event.getEffectInstance(), event.getEntity());
     }
 
-    private static void onMindControlEnd(MobEffect effect, Entity entity) {
-        if ( effect != null && effect == AncientMagicksEffects.MIND_CONTROL.get() && entity instanceof Mob mob ) {
+    private static void onMindControlEnd(MobEffectInstance instance, Entity entity) {
+        if ( instance != null && instance.getEffect() == AncientMagicksEffects.MIND_CONTROL.get() && entity instanceof Mob mob ) {
             if ( mob.getPersistentData().getBoolean("am_is_minion") ) mob.kill();
             else {
                 mob.setTarget(null);
