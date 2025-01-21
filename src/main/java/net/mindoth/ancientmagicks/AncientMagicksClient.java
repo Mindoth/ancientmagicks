@@ -14,7 +14,6 @@ import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
 import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltRenderer;
 import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceRenderer;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleRenderer;
-import net.mindoth.ancientmagicks.item.spell.thunderball.ThunderballRenderer;
 import net.mindoth.ancientmagicks.item.spell.waterbolt.WaterBoltRenderer;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
@@ -60,7 +59,6 @@ public class AncientMagicksClient {
         event.registerEntityRenderer(AncientMagicksEntities.ICICLE.get(), IcicleRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.FREEZE_LANCE.get(), FreezeLanceRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.BURN_LANCE.get(), BurnLanceRenderer::new);
-        event.registerEntityRenderer(AncientMagicksEntities.THUNDERBALL.get(), ThunderballRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.FIRE_BOLT.get(), FireBoltRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.ACID_ARROW.get(), AcidArrowRenderer::new);
     }

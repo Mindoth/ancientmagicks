@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ancientmagicks:item/hood"
+    "layer0": "ancientmagicks:item/simple_hood"
   }
 }

@@ -45,7 +45,6 @@ import net.mindoth.ancientmagicks.item.spell.summondeathknight.SummonDeathKnight
 import net.mindoth.ancientmagicks.item.spell.summonzombie.SummonZombieItem;
 import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockItem;
 import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabItem;
-import net.mindoth.ancientmagicks.item.spell.thunderball.ThunderballItem;
 import net.mindoth.ancientmagicks.item.spell.verminbane.VerminBaneItem;
 import net.mindoth.ancientmagicks.item.spell.waterbolt.WaterBoltItem;
 import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstItem;
@@ -112,11 +111,14 @@ public class AncientMagicksItems {
                             "Weapon modifier", 0.20D, AttributeModifier.Operation.MULTIPLY_BASE)
                     )));
 
-    public static final RegistryObject<Item> HOOD = ITEMS.register("hood",
+    public static final RegistryObject<Item> SIMPLE_HOOD = ITEMS.register("simple_hood",
             () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.CLOTH, ArmorItem.Type.HELMET, new Item.Properties()));
 
-    public static final RegistryObject<Item> CLOAK = ITEMS.register("cloak",
+    public static final RegistryObject<Item> SIMPLE_ROBE_TOP = ITEMS.register("simple_robe_top",
             () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.CLOTH, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+
+    public static final RegistryObject<Item> SIMPLE_ROBE_BOTTOM = ITEMS.register("simple_robe_bottom",
+            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.CLOTH, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 
     public static final RegistryObject<Item> GOLDEN_CIRCLET = ITEMS.register("golden_circlet",
             () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.GAUDY, ArmorItem.Type.HELMET, new Item.Properties()));
@@ -193,9 +195,6 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> FLY_ITEM = ITEMS.register("fly",
             () -> new FlyItem(new Item.Properties(), 3, 60, 10, SpellSchool.ARCANE));
-
-    public static final RegistryObject<Item> THUNDERBALL_ITEM = ITEMS.register("thunderball",
-            () -> new ThunderballItem(new Item.Properties(), 3, 30, 4, SpellSchool.NATURE));
 
     public static final RegistryObject<Item> FIRE_BREATH_ITEM = ITEMS.register("fire_breath",
             () -> new FireBreathItem(new Item.Properties(), 3, 6, 2, SpellSchool.FIRE));

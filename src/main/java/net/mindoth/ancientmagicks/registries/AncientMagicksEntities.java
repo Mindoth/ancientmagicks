@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowEntity;
 import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceEntity;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
@@ -8,8 +9,6 @@ import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltEntity;
 import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceEntity;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
 import net.mindoth.ancientmagicks.item.spell.waterbolt.WaterBoltEntity;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
-import net.mindoth.ancientmagicks.item.spell.thunderball.ThunderballEntity;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -48,10 +47,6 @@ public class AncientMagicksEntities {
     public static final RegistryObject<EntityType<BurnLanceEntity>> BURN_LANCE
             = registerEntity(EntityType.Builder.<BurnLanceEntity>of(BurnLanceEntity::new,
             MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(BurnLanceEntity::new), "burn_lance");
-
-    public static final RegistryObject<EntityType<ThunderballEntity>> THUNDERBALL
-            = registerEntity(EntityType.Builder.<ThunderballEntity>of(ThunderballEntity::new,
-            MobCategory.MISC).sized(0.8F, 0.8F).setCustomClientFactory(ThunderballEntity::new), "thunderball");
 
     public static final RegistryObject<EntityType<FireBoltEntity>> FIRE_BOLT
             = registerEntity(EntityType.Builder.<FireBoltEntity>of(FireBoltEntity::new,
