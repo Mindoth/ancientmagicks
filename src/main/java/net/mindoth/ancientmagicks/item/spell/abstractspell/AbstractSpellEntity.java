@@ -44,7 +44,6 @@ public abstract class AbstractSpellEntity extends Projectile {
 
     public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, SpellItem spell) {
         super(entityType, pLevel);
-        this.setNoGravity(true);
         this.owner = owner;
         this.caster = caster;
         this.spell = spell;

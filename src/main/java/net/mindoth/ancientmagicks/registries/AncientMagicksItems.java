@@ -103,13 +103,16 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> WOODEN_STAFF = ITEMS.register("wooden_staff",
             () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Map.of()));
 
-    public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
+    /*public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
             () -> new StaffItem(new Item.Properties().durability(100), 0.0D, -3.0D,
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                                     "Weapon modifier", 0.25D, AttributeModifier.Operation.MULTIPLY_BASE),
                             AncientMagicksAttributes.MP_REG.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                             "Weapon modifier", 0.20D, AttributeModifier.Operation.MULTIPLY_BASE)
-                    )));
+                    )));*/
+
+    public static final RegistryObject<Item> GOLDEN_WAND = ITEMS.register("golden_wand",
+            () -> new WandItem(new Item.Properties().durability(25)));
 
     public static final RegistryObject<Item> SIMPLE_HOOD = ITEMS.register("simple_hood",
             () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.CLOTH, ArmorItem.Type.HELMET, new Item.Properties()));

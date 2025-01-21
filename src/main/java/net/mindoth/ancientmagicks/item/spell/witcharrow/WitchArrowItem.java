@@ -24,4 +24,9 @@ public class WitchArrowItem extends AbstractSpellShoot {
         if ( target != null && target != caster && (target instanceof LivingEntity living && !isAlly(owner, living)) ) projectile.target = target;
         return projectile;
     }
+
+    @Override
+    protected boolean hasGravity() {
+        return true;
+    }
 }

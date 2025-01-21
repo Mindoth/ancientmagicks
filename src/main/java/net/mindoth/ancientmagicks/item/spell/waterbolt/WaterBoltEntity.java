@@ -41,7 +41,12 @@ public class WaterBoltEntity extends AbstractSpellEntity {
 
     @Override
     public int getDefaultEnemyPierce() {
-        return Integer.MAX_VALUE;
+        return 3;
+    }
+
+    @Override
+    public int getDefaultBlockBounce() {
+        return 3;
     }
 
     @Override

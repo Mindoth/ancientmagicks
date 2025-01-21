@@ -25,4 +25,9 @@ public class AcidArrowItem extends AbstractSpellShoot {
     protected ParticleColor.IntWrapper getColor() {
         return AbstractSpellEntity.getSpellColor(ColorCode.DARK_GREEN);
     }
+
+    @Override
+    protected boolean hasGravity() {
+        return true;
+    }
 }

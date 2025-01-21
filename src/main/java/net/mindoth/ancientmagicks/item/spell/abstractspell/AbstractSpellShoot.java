@@ -41,7 +41,7 @@ public abstract class AbstractSpellShoot extends SpellItem {
             float power = projectile.getPower();
             power *= (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
             projectile.getEntityData().set(AbstractSpellEntity.POWER, power);
-            projectile.setNoGravity(false);
+            projectile.setNoGravity(!hasGravity());
             projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.getSpeed()), 0.0F);
             level.addFreshEntity(projectile);
 
@@ -49,5 +49,9 @@ public abstract class AbstractSpellShoot extends SpellItem {
         }
 
         return state;
+    }
+
+    protected boolean hasGravity() {
+        return false;
     }
 }

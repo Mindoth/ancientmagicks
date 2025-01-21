@@ -24,4 +24,9 @@ public class FreezeLanceItem extends AbstractSpellShoot {
     protected ParticleColor.IntWrapper getColor() {
         return AbstractSpellEntity.getSpellColor(ColorCode.AQUA);
     }
+
+    @Override
+    protected boolean hasGravity() {
+        return true;
+    }
 }

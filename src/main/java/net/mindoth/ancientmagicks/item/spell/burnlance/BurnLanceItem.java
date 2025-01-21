@@ -30,4 +30,9 @@ public class BurnLanceItem extends AbstractSpellShoot {
     protected void playSound(Level level, Vec3 center) {
         playFireShootSound(level, center);
     }
+
+    @Override
+    protected boolean hasGravity() {
+        return true;
+    }
 }
