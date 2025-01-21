@@ -123,31 +123,31 @@ public class SpellItem extends Item {
         if ( this.spellSchool.equals(SpellSchool.ARCANE) ) r = 170;
         if ( this.spellSchool.equals(SpellSchool.FIRE) ) r = 255;
         if ( this.spellSchool.equals(SpellSchool.NATURE) ) r = 85;
-        if ( this.spellSchool.equals(SpellSchool.SHADOW) ) r = 0;
+        if ( this.spellSchool.equals(SpellSchool.DARK) ) r = 1;
         if ( this.spellSchool.equals(SpellSchool.LIGHT) ) r = 255;
         return r;
     }
 
     protected int getGreen() {
-        int r = 255;
-        if ( this.spellSchool.equals(SpellSchool.FROST) ) r = 255;
-        if ( this.spellSchool.equals(SpellSchool.ARCANE) ) r = 25;
-        if ( this.spellSchool.equals(SpellSchool.FIRE) ) r = 170;
-        if ( this.spellSchool.equals(SpellSchool.NATURE) ) r = 255;
-        if ( this.spellSchool.equals(SpellSchool.SHADOW) ) r = 0;
-        if ( this.spellSchool.equals(SpellSchool.LIGHT) ) r = 255;
-        return r;
+        int g = 255;
+        if ( this.spellSchool.equals(SpellSchool.FROST) ) g = 255;
+        if ( this.spellSchool.equals(SpellSchool.ARCANE) ) g = 25;
+        if ( this.spellSchool.equals(SpellSchool.FIRE) ) g = 170;
+        if ( this.spellSchool.equals(SpellSchool.NATURE) ) g = 255;
+        if ( this.spellSchool.equals(SpellSchool.DARK) ) g = 1;
+        if ( this.spellSchool.equals(SpellSchool.LIGHT) ) g = 255;
+        return g;
     }
 
     protected int getBlue() {
-        int r = 255;
-        if ( this.spellSchool.equals(SpellSchool.FROST) ) r = 255;
-        if ( this.spellSchool.equals(SpellSchool.ARCANE) ) r = 170;
-        if ( this.spellSchool.equals(SpellSchool.FIRE) ) r = 25;
-        if ( this.spellSchool.equals(SpellSchool.NATURE) ) r = 85;
-        if ( this.spellSchool.equals(SpellSchool.SHADOW) ) r = 0;
-        if ( this.spellSchool.equals(SpellSchool.LIGHT) ) r = 255;
-        return r;
+        int b = 255;
+        if ( this.spellSchool.equals(SpellSchool.FROST) ) b = 255;
+        if ( this.spellSchool.equals(SpellSchool.ARCANE) ) b = 170;
+        if ( this.spellSchool.equals(SpellSchool.FIRE) ) b = 25;
+        if ( this.spellSchool.equals(SpellSchool.NATURE) ) b = 85;
+        if ( this.spellSchool.equals(SpellSchool.DARK) ) b = 1;
+        if ( this.spellSchool.equals(SpellSchool.LIGHT) ) b = 255;
+        return b;
     }
 
     @Override

@@ -5,6 +5,6 @@ public enum SpellSchool {
     ARCANE,
     FIRE,
     NATURE,
-    SHADOW,
+    DARK,
     LIGHT
 }

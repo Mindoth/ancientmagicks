@@ -40,7 +40,7 @@ public class IcicleEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultSpeed() {
-        return 0.8F;
+        return 1.0F;
     }
 
     @Override

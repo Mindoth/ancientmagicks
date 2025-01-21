@@ -57,7 +57,7 @@ public class MagickEvents {
                 else magic.setKnownSpells("");
                 AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMagic(tag), serverPlayer);
                 if ( data.getBoolean(TAG_NOT_FIRST_LOGIN) ) AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMana(magic.getCurrentMana()), serverPlayer);
-                else changeMana(serverPlayer, serverPlayer.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get()));
+                else changeMana(serverPlayer, serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get()));
             });
         }
 
@@ -72,10 +72,10 @@ public class MagickEvents {
     public static void baseManaRegen(final TickEvent.LevelTickEvent event) {
         if ( event.phase != TickEvent.Phase.END || event.level.isClientSide ) return;
         event.level.players().stream().toList().forEach(player -> {
-            final double manaRegen = player.getAttributeValue(AncientMagicksAttributes.MANA_REGENERATION.get());
+            final double manaRegen = player.getAttributeValue(AncientMagicksAttributes.MP_REG.get());
             if ( !(player instanceof ServerPlayer serverPlayer ) || player.isRemoved() ) return;
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-                final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get());
+                final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get());
                 final double currentMana = magic.getCurrentMana();
                 boolean isCasting = serverPlayer.isUsingItem() && serverPlayer.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof StaffItem;
                 if ( currentMana < maxMana ) {
@@ -90,7 +90,7 @@ public class MagickEvents {
     public static void changeMana(Player player, double addition) {
         if ( !(player instanceof ServerPlayer serverPlayer ) || player.isRemoved() || (player.isCreative() && addition < 0) ) return;
         serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-            final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get());
+            final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get());
             final double currentMana = magic.getCurrentMana();
             magic.setCurrentMana(Math.max(0.0D, Math.min(maxMana, currentMana + addition)));
             AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMana(magic.getCurrentMana()), serverPlayer);

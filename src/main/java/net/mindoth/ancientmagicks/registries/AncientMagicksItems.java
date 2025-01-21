@@ -2,15 +2,17 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.castingitem.WandItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
-import net.mindoth.ancientmagicks.item.armor.AncientMagicsArmorMaterials;
+import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
+import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
+import net.mindoth.ancientmagicks.item.castingitem.WandItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindItem;
+import net.mindoth.ancientmagicks.item.spell.blink.BlinkItem;
 import net.mindoth.ancientmagicks.item.spell.blizzard.BlizzardItem;
 import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceItem;
 import net.mindoth.ancientmagicks.item.spell.callthunder.CallThunderItem;
@@ -26,6 +28,7 @@ import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltItem;
 import net.mindoth.ancientmagicks.item.spell.firebreath.FireBreathItem;
 import net.mindoth.ancientmagicks.item.spell.fly.FlyItem;
 import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceItem;
+import net.mindoth.ancientmagicks.item.spell.frostarmor.FrostArmorItem;
 import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkItem;
 import net.mindoth.ancientmagicks.item.spell.greaterinvisibility.GreaterInvisibilityItem;
 import net.mindoth.ancientmagicks.item.spell.icewall.IceWallItem;
@@ -36,18 +39,16 @@ import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlItem;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainItem;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphItem;
 import net.mindoth.ancientmagicks.item.spell.sleep.SleepItem;
-import net.mindoth.ancientmagicks.item.spell.waterbolt.WaterBoltItem;
 import net.mindoth.ancientmagicks.item.spell.spook.SpookItem;
 import net.mindoth.ancientmagicks.item.spell.summonbees.SummonBeesItem;
 import net.mindoth.ancientmagicks.item.spell.summondeathknight.SummonDeathKnightItem;
 import net.mindoth.ancientmagicks.item.spell.summonzombie.SummonZombieItem;
 import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockItem;
 import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabItem;
-import net.mindoth.ancientmagicks.item.spell.blink.BlinkItem;
 import net.mindoth.ancientmagicks.item.spell.thunderball.ThunderballItem;
 import net.mindoth.ancientmagicks.item.spell.verminbane.VerminBaneItem;
+import net.mindoth.ancientmagicks.item.spell.waterbolt.WaterBoltItem;
 import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstItem;
-import net.mindoth.ancientmagicks.item.spell.frostarmor.FrostArmorItem;
 import net.mindoth.ancientmagicks.item.spell.witcharmor.WitchArmorItem;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowItem;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
@@ -101,15 +102,24 @@ public class AncientMagicksItems {
             () -> new WandItem(new Item.Properties().durability(10)));
 
     public static final RegistryObject<Item> WOODEN_STAFF = ITEMS.register("wooden_staff",
-            () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D,
-            Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                    "Weapon modifier", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE))));
+            () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Map.of()));
+
+    public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
+            () -> new StaffItem(new Item.Properties().durability(100), 0.0D, -3.0D,
+                    Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
+                                    "Weapon modifier", 0.25D, AttributeModifier.Operation.MULTIPLY_BASE),
+                            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
+                            "Weapon modifier", 0.20D, AttributeModifier.Operation.MULTIPLY_BASE)
+                    )));
 
     public static final RegistryObject<Item> HOOD = ITEMS.register("hood",
-            () -> new ColorableMagicArmorItem(AncientMagicsArmorMaterials.CLOTH, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.CLOTH, ArmorItem.Type.HELMET, new Item.Properties()));
 
     public static final RegistryObject<Item> CLOAK = ITEMS.register("cloak",
-            () -> new ColorableMagicArmorItem(AncientMagicsArmorMaterials.CLOTH, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.CLOTH, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+
+    public static final RegistryObject<Item> GOLDEN_CIRCLET = ITEMS.register("golden_circlet",
+            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.GAUDY, ArmorItem.Type.HELMET, new Item.Properties()));
 
     //Magic Spells
     public static final RegistryObject<Item> FEATHER_FALL_ITEM = ITEMS.register("feather_fall",
@@ -128,7 +138,7 @@ public class AncientMagicksItems {
             () -> new WitchArrowItem(new Item.Properties(), 1, 10, 2, SpellSchool.ARCANE));
 
     public static final RegistryObject<Item> SLEEP_ITEM = ITEMS.register("sleep",
-            () -> new SleepItem(new Item.Properties(), 1, 20, 10, SpellSchool.SHADOW));
+            () -> new SleepItem(new Item.Properties(), 1, 20, 10, SpellSchool.DARK));
 
     public static final RegistryObject<Item> NUMB_PAIN_ITEM = ITEMS.register("numb_pain",
             () -> new NumbPainItem(new Item.Properties(), 1, 20, 10, SpellSchool.LIGHT));
@@ -152,10 +162,10 @@ public class AncientMagicksItems {
             () -> new WindBurstItem(new Item.Properties(), 2, 40, 3, SpellSchool.NATURE));
 
     public static final RegistryObject<Item> BLIND_ITEM = ITEMS.register("blind",
-            () -> new BlindItem(new Item.Properties(), 2, 40, 10, SpellSchool.SHADOW));
+            () -> new BlindItem(new Item.Properties(), 2, 40, 10, SpellSchool.DARK));
 
     public static final RegistryObject<Item> DARKVISION_ITEM = ITEMS.register("darkvision",
-            () -> new DarkvisionItem(new Item.Properties(), 2, 20, 10, SpellSchool.SHADOW));
+            () -> new DarkvisionItem(new Item.Properties(), 2, 20, 10, SpellSchool.DARK));
 
     public static final RegistryObject<Item> INVISIBILITY_ITEM = ITEMS.register("invisibility",
             () -> new InvisibilityItem(new Item.Properties(), 2, 40, 10, SpellSchool.ARCANE));
@@ -179,7 +189,7 @@ public class AncientMagicksItems {
             () -> new CallThunderItem(new Item.Properties(), 3, 60, 4, SpellSchool.NATURE));
 
     public static final RegistryObject<Item> SUMMON_ZOMBIE_ITEM = ITEMS.register("summon_zombie",
-            () -> new SummonZombieItem(new Item.Properties(), 3, 60, 10, SpellSchool.SHADOW));
+            () -> new SummonZombieItem(new Item.Properties(), 3, 60, 10, SpellSchool.DARK));
 
     public static final RegistryObject<Item> FLY_ITEM = ITEMS.register("fly",
             () -> new FlyItem(new Item.Properties(), 3, 60, 10, SpellSchool.ARCANE));
@@ -203,7 +213,7 @@ public class AncientMagicksItems {
             () -> new GreaterInvisibilityItem(new Item.Properties(), 4, 80, 10, SpellSchool.ARCANE));
 
     public static final RegistryObject<Item> LIFE_TAP_ITEM = ITEMS.register("life_tap",
-            () -> new LifeTapItem(new Item.Properties(), 4, 0, 1, SpellSchool.SHADOW));
+            () -> new LifeTapItem(new Item.Properties(), 4, 0, 1, SpellSchool.DARK));
 
     public static final RegistryObject<Item> BLIZZARD_ITEM = ITEMS.register("blizzard",
             () -> new BlizzardItem(new Item.Properties(), 5, 10, 2, SpellSchool.FROST));
@@ -215,10 +225,10 @@ public class AncientMagicksItems {
             () -> new ChaoticPolymorphItem(new Item.Properties(), 5, 100, 10, SpellSchool.ARCANE));
 
     public static final RegistryObject<Item> MIND_CONTROL_ITEM = ITEMS.register("mind_control",
-            () -> new MindControlItem(new Item.Properties(), 5, 100, 10, SpellSchool.SHADOW));
+            () -> new MindControlItem(new Item.Properties(), 5, 100, 10, SpellSchool.DARK));
 
     public static final RegistryObject<Item> SUMMON_DEATH_KNIGHT_ITEM = ITEMS.register("summon_death_knight",
-            () -> new SummonDeathKnightItem(new Item.Properties(), 5, 100, 10, SpellSchool.SHADOW));
+            () -> new SummonDeathKnightItem(new Item.Properties(), 5, 100, 10, SpellSchool.DARK));
 
     public static final RegistryObject<Item> VERMIN_BANE_ITEM = ITEMS.register("vermin_bane",
             () -> new VerminBaneItem(new Item.Properties(), 5, 10, 2, SpellSchool.ARCANE));
@@ -227,7 +237,7 @@ public class AncientMagicksItems {
             () -> new WitchArmorItem(new Item.Properties(), 5, 120, 10, SpellSchool.ARCANE));
 
     public static final RegistryObject<Item> GHOSTWALK_ITEM = ITEMS.register("ghostwalk",
-            () -> new GhostwalkItem(new Item.Properties(), 6, 120, 10, SpellSchool.SHADOW));
+            () -> new GhostwalkItem(new Item.Properties(), 6, 120, 10, SpellSchool.DARK));
 
     public static final RegistryObject<Item> DRAGON_BREATH_ITEM = ITEMS.register("dragon_breath",
             () -> new DragonBreathItem(new Item.Properties(), 6, 12, 2, SpellSchool.ARCANE));

@@ -13,11 +13,17 @@ import net.minecraft.world.item.crafting.Ingredient;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public enum AncientMagicsArmorMaterials implements CustomArmorMaterial {
+public enum AncientMagicksArmorMaterials implements CustomArmorMaterial {
+
     CLOTH("amcloth", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
             0, 0, () -> Ingredient.of(Items.STRING), Map.of(
-            AncientMagicksAttributes.MANA_MAXIMUM.get(), new AttributeModifier("Mana Maximum", 25.0D, AttributeModifier.Operation.ADDITION),
-            AncientMagicksAttributes.MANA_REGENERATION.get(), new AttributeModifier("Mana Regeneration", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE)
+            AncientMagicksAttributes.MP_MAX.get(), new AttributeModifier("Mana Maximum", 25.0D, AttributeModifier.Operation.ADDITION),
+            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE)
+    )),
+    GAUDY("amgaudy", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_CHAIN,
+            0, 0, () -> Ingredient.of(Items.GOLD_INGOT), Map.of(
+            AncientMagicksAttributes.MP_MAX.get(), new AttributeModifier("Mana Maximum", 75.0D, AttributeModifier.Operation.ADDITION),
+            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 0.20D, AttributeModifier.Operation.MULTIPLY_BASE)
     ));
 
     private final String name;
@@ -32,7 +38,7 @@ public enum AncientMagicsArmorMaterials implements CustomArmorMaterial {
 
     private static final int[] BASE_DURABILITY = { 11, 16, 15, 13 };
 
-    AncientMagicsArmorMaterials(String name, int durabilityModifier, int[] protectionAmounts, int enchantmentValue, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient, Map<Attribute, AttributeModifier> additionalAttributes) {
+    AncientMagicksArmorMaterials(String name, int durabilityModifier, int[] protectionAmounts, int enchantmentValue, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient, Map<Attribute, AttributeModifier> additionalAttributes) {
         this.name = name;
         this.durabilityModifier = durabilityModifier;
         this.protectionAmounts = protectionAmounts;

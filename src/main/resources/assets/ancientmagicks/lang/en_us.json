@@ -6,15 +6,17 @@
   "key.ancientmagicks.spell_selector": "Rune Selector",
 
 
-  "item.ancientmagicks.wooden_staff": "Wooden Staff",
   "item.ancientmagicks.empty_rune": "Stone Slate",
   "item.ancientmagicks.arcane_dust": "Arcane Dust",
   "item.ancientmagicks.spell_pearl": "Spell Pearl",
   "item.ancientmagicks.spell_scroll": "Spell Scroll",
   "item.ancientmagicks.ancient_tablet": "Ancient Tablet",
+  "item.ancientmagicks.wooden_staff": "Wooden Staff",
   "item.ancientmagicks.wooden_wand": "Wooden Wand",
   "item.ancientmagicks.hood": "Hood",
   "item.ancientmagicks.cloak": "Cloak",
+  "item.ancientmagicks.golden_staff": "Golden Staff",
+  "item.ancientmagicks.golden_circlet": "Golden Circlet",
 
   "item.ancientmagicks.blue_rune": "Blue Rune",
   "item.ancientmagicks.purple_rune": "Purple Rune",
@@ -127,7 +129,7 @@
   "tooltip.ancientmagicks.ARCANE": "\u00A75Arcane\u00A7r",
   "tooltip.ancientmagicks.FIRE": "\u00A76Fire\u00A7r",
   "tooltip.ancientmagicks.NATURE": "\u00A72Nature\u00A7r",
-  "tooltip.ancientmagicks.SHADOW": "\u00A78Shadow\u00A7r",
+  "tooltip.ancientmagicks.DARK": "\u00A78Dark\u00A7r",
   "tooltip.ancientmagicks.LIGHT": "\u00A7fLight\u00A7r",
 
 
@@ -137,7 +139,7 @@
   "tooltip.ancientmagicks.cooldown": "\u00A77Cooldown\u00A7r",
   "tooltip.ancientmagicks.shift": "\u00A77Hold SHIFT to read Spell effects\u00A7r",
 
-  "attribute.ancientmagicks.max_mana": "\u00A79Maximum Mana\u00A7r",
-  "attribute.ancientmagicks.mana_regen": "\u00A79Mana Regeneration\u00A7r",
+  "attribute.ancientmagicks.mp_max": "\u00A79Maximum Mana\u00A7r",
+  "attribute.ancientmagicks.mp_regen": "\u00A79Mana Regeneration\u00A7r",
   "attribute.ancientmagicks.spell_power": "\u00A79Spell Power\u00A7r"
 }

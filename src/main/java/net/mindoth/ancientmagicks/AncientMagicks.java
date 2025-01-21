@@ -76,7 +76,7 @@ public class AncientMagicks {
             for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.ARCANE ) event.accept(item);
             for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.FIRE ) event.accept(item);
             for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.NATURE ) event.accept(item);
-            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.SHADOW ) event.accept(item);
+            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.DARK) event.accept(item);
             for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.LIGHT ) event.accept(item);
         }
     }

@@ -41,7 +41,7 @@ public class AncientMagicksCapabilities {
                     tag.putString("am_spell", oldStore.getCurrentSpell());
                     tag.putString("am_known_spells", oldStore.getKnownSpells());
                     AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMagic(tag), serverPlayer);
-                    MagickEvents.changeMana(serverPlayer, serverPlayer.getAttributeValue(AncientMagicksAttributes.MANA_MAXIMUM.get()));
+                    MagickEvents.changeMana(serverPlayer, serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get()));
                 });
             });
             event.getOriginal().invalidateCaps();

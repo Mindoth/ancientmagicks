@@ -1,21 +1,21 @@
 package net.mindoth.ancientmagicks;
 
-import net.mindoth.ancientmagicks.client.screen.HudCurrentSpell;
 import net.mindoth.ancientmagicks.client.screen.GuiSpellWheel;
+import net.mindoth.ancientmagicks.client.screen.HudCurrentSpell;
 import net.mindoth.ancientmagicks.client.screen.HudMana;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
+import net.mindoth.ancientmagicks.item.armor.DyeableMagicItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
-import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlRenderer;
 import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowRenderer;
 import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
 import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltRenderer;
 import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceRenderer;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleRenderer;
-import net.mindoth.ancientmagicks.item.spell.waterbolt.WaterBoltRenderer;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlRenderer;
 import net.mindoth.ancientmagicks.item.spell.thunderball.ThunderballRenderer;
+import net.mindoth.ancientmagicks.item.spell.waterbolt.WaterBoltRenderer;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendRuneData;
@@ -23,7 +23,6 @@ import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.ancientmagicks.registries.AncientMagicksKeyBinds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
@@ -46,7 +45,7 @@ public class AncientMagicksClient {
         for ( Item item : ForgeRegistries.ITEMS.getValues() ) {
             if ( item instanceof ColorableMagicArmorItem || item instanceof ColorableStaffItem ) {
                 event.getItemColors().register((color, armor) -> {
-                    return armor > 0 ? -1 : ((DyeableLeatherItem)color.getItem()).getColor(color);
+                    return armor > 0 ? -1 : ((DyeableMagicItem)color.getItem()).getColor(color);
                 }, item);
             }
         }
