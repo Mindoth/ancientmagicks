@@ -7,11 +7,11 @@
   ],
   "key": {
     "#": {
-      "tag": "forge:string"
+      "item": "ancientmagicks:arcane_cloth"
     }
   },
   "result": {
-    "item": "ancientmagicks:hood",
+    "item": "ancientmagicks:simple_hood",
     "count": 1
   }
 }

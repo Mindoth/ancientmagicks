@@ -1,20 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " C#",
-    " # ",
+    " CD",
+    " ##",
     "#  "
   ],
   "key": {
     "#": {
-      "tag": "forge:rods/wooden"
+      "item": "minecraft:gold_ingot"
     },
     "C": {
       "item": "ancientmagicks:arcane_cloth"
+    },
+    "D": {
+      "item": "minecraft:diamond"
     }
   },
   "result": {
-    "item": "ancientmagicks:wooden_staff",
+    "item": "ancientmagicks:golden_staff",
     "count": 1
   }
 }

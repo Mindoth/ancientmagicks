@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 public interface DyeableMagicItem extends DyeableLeatherItem {
     String TAG_COLOR = "color";
     String TAG_DISPLAY = "display";
-    int DEFAULT_LEATHER_COLOR = 16185078;
+    int DEFAULT_LEATHER_COLOR = 7641066;
 
     @Override
     default boolean hasCustomColor(ItemStack pStack) {

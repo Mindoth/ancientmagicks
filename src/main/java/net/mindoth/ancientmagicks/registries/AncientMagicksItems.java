@@ -6,7 +6,6 @@ import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
-import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.WandItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowItem;
@@ -92,7 +91,10 @@ public class AncientMagicksItems {
             () -> new SpellStorageItem(new Item.Properties()));
 
     public static final RegistryObject<Item> ARCANE_DUST = ITEMS.register("arcane_dust",
-            () -> new Item(new Item.Properties().fireResistant()));
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> ARCANE_CLOTH = ITEMS.register("arcane_cloth",
+            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> STONE_SLATE = ITEMS.register("empty_rune",
             () -> new Item(new Item.Properties()));
@@ -103,25 +105,25 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> WOODEN_STAFF = ITEMS.register("wooden_staff",
             () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Map.of()));
 
-    /*public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
-            () -> new StaffItem(new Item.Properties().durability(100), 0.0D, -3.0D,
+    public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
+            () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D,
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                                     "Weapon modifier", 0.25D, AttributeModifier.Operation.MULTIPLY_BASE),
                             AncientMagicksAttributes.MP_REG.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                             "Weapon modifier", 0.20D, AttributeModifier.Operation.MULTIPLY_BASE)
-                    )));*/
+                    )));
 
     public static final RegistryObject<Item> GOLDEN_WAND = ITEMS.register("golden_wand",
             () -> new WandItem(new Item.Properties().durability(25)));
 
     public static final RegistryObject<Item> SIMPLE_HOOD = ITEMS.register("simple_hood",
-            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.CLOTH, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.HELMET, new Item.Properties()));
 
     public static final RegistryObject<Item> SIMPLE_ROBE_TOP = ITEMS.register("simple_robe_top",
-            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.CLOTH, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
 
     public static final RegistryObject<Item> SIMPLE_ROBE_BOTTOM = ITEMS.register("simple_robe_bottom",
-            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.CLOTH, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 
     public static final RegistryObject<Item> GOLDEN_CIRCLET = ITEMS.register("golden_circlet",
             () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.GAUDY, ArmorItem.Type.HELMET, new Item.Properties()));

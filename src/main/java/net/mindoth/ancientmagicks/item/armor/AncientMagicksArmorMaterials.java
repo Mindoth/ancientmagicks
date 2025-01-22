@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 
 public enum AncientMagicksArmorMaterials implements CustomArmorMaterial {
 
-    CLOTH("amcloth", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
+    SIMPLE("amsimple", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
             0, 0, () -> Ingredient.of(Items.STRING), Map.of(
             AncientMagicksAttributes.MP_MAX.get(), new AttributeModifier("Mana Maximum", 25.0D, AttributeModifier.Operation.ADDITION),
             AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE)

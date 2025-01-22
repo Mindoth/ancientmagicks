@@ -1,20 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " C#",
-    " # ",
-    "#  "
+    "# #",
+    "###",
+    "###"
   ],
   "key": {
     "#": {
-      "tag": "forge:rods/wooden"
-    },
-    "C": {
       "item": "ancientmagicks:arcane_cloth"
     }
   },
   "result": {
-    "item": "ancientmagicks:wooden_staff",
+    "item": "ancientmagicks:simple_robe_top",
     "count": 1
   }
 }

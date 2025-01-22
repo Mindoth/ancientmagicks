@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#D#",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:string"
+    },
+    "D": {
+      "item": "ancientmagicks:arcane_dust"
+    }
+  },
+  "result": {
+    "item": "ancientmagicks:arcane_cloth",
+    "count": 4
+  }
+}
