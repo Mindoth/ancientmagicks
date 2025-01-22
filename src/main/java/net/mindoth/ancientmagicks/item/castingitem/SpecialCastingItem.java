@@ -1,13 +1,11 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
-import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -26,9 +24,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class SpellStorageItem extends CastingItem {
+public class SpecialCastingItem extends CastingItem {
 
-    public SpellStorageItem(Properties pProperties) {
+    public SpecialCastingItem(Properties pProperties) {
         super(pProperties);
     }
 
@@ -52,7 +50,7 @@ public class SpellStorageItem extends CastingItem {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(hand));
         ItemStack stack = player.getItemInHand(hand);
         if ( !level.isClientSide ) {
-            SpellItem spell = SpellStorageItem.getStoredSpell(stack) != null ? SpellStorageItem.getStoredSpell(stack) : null;
+            SpellItem spell = SpecialCastingItem.getStoredSpell(stack) != null ? SpecialCastingItem.getStoredSpell(stack) : null;
             Item vessel = stack.getItem();
             if ( spell != null && !player.getCooldowns().isOnCooldown(vessel) ) {
                 if ( vessel == AncientMagicksItems.SPELL_PEARL.get() ) {
@@ -67,7 +65,7 @@ public class SpellStorageItem extends CastingItem {
                     player.getCooldowns().addCooldown(AncientMagicksItems.SPELL_PEARL.get(), 120);
                     result = InteractionResultHolder.success(player.getItemInHand(hand));
                 }
-                else if ( vessel == AncientMagicksItems.ANCIENT_TABLET.get() && player instanceof ServerPlayer serverPlayer ) SpellItem.learnSpell(serverPlayer, stack);
+                //This needs to be double-layered if-statements so that the else statement below works properly
                 else if ( vessel instanceof WandItem ) {
                     if ( !player.getCooldowns().isOnCooldown(spell) ) player.startUsingItem(hand);
                 }

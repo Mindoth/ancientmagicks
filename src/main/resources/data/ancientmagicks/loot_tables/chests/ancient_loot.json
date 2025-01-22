@@ -32,13 +32,13 @@
         {
           "type": "minecraft:item",
           "weight": 1,
-          "name": "ancientmagicks:ancient_tablet",
+          "name": "ancientmagicks:spell_tablet",
           "functions": [
             {
               "function": "ancientmagicks:randomize_spell",
               "quality": {
-                "min": 4,
-                "max": 6
+                "min": 7,
+                "max": 7
               }
             }
           ]

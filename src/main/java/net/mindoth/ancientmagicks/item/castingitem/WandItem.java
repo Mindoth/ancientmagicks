@@ -5,7 +5,7 @@ import net.minecraft.world.item.Vanishable;
 
 import javax.annotation.Nonnull;
 
-public class WandItem extends SpellStorageItem implements Vanishable {
+public class WandItem extends SpecialCastingItem implements Vanishable {
 
     public WandItem(Properties pProperties) {
         super(pProperties);

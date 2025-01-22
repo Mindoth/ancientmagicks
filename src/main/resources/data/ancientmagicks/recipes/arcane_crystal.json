@@ -2,19 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     " # ",
-    " # ",
-    " D "
+    "#D#",
+    " # "
   ],
   "key": {
     "#": {
-      "item": "minecraft:gold_ingot"
+      "item": "ancientmagicks:arcane_dust"
     },
     "D": {
-      "item": "ancientmagicks:arcane_dust"
+      "item": "minecraft:diamond"
     }
   },
   "result": {
-    "item": "ancientmagicks:golden_wand",
+    "item": "ancientmagicks:arcane_crystal",
     "count": 1
   }
 }

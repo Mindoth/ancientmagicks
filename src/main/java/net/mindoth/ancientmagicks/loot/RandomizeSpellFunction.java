@@ -4,6 +4,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.ancientmagicks.registries.AncientMagicksModifiers;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunct
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 import java.util.Random;
@@ -28,14 +30,20 @@ public class RandomizeSpellFunction extends LootItemConditionalFunction {
 
     @Override
     protected ItemStack run(ItemStack stack, LootContext context) {
-        if ( stack.getItem() == AncientMagicksItems.ANCIENT_TABLET.get() ) {
+        if ( stack.getItem() == AncientMagicksItems.SPELL_SCROLL.get() || stack.getItem() == AncientMagicksItems.SPELL_TABLET.get() ) {
             int quality = this.qualityRange.getInt(context);
             List<SpellItem> list = AncientMagicks.SPELL_LIST.stream().filter(spell -> spell.spellTier == quality).toList();
             if ( !list.isEmpty() ) {
                 SpellItem randomSpell = list.get(new Random().nextInt(list.size()));
-                stack = new ItemStack(randomSpell);
+                stack = createSpellScroll(stack, randomSpell);
             }
         }
+        return stack;
+    }
+
+    public ItemStack createSpellScroll(ItemStack stack, SpellItem spell) {
+        String spellString = ForgeRegistries.ITEMS.getKey(spell).toString();
+        stack.getOrCreateTag().putString(SpecialCastingItem.TAG_STORED_SPELL, spellString);
         return stack;
     }
 

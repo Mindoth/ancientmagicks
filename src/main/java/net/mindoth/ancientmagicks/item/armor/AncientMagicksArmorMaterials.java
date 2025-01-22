@@ -23,7 +23,7 @@ public enum AncientMagicksArmorMaterials implements CustomArmorMaterial {
     GAUDY("amgaudy", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_CHAIN,
             0, 0, () -> Ingredient.of(Items.GOLD_INGOT), Map.of(
             AncientMagicksAttributes.MP_MAX.get(), new AttributeModifier("Mana Maximum", 75.0D, AttributeModifier.Operation.ADDITION),
-            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 0.20D, AttributeModifier.Operation.MULTIPLY_BASE)
+            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 0.25D, AttributeModifier.Operation.MULTIPLY_BASE)
     ));
 
     private final String name;

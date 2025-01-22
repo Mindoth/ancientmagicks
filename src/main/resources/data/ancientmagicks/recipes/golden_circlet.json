@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "NDN",
+    "N0N",
     "###",
     "   "
   ],
@@ -12,8 +12,8 @@
     "N": {
       "item": "minecraft:gold_nugget"
     },
-    "D": {
-      "item": "minecraft:diamond"
+    "0": {
+      "item": "ancientmagicks:arcane_crystal"
     }
   },
   "result": {

@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.client.screen;
 
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
-import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
@@ -31,7 +31,8 @@ public class HudCurrentSpell {
 
         if ( currentSpell().isEmpty() ) return;
         String id = currentSpell().getItem().toString();
-        GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/spell/" + id + ".png"),
+        String modid = ForgeRegistries.ITEMS.getKey(currentSpell().getItem()).toString().split(":")[0];
+        GuiSpellWheel.drawSlotTexture(new ResourceLocation(modid, "textures/item/spell/" + id + ".png"),
                 resultSlotX + 3, resultSlotY + 3, 0, 0, 16, 16, 16, 16, graphics);
         graphics.renderItemDecorations(gui.getFont(), currentSpell(), resultSlotX + 3, resultSlotY + 3);
     }
@@ -47,7 +48,7 @@ public class HudCurrentSpell {
             if ( ClientMagicData.getCurrentSpell() == null ) return state;
             Item spell;
             if ( castingItem.getItem() instanceof StaffItem ) spell = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ClientMagicData.getCurrentSpell()));
-            else spell = SpellStorageItem.getStoredSpell(castingItem);
+            else spell = SpecialCastingItem.getStoredSpell(castingItem);
             if ( spell instanceof SpellItem ) state = new ItemStack(spell);
         }
 

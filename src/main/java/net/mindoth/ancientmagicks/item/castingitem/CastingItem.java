@@ -6,7 +6,6 @@ import net.mindoth.ancientmagicks.event.MagickEvents;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -41,22 +40,29 @@ public class CastingItem extends Item {
         if ( AncientMagicks.isSpellEnabled(spell) ) {
             //Store Spell into item
             if ( caster == owner
-                    && owner.isHolding((heldItem) -> heldItem.getItem() instanceof SpellStorageItem && SpellStorageItem.getStoredSpell(heldItem) == null)
+                    && owner.isHolding((heldItem) -> heldItem.getItem() instanceof SpecialCastingItem && SpecialCastingItem.getStoredSpell(heldItem) == null)
                     && owner.isHolding((heldItem) -> heldItem.getItem() instanceof StaffItem) ) {
-                ItemStack vessel = owner.getMainHandItem().getItem() instanceof SpellStorageItem ? owner.getMainHandItem() : owner.getOffhandItem();
+                ItemStack vessel = owner.getMainHandItem().getItem() instanceof SpecialCastingItem ? owner.getMainHandItem() : owner.getOffhandItem();
                 storeSpell(owner, caster, spell, vessel);
             }
             //ACTUALLY cast the spell
-            else {
-                if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) && stack != null ) {
-                    if ( caster == owner && castingItem instanceof StaffItem && useTime % 10 == 0 ) MagickEvents.changeMana(owner, -spell.manaCost);
+            else if ( stack != null && caster == owner ) {
+                if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) ) {
+                    if ( castingItem instanceof StaffItem && useTime % 10 == 0 ) MagickEvents.changeMana(owner, -spell.manaCost);
+                    //Handle cooldown on non-channel spells right after casting
                     if ( !spell.isChannel() ) handleCooldownsAndStuff(owner, stack, spell, hasAlacrity);
+                    //Reduce durability on first tick of spells
+                    if ( useTime == 0 ) addItemDamage(stack, 1, owner);
                 }
                 else {
                     if ( useTime == 0 ) whiffSpell(owner, caster, spell);
-                    else if ( caster == owner && stack != null ) handleCooldownsAndStuff(owner, stack, spell, hasAlacrity);
+                    //If spell fails while it's being used, it is a channel spell
+                    else if ( spell.isChannel() ) handleCooldownsAndStuff(owner, stack, spell, hasAlacrity);
+                    //Manual channel spell stopping is handled in MagickEvents.class
                 }
             }
+            //Handling for Spell Pearl
+            else spell.castMagic(owner, caster, center, xRot, yRot, useTime);
         }
         else whiffSpell(owner, caster, spell);
     }
@@ -66,15 +72,14 @@ public class CastingItem extends Item {
         float alacrityBonus = hasAlacrity ? 0.5F : 1.0F;
         int spellCooldown = (int)(spell.cooldown * alacrityBonus);
         if ( item instanceof StaffItem || item instanceof WandItem ) {
-            if ( item instanceof StaffItem ) addCastingCooldown(owner, spell, spellCooldown);
-            else addCastingCooldown(owner, SpellStorageItem.getStoredSpell(castingItem), spellCooldown);
-            if ( !owner.isCreative() ) castingItem.hurtAndBreak(1, owner, (holder) -> holder.broadcastBreakEvent(owner.getUsedItemHand()));
-        }
-        else if ( item instanceof SpellStorageItem ) {
-            owner.getCooldowns().addCooldown(item, 120);
-            if ( !owner.isCreative() ) castingItem.shrink(1);
+            if ( item instanceof WandItem ) spell = SpecialCastingItem.getStoredSpell(castingItem);
+            addCastingCooldown(owner, spell, spellCooldown);
         }
         owner.stopUsingItem();
+    }
+
+    public static void addItemDamage(ItemStack castingItem, int amount, Player player) {
+        castingItem.hurtAndBreak(amount, player, (holder) -> holder.broadcastBreakEvent(player.getUsedItemHand()));
     }
 
     public static void addCastingCooldown(Player player, SpellItem spell, int cooldown) {
@@ -86,16 +91,13 @@ public class CastingItem extends Item {
         owner.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
             boolean state = AncientMagicks.isSpellEnabled(spell);
             int manaCost = 0;
-            if ( !owner.isCreative() ) {
-                if ( vessel.getItem() == AncientMagicksItems.ANCIENT_TABLET.get() ) manaCost += spell.spellTier * 100;
-                else manaCost += spell.manaCost;
-            }
+            if ( !owner.isCreative() ) manaCost += spell.manaCost;
             if ( magic.getCurrentMana() < manaCost ) state = false;
             if ( state ) {
                 if ( !owner.isCreative() ) MagickEvents.changeMana(owner, -manaCost);
                 ItemStack dropStack = vessel.copyWithCount(1);
                 CompoundTag tag = dropStack.getOrCreateTag();
-                tag.putString(SpellStorageItem.TAG_STORED_SPELL, ForgeRegistries.ITEMS.getKey(spell).toString());
+                tag.putString(SpecialCastingItem.TAG_STORED_SPELL, ForgeRegistries.ITEMS.getKey(spell).toString());
                 vessel.shrink(1);
                 Vec3 spawnPos = ShadowEvents.getEntityCenter(owner);
                 ItemEntity drop = new ItemEntity(owner.level(), spawnPos.x, spawnPos.y, spawnPos.z, dropStack);
@@ -128,7 +130,7 @@ public class CastingItem extends Item {
 
     public static boolean isValidCastingItem(ItemStack castingItem) {
         Item item = castingItem.getItem();
-        return item instanceof StaffItem || (item instanceof SpellStorageItem && SpellStorageItem.getStoredSpell(castingItem) != null);
+        return item instanceof StaffItem || (item instanceof SpecialCastingItem && SpecialCastingItem.getStoredSpell(castingItem) != null);
     }
 
     @Override

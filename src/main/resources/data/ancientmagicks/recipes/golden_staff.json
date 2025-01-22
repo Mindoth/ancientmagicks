@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " CD",
+    " C0",
     " ##",
     "#  "
   ],
@@ -12,8 +12,8 @@
     "C": {
       "item": "ancientmagicks:arcane_cloth"
     },
-    "D": {
-      "item": "minecraft:diamond"
+    "0": {
+      "item": "ancientmagicks:arcane_crystal"
     }
   },
   "result": {

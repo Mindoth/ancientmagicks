@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.network;
 
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellStorageItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
@@ -35,7 +35,7 @@ public class PacketItemActivationAnimation {
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         contextSupplier.get().enqueueWork(() -> {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> SpellItem.playItemActivationAnimation(this.itemStack, this.entity));
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> SpellStorageItem.playItemActivationAnimation(this.itemStack, this.entity));
         });
         contextSupplier.get().setPacketHandled(true);
     }

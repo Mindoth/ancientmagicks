@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.item.spell.abstractspell;
 
 public enum SpellSchool {
     FROST,
-    ARCANE,
+    FLUX,
     FIRE,
     NATURE,
     DARK,

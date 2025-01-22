@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
@@ -15,7 +16,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -72,13 +75,21 @@ public class AncientMagicks {
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
                 if ( !(item.get() instanceof SpellItem) ) event.accept(item);
             }
-            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.FROST ) event.accept(item);
-            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.ARCANE ) event.accept(item);
-            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.FIRE ) event.accept(item);
-            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.NATURE ) event.accept(item);
-            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.DARK) event.accept(item);
-            for ( SpellItem item : AncientMagicks.SPELL_LIST ) if ( item.spellSchool == SpellSchool.LIGHT ) event.accept(item);
+            List<SpellItem> addList = Lists.newArrayList();
+            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( spell.spellSchool == SpellSchool.FROST ) addList.add(spell);
+            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( spell.spellSchool == SpellSchool.FLUX ) addList.add(spell);
+            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( spell.spellSchool == SpellSchool.FIRE ) addList.add(spell);
+            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( spell.spellSchool == SpellSchool.NATURE ) addList.add(spell);
+            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( spell.spellSchool == SpellSchool.DARK ) addList.add(spell);
+            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( spell.spellSchool == SpellSchool.LIGHT ) addList.add(spell);
+            for ( SpellItem spell : addList ) generateScrollWithSpell(event, spell);
         }
+    }
+
+    public static void generateScrollWithSpell(CreativeModeTab.Output output, SpellItem spell) {
+        ItemStack stack = new ItemStack(AncientMagicksItems.SPELL_SCROLL.get());
+        stack.getOrCreateTag().putString(SpecialCastingItem.TAG_STORED_SPELL, ForgeRegistries.ITEMS.getKey(spell).toString());
+        output.accept(stack);
     }
 
     //List stuff

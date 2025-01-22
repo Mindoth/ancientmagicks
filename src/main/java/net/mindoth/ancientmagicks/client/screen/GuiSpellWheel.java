@@ -5,14 +5,11 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSetSpell;
-import net.mindoth.ancientmagicks.network.PacketSolveAncientTablet;
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -24,8 +21,6 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -40,7 +35,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
@@ -263,7 +257,7 @@ public class GuiSpellWheel extends Screen {
             //Item and its decorations
             String id = slot.getItem().toString();
             String modid = ForgeRegistries.ITEMS.getKey(slot.getItem()).toString().split(":")[0];
-            GuiSpellWheel.drawSlotTexture(new ResourceLocation(modid, "textures/spell/" + id + ".png"),
+            GuiSpellWheel.drawSlotTexture(new ResourceLocation(modid, "textures/item/spell/" + id + ".png"),
                     posX, posY, 0, 0, 16, 16, 16, 16, graphics);
             graphics.renderItemDecorations(this.font, slot, posX, posY);
         }

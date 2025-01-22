@@ -1,28 +1,13 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell;
 
-import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
-import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketItemActivationAnimation;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
-import net.mindoth.ancientmagicks.network.PacketUpdateKnownSpells;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -33,20 +18,12 @@ import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 public class SpellItem extends Item {
@@ -63,50 +40,12 @@ public class SpellItem extends Item {
         this.cooldown = cooldown * 20;
     }
 
-    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
-        return false;
+    public boolean isCraftable() {
+        return this.spellTier < 7;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        if ( stack.getItem() instanceof SpellItem spellItem ) {
-            if ( !Screen.hasShiftDown() ) {
-                String spellSchool = "tooltip.ancientmagicks." + this.spellSchool.toString();
-                tooltip.add(Component.translatable("tooltip.ancientmagicks.spell_school").withStyle(ChatFormatting.GRAY).append(Component.literal(": "))
-                        .append(Component.translatable(spellSchool)));
-                int spellTier = spellItem.spellTier;
-                tooltip.add(Component.translatable("tooltip.ancientmagicks.tier").append(Component.literal(": " + spellTier)).withStyle(ChatFormatting.GRAY));
-                if ( spellItem.isChannel() ) {
-                    int manaCost = spellItem.manaCost * 2;
-                    tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)
-                            .append(Component.literal("/s"))).withStyle(ChatFormatting.GRAY));
-                }
-                else {
-                    int manaCost = spellItem.manaCost;
-                    tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)).withStyle(ChatFormatting.GRAY));
-                }
-                int cooldown = spellItem.cooldown / 20;
-                tooltip.add(Component.translatable("tooltip.ancientmagicks.cooldown").append(Component.literal(": " + cooldown + "s")).withStyle(ChatFormatting.GRAY));
-                tooltip.add(Component.translatable("tooltip.ancientmagicks.shift"));
-            }
-            else {
-                String modid = ForgeRegistries.ITEMS.getKey(spellItem).toString().split(":")[0];
-                if ( modid != null ) tooltip.add(Component.translatable("tooltip." + modid + "." + stack.getItem()).withStyle(ChatFormatting.GRAY));
-            }
-            if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(spellItem) && Minecraft.getInstance().player != null ) {
-                StringBuilder tooltipString = new StringBuilder();
-                List<ColorRuneItem> list = ColorRuneItem.stringListToActualList(ColorRuneItem.CURRENT_COMBO_MAP.get(this).toString());
-                for ( ColorRuneItem rune : list ) {
-                    String color = rune.color + "0" + "\u00A7r";
-                    tooltipString.append(color);
-                }
-
-                tooltip.add(Component.literal(String.valueOf(tooltipString)));
-            }
-        }
-
-        super.appendHoverText(stack, world, tooltip, flagIn);
+    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+        return false;
     }
 
     public boolean isChannel() {
@@ -120,7 +59,7 @@ public class SpellItem extends Item {
     protected int getRed() {
         int r = 255;
         if ( this.spellSchool.equals(SpellSchool.FROST) ) r = 85;
-        if ( this.spellSchool.equals(SpellSchool.ARCANE) ) r = 170;
+        if ( this.spellSchool.equals(SpellSchool.FLUX) ) r = 170;
         if ( this.spellSchool.equals(SpellSchool.FIRE) ) r = 255;
         if ( this.spellSchool.equals(SpellSchool.NATURE) ) r = 85;
         if ( this.spellSchool.equals(SpellSchool.DARK) ) r = 1;
@@ -131,7 +70,7 @@ public class SpellItem extends Item {
     protected int getGreen() {
         int g = 255;
         if ( this.spellSchool.equals(SpellSchool.FROST) ) g = 255;
-        if ( this.spellSchool.equals(SpellSchool.ARCANE) ) g = 25;
+        if ( this.spellSchool.equals(SpellSchool.FLUX) ) g = 25;
         if ( this.spellSchool.equals(SpellSchool.FIRE) ) g = 170;
         if ( this.spellSchool.equals(SpellSchool.NATURE) ) g = 255;
         if ( this.spellSchool.equals(SpellSchool.DARK) ) g = 1;
@@ -142,7 +81,7 @@ public class SpellItem extends Item {
     protected int getBlue() {
         int b = 255;
         if ( this.spellSchool.equals(SpellSchool.FROST) ) b = 255;
-        if ( this.spellSchool.equals(SpellSchool.ARCANE) ) b = 170;
+        if ( this.spellSchool.equals(SpellSchool.FLUX) ) b = 170;
         if ( this.spellSchool.equals(SpellSchool.FIRE) ) b = 25;
         if ( this.spellSchool.equals(SpellSchool.NATURE) ) b = 85;
         if ( this.spellSchool.equals(SpellSchool.DARK) ) b = 1;
@@ -239,76 +178,6 @@ public class SpellItem extends Item {
         Vec3 vec3 = new Vec3(start.getX(), start.getEyeY(), start.getZ());
         Vec3 vec31 = new Vec3(target.getX(), target.getEyeY(), target.getZ());
         return start.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, start)).getType() == HitResult.Type.MISS;
-    }
-
-    /*@Override
-    public void onDestroyed(ItemEntity entity, DamageSource damageSource) {
-        Level level = entity.level();
-        if ( level.isClientSide ) return;
-        if ( damageSource.type() != entity.damageSources().lava().type() && damageSource.type() != entity.damageSources().onFire().type() ) return;
-        SpellItem spellItem = (SpellItem)entity.getItem().getItem();
-        int amount = ThreadLocalRandom.current().nextInt(1, spellItem.spellTier + 1);
-        float randX = ThreadLocalRandom.current().nextFloat(-0.3F, 0.3F);
-        float randZ = ThreadLocalRandom.current().nextFloat(-0.3F, 0.3F);
-        ItemStack newStack = new ItemStack(AncientMagicksItems.ARCANE_DUST.get(), amount);
-        ItemEntity drop = new ItemEntity(level, entity.position().x, entity.position().y, entity.position().z, newStack);
-        drop.setDeltaMovement(randX, 0.3F, randZ);
-        drop.setPickUpDelay(40);
-        level.addFreshEntity(drop);
-    }*/
-
-    @Override
-    @Nonnull
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
-        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
-        if ( !level.isClientSide ) {
-            ItemStack tablet = player.getItemInHand(handIn);
-            if ( tablet.getItem() instanceof SpellItem spellTablet && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spellTablet) ) {
-                if ( player instanceof ServerPlayer serverPlayer && tablet.getItem() instanceof SpellItem) learnSpell(serverPlayer, tablet);
-            }
-        }
-        return result;
-    }
-
-    public static void learnSpell(ServerPlayer serverPlayer, ItemStack stack) {
-        SpellItem stackItem = null;
-        if ( stack.getItem() instanceof SpellItem ) stackItem = (SpellItem)stack.getItem();
-        else if ( stack.getItem() instanceof SpellStorageItem ) {
-            if ( stack.getTag() != null && stack.getTag().contains(SpellStorageItem.TAG_STORED_SPELL) ) {
-                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(stack.getTag().getString(SpellStorageItem.TAG_STORED_SPELL)));
-                if ( item instanceof SpellItem spell ) stackItem = spell;
-            }
-        }
-        final SpellItem spellTablet = stackItem;
-        if ( spellTablet == null ) return;
-        final String spellString = ForgeRegistries.ITEMS.getKey(spellTablet).toString();
-        serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(spell -> {
-            CompoundTag tag = new CompoundTag();
-            tag.putString("am_secretspell", spellString);
-            if ( Objects.equals(spell.getKnownSpells(), "") ) {
-                spell.setKnownSpells(spellString);
-                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
-                playLearnEffects(serverPlayer, stack);
-            }
-            else if ( !ClientMagicData.stringListToSpellList(spell.getKnownSpells()).contains(spellTablet) ) {
-                spell.setKnownSpells(spell.getKnownSpells() + "," + spellString);
-                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
-                playLearnEffects(serverPlayer, stack);
-            }
-        });
-    }
-
-    public static void playLearnEffects(Player player, ItemStack stack) {
-        player.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0F, 0.75F);
-        player.playNotifySound(SoundEvents.FIREWORK_ROCKET_BLAST_FAR, SoundSource.PLAYERS, 1.0F, 0.75F);
-        player.playNotifySound(SoundEvents.FIREWORK_ROCKET_TWINKLE_FAR, SoundSource.PLAYERS, 1.0F, 0.75F);
-        if ( player instanceof ServerPlayer ) AncientMagicksNetwork.sendToPlayer(new PacketItemActivationAnimation(stack, player), (ServerPlayer)player);
-        stack.shrink(1);
-    }
-
-    public static void playItemActivationAnimation(ItemStack itemStack, Entity entity) {
-        Minecraft mc = Minecraft.getInstance();
-        if ( entity == mc.player ) mc.gameRenderer.displayItemActivation(itemStack);
     }
 
     @Override

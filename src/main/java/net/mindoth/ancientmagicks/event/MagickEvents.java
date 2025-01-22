@@ -4,7 +4,6 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.SpellStorageItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.WandItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
@@ -106,16 +105,13 @@ public class MagickEvents {
                 if ( castingItem instanceof StaffItem || castingItem instanceof WandItem ) {
                     player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
-                        if ( item instanceof SpellItem spell ) player.getCooldowns().addCooldown(spell, spell.cooldown);
+                        if ( item instanceof SpellItem spell ) {
+                            boolean hasAlacrity = player.hasEffect(AncientMagicksEffects.ALACRITY.get());
+                            float alacrityBonus = hasAlacrity ? 0.5F : 1.0F;
+                            int spellCooldown = (int)(spell.cooldown * alacrityBonus);
+                            player.getCooldowns().addCooldown(spell, spellCooldown);
+                        }
                     });
-                    stack.hurtAndBreak(1, player, (holder) -> holder.broadcastBreakEvent(player.getUsedItemHand()));
-                }
-                else if ( castingItem instanceof SpellStorageItem ) {
-                    SpellItem spell = SpellStorageItem.getStoredSpell(stack) != null ? SpellStorageItem.getStoredSpell(stack) : null;
-                    if ( spell != null ) {
-                        player.getCooldowns().addCooldown(stack.getItem(), 120);
-                        if ( !player.isCreative() ) stack.shrink(1);
-                    }
                 }
             }
         }
