@@ -20,8 +20,8 @@ public class WitchArrowEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public WitchArrowEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
-        super(AncientMagicksEntities.WITCH_ARROW.get(), level, owner, caster, rune);
+    public WitchArrowEntity(Level level, LivingEntity owner, Entity caster, SpellItem spell) {
+        super(AncientMagicksEntities.WITCH_ARROW.get(), level, owner, caster, spell);
         this.setNoGravity(false);
     }
 

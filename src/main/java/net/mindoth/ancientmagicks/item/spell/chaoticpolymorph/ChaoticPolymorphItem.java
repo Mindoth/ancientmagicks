@@ -2,7 +2,6 @@ package net.mindoth.ancientmagicks.item.spell.chaoticpolymorph;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
@@ -14,8 +13,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ChaoticPolymorphItem extends AbstractSpellRayCast {
 
-    public ChaoticPolymorphItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
-        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
+    public ChaoticPolymorphItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -67,7 +66,7 @@ public class ChaoticPolymorphItem extends AbstractSpellRayCast {
             newMob.startRiding(entity, true);
         }
         oldMob.discard();
-        addEnchantParticles(newMob, getRed(), getGreen(), getBlue(), 0.15F, 8, hasMask());
+        addEnchantParticles(newMob, getColor().r, getColor().g, getColor().b, 0.15F, 8, hasMask());
         return newMob;
     }
 }

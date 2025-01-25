@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell;
 
-import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowEntity;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.world.entity.Entity;
@@ -10,16 +9,12 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractSpellShoot extends SpellItem {
 
-    public AbstractSpellShoot(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
-        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
+    public AbstractSpellShoot(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     protected AbstractSpellEntity getProjectile(Level level, Player owner, Entity caster) {
         return new WitchArrowEntity(level, owner, caster, this);
-    }
-
-    protected ParticleColor.IntWrapper getColor() {
-        return AbstractSpellEntity.getSpellColor(ColorCode.DARK_PURPLE);
     }
 
     @Override
@@ -42,7 +37,9 @@ public abstract class AbstractSpellShoot extends SpellItem {
             power *= (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
             projectile.getEntityData().set(AbstractSpellEntity.POWER, power);
             projectile.setNoGravity(!hasGravity());
-            projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0F, Math.max(0, projectile.getSpeed()), 0.0F);
+            //System.out.println("xRot: " + xRot * adjuster);
+            //System.out.println("yRot: " + yRot * adjuster);
+            projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0, Math.max(0, projectile.getSpeed()), 0.0F);
             level.addFreshEntity(projectile);
 
             playSound(level, center);

@@ -1,15 +1,14 @@
 package net.mindoth.ancientmagicks.item.spell.endlessbreath;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 public class EndlessBreathItem extends SpellItem {
 
-    public EndlessBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
-        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
+    public EndlessBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override

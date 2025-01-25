@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell;
 
+import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
@@ -27,25 +28,27 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Random;
 
 public class SpellItem extends Item {
-    public final SpellSchool spellSchool;
     public final int spellTier;
     public final int manaCost;
     public final int cooldown;
 
-    public SpellItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
+    public SpellItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties);
-        this.spellSchool = spellSchool;
         this.spellTier = spellTier;
         this.manaCost = manaCost;
         this.cooldown = cooldown * 20;
     }
 
-    public boolean isCraftable() {
-        return this.spellTier < 7;
-    }
-
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         return false;
+    }
+
+    public ParticleColor.IntWrapper getColor() {
+        return AbstractSpellEntity.getSpellColor(ColorCode.DARK_PURPLE);
+    }
+
+    public boolean isCraftable() {
+        return this.spellTier < 7;
     }
 
     public boolean isChannel() {
@@ -54,39 +57,6 @@ public class SpellItem extends Item {
 
     protected boolean isHarmful() {
         return true;
-    }
-
-    protected int getRed() {
-        int r = 255;
-        if ( this.spellSchool.equals(SpellSchool.FROST) ) r = 85;
-        if ( this.spellSchool.equals(SpellSchool.FLUX) ) r = 170;
-        if ( this.spellSchool.equals(SpellSchool.FIRE) ) r = 255;
-        if ( this.spellSchool.equals(SpellSchool.NATURE) ) r = 85;
-        if ( this.spellSchool.equals(SpellSchool.DARK) ) r = 1;
-        if ( this.spellSchool.equals(SpellSchool.LIGHT) ) r = 255;
-        return r;
-    }
-
-    protected int getGreen() {
-        int g = 255;
-        if ( this.spellSchool.equals(SpellSchool.FROST) ) g = 255;
-        if ( this.spellSchool.equals(SpellSchool.FLUX) ) g = 25;
-        if ( this.spellSchool.equals(SpellSchool.FIRE) ) g = 170;
-        if ( this.spellSchool.equals(SpellSchool.NATURE) ) g = 255;
-        if ( this.spellSchool.equals(SpellSchool.DARK) ) g = 1;
-        if ( this.spellSchool.equals(SpellSchool.LIGHT) ) g = 255;
-        return g;
-    }
-
-    protected int getBlue() {
-        int b = 255;
-        if ( this.spellSchool.equals(SpellSchool.FROST) ) b = 255;
-        if ( this.spellSchool.equals(SpellSchool.FLUX) ) b = 170;
-        if ( this.spellSchool.equals(SpellSchool.FIRE) ) b = 25;
-        if ( this.spellSchool.equals(SpellSchool.NATURE) ) b = 85;
-        if ( this.spellSchool.equals(SpellSchool.DARK) ) b = 1;
-        if ( this.spellSchool.equals(SpellSchool.LIGHT) ) b = 255;
-        return b;
     }
 
     @Override

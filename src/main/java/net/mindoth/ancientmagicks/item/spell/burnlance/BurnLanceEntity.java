@@ -30,8 +30,8 @@ public class BurnLanceEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public BurnLanceEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
-        super(AncientMagicksEntities.BURN_LANCE.get(), level, owner, caster, rune);
+    public BurnLanceEntity(Level level, LivingEntity owner, Entity caster, SpellItem spell) {
+        super(AncientMagicksEntities.BURN_LANCE.get(), level, owner, caster, spell);
         this.setNoGravity(false);
     }
 

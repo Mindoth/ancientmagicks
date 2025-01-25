@@ -20,8 +20,8 @@ public class AcidArrowEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public AcidArrowEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
-        super(AncientMagicksEntities.ACID_ARROW.get(), level, owner, caster, rune);
+    public AcidArrowEntity(Level level, LivingEntity owner, Entity caster, SpellItem spell) {
+        super(AncientMagicksEntities.ACID_ARROW.get(), level, owner, caster, spell);
         this.setNoGravity(false);
     }
 

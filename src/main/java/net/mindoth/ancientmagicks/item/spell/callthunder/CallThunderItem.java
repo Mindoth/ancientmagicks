@@ -1,7 +1,9 @@
 package net.mindoth.ancientmagicks.item.spell.callthunder;
 
+import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -18,8 +20,13 @@ import net.minecraft.world.phys.Vec3;
 
 public class CallThunderItem extends SpellItem {
 
-    public CallThunderItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
-        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
+    public CallThunderItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
+    }
+
+    @Override
+    public ParticleColor.IntWrapper getColor() {
+        return AbstractSpellEntity.getSpellColor(ColorCode.BLUE);
     }
 
     @Override

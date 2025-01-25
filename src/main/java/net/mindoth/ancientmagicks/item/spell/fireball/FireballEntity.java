@@ -31,8 +31,8 @@ public class FireballEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public FireballEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
-        super(AncientMagicksEntities.FIREBALL.get(), level, owner, caster, rune);
+    public FireballEntity(Level level, LivingEntity owner, Entity caster, SpellItem spell) {
+        super(AncientMagicksEntities.FIREBALL.get(), level, owner, caster, spell);
     }
 
     @Override

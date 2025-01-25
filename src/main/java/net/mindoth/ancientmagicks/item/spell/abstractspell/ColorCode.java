@@ -18,3 +18,4 @@ public enum ColorCode {
     DARK_GRAY,
     BLACK
 }
+

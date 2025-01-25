@@ -1,10 +1,11 @@
 package net.mindoth.ancientmagicks.item.spell.frostarmor;
 
+import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractArmorEffect;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,8 +16,13 @@ import java.util.List;
 
 public class FrostArmorItem extends AbstractSpellRayCast {
 
-    public FrostArmorItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
-        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
+    public FrostArmorItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
+    }
+
+    @Override
+    public ParticleColor.IntWrapper getColor() {
+        return AbstractSpellEntity.getSpellColor(ColorCode.AQUA);
     }
 
     @Override

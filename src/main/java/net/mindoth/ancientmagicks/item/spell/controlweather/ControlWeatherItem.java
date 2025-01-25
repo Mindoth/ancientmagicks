@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.controlweather;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -9,8 +8,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class ControlWeatherItem extends SpellItem {
 
-    public ControlWeatherItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
-        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
+    public ControlWeatherItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override

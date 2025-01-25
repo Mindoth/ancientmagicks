@@ -1,12 +1,14 @@
 package net.mindoth.ancientmagicks.item.spell.blizzard;
 
+import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -15,8 +17,13 @@ import net.minecraft.world.phys.Vec3;
 
 public class BlizzardItem extends SpellItem {
 
-    public BlizzardItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
-        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
+    public BlizzardItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
+    }
+
+    @Override
+    public ParticleColor.IntWrapper getColor() {
+        return AbstractSpellEntity.getSpellColor(ColorCode.AQUA);
     }
 
     @Override
@@ -40,7 +47,7 @@ public class BlizzardItem extends SpellItem {
 
         Vec3 pos = ShadowEvents.getPoint(level, caster, range, 0.25F, caster == owner, false, true, true, false);
 
-        spawnIcicles(owner, caster, level, pos, yRot, adjuster, useTime);
+        for ( int i = 0; i < 2; i++ ) spawnIcicles(owner, caster, level, pos, yRot, adjuster, useTime);
         state = true;
 
         if ( state ) {
@@ -52,26 +59,24 @@ public class BlizzardItem extends SpellItem {
 
     private void spawnIcicles(Player owner, Entity caster, Level level, Vec3 center, float yRot, int adjuster, int useTime) {
         AbstractSpellEntity projectile = new IcicleEntity(level, owner, caster, this);
-        float speed = projectile.getSpeed();
-        speed *= 0.5F;
-        projectile.getEntityData().set(AbstractSpellEntity.SPEED, speed);
-        projectile.setAdditionalData(AbstractSpellEntity.getSpellColor(ColorCode.WHITE));
-        if ( useTime % 20 == 0 ) projectile.setPos(center.x, getHeight(level, center), center.z);
-        else {
-            Vec3 setPos = new Vec3(center.x + getRandomPos().x, getHeight(level, center), center.z + getRandomPos().z);
-            /*BlockPos newPos = new BlockPos(Mth.floor(setPos.x), Mth.floor(setPos.y), Mth.floor(setPos.z));
-            while ( level.getBlockState(newPos).isSolid() ) {
-                setPos = new Vec3(center.x + getRandomPos().x, getHeight(level, center), center.z + getRandomPos().z);
-                newPos = new BlockPos(Mth.floor(setPos.x), Mth.floor(setPos.y), Mth.floor(setPos.z));
-            }*/
-            projectile.setPos(setPos);
+        projectile.setAdditionalData(AbstractSpellEntity.getSpellColor(ColorCode.AQUA));
+        double newX = center.x;
+        double newY = getHeight(level, center);
+        double newZ = center.z;
+        if ( useTime % 20 != 0 ) {
+            newX += getRandomPos().x;
+            newZ += getRandomPos().z;
         }
-        projectile.anonShootFromRotation(90, yRot * adjuster, 0F, Math.max(0, projectile.getSpeed()), 0.0F);
+        projectile.setPos(newX, newY, newZ);
+        projectile.anonShootFromRotation(90 * adjuster, 0, 0, 0.15F, 0.0F);
         level.addFreshEntity(projectile);
+
+        ServerLevel serverLevel = (ServerLevel)level;
+        serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, newX, newY, newZ, 0, 0, 0, 0, 0);
     }
 
     private Vec3 getRandomPos() {
-        float size = 2.0F;
+        float size = 2.5F;
         float randX = (float)((Math.random() * (size - (-size))) + (-size));
         float randZ = (float)((Math.random() * (size - (-size))) + (-size));
         return new Vec3(randX, 0, randZ);

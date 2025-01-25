@@ -20,8 +20,8 @@ public class WaterBoltEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public WaterBoltEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
-        super(AncientMagicksEntities.WATER_BOLT.get(), level, owner, caster, rune);
+    public WaterBoltEntity(Level level, LivingEntity owner, Entity caster, SpellItem spell) {
+        super(AncientMagicksEntities.WATER_BOLT.get(), level, owner, caster, spell);
     }
 
     @Override

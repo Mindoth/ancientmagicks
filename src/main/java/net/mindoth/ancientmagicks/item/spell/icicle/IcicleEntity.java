@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.icicle;
 
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -29,8 +29,13 @@ public class IcicleEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public IcicleEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
-        super(AncientMagicksEntities.ICICLE.get(), level, owner, caster, rune);
+    public IcicleEntity(Level level, LivingEntity owner, Entity caster, SpellItem spell) {
+        super(AncientMagicksEntities.ICICLE.get(), level, owner, caster, spell);
+    }
+
+    @Override
+    public float getDefaultGravity() {
+        return 0.05F;
     }
 
     @Override
@@ -40,7 +45,7 @@ public class IcicleEntity extends AbstractSpellEntity {
 
     @Override
     public float getDefaultSpeed() {
-        return 1.0F;
+        return 1.6F;
     }
 
     @Override

@@ -57,7 +57,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     public Entity target = null;
 
     public float getDefaultGravity() {
-        return 0.02F;
+        return 0.015F;
     }
 
     public float getDefaultPower() {
@@ -110,6 +110,24 @@ public abstract class AbstractSpellEntity extends Projectile {
         }
         handleHitDetection();
         handleTravel();
+    }
+
+    public void handleTravel() {
+        /*setPos(position().add(getDeltaMovement()));
+        this.updateRotation();
+        if ( !this.isNoGravity() ) {
+            Vec3 vec31 = this.getDeltaMovement();
+            this.setDeltaMovement(vec31.x, vec31.y - (double)this.getDefaultGravity(), vec31.z);
+        }*/
+        this.xOld = getX();
+        this.yOld = getY();
+        this.zOld = getZ();
+        setPos(position().add(getDeltaMovement()));
+        this.updateRotation();
+        if ( !this.isNoGravity() ) {
+            Vec3 vec34 = this.getDeltaMovement();
+            this.setDeltaMovement(vec34.x, vec34.y - (double)this.getDefaultGravity(), vec34.z);
+        }
     }
 
     public void handleHitDetection() {
@@ -204,15 +222,6 @@ public abstract class AbstractSpellEntity extends Projectile {
                 shoot(motionX, motionY, motionZ, getSpeed() * 0.5F, 0);
             }
             else doDeathEffects();
-        }
-    }
-
-    public void handleTravel() {
-        setPos(position().add(getDeltaMovement()));
-        this.updateRotation();
-        if ( !this.isNoGravity() ) {
-            Vec3 vec31 = this.getDeltaMovement();
-            this.setDeltaMovement(vec31.x, vec31.y - (double)this.getDefaultGravity(), vec31.z);
         }
     }
 
@@ -319,24 +328,24 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     public static ParticleColor.IntWrapper getSpellColor(ColorCode color) {
-        ParticleColor.IntWrapper returnColor = null;
-        if ( color.equals(ColorCode.DARK_RED) ) returnColor = new ParticleColor.IntWrapper(170, 25, 25);
-        if ( color.equals(ColorCode.RED) ) returnColor = new ParticleColor.IntWrapper(255, 85, 85);
-        if ( color.equals(ColorCode.GOLD) ) returnColor = new ParticleColor.IntWrapper(255, 170, 25);
-        if ( color.equals(ColorCode.YELLOW) ) returnColor = new ParticleColor.IntWrapper(255, 255, 85);
-        if ( color.equals(ColorCode.DARK_GREEN) ) returnColor = new ParticleColor.IntWrapper(25, 170, 25);
-        if ( color.equals(ColorCode.GREEN) ) returnColor = new ParticleColor.IntWrapper(85, 225, 85);
-        if ( color.equals(ColorCode.AQUA) ) returnColor = new ParticleColor.IntWrapper(85, 255, 255);
-        if ( color.equals(ColorCode.DARK_AQUA) ) returnColor = new ParticleColor.IntWrapper(25, 170, 170);
-        if ( color.equals(ColorCode.DARK_BLUE) ) returnColor = new ParticleColor.IntWrapper(25, 25, 170);
-        if ( color.equals(ColorCode.BLUE) ) returnColor = new ParticleColor.IntWrapper(85, 85, 255);
-        if ( color.equals(ColorCode.LIGHT_PURPLE) ) returnColor = new ParticleColor.IntWrapper(255, 85, 255);
-        if ( color.equals(ColorCode.DARK_PURPLE) ) returnColor = new ParticleColor.IntWrapper(170, 25, 170);
-        if ( color.equals(ColorCode.WHITE) ) returnColor = new ParticleColor.IntWrapper(255, 255, 255);
-        if ( color.equals(ColorCode.GRAY) ) returnColor = new ParticleColor.IntWrapper(170, 170, 170);
-        if ( color.equals(ColorCode.DARK_GRAY) ) returnColor = new ParticleColor.IntWrapper(85, 85, 85);
-        if ( color.equals(ColorCode.BLACK) ) returnColor = new ParticleColor.IntWrapper(25, 25, 25);
-        return returnColor;
+        return switch (color) {
+            case DARK_RED -> new ParticleColor.IntWrapper(170, 25, 25);
+            case RED -> new ParticleColor.IntWrapper(255, 85, 85);
+            case GOLD -> new ParticleColor.IntWrapper(255, 170, 25);
+            case YELLOW -> new ParticleColor.IntWrapper(255, 255, 85);
+            case DARK_GREEN -> new ParticleColor.IntWrapper(25, 170, 25);
+            case GREEN -> new ParticleColor.IntWrapper(85, 225, 85);
+            case AQUA -> new ParticleColor.IntWrapper(85, 255, 255);
+            case DARK_AQUA -> new ParticleColor.IntWrapper(25, 170, 170);
+            case DARK_BLUE -> new ParticleColor.IntWrapper(25, 25, 170);
+            case BLUE -> new ParticleColor.IntWrapper(85, 85, 255);
+            case LIGHT_PURPLE -> new ParticleColor.IntWrapper(255, 85, 255);
+            case DARK_PURPLE -> new ParticleColor.IntWrapper(170, 25, 170);
+            case WHITE -> new ParticleColor.IntWrapper(255, 255, 255);
+            case GRAY -> new ParticleColor.IntWrapper(170, 170, 170);
+            case DARK_GRAY -> new ParticleColor.IntWrapper(85, 85, 85);
+            case BLACK -> new ParticleColor.IntWrapper(25, 25, 25);
+        };
     }
 
     public static final EntityDataAccessor<Integer> RED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);

@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.greaterinvisibility;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -11,8 +10,8 @@ import net.minecraft.world.level.Level;
 
 public class GreaterInvisibilityItem extends AbstractSpellRayCast {
 
-    public GreaterInvisibilityItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
-        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
+    public GreaterInvisibilityItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override

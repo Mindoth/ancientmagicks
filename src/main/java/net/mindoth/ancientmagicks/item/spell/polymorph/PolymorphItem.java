@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.polymorph;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Sheep;
@@ -10,8 +9,8 @@ import net.minecraft.world.level.Level;
 
 public class PolymorphItem extends AbstractSpellRayCast {
 
-    public PolymorphItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
-        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
+    public PolymorphItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -23,6 +22,6 @@ public class PolymorphItem extends AbstractSpellRayCast {
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
         Sheep sheep = ((Mob)target).convertTo(EntityType.SHEEP, false);
         sheep.finalizeSpawn((ServerLevel)level, ((ServerLevel)level).getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
-        addEnchantParticles(sheep, getRed(), getGreen(), getBlue(), 0.15F, 8, hasMask());
+        addEnchantParticles(sheep, getColor().r, getColor().g, getColor().b, 0.15F, 8, hasMask());
     }
 }

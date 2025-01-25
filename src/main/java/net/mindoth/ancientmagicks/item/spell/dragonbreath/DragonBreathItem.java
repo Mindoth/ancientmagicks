@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.dragonbreath;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -20,8 +19,8 @@ import java.util.stream.Stream;
 
 public class DragonBreathItem extends SpellItem {
 
-    public DragonBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
-        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
+    public DragonBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override

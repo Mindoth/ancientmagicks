@@ -6,7 +6,6 @@ import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
@@ -75,14 +74,7 @@ public class AncientMagicks {
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
                 if ( !(item.get() instanceof SpellItem) ) event.accept(item);
             }
-            List<SpellItem> addList = Lists.newArrayList();
-            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( spell.spellSchool == SpellSchool.FROST ) addList.add(spell);
-            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( spell.spellSchool == SpellSchool.FLUX ) addList.add(spell);
-            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( spell.spellSchool == SpellSchool.FIRE ) addList.add(spell);
-            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( spell.spellSchool == SpellSchool.NATURE ) addList.add(spell);
-            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( spell.spellSchool == SpellSchool.DARK ) addList.add(spell);
-            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( spell.spellSchool == SpellSchool.LIGHT ) addList.add(spell);
-            for ( SpellItem spell : addList ) generateScrollWithSpell(event, spell);
+            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) generateScrollWithSpell(event, spell);
         }
     }
 

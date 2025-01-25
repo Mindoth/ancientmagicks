@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.featherfall;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellSchool;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -14,8 +13,8 @@ import java.util.List;
 
 public class FeatherFallItem extends AbstractSpellRayCast {
 
-    public FeatherFallItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellSchool spellSchool) {
-        super(pProperties, spellTier, manaCost, cooldown, spellSchool);
+    public FeatherFallItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+        super(pProperties, spellTier, manaCost, cooldown);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class FeatherFallItem extends AbstractSpellRayCast {
         for ( Entity entity : list ) {
             if ( entity instanceof LivingEntity living ) {
                 living.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, getLife(), 0, false, false));
-                if ( living != caster ) addEnchantParticles(living, getRed(), getGreen(), getBlue(), 0.15F, 8, true);
+                if ( living != caster ) addEnchantParticles(living, getColor().r, getColor().g, getColor().b, 0.15F, 8, true);
             }
         }
     }

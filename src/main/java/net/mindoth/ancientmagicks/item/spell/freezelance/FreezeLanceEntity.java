@@ -30,8 +30,8 @@ public class FreezeLanceEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public FreezeLanceEntity(Level level, LivingEntity owner, Entity caster, SpellItem rune) {
-        super(AncientMagicksEntities.FREEZE_LANCE.get(), level, owner, caster, rune);
+    public FreezeLanceEntity(Level level, LivingEntity owner, Entity caster, SpellItem spell) {
+        super(AncientMagicksEntities.FREEZE_LANCE.get(), level, owner, caster, spell);
         this.setNoGravity(false);
     }
 
