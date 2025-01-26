@@ -2,12 +2,12 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
+import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.WandItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellStorageItem;
 import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
@@ -32,7 +32,6 @@ import net.mindoth.ancientmagicks.item.spell.frostarmor.FrostArmorItem;
 import net.mindoth.ancientmagicks.item.spell.ghostwalk.GhostwalkItem;
 import net.mindoth.ancientmagicks.item.spell.greaterinvisibility.GreaterInvisibilityItem;
 import net.mindoth.ancientmagicks.item.spell.icewall.IceWallItem;
-import net.mindoth.ancientmagicks.item.spell.icicle.IcicleItem;
 import net.mindoth.ancientmagicks.item.spell.invisibility.InvisibilityItem;
 import net.mindoth.ancientmagicks.item.spell.lifetap.LifeTapItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlItem;
@@ -91,20 +90,26 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> SPELL_PEARL = ITEMS.register("spell_pearl",
             () -> new SpecialCastingItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> ARCANE_DUST = ITEMS.register("arcane_dust",
+    public static final RegistryObject<Item> STONE_SLATE = ITEMS.register("empty_rune",
             () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> ARCANE_CLOTH = ITEMS.register("arcane_cloth",
+    public static final RegistryObject<Item> WOOL_CLOTH = ITEMS.register("wool_cloth",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> INFERNAL_SKIN = ITEMS.register("infernal_skin",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> ARCANE_DUST = ITEMS.register("arcane_dust",
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> ARCANE_CRYSTAL = ITEMS.register("arcane_crystal",
             () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> STONE_SLATE = ITEMS.register("empty_rune",
-            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> PARCHMENT = ITEMS.register("parchment",
+            () -> new ParchmentItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> ARCANE_PARCHMENT = ITEMS.register("arcane_parchment",
-            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> INFERNAL_PARCHMENT = ITEMS.register("infernal_parchment",
+            () -> new ParchmentItem(new Item.Properties()));
 
     public static final RegistryObject<Item> WOODEN_STAFF = ITEMS.register("wooden_staff",
             () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
@@ -160,9 +165,6 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> NUMB_PAIN_ITEM = ITEMS.register("numb_pain",
             () -> new NumbPainItem(new Item.Properties(), 1, 20, 10));
-
-    public static final RegistryObject<Item> ICICLE_ITEM = ITEMS.register("icicle",
-            () -> new IcicleItem(new Item.Properties(), 1, 10, 1));
 
     public static final RegistryObject<Item> FROST_ARMOR_ITEM = ITEMS.register("frost_armor",
             () -> new FrostArmorItem(new Item.Properties(), 1, 20, 10));
@@ -256,7 +258,7 @@ public class AncientMagicksItems {
             () -> new LifeTapItem(new Item.Properties(), 7, 0, 1));
 
     public static final RegistryObject<Item> CHAOTIC_POLYMORPH_ITEM = ITEMS.register("chaotic_polymorph",
-            () -> new ChaoticPolymorphItem(new Item.Properties(), 7, 140, 10));
+            () -> new ChaoticPolymorphItem(new Item.Properties(), 8, 140, 10));
 
     public static final RegistryObject<Item> MIND_CONTROL_ITEM = ITEMS.register("mind_control",
             () -> new MindControlItem(new Item.Properties(), 7, 140, 10));

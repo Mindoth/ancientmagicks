@@ -48,7 +48,7 @@ public class SpellItem extends Item {
     }
 
     public boolean isCraftable() {
-        return this.spellTier < 7;
+        return true;
     }
 
     public boolean isChannel() {

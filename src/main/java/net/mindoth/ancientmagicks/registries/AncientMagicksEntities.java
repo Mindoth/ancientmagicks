@@ -7,7 +7,7 @@ import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceEntity;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
 import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltEntity;
 import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceEntity;
-import net.mindoth.ancientmagicks.item.spell.icicle.IcicleEntity;
+import net.mindoth.ancientmagicks.item.spell.blizzard.IcicleEntity;
 import net.mindoth.ancientmagicks.item.spell.waterbolt.WaterBoltEntity;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowEntity;
 import net.minecraft.world.entity.Entity;

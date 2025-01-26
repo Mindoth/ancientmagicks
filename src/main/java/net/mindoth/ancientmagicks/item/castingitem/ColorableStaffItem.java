@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
-import net.mindoth.ancientmagicks.item.armor.DyeableMagicItem;
+import net.mindoth.ancientmagicks.item.DyeableMagicItem;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 

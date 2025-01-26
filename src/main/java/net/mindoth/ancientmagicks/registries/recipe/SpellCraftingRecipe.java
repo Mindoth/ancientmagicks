@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.registries.recipe;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
+import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
@@ -26,19 +27,21 @@ public class SpellCraftingRecipe extends CustomRecipe {
 
     @Override
     public boolean matches(CraftingContainer container, Level level) {
-        boolean flag = false;
         List<ColorRuneItem> list = Lists.newArrayList();
         List<Item> rest = Lists.newArrayList();
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() instanceof ColorRuneItem rune ) list.add(rune);
-            else if ( stack.getItem() == AncientMagicksItems.ARCANE_PARCHMENT.get() ) rest.add(stack.getItem());
+            else if ( stack.getItem() instanceof ParchmentItem item ) rest.add(item);
         }
         if ( ColorRuneItem.checkForSpellCombo(list) != null ) {
             SpellItem spell = ColorRuneItem.checkForSpellCombo(list);
-            if ( spell.isCraftable() && rest.size() == 1 && rest.contains(AncientMagicksItems.ARCANE_PARCHMENT.get()) ) flag = true;
+            if ( spell.isCraftable() && rest.size() == 1 ) {
+                if ( spell.spellTier >= 1 && spell.spellTier <= 3 && rest.contains(AncientMagicksItems.PARCHMENT.get()) ) return true;
+                else if ( spell.spellTier >= 4 && spell.spellTier <= 6 && rest.contains(AncientMagicksItems.INFERNAL_PARCHMENT.get()) ) return true;
+            }
         }
-        return flag;
+        return false;
     }
 
     @Override
@@ -55,6 +58,7 @@ public class SpellCraftingRecipe extends CustomRecipe {
     public static ItemStack createSpellScroll(ItemStack stack, SpellItem spell) {
         String spellString = ForgeRegistries.ITEMS.getKey(spell).toString();
         stack.getOrCreateTag().putString(SpecialCastingItem.TAG_STORED_SPELL, spellString);
+        if ( spell.spellTier >= 4 && spell.spellTier <= 6 ) stack.getOrCreateTag().putInt("CustomModelData", 1);
         return stack;
     }
 

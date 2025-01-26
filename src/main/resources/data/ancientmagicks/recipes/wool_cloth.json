@@ -2,19 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     " # ",
-    "#D#",
+    "#W#",
     " # "
   ],
   "key": {
     "#": {
       "tag": "forge:string"
     },
-    "D": {
-      "item": "ancientmagicks:arcane_dust"
+    "W": {
+      "item": "minecraft:white_wool"
     }
   },
   "result": {
-    "item": "ancientmagicks:arcane_cloth",
+    "item": "ancientmagicks:wool_cloth",
     "count": 4
   }
 }

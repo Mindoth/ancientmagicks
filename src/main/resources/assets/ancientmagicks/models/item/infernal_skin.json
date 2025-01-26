@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ancientmagicks:item/arcane_parchment"
+    "layer0": "ancientmagicks:item/infernal_skin"
   }
 }

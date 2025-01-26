@@ -6,6 +6,7 @@ import net.mindoth.ancientmagicks.item.AncientMagicksTab;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellStorageItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
@@ -72,7 +73,7 @@ public class AncientMagicks {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if ( event.getTab() == AncientMagicksTab.ANCIENTMAGICKS_TAB.get() ) {
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
-                if ( !(item.get() instanceof SpellItem) ) event.accept(item);
+                if ( !(item.get() instanceof SpellItem || item.get() instanceof SpellStorageItem)) event.accept(item);
             }
             for ( SpellItem spell : AncientMagicks.SPELL_LIST ) generateScrollWithSpell(event, spell);
         }
@@ -81,6 +82,7 @@ public class AncientMagicks {
     public static void generateScrollWithSpell(CreativeModeTab.Output output, SpellItem spell) {
         ItemStack stack = new ItemStack(AncientMagicksItems.SPELL_SCROLL.get());
         stack.getOrCreateTag().putString(SpecialCastingItem.TAG_STORED_SPELL, ForgeRegistries.ITEMS.getKey(spell).toString());
+        if ( spell.spellTier >= 4 && spell.spellTier <= 6 ) stack.getOrCreateTag().putInt("CustomModelData", 1);
         output.accept(stack);
     }
 

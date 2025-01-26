@@ -1,8 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " C0",
-    " ##",
+    " 0#",
+    " #C",
     "#  "
   ],
   "key": {
@@ -10,7 +10,7 @@
       "item": "minecraft:gold_ingot"
     },
     "C": {
-      "item": "ancientmagicks:arcane_cloth"
+      "item": "ancientmagicks:wool_cloth"
     },
     "0": {
       "item": "ancientmagicks:arcane_crystal"

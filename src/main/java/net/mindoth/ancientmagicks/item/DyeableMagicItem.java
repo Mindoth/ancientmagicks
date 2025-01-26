@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.armor;
+package net.mindoth.ancientmagicks.item;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.DyeableLeatherItem;
@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 public interface DyeableMagicItem extends DyeableLeatherItem {
     String TAG_COLOR = "color";
     String TAG_DISPLAY = "display";
-    int DEFAULT_LEATHER_COLOR = 7641066;
+    int SIMPLE_CLOTH_COLOR = 16777215;
 
     @Override
     default boolean hasCustomColor(ItemStack pStack) {
@@ -18,7 +18,7 @@ public interface DyeableMagicItem extends DyeableLeatherItem {
     @Override
     default int getColor(ItemStack pStack) {
         CompoundTag compoundtag = pStack.getTagElement(TAG_DISPLAY);
-        return compoundtag != null && compoundtag.contains(TAG_COLOR, 99) ? compoundtag.getInt(TAG_COLOR) : DEFAULT_LEATHER_COLOR;
+        return compoundtag != null && compoundtag.contains(TAG_COLOR, 99) ? compoundtag.getInt(TAG_COLOR) : SIMPLE_CLOTH_COLOR;
     }
 
     @Override

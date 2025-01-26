@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.icicle;
+package net.mindoth.ancientmagicks.item.spell.blizzard;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

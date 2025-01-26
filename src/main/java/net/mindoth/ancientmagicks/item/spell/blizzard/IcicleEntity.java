@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.icicle;
+package net.mindoth.ancientmagicks.item.spell.blizzard;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
