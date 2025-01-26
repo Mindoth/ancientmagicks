@@ -24,11 +24,6 @@ public class MindControlItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected boolean isHarmful() {
-        return true;
-    }
-
-    @Override
     protected int getLife() {
         return 600;
     }
@@ -41,7 +36,7 @@ public class MindControlItem extends AbstractSpellRayCast {
     @Override
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
         Mob mob = (Mob)target;
-        mob.getPersistentData().putUUID(MindControlEffect.NBT_KEY, owner.getUUID());
+        mob.getPersistentData().putUUID(MindControlEffect.NBT_KEY_CONTROL, owner.getUUID());
         mob.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), getLife()));
         //if ( mob instanceof PathfinderMob pthMob ) mob.goalSelector.addGoal(0, new MeleeAttackGoal(pthMob, 1.0F, true));
         mob.setTarget(MindControlEffect.findMindControlTarget(mob, owner, mob.level()));

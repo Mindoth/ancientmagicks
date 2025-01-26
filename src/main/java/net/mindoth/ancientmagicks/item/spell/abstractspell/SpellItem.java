@@ -132,12 +132,19 @@ public class SpellItem extends Item {
         if ( owner == null || target == null ) return false;
         if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) return true;
         else return target == owner || !owner.canAttack(target) || owner.isAlliedTo(target)
-                || (target instanceof TamableAnimal pet && pet.isOwnedBy(owner)) || (target instanceof Mob mob && isMinionsOwner(owner, mob));
+                || (target instanceof TamableAnimal pet && pet.isOwnedBy(owner))
+                || (target instanceof Mob mob && isMinionsSummoner(owner, mob));
     }
 
     public static boolean isMinionsOwner(LivingEntity owner, Mob mob) {
-        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY)
-                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY).equals(owner.getUUID()) && mob.getTarget() != owner;
+        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
+                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner;
+    }
+
+    public static boolean isMinionsSummoner(LivingEntity owner, Mob mob) {
+        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
+                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner
+                && mob.getPersistentData().getBoolean(MindControlEffect.NBT_KEY_SUMMON);
     }
 
     public static boolean isPushable(Entity entity) {

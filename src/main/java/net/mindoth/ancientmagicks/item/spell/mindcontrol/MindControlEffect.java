@@ -31,7 +31,8 @@ public class MindControlEffect extends MobEffect {
         super(pCategory, pColor);
     }
 
-    public static final String NBT_KEY = "am_controlling_entity";
+    public static final String NBT_KEY_CONTROL = "am_controlling_entity";
+    public static final String NBT_KEY_SUMMON = "am_is_summon";
 
     public static boolean setMindControlTarget(Mob mob, LivingEntity owner, Level level) {
         LivingEntity mindControlTarget = findMindControlTarget(mob, owner, level);
@@ -42,49 +43,48 @@ public class MindControlEffect extends MobEffect {
         else return false;
     }
 
-    public static LivingEntity findMindControlTarget(Mob mob, LivingEntity owner, Level level) {
-        List<LivingEntity> possibleTargets = ShadowEvents.getEntitiesAround(mob, level, mob.getAttributeValue(Attributes.FOLLOW_RANGE), null);
-        possibleTargets.remove(mob);
-        possibleTargets.remove(owner);
+    public static LivingEntity findMindControlTarget(Mob cMob, LivingEntity cMobOwner, Level level) {
+        List<LivingEntity> possibleTargets = ShadowEvents.getEntitiesAround(cMob, level, cMob.getAttributeValue(Attributes.FOLLOW_RANGE), null);
+        possibleTargets.remove(cMob);
         possibleTargets.removeIf(e -> e instanceof ArmorStand);
+        possibleTargets.removeIf(e -> SpellItem.isAlly(cMobOwner, e));
+        possibleTargets.removeIf(e -> e instanceof Mob mob && SpellItem.isMinionsOwner(cMobOwner, mob) && cMobOwner.getLastHurtMob() != mob);
 
         LivingEntity newTarget = null;
 
         for ( LivingEntity possibleTarget : possibleTargets ) {
-            if ( isTargetable(owner, possibleTarget) ) {
-                if ( newTarget == null || mob.distanceTo(possibleTarget) < mob.distanceTo(newTarget) ) newTarget = possibleTarget;
+            if ( isTargetable(cMobOwner, possibleTarget) ) {
+                if ( newTarget == null || cMob.distanceTo(possibleTarget) < cMob.distanceTo(newTarget) ) newTarget = possibleTarget;
             }
         }
 
         return newTarget;
     }
 
-    private static void handleTargeting(Level level, Mob mob, LivingEntity target) {
-        if ( !mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) ) return;
-        CompoundTag tag = mob.getPersistentData();
-        if ( tag.hasUUID(NBT_KEY) ) {
-            Entity entity = getEntityByUUID(level, tag.getUUID(NBT_KEY));
-            if ( entity instanceof LivingEntity owner ) {
-                if ( isTargetable(target, mob) || setMindControlTarget(mob, owner, level) ) return;
-            }
-        }
-        else mob.setTarget(null);
+    private static boolean isTargetable(LivingEntity cMobOwner, LivingEntity target) {
+        if ( cMobOwner == null ) return false;
+        if ( SpellItem.isAlly(cMobOwner, target.getLastHurtByMob()) ) return true;
+        else if ( SpellItem.isAlly(cMobOwner, target) ) return cMobOwner.getLastHurtMob() == target || cMobOwner.getLastHurtByMob() == target;
+        else return cMobOwner.getLastHurtMob() == target || cMobOwner.getLastHurtByMob() == target || (target instanceof Mob mob && mob.getTarget() == cMobOwner);
     }
 
-    private static boolean isTargetable(LivingEntity owner, LivingEntity target) {
-        if ( owner == null ) return false;
-        if ( SpellItem.isAlly(owner, target.getLastHurtByMob()) ) return true;
-        else if ( SpellItem.isAlly(owner, target) ) return owner.getLastHurtMob() == target || owner.getLastHurtByMob() == target;
-        else return owner.getLastHurtMob() == target || owner.getLastHurtByMob() == target || (target instanceof Mob mob && mob.getTarget() == owner);
+    private static void handleTargeting(Level level, Mob cMob, LivingEntity cMobTarget) {
+        if ( !cMob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) ) return;
+        CompoundTag tag = cMob.getPersistentData();
+        if ( tag.hasUUID(NBT_KEY_CONTROL) ) {
+            Entity entity = getEntityByUUID(level, tag.getUUID(NBT_KEY_CONTROL));
+            if ( entity instanceof LivingEntity owner ) {
+                if ( isTargetable(cMobTarget, cMob) || setMindControlTarget(cMob, owner, level) ) return;
+            }
+        }
+        else cMob.setTarget(null);
     }
 
     @SubscribeEvent
     public static void onMindControlledUpdate(final LivingEvent.LivingTickEvent event) {
         if ( event.getEntity().level().isClientSide ) return;
         if ( event.getEntity() instanceof Mob mob && mob.tickCount % 50 == 0 && mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) ) {
-            if ( mob.getTarget() == null || !mob.getTarget().isAlive() ) {
-                handleTargeting(mob.level(), mob, mob.getTarget());
-            }
+            if ( mob.getTarget() == null || !mob.getTarget().isAlive() ) handleTargeting(mob.level(), mob, mob.getTarget());
         }
     }
 
@@ -94,7 +94,9 @@ public class MindControlEffect extends MobEffect {
         if ( !event.getEntity().hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) ) return;
         if ( event.getEntity() instanceof Mob mob && event.getOriginalTarget() != null ) {
             CompoundTag tag = mob.getPersistentData();
-            if ( tag.hasUUID(NBT_KEY) && tag.getUUID(NBT_KEY).equals(event.getOriginalTarget().getUUID()) ) {
+            if ( !tag.hasUUID(NBT_KEY_CONTROL) ) return;
+            Entity entity = getEntityByUUID(event.getEntity().level(), tag.getUUID(NBT_KEY_CONTROL));
+            if ( entity instanceof LivingEntity cMobOwner && SpellItem.isAlly(cMobOwner, event.getOriginalTarget()) ) {
                 handleTargeting(mob.level(), mob, event.getOriginalTarget());
                 event.setCanceled(true);
             }

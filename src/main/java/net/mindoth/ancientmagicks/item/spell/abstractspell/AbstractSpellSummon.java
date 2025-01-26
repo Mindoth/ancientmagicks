@@ -70,8 +70,8 @@ public class AbstractSpellSummon extends SpellItem {
     }
 
     public void summonMinion(Mob minion, LivingEntity owner, Level level) {
-        minion.getPersistentData().putUUID(MindControlEffect.NBT_KEY, owner.getUUID());
-        minion.getPersistentData().putBoolean("am_is_minion", true);
+        minion.getPersistentData().putUUID(MindControlEffect.NBT_KEY_CONTROL, owner.getUUID());
+        minion.getPersistentData().putBoolean(MindControlEffect.NBT_KEY_SUMMON, true);
         minion.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), getLife()));
         ForgeEventFactory.onFinalizeSpawn(minion, (ServerLevel)level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
         level.addFreshEntity(minion);

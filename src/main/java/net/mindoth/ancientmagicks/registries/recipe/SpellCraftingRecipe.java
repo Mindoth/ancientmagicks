@@ -1,9 +1,9 @@
 package net.mindoth.ancientmagicks.registries.recipe;
 
 import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
-import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.core.RegistryAccess;
@@ -15,7 +15,6 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
@@ -52,14 +51,7 @@ public class SpellCraftingRecipe extends CustomRecipe {
             if ( stack.getItem() instanceof ColorRuneItem rune ) list.add(rune);
         }
         ItemStack spellStack = new ItemStack(AncientMagicksItems.SPELL_SCROLL.get());
-        return createSpellScroll(spellStack, ColorRuneItem.checkForSpellCombo(list));
-    }
-
-    public static ItemStack createSpellScroll(ItemStack stack, SpellItem spell) {
-        String spellString = ForgeRegistries.ITEMS.getKey(spell).toString();
-        stack.getOrCreateTag().putString(SpecialCastingItem.TAG_STORED_SPELL, spellString);
-        if ( spell.spellTier >= 4 && spell.spellTier <= 6 ) stack.getOrCreateTag().putInt("CustomModelData", 1);
-        return stack;
+        return AncientMagicks.createSpellScroll(spellStack, ColorRuneItem.checkForSpellCombo(list));
     }
 
     @Override

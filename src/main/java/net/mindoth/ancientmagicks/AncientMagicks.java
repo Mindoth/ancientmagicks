@@ -16,7 +16,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -73,17 +72,17 @@ public class AncientMagicks {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if ( event.getTab() == AncientMagicksTab.ANCIENTMAGICKS_TAB.get() ) {
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
-                if ( !(item.get() instanceof SpellItem || item.get() instanceof SpellStorageItem)) event.accept(item);
+                if ( !(item.get() instanceof SpellItem || item.get() instanceof SpellStorageItem) ) event.accept(item);
             }
-            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) generateScrollWithSpell(event, spell);
+            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) event.accept(createSpellScroll(new ItemStack(AncientMagicksItems.SPELL_SCROLL.get()), spell));
         }
     }
 
-    public static void generateScrollWithSpell(CreativeModeTab.Output output, SpellItem spell) {
-        ItemStack stack = new ItemStack(AncientMagicksItems.SPELL_SCROLL.get());
-        stack.getOrCreateTag().putString(SpecialCastingItem.TAG_STORED_SPELL, ForgeRegistries.ITEMS.getKey(spell).toString());
+    public static ItemStack createSpellScroll(ItemStack stack, SpellItem spell) {
+        String spellString = ForgeRegistries.ITEMS.getKey(spell).toString();
+        stack.getOrCreateTag().putString(SpecialCastingItem.TAG_STORED_SPELL, spellString);
         if ( spell.spellTier >= 4 && spell.spellTier <= 6 ) stack.getOrCreateTag().putInt("CustomModelData", 1);
-        output.accept(stack);
+        return stack;
     }
 
     //List stuff
