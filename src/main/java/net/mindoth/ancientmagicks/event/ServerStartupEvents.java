@@ -47,7 +47,8 @@ public class ServerStartupEvents {
             Item item = vanillaList.get(index);
             ARCANE_DUST_LIST.add(item);
         }
-        System.out.println("ARCANE LIST: " + ARCANE_DUST_LIST);
+        //System.out.println("ARCANE LIST: " + ARCANE_DUST_LIST);
+        //System.out.println("DISABLE LIST: " + configString);
     }
 
     //TODO remove the ENTIRE system changing COMBO_MAP to string and back in ColorRuneItem. Maybe iterate through itemStacks into a list when sending packets?

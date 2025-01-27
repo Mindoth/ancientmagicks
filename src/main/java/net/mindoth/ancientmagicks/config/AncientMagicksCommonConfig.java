@@ -1,7 +1,9 @@
 package net.mindoth.ancientmagicks.config;
 
 import com.google.common.collect.Lists;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
@@ -37,7 +39,6 @@ public class AncientMagicksCommonConfig {
         List<String> list = Lists.newArrayList();
 
         list.add("minecraft:air");
-        list.add("minecraft:spawn_egg");
         list.add("minecraft:command_block");
         list.add("minecraft:repeating_command_block");
         list.add("minecraft:chain_command_block");
@@ -49,7 +50,6 @@ public class AncientMagicksCommonConfig {
         list.add("minecraft:farmland");
         list.add("minecraft:barrier");
         list.add("minecraft:structure_void");
-        list.add("minecraft:monster_egg");
         list.add("minecraft:structure_block");
         list.add("minecraft:potion");
         list.add("minecraft:splash_potion");
@@ -73,6 +73,13 @@ public class AncientMagicksCommonConfig {
         list.add("minecraft:black_shulker_box");
         list.add("minecraf:chorus_plant");
         list.add("minecraft:grass_path");
+
+        list.add("minecraft:spawn_egg");
+        list.add("minecraft:monster_egg");
+
+        ForgeRegistries.ITEMS.getValues().forEach(item -> {
+            if ( item instanceof SpawnEggItem ) list.add(ForgeRegistries.ITEMS.getKey(item).toString());
+        });
 
         return list;
     }
