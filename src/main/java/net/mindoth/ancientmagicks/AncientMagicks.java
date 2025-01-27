@@ -33,10 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Mod(AncientMagicks.MOD_ID)
 public class AncientMagicks {
@@ -74,7 +71,11 @@ public class AncientMagicks {
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
                 if ( !(item.get() instanceof SpellItem || item.get() instanceof SpellStorageItem) ) event.accept(item);
             }
-            for ( SpellItem spell : AncientMagicks.SPELL_LIST ) event.accept(createSpellScroll(new ItemStack(AncientMagicksItems.SPELL_SCROLL.get()), spell));
+            for ( int i = 1; i <= 9; i++ ) {
+                for ( SpellItem spell : AncientMagicks.SPELL_LIST ) {
+                    if ( isSpellEnabled(spell) && spell.spellTier == i ) event.accept(createSpellScroll(new ItemStack(AncientMagicksItems.SPELL_SCROLL.get()), spell));
+                }
+            }
         }
     }
 
@@ -82,6 +83,7 @@ public class AncientMagicks {
         String spellString = ForgeRegistries.ITEMS.getKey(spell).toString();
         stack.getOrCreateTag().putString(SpecialCastingItem.TAG_STORED_SPELL, spellString);
         if ( spell.spellTier >= 4 && spell.spellTier <= 6 ) stack.getOrCreateTag().putInt("CustomModelData", 1);
+        if ( spell.spellTier >= 7 ) stack.getOrCreateTag().putInt("CustomModelData", 2);
         return stack;
     }
 
@@ -91,18 +93,18 @@ public class AncientMagicks {
     public static List<EntityType<?>> DISABLED_POLYMOBS = Lists.newArrayList();
 
     public void commonSetup(final FMLCommonSetupEvent event) {
-        ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
         AncientMagicksNetwork.init();
         createLists();
-        createPolymobDisableList();
     }
 
     private static void createLists() {
+        ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
         if ( !SPELL_LIST.isEmpty() ) SPELL_LIST.clear();
         if ( !COLOR_RUNE_LIST.isEmpty() ) COLOR_RUNE_LIST.clear();
         if ( !COMBO_MAP.isEmpty() ) COMBO_MAP.clear();
         createSpellDisableList();
-        for ( Item item : ITEM_LIST ) if ( item instanceof SpellItem spellItem && isSpellEnabled(spellItem) ) SPELL_LIST.add(spellItem);
+        createPolymobDisableList();
+        for ( Item item : ITEM_LIST ) if ( item instanceof SpellItem spellItem ) SPELL_LIST.add(spellItem);
         for ( Item item : ITEM_LIST ) if ( item instanceof ColorRuneItem colorRuneItem ) COLOR_RUNE_LIST.add(colorRuneItem);
     }
 
@@ -111,18 +113,17 @@ public class AncientMagicks {
     }
 
     private static void createSpellDisableList() {
-        String configString = AncientMagicksCommonConfig.DISABLED_SPELLS.get();
-        for ( String string : List.of(configString.replaceAll("[\\[\\]]", "").replaceAll(" ", "").replaceAll("\n", "").split(",")) ) {
+        List<String> configString = AncientMagicksCommonConfig.DISABLED_SPELLS.get();
+        configString.forEach(string -> {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-            if ( item instanceof SpellItem spellItem) DISABLED_SPELLS.add(spellItem);
-        }
+            if ( item instanceof SpellItem spellItem ) DISABLED_SPELLS.add(spellItem);
+        });
+        System.out.println("DISABLED SPELLS: " + DISABLED_SPELLS);
     }
 
     private static void createPolymobDisableList() {
-        String configString = AncientMagicksCommonConfig.DISABLED_POLYMOBS.get();
-        for ( String string : List.of(configString.replaceAll("[\\[\\]]", "").replaceAll(" ", "").replaceAll("\n", "").split(",")) ) {
-            DISABLED_POLYMOBS.add(ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(string)));
-        }
+        List<String> configString = AncientMagicksCommonConfig.DISABLED_POLYMOBS.get();
+        configString.forEach(string -> DISABLED_POLYMOBS.add(ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(string))));
     }
 
     public static void createMobList(ServerLevel serverLevel) {
@@ -139,7 +140,7 @@ public class AncientMagicks {
     public static List<SpellItem> DISABLED_SPELLS = Lists.newArrayList();
     public static HashMap<SpellItem, List<ColorRuneItem>> COMBO_MAP = new HashMap<>();
 
-    private static List<List<ColorRuneItem>> createTempList(List<List<ColorRuneItem>> comboList, int i, int j, int k, @Nullable Integer l, @Nullable Integer m, @Nullable Integer n) {
+    private static void createTempList(List<List<ColorRuneItem>> comboList, int i, int j, int k, @Nullable Integer l, @Nullable Integer m, @Nullable Integer n) {
         List<ColorRuneItem> tempList = Lists.newArrayList();
         tempList.add(COLOR_RUNE_LIST.get(i));
         tempList.add(COLOR_RUNE_LIST.get(j));
@@ -148,7 +149,6 @@ public class AncientMagicks {
         if ( m != null ) tempList.add(COLOR_RUNE_LIST.get(m));
         if ( n != null ) tempList.add(COLOR_RUNE_LIST.get(n));
         if ( hasNoDupeInList(comboList, tempList) ) comboList.add(tempList);
-        return comboList;
     }
 
     //Check how many Color Runes should be in a Spell Code. The amount increases depending on how many Spells are registered.
@@ -162,7 +162,7 @@ public class AncientMagicks {
         return returnValue;
     }
 
-    public static void randomizeSpells() {
+    public static void randomizeSpells(Random seededRand) {
         Logger logger = getLogger();
 
         List<List<ColorRuneItem>> comboList = Lists.newArrayList();
@@ -190,9 +190,11 @@ public class AncientMagicks {
         }
         else {
             if ( !SPELL_LIST.isEmpty() ) {
-                Collections.shuffle(comboList);
+                Collections.shuffle(comboList, seededRand);
                 for ( int i = 0; i < comboList.size(); i++ ) {
-                    if ( i < SPELL_LIST.size() && isSpellEnabled(SPELL_LIST.get(i)) ) COMBO_MAP.put(SPELL_LIST.get(i), comboList.get(i));
+                    if ( i < SPELL_LIST.size() ) {
+                        if ( isSpellEnabled(SPELL_LIST.get(i)) ) COMBO_MAP.put(SPELL_LIST.get(i), comboList.get(i));
+                    }
                     else break;
                 }
             }

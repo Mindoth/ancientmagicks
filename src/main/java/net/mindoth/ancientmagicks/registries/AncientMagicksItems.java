@@ -111,6 +111,9 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> INFERNAL_PARCHMENT = ITEMS.register("infernal_parchment",
             () -> new ParchmentItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> ARCANE_PARCHMENT = ITEMS.register("arcane_parchment",
+            () -> new ParchmentItem(new Item.Properties()));
+
     public static final RegistryObject<Item> WOODEN_STAFF = ITEMS.register("wooden_staff",
             () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                             "Weapon modifier", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE),
@@ -143,6 +146,8 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> GOLDEN_CIRCLET = ITEMS.register("golden_circlet",
             () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.GAUDY, ArmorItem.Type.HELMET, new Item.Properties()));
+
+
 
     //Magic Spells
     public static final RegistryObject<Item> FEATHER_FALL_ITEM = ITEMS.register("feather_fall",
@@ -233,7 +238,7 @@ public class AncientMagicksItems {
             () -> new BlizzardItem(new Item.Properties(), 5, 10, 2));
 
     public static final RegistryObject<Item> TELEBLOCK_ITEM = ITEMS.register("teleblock",
-            () -> new TeleblockItem(new Item.Properties(), 5, 100, 10));
+            () -> new TeleblockItem(new Item.Properties(), 8, 160, 10));
 
     public static final RegistryObject<Item> SUMMON_DEATH_KNIGHT_ITEM = ITEMS.register("summon_death_knight",
             () -> new SummonDeathKnightItem(new Item.Properties(), 5, 100, 10));
@@ -253,16 +258,15 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> CONTROL_WEATHER_ITEM = ITEMS.register("control_weather",
             () -> new ControlWeatherItem(new Item.Properties(), 6, 120, 10));
 
-
-    public static final RegistryObject<Item> LIFE_TAP_ITEM = ITEMS.register("life_tap",
-            () -> new LifeTapItem(new Item.Properties(), 7, 0, 1));
-
-    public static final RegistryObject<Item> CHAOTIC_POLYMORPH_ITEM = ITEMS.register("chaotic_polymorph",
-            () -> new ChaoticPolymorphItem(new Item.Properties(), 8, 140, 10));
-
     public static final RegistryObject<Item> MIND_CONTROL_ITEM = ITEMS.register("mind_control",
             () -> new MindControlItem(new Item.Properties(), 7, 140, 10));
 
+    public static final RegistryObject<Item> LIFE_TAP_ITEM = ITEMS.register("life_tap",
+            () -> new LifeTapItem(new Item.Properties(), 6, 0, 1));
+
     public static final RegistryObject<Item> DRAGON_BREATH_ITEM = ITEMS.register("dragon_breath",
             () -> new DragonBreathItem(new Item.Properties(), 7, 14, 2));
+
+    public static final RegistryObject<Item> CHAOTIC_POLYMORPH_ITEM = ITEMS.register("chaotic_polymorph",
+            () -> new ChaoticPolymorphItem(new Item.Properties(), 6, 120, 10));
 }

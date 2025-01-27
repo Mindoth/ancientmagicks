@@ -38,6 +38,7 @@ public class SpellCraftingRecipe extends CustomRecipe {
             if ( spell.isCraftable() && rest.size() == 1 ) {
                 if ( spell.spellTier >= 1 && spell.spellTier <= 3 && rest.contains(AncientMagicksItems.PARCHMENT.get()) ) return true;
                 else if ( spell.spellTier >= 4 && spell.spellTier <= 6 && rest.contains(AncientMagicksItems.INFERNAL_PARCHMENT.get()) ) return true;
+                else if ( spell.spellTier >= 7 && rest.contains(AncientMagicksItems.ARCANE_PARCHMENT.get()) ) return true;
             }
         }
         return false;

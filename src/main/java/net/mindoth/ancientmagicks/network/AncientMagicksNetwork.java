@@ -75,12 +75,6 @@ public class AncientMagicksNetwork {
                 .consumerMainThread(PacketSyncClientMana::handle)
                 .add();
 
-        /*net.messageBuilder(PacketSolveAncientTablet.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(PacketSolveAncientTablet::new)
-                .encoder(PacketSolveAncientTablet::encode)
-                .consumerMainThread(PacketSolveAncientTablet::handle)
-                .add();*/
-
         net.messageBuilder(PacketUpdateKnownSpells.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(PacketUpdateKnownSpells::new)
                 .encoder(PacketUpdateKnownSpells::encode)

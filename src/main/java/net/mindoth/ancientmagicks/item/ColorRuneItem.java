@@ -39,16 +39,6 @@ public class ColorRuneItem extends Item {
             if ( AncientMagicks.listsMatch(comboToCheck, value) ) return key;
         }
         return null;
-        /*SpellItem spell = null;
-        if ( secretSpell == null ) {
-            for ( Map.Entry<SpellItem, List<ColorRuneItem>> entry : CURRENT_COMBO_MAP.entrySet() ) {
-                SpellItem key = entry.getKey();
-                List<ColorRuneItem> value = entry.getValue();
-                if ( AncientMagicks.listsMatch(comboToCheck, value) ) spell = key;
-            }
-        }
-        else if ( AncientMagicks.listsMatch(comboToCheck, CURRENT_COMBO_MAP.get(secretSpell)) ) spell = secretSpell;
-        return spell;*/
     }
 
     //This is some REALLY delicate String parsing. I'm no expert...
@@ -78,57 +68,9 @@ public class ColorRuneItem extends Item {
         return tempList;
     }
 
-    /*@Override
-    public int getUseDuration(ItemStack pStack) {
-        return 32;
-    }
-
-    @Override
-    public UseAnim getUseAnimation(ItemStack pStack) {
-        return UseAnim.EAT;
-    }*/
-
-    /*@Override
-    @Nonnull
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
-        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
-        if ( !level.isClientSide ) {
-            if ( !player.isUsingItem() ) player.startUsingItem(handIn);
-        }
-        return result;
-    }*/
-
-    /*@SubscribeEvent
-    public static void onRuneConsume(final LivingEntityUseItemEvent.Finish event) {
-        if ( event.getEntity() instanceof Player player ) {
-            if ( !player.level().isClientSide ) {
-                ItemStack stack = event.getItem();
-                if ( stack.getItem() instanceof ColorRuneItem ) {
-                    CompoundTag playerData = player.getPersistentData();
-                    CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
-
-                    data.putBoolean(stack.getItem().toString(), !data.getBoolean(stack.getItem().toString()));
-                    playerData.put(Player.PERSISTED_NBT_TAG, data);
-
-                    if ( !player.isCreative() ) event.getResultStack().shrink(1);
-                    Vec3 center = ShadowEvents.getEntityCenter(event.getEntity());
-                    player.level().playSound(null, center.x, center.y, center.z, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5F, 0.25F);
-                }
-            }
-        }
-    }*/
-
     public static List<ItemStack> getColorRuneList(Player player) {
         List<ItemStack> runeList = Lists.newArrayList();
         for ( ColorRuneItem rune : AncientMagicks.COLOR_RUNE_LIST ) runeList.add(new ItemStack(rune));
-        /*CompoundTag playerData = player.getPersistentData();
-        CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);*/
-        /*if ( data.getBoolean("blue_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLUE_RUNE.get()));
-        if ( data.getBoolean("purple_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()));
-        if ( data.getBoolean("yellow_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
-        if ( data.getBoolean("green_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
-        if ( data.getBoolean("black_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.BLACK_RUNE.get()));
-        if ( data.getBoolean("white_rune") || player.isCreative() ) runeList.add(new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));*/
         return runeList;
     }
 }
