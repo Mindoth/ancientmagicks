@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
@@ -84,8 +85,8 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> SPELL_SCROLL = ITEMS.register("spell_scroll",
             () -> new SpellStorageItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> SPELL_TABLET = ITEMS.register("spell_tablet",
-            () -> new SpellStorageItem(new Item.Properties()));
+    public static final RegistryObject<Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
+            () -> new AncientTabletItem(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> SPELL_PEARL = ITEMS.register("spell_pearl",
             () -> new SpecialCastingItem(new Item.Properties()));

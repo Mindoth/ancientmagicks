@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks;
 
+import net.mindoth.ancientmagicks.client.screen.AncientMagicksScreen;
 import net.mindoth.ancientmagicks.client.screen.GuiSpellWheel;
 import net.mindoth.ancientmagicks.client.screen.HudCurrentSpell;
 import net.mindoth.ancientmagicks.client.screen.HudMana;
@@ -77,8 +78,9 @@ public class AncientMagicksClient {
             int spellSelector = AncientMagicksKeyBinds.SPELL_SELECTOR.getKey().getValue();
             int inventory = mc.options.keyInventory.getKey().getValue();
             Player player = mc.player;
-            if ( mc.screen instanceof GuiSpellWheel ) {
-                if ( key == inventory || (keyAction == 0 && key == spellSelector) ) player.closeContainer();
+            if ( mc.screen instanceof AncientMagicksScreen ) {
+                if ( key == inventory ) player.closeContainer();
+                if ( mc.screen instanceof GuiSpellWheel && keyAction == 0 && key == spellSelector ) player.closeContainer();
             }
             else if ( mc.screen == null && key == spellSelector && keyAction == 1 ) {
                 if ( !CastingItem.getHeldStaff(player).isEmpty() ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());

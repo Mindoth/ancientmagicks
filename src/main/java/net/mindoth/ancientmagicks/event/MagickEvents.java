@@ -38,35 +38,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class MagickEvents {
 
-    public static final String TAG_NOT_FIRST_LOGIN = ("notFirstLogIn");
-
-    @SubscribeEvent
-    public static void onPlayerJoin(final PlayerEvent.PlayerLoggedInEvent event) {
-        if ( event.getEntity().level().isClientSide ) return;
-        Player player = event.getEntity();
-        CompoundTag playerData = player.getPersistentData();
-        CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
-        if ( event.getEntity() instanceof ServerPlayer serverPlayer ) {
-            AncientMagicksNetwork.sendToPlayer(new PacketSyncSpellCombos(ColorRuneItem.CURRENT_COMBO_TAG), serverPlayer);
-            serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-                CompoundTag tag = new CompoundTag();
-                if ( magic.getCurrentSpell() != null ) tag.putString("am_spell", magic.getCurrentSpell());
-                else magic.setCurrentSpell("minecraft:air");
-                if ( magic.getKnownSpells() != null ) tag.putString("am_known_spells", magic.getKnownSpells());
-                else magic.setKnownSpells("");
-                AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMagic(tag), serverPlayer);
-                if ( data.getBoolean(TAG_NOT_FIRST_LOGIN) ) AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMana(magic.getCurrentMana()), serverPlayer);
-                else changeMana(serverPlayer, serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get()));
-            });
-        }
-
-        //KEEP THIS LAST
-        if ( !data.getBoolean(TAG_NOT_FIRST_LOGIN) ) {
-            data.putBoolean(TAG_NOT_FIRST_LOGIN, true);
-            playerData.put(Player.PERSISTED_NBT_TAG, data);
-        }
-    }
-
     @SubscribeEvent
     public static void baseManaRegen(final TickEvent.LevelTickEvent event) {
         if ( event.phase != TickEvent.Phase.END || event.level.isClientSide ) return;

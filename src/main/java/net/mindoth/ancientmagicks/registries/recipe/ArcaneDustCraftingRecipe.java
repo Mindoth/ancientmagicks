@@ -1,8 +1,9 @@
 package net.mindoth.ancientmagicks.registries.recipe;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.event.ServerStartupEvents;
+import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -10,6 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
@@ -27,7 +29,7 @@ public class ArcaneDustCraftingRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             itemList.add(container.getItem(i).getItem());
         }
-        return itemList.equals(ServerStartupEvents.ARCANE_DUST_LIST);
+        return itemList.equals(AncientMagicks.ARCANE_DUST_LIST);
     }
 
     @Override
@@ -36,13 +38,33 @@ public class ArcaneDustCraftingRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             itemList.add(container.getItem(i).getItem());
         }
-        return itemList.equals(ServerStartupEvents.ARCANE_DUST_LIST) ? new ItemStack(AncientMagicksItems.ARCANE_DUST.get()) : null;
+        return itemList.equals(AncientMagicks.ARCANE_DUST_LIST) ? getResultItem(regAcc) : ItemStack.EMPTY;
     }
 
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return pWidth * pHeight >= 2;
     }
+
+    @Override
+    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
+        return new ItemStack(AncientMagicksItems.ARCANE_DUST.get());
+    }
+
+    /*@Override
+    public NonNullList<Ingredient> getIngredients() {
+        NonNullList<Ingredient> list = NonNullList.create();
+        AncientMagicks.ARCANE_DUST_LIST.forEach(item -> {
+            Ingredient ingredient = Ingredient.of(item);
+            list.add(ingredient);
+        });
+        return list;
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return false;
+    }*/
 
     @Override
     public RecipeSerializer<?> getSerializer() {

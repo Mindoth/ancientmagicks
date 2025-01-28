@@ -50,9 +50,6 @@ public class SpellStorageItem extends Item {
         SpellItem spell = SpecialCastingItem.getStoredSpell(stack) != null ? SpecialCastingItem.getStoredSpell(stack) : null;
         if ( spell != null ) {
             if ( !Screen.hasShiftDown() ) {
-                /*String spellSchool = "tooltip.ancientmagicks." + spell.spellSchool.toString();
-                tooltip.add(Component.translatable("tooltip.ancientmagicks.spell_school").withStyle(ChatFormatting.GRAY).append(Component.literal(": "))
-                        .append(Component.translatable(spellSchool)));*/
                 int spellTier = spell.spellTier;
                 tooltip.add(Component.translatable("tooltip.ancientmagicks.tier").append(Component.literal(": " + spellTier)).withStyle(ChatFormatting.GRAY));
                 if ( spell.isChannel() ) {

@@ -7,6 +7,22 @@
         {
           "type": "minecraft:item",
           "weight": 1,
+          "name": "ancientmagicks:ancient_tablet"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.10
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 1,
           "name": "ancientmagicks:arcane_dust",
           "functions": [
             {
@@ -32,7 +48,7 @@
         {
           "type": "minecraft:item",
           "weight": 1,
-          "name": "ancientmagicks:spell_tablet",
+          "name": "ancientmagicks:spell_scroll",
           "functions": [
             {
               "function": "ancientmagicks:randomize_spell",

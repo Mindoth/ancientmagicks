@@ -45,16 +45,16 @@ public class AncientMagicksNetwork {
                 .consumerMainThread(PacketReceiveRuneData::handle)
                 .add();
 
+        net.messageBuilder(PacketOpenAncientTablet.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketOpenAncientTablet::new)
+                .encoder(PacketOpenAncientTablet::encode)
+                .consumerMainThread(PacketOpenAncientTablet::handle)
+                .add();
+
         net.messageBuilder(PacketSendCustomParticles.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(PacketSendCustomParticles::new)
                 .encoder(PacketSendCustomParticles::encode)
                 .consumerMainThread(PacketSendCustomParticles::handle)
-                .add();
-
-        net.messageBuilder(PacketSyncSpellCombos.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketSyncSpellCombos::new)
-                .encoder(PacketSyncSpellCombos::encode)
-                .consumerMainThread(PacketSyncSpellCombos::handle)
                 .add();
 
         net.messageBuilder(PacketSyncSpellCombos.class, id(), NetworkDirection.PLAY_TO_CLIENT)

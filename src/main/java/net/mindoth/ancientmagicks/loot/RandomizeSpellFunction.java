@@ -30,20 +30,14 @@ public class RandomizeSpellFunction extends LootItemConditionalFunction {
 
     @Override
     protected ItemStack run(ItemStack stack, LootContext context) {
-        if ( stack.getItem() == AncientMagicksItems.SPELL_SCROLL.get() || stack.getItem() == AncientMagicksItems.SPELL_TABLET.get() ) {
+        if ( stack.getItem() == AncientMagicksItems.SPELL_SCROLL.get() ) {
             int quality = this.qualityRange.getInt(context);
             List<SpellItem> list = AncientMagicks.SPELL_LIST.stream().filter(spell -> AncientMagicks.isSpellEnabled(spell) && spell.spellTier == quality).toList();
             if ( !list.isEmpty() ) {
                 SpellItem randomSpell = list.get(new Random().nextInt(list.size()));
-                stack = createSpellScroll(stack, randomSpell);
+                AncientMagicks.createSpellScroll(stack, randomSpell);
             }
         }
-        return stack;
-    }
-
-    public ItemStack createSpellScroll(ItemStack stack, SpellItem spell) {
-        String spellString = ForgeRegistries.ITEMS.getKey(spell).toString();
-        stack.getOrCreateTag().putString(SpecialCastingItem.TAG_STORED_SPELL, spellString);
         return stack;
     }
 

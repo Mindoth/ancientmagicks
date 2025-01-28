@@ -1,14 +1,18 @@
 package net.mindoth.ancientmagicks.item.spell.chaoticpolymorph;
 
-import net.mindoth.ancientmagicks.AncientMagicks;
+import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ChaoticPolymorphItem extends AbstractSpellRayCast {
@@ -22,13 +26,22 @@ public class ChaoticPolymorphItem extends AbstractSpellRayCast {
         return target instanceof Mob;
     }
 
+    public static boolean isPolymobEnabled(EntityType<?> entityType) {
+        List<EntityType<?>> disabledPolymobs = Lists.newArrayList();
+        List<String> configString = AncientMagicksCommonConfig.DISABLED_POLYMOBS.get();
+        configString.forEach(string -> disabledPolymobs.add(ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(string))));
+        return disabledPolymobs.isEmpty() || !disabledPolymobs.contains(entityType);
+    }
+
     @Override
     protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
         if ( level instanceof ServerLevel serverLevel ) {
             Mob oldMob = (Mob)target;
-            if ( AncientMagicks.MOB_LIST.isEmpty() ) AncientMagicks.createMobList(serverLevel);
-            int index = ThreadLocalRandom.current().nextInt(0, AncientMagicks.MOB_LIST.size());
-            Entity entity = AncientMagicks.MOB_LIST.get(index).create(level);
+            List<EntityType<?>> polymobList = ForgeRegistries.ENTITY_TYPES.getValues().stream()
+                    .filter(entityType -> isPolymobEnabled(entityType) && entityType != oldMob.getType() && entityType.create(level) instanceof Mob).toList();
+            int index = ThreadLocalRandom.current().nextInt(0, polymobList.size());
+            Entity entity = polymobList.get(index).create(level);
+            System.out.println("ENTITY: " + entity);
             if ( entity instanceof Mob newMob ) {
                 Mob mob = convertMob(oldMob, newMob, serverLevel, false);
                 while ( !mob.isAddedToWorld() ) convertMob(oldMob, newMob, serverLevel, false);

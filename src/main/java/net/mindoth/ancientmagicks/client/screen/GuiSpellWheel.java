@@ -38,9 +38,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.List;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public class GuiSpellWheel extends Screen {
+public class GuiSpellWheel extends AncientMagicksScreen {
 
-    private static final Minecraft MINECRAFT = Minecraft.getInstance();
     private static final float PRECISION = 5.0F;
     private boolean closing;
     final float OPEN_ANIMATION_LENGTH = 0.5F;
@@ -53,19 +52,14 @@ public class GuiSpellWheel extends Screen {
     private SpellItem comboResult;
     private final InteractionHand hand;
     private final String hotbar;
-    //private final CompoundTag tag;
-    //private final boolean discoveryMode;
 
-    public GuiSpellWheel(List<ItemStack> stackList,/* @Nullable CompoundTag tag,*/ boolean isOffhand) {
+    public GuiSpellWheel(List<ItemStack> stackList, boolean isOffhand) {
         super(Component.literal(""));
-        //this.discoveryMode = tag != null;
         this.closing = false;
-        this.minecraft = Minecraft.getInstance();
+        minecraft = Minecraft.getInstance();
         this.selectedItem = -1;
         if ( !stackList.isEmpty() ) this.itemList = stackList;
         else this.itemList = List.of(new ItemStack(Items.AIR));
-        //if ( this.discoveryMode ) this.tag = tag;
-        //else this.tag = null;
         this.hand = isOffhand ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
         int size = AncientMagicks.comboSizeCalc();
         if ( size == 4 ) this.hotbar = "hotbar4.png";
@@ -74,10 +68,10 @@ public class GuiSpellWheel extends Screen {
         else this.hotbar = "hotbar3.png";
     }
 
-    public static void open(List<ItemStack> itemList,/* @Nullable CompoundTag tag,*/ boolean isOffHand) {
+    public static void open(List<ItemStack> itemList, boolean isOffHand) {
         Minecraft MINECRAFT = Minecraft.getInstance();
         Player player = MINECRAFT.player;
-        if ( MINECRAFT.screen == null ) Minecraft.getInstance().setScreen(new GuiSpellWheel(itemList,/* tag,*/ isOffHand));
+        if ( MINECRAFT.screen == null ) MINECRAFT.setScreen(new GuiSpellWheel(itemList, isOffHand));
         else if ( MINECRAFT.screen instanceof GuiSpellWheel ) player.closeContainer();
     }
 
@@ -92,22 +86,8 @@ public class GuiSpellWheel extends Screen {
                     this.comboList.add((ColorRuneItem)clickedItem.getItem());
                 }
             }
-            /*SpellItem secretSpell = null;
-            if ( this.tag != null ) secretSpell = (SpellItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.tag.getString("am_secretspell")));
-            SpellItem spellItem = ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell);
-            if ( spellItem != null && ((ClientMagicData.isSpellKnown(spellItem) || MINECRAFT.player.isCreative()) || this.discoveryMode) ) {
-                this.comboResult = ColorRuneItem.checkForSpellCombo(this.comboList, secretSpell);
-                if ( !this.discoveryMode ) {
-                    String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
-                    CompoundTag tag = new CompoundTag();
-                    tag.putString("am_spell", spellString);
-                    AncientMagicksNetwork.sendToServer(new PacketSetSpell(tag));
-                    ClientMagicData.setCurrentSpell(spellString);
-                }
-            }
-            else this.comboResult = null;*/
             SpellItem spell = ColorRuneItem.checkForSpellCombo(this.comboList);
-            if ( spell != null && (ClientMagicData.isSpellKnown(spell) || MINECRAFT.player.isCreative()) ) {
+            if ( spell != null && (ClientMagicData.isSpellKnown(spell) || minecraft.player.isCreative()) ) {
                 this.comboResult = ColorRuneItem.checkForSpellCombo(this.comboList);
                 String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
                 CompoundTag tag = new CompoundTag();
@@ -122,20 +102,10 @@ public class GuiSpellWheel extends Screen {
     @Override
     public void tick() {
         if ( this.totalTime != this.OPEN_ANIMATION_LENGTH ) this.extraTick++;
-        Player player = MINECRAFT.player;
+        Player player = minecraft.player;
         Item handItem = player.getItemInHand(this.hand).getItem();
         if ( !(handItem instanceof StaffItem) ) player.closeContainer();
-        //if ( (!this.discoveryMode && !(handItem instanceof CastingItem)) || (this.discoveryMode && !(handItem instanceof AncientTabletItem)) ) player.closeContainer();
     }
-
-    /*@Override
-    public void removed() {
-        Player player = MINECRAFT.player;
-        if ( this.discoveryMode && this.comboResult != null && player.getItemInHand(this.hand).getItem() instanceof AncientTabletItem ) {
-            player.playNotifySound(SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.PLAYERS, 1.0F, 1.0F);
-            AncientMagicksNetwork.sendToServer(new PacketSolveAncientTablet(new ItemStack(this.comboResult), this.hand == InteractionHand.OFF_HAND));
-        }
-    }*/
 
     @SubscribeEvent
     public static void overlayEvent(RenderGuiOverlayEvent.Pre event) {
@@ -159,11 +129,11 @@ public class GuiSpellWheel extends Screen {
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         super.render(graphics, mouseX, mouseY, partialTicks);
         PoseStack ms = graphics.pose();
-        float openAnimation = closing ? 1.0F - totalTime / OPEN_ANIMATION_LENGTH : totalTime / OPEN_ANIMATION_LENGTH;
+        float openAnimation = this.closing ? 1.0F - this.totalTime / this.OPEN_ANIMATION_LENGTH : this.totalTime / this.OPEN_ANIMATION_LENGTH;
         float currTick = minecraft.getFrameTime();
-        totalTime += (currTick + extraTick - prevTick) / 20F;
-        extraTick = 0;
-        prevTick = currTick;
+        this.totalTime += (currTick + this.extraTick - this.prevTick) / 20F;
+        this.extraTick = 0;
+        this.prevTick = currTick;
 
         float animProgress = Mth.clamp(openAnimation, 0, 1);
         animProgress = (float) (1 - Math.pow(1 - animProgress, 3));
@@ -183,11 +153,11 @@ public class GuiSpellWheel extends Screen {
         }
 
         //Show comboList on new Hotbar
-        int comboX = (this.minecraft.getWindow().getGuiScaledWidth() / 2) - 31 - (10 * (AncientMagicks.comboSizeCalc() - 3));
-        int comboY = this.minecraft.getWindow().getGuiScaledHeight() - 22;
+        int comboX = (minecraft.getWindow().getGuiScaledWidth() / 2) - 31 - (10 * (AncientMagicks.comboSizeCalc() - 3));
+        int comboY = minecraft.getWindow().getGuiScaledHeight() - 22;
         int fileWidth = 62 + (20 * (AncientMagicks.comboSizeCalc() - 3));
 
-        GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/gui/" + this.hotbar),
+        GuiSpellWheel.drawSlotTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/" + this.hotbar),
                 comboX, comboY, 0, 0, fileWidth, 22, fileWidth, 22, graphics);
         if ( !this.comboList.isEmpty() ) {
             for ( int i = 0; i < this.comboList.size(); ++i ) {
@@ -238,8 +208,8 @@ public class GuiSpellWheel extends Screen {
         RenderSystem.disableBlend();
 
         //Show comboResult square in the middle
-        int resultSlotX = this.minecraft.getWindow().getGuiScaledWidth() / 2 - 11;
-        int resultSlotY = (this.minecraft.getWindow().getGuiScaledHeight() / 2 - 11) + 10;
+        int resultSlotX = minecraft.getWindow().getGuiScaledWidth() / 2 - 11;
+        int resultSlotY = (minecraft.getWindow().getGuiScaledHeight() / 2 - 11) + 10;
         if ( this.comboResult != null ) {
             int posX = resultSlotX + 3;
             int posY = resultSlotY + 3;
@@ -251,7 +221,7 @@ public class GuiSpellWheel extends Screen {
             //graphics.drawCenteredString(this.font, name, width / 2, MINECRAFT.getWindow().getGuiScaledHeight() - 34, 16777215);
 
             //Square slot
-            GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/gui/square.png"),
+            GuiSpellWheel.drawSlotTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
                     resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
 
             //Item and its decorations
@@ -275,7 +245,7 @@ public class GuiSpellWheel extends Screen {
             RenderSystem.disableDepthTest();
 
             if ( !slot.isEmpty() ) {
-                GuiSpellWheel.drawSlotTexture(new ResourceLocation("ancientmagicks", "textures/gui/square.png"),
+                GuiSpellWheel.drawSlotTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
                         posX - 3, posY - 3, 0, 0, 22, 22, 22, 22, graphics);
             }
 
@@ -353,12 +323,6 @@ public class GuiSpellWheel extends Screen {
     }
 
     public static void drawSlotTexture(ResourceLocation resourceLocation, int x, int y, int u, int v, int w, int h, int fileWidth, int fileHeight, GuiGraphics graphics) {
-        //Minecraft.getInstance().textureManager.bindForSetup(resourceLocation);
         graphics.blit(resourceLocation, x, y, u, v, w, h, fileWidth, fileHeight);
-    }
-
-    @Override
-    public boolean isPauseScreen() {
-        return false;
     }
 }

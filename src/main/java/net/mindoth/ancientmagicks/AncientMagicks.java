@@ -11,11 +11,8 @@ import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.mindoth.ancientmagicks.registries.recipe.AncientMagicksRecipes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -62,8 +59,8 @@ public class AncientMagicks {
         AncientMagicksRecipes.SERIALIZERS.register(modEventBus);
 
         //KEEP THESE LAST
-        modEventBus.addListener(this::addCreative);
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::addCreative);
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
@@ -72,8 +69,8 @@ public class AncientMagicks {
                 if ( !(item.get() instanceof SpellItem || item.get() instanceof SpellStorageItem) ) event.accept(item);
             }
             for ( int i = 1; i <= 9; i++ ) {
-                for ( SpellItem spell : AncientMagicks.SPELL_LIST ) {
-                    if ( isSpellEnabled(spell) && spell.spellTier == i ) event.accept(createSpellScroll(new ItemStack(AncientMagicksItems.SPELL_SCROLL.get()), spell));
+                for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
+                    if ( item.get() instanceof SpellItem spell && isSpellEnabled(spell) && spell.spellTier == i ) event.accept(createSpellScroll(new ItemStack(AncientMagicksItems.SPELL_SCROLL.get()), spell));
                 }
             }
         }
@@ -87,58 +84,62 @@ public class AncientMagicks {
         return stack;
     }
 
-    //List stuff
     public static List<Item> ITEM_LIST = Lists.newArrayList();
-    public static List<EntityType<?>> MOB_LIST = Lists.newArrayList();
-    public static List<EntityType<?>> DISABLED_POLYMOBS = Lists.newArrayList();
 
-    public void commonSetup(final FMLCommonSetupEvent event) {
+    private void commonSetup(final FMLCommonSetupEvent event) {
         AncientMagicksNetwork.init();
-        createLists();
-    }
-
-    private static void createLists() {
         ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
-        if ( !SPELL_LIST.isEmpty() ) SPELL_LIST.clear();
-        if ( !COLOR_RUNE_LIST.isEmpty() ) COLOR_RUNE_LIST.clear();
-        if ( !COMBO_MAP.isEmpty() ) COMBO_MAP.clear();
-        createSpellDisableList();
-        createPolymobDisableList();
-        for ( Item item : ITEM_LIST ) if ( item instanceof SpellItem spellItem ) SPELL_LIST.add(spellItem);
-        for ( Item item : ITEM_LIST ) if ( item instanceof ColorRuneItem colorRuneItem ) COLOR_RUNE_LIST.add(colorRuneItem);
     }
 
-    public static boolean isSpellEnabled(SpellItem spell) {
-        return DISABLED_SPELLS.isEmpty() || !DISABLED_SPELLS.contains(spell);
-    }
-
-    private static void createSpellDisableList() {
-        List<String> configString = AncientMagicksCommonConfig.DISABLED_SPELLS.get();
-        configString.forEach(string -> {
-            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-            if ( item instanceof SpellItem spellItem ) DISABLED_SPELLS.add(spellItem);
-        });
-        System.out.println("DISABLED SPELLS: " + DISABLED_SPELLS);
-    }
-
-    private static void createPolymobDisableList() {
-        List<String> configString = AncientMagicksCommonConfig.DISABLED_POLYMOBS.get();
-        configString.forEach(string -> DISABLED_POLYMOBS.add(ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(string))));
-    }
-
-    public static void createMobList(ServerLevel serverLevel) {
-        for ( EntityType<?> entityType : ForgeRegistries.ENTITY_TYPES.getValues() ) {
-            if ( DISABLED_POLYMOBS.isEmpty() || !DISABLED_POLYMOBS.contains(entityType) ) {
-                Entity tempEntity = entityType.create(serverLevel);
-                if ( tempEntity instanceof Mob ) MOB_LIST.add(entityType);
-            }
-        }
+    public static void createLists(Random seededRand) {
+        createColorRuneList();
+        createSpellList();
+        createArcaneDustList(seededRand);
+        createSpellComboMap(seededRand);
     }
 
     public static List<ColorRuneItem> COLOR_RUNE_LIST = Lists.newArrayList();
+
+    private static void createColorRuneList() {
+        COLOR_RUNE_LIST = Lists.newArrayList();
+        for ( Item item : ITEM_LIST ) if ( item instanceof ColorRuneItem colorRuneItem ) COLOR_RUNE_LIST.add(colorRuneItem);
+    }
+
     public static List<SpellItem> SPELL_LIST = Lists.newArrayList();
-    public static List<SpellItem> DISABLED_SPELLS = Lists.newArrayList();
-    public static HashMap<SpellItem, List<ColorRuneItem>> COMBO_MAP = new HashMap<>();
+
+    private static void createSpellList() {
+        SPELL_LIST = Lists.newArrayList();
+        for ( Item item : ITEM_LIST ) if ( item instanceof SpellItem spellItem ) SPELL_LIST.add(spellItem);
+    }
+
+    public static boolean isSpellEnabled(SpellItem spell) {
+        List<SpellItem> disabledSpells = Lists.newArrayList();
+        List<String> configString = AncientMagicksCommonConfig.DISABLED_SPELLS.get();
+        configString.forEach(string -> {
+            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
+            if ( item instanceof SpellItem spellItem ) disabledSpells.add(spellItem);
+        });
+        return disabledSpells.isEmpty() || !disabledSpells.contains(spell);
+    }
+
+    public static List<Item> ARCANE_DUST_LIST = Lists.newArrayList();
+
+    private static void createArcaneDustList(Random seededRand) {
+        ARCANE_DUST_LIST = Lists.newArrayList();
+        List<Item> vanillaList = Lists.newArrayList();
+        List<Item> disabledList = Lists.newArrayList();
+        List<String> configString = AncientMagicksCommonConfig.DISABLED_ARCANE_DUST_RECIPE_ENTRIES.get();
+        configString.forEach(string -> disabledList.add(ForgeRegistries.ITEMS.getValue(new ResourceLocation(string))));
+        ForgeRegistries.ITEMS.getValues().forEach(item -> {
+            if ( (ForgeRegistries.ITEMS.getKey(item).toString().split(":")[0]).equals("minecraft")
+                    && !(disabledList.contains(item)) ) vanillaList.add(item);
+        });
+        for ( int i = 0; i < 9; i++ ) {
+            int index = seededRand.nextInt(vanillaList.size());
+            Item item = vanillaList.get(index);
+            AncientMagicks.ARCANE_DUST_LIST.add(item);
+        }
+    }
 
     private static void createTempList(List<List<ColorRuneItem>> comboList, int i, int j, int k, @Nullable Integer l, @Nullable Integer m, @Nullable Integer n) {
         List<ColorRuneItem> tempList = Lists.newArrayList();
@@ -151,18 +152,27 @@ public class AncientMagicks {
         if ( hasNoDupeInList(comboList, tempList) ) comboList.add(tempList);
     }
 
-    //Check how many Color Runes should be in a Spell Code. The amount increases depending on how many Spells are registered.
-    public static int comboSizeCalc() {
-        //return (n * (n + 2) * (n + 1)) >= (6 * SPELL_LIST.size());
-        int returnValue = 0;
-        if ( (56 * (56 + 2) * (56 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 3;
-        else if ( (126 * (126 + 2) * (126 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 4;
-        else if ( (252 * (252 + 2) * (252 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 5;
-        else if ( (462 * (462 + 2) * (462 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 6;
-        return returnValue;
+    public static HashMap<SpellItem, List<ColorRuneItem>> COMBO_MAP = new HashMap<>();
+
+    //TODO remove the ENTIRE system changing COMBO_MAP to string and back in ColorRuneItem. Maybe iterate through itemStacks into a list when sending packets?
+    private static void createSpellComboMap(Random seededRand) {
+        COMBO_MAP = new HashMap<>();
+        AncientMagicks.randomizeSpells(seededRand);
+
+        StringBuilder tempString = new StringBuilder();
+        for ( Map.Entry<SpellItem, List<ColorRuneItem>> entry : COMBO_MAP.entrySet() ) {
+            tempString.append(ForgeRegistries.ITEMS.getKey(entry.getKey())).append("=").append(entry.getValue()).append(";").append("\n");
+        }
+
+        String comboString = tempString.toString().replaceAll("\n", "").replaceAll(".$", "");
+
+        ColorRuneItem. CURRENT_COMBO_TAG = new CompoundTag();
+        ColorRuneItem.CURRENT_COMBO_TAG.putString("am_combostring", comboString);
+        ColorRuneItem.CURRENT_COMBO_MAP = new HashMap<>();
+        ColorRuneItem.CURRENT_COMBO_MAP = ColorRuneItem.buildComboMap(ColorRuneItem.CURRENT_COMBO_TAG.getString("am_combostring"));
     }
 
-    public static void randomizeSpells(Random seededRand) {
+    private static void randomizeSpells(Random seededRand) {
         Logger logger = getLogger();
 
         List<List<ColorRuneItem>> comboList = Lists.newArrayList();
@@ -232,5 +242,16 @@ public class AncientMagicks {
             }
         }
         return state;
+    }
+
+    //Check how many Color Runes should be in a Spell Code. The amount increases depending on how many Spells are registered.
+    public static int comboSizeCalc() {
+        //return (n * (n + 2) * (n + 1)) >= (6 * SPELL_LIST.size());
+        int returnValue = 0;
+        if ( (56 * (56 + 2) * (56 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 3;
+        else if ( (126 * (126 + 2) * (126 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 4;
+        else if ( (252 * (252 + 2) * (252 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 5;
+        else if ( (462 * (462 + 2) * (462 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 6;
+        return returnValue;
     }
 }
