@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell;
 
-import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowEntity;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -13,8 +12,9 @@ public abstract class AbstractSpellShoot extends SpellItem {
         super(pProperties, spellTier, manaCost, cooldown);
     }
 
+    //This needs to return an actual entity, it is not @Nullable
     protected AbstractSpellEntity getProjectile(Level level, Player owner, Entity caster) {
-        return new WitchArrowEntity(level, owner, caster, this);
+        return null;
     }
 
     @Override

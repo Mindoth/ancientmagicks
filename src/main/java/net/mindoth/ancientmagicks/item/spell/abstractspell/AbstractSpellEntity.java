@@ -92,6 +92,10 @@ public abstract class AbstractSpellEntity extends Projectile {
         return false;
     }
 
+    public boolean isHarmful() {
+        return true;
+    }
+
     public void anonShootFromRotation(float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
         float f = -Mth.sin(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
         float f1 = -Mth.sin((pX + pZ) * ((float)Math.PI / 180F));
@@ -131,7 +135,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     public void handleHitDetection() {
-        HitResult result = getHitResult(this.position(), this, this::canHitEntity, this.getDeltaMovement(), this.level());
+        HitResult result = getHitResult(this.position(), this, this::checkTeamForHit, this.getDeltaMovement(), this.level());
         boolean flag = false;
         if ( result.getType() == HitResult.Type.BLOCK ) {
             BlockPos blockpos = ((BlockHitResult)result).getBlockPos();
@@ -163,6 +167,12 @@ public abstract class AbstractSpellEntity extends Projectile {
         if ( result.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, result) ) {
             this.onHit(result);
         }
+    }
+
+    protected boolean checkTeamForHit(Entity target) {
+        if ( target instanceof LivingEntity living
+                && ((SpellItem.isAlly(this.owner, living) && this.isHarmful()) || (!SpellItem.isAlly(this.owner, living) && !this.isHarmful())) ) return false;
+        else return this.canHitEntity(target);
     }
 
     protected HitResult getHitResult(Vec3 pStartVec, Entity pProjectile, Predicate<Entity> pFilter, Vec3 pEndVecOffset, Level pLevel) {
