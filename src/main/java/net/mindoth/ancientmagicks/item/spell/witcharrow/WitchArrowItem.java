@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.witcharrow;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellShoot;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
@@ -20,9 +21,10 @@ public class WitchArrowItem extends AbstractSpellShoot {
     protected AbstractSpellEntity getProjectile(Level level, Player owner, Entity caster) {
         AbstractSpellEntity projectile = new WitchArrowEntity(level, owner, caster, this);
         float range = 64.0F;
-        if ( owner != caster ) range = 0.0F;
-        Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, caster == owner, true);
-        if ( target != null && target != caster && (target instanceof LivingEntity living && !isAlly(owner, living)) ) projectile.target = target;
+        if ( owner == caster ) {
+            Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, caster == owner, true, this::filter);
+            if ( target != null && filter(owner, target) ) projectile.target = target;
+        }
         return projectile;
     }
 

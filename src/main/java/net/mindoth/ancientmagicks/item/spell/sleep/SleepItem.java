@@ -16,22 +16,17 @@ public class SleepItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected boolean isHarmful() {
-        return true;
-    }
-
-    @Override
     protected int getLife() {
         return 1200;
     }
 
     @Override
-    protected boolean canApply(Level level, Player owner, Entity caster, LivingEntity target) {
-        return !isAlly(owner, target) && target instanceof Mob;
+    protected boolean canApply(Level level, Player owner, Entity caster, Entity target) {
+        return target instanceof Mob;
     }
 
     @Override
-    protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
-        target.addEffect(new MobEffectInstance(AncientMagicksEffects.SLEEP.get(), getLife(), 0, false, false));
+    protected void applyEffect(Level level, Player owner, Entity caster, Entity target) {
+        ((LivingEntity)target).addEffect(new MobEffectInstance(AncientMagicksEffects.SLEEP.get(), getLife(), 0, false, false));
     }
 }

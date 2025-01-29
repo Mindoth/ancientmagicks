@@ -59,7 +59,7 @@ public class AbstractSpellSummon extends SpellItem {
                 }
                 float range = 64.0F;
                 if ( owner != caster ) range = 0.0F;
-                Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, caster == owner, true);
+                Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, caster == owner, true, null);
                 if ( target != null && target != caster && (target instanceof LivingEntity living && !isAlly(owner, living)) ) minion.setTarget(living);
                 summonMinion(minion, owner, owner.level());
                 playSound(level, minion.position());

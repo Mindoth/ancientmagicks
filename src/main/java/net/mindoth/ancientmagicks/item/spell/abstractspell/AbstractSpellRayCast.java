@@ -27,12 +27,18 @@ public abstract class AbstractSpellRayCast extends SpellItem {
         return getRange() * 0.5F;
     }
 
-    protected boolean canApply(Level level, Player owner, Entity caster, LivingEntity target) {
-        return (isAlly(owner, target) && !isHarmful()) || (!isAlly(owner, target) && isHarmful());
+    protected boolean canApply(Level level, Player owner, Entity caster, Entity target) {
+        return filter(owner, target);
     }
 
-    protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
-        target.addEffect(new MobEffectInstance(MobEffects.GLOWING, getLife(), 0, false, isHarmful()));
+    //Example result
+    protected void applyEffect(Level level, Player owner, Entity caster, Entity target) {
+        ((LivingEntity)target).addEffect(new MobEffectInstance(MobEffects.GLOWING, getLife(), 0, false, isHarmful()));
+    }
+
+    protected void audiovisualEffects(Level level, Player owner, Entity caster, Entity target) {
+        addEnchantParticles(target, getColor().r, getColor().g, getColor().b, 0.15F, 8, hasMask());
+        playSound(level, target.position());
     }
 
     protected boolean hasMask() {
@@ -44,19 +50,16 @@ public abstract class AbstractSpellRayCast extends SpellItem {
         boolean state = false;
         Level level = caster.level();
 
-        LivingEntity target;
-        if ( caster == owner ) target = (LivingEntity) ShadowEvents.getPointedEntity(level, caster, getRange(), 0.25F, caster == owner, true);
-        else target = (LivingEntity)ShadowEvents.getNearestEntity(caster, level, getSize(), null);
+        Entity target;
+        if ( caster == owner ) target = ShadowEvents.getPointedEntity(level, caster, getRange(), 0.25F, caster == owner, true, this::filter);
+        else target = ShadowEvents.getNearestEntity(caster, level, getSize(), this::filter);
         if ( caster == owner && !isHarmful() && !isAlly(owner, target) ) target = owner;
 
-        if ( canApply(level, owner, caster, target) ) {
-            applyEffect(level, owner, caster, target);
-            state = true;
-        }
+        if ( canApply(level, owner, caster, target) ) state = true;
 
         if ( state ) {
-            addEnchantParticles(target, getColor().r, getColor().g, getColor().b, 0.15F, 8, hasMask());
-            playSound(level, target.position());
+            applyEffect(level, owner, caster, target);
+            audiovisualEffects(level, owner, caster, target);
         }
 
         return state;

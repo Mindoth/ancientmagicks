@@ -28,18 +28,24 @@ public class LifeTapItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected boolean canApply(Level level, Player owner, Entity caster, LivingEntity target) {
+    protected boolean canApply(Level level, Player owner, Entity caster, Entity target) {
         return caster == owner && owner.getHealth() > (owner.getMaxHealth() * 0.20F);
     }
 
     @Override
-    protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
-        final double vx = target.getDeltaMovement().x;
-        final double vy = target.getDeltaMovement().y;
-        final double vz = target.getDeltaMovement().z;
-        target.hurt(target.damageSources().wither(), owner.getMaxHealth() * 0.20F);
-        target.setDeltaMovement(vx, vy, vz);
-        target.hurtMarked = true;
+    protected void audiovisualEffects(Level level, Player owner, Entity caster, Entity target) {
+        addEnchantParticles(caster, getColor().r, getColor().g, getColor().b, 0.15F, 8, hasMask());
+        playSound(level, caster.position());
+    }
+
+    @Override
+    protected void applyEffect(Level level, Player owner, Entity caster, Entity target) {
+        final double vx = owner.getDeltaMovement().x;
+        final double vy = owner.getDeltaMovement().y;
+        final double vz = owner.getDeltaMovement().z;
+        owner.hurt(owner.damageSources().wither(), owner.getMaxHealth() * 0.20F);
+        owner.setDeltaMovement(vx, vy, vz);
+        owner.hurtMarked = true;
         MagickEvents.changeMana(owner, owner.getAttributeValue(AncientMagicksAttributes.MP_MAX.get()) * 0.20F);
     }
 

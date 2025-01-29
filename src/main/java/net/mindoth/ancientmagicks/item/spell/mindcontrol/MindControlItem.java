@@ -29,12 +29,12 @@ public class MindControlItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected boolean canApply(Level level, Player owner, Entity caster, LivingEntity target) {
+    protected boolean canApply(Level level, Player owner, Entity caster, Entity target) {
         return target instanceof Mob mob && !isAlly(owner, mob);
     }
 
     @Override
-    protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
+    protected void applyEffect(Level level, Player owner, Entity caster, Entity target) {
         Mob mob = (Mob)target;
         mob.getPersistentData().putUUID(MindControlEffect.NBT_KEY_CONTROL, owner.getUUID());
         mob.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), getLife()));

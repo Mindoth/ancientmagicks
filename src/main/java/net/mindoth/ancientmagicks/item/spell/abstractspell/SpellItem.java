@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.item.PrimedTnt;
@@ -128,12 +129,26 @@ public class SpellItem extends Item {
         target.hurtMarked = true;
     }
 
-    public static boolean isAlly(LivingEntity owner, LivingEntity target) {
-        if ( owner == null || target == null ) return false;
-        if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) return true;
-        else return target == owner || !owner.canAttack(target) || owner.isAlliedTo(target)
-                || (target instanceof TamableAnimal pet && pet.isOwnedBy(owner))
-                || (target instanceof Mob mob && isMinionsSummoner(owner, mob));
+    public static boolean isAlly(Entity owner, Entity target) {
+        boolean flag = false;
+
+        if ( !(owner == null || target == null) ) {
+            if ( target == owner ) flag = true;
+            if ( owner.isAlliedTo(target) ) flag = true;
+            if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) flag = true;
+            if ( owner instanceof LivingEntity livingOwner ) {
+                if ( target instanceof LivingEntity livingTarget && !(livingOwner.canAttack(livingTarget)) ) flag = true;
+                if ( target instanceof TamableAnimal pet && pet.isOwnedBy(livingOwner) ) flag = true;
+                if ( target instanceof Mob mob && isMinionsSummoner(livingOwner, mob) ) flag = true;
+            }
+        }
+
+        return flag;
+    }
+
+    public boolean filter(Entity owner, Entity target) {
+        return target instanceof LivingEntity && !(target instanceof ArmorStand)
+                && ((SpellItem.isAlly(owner, target) && !isHarmful()) || (!SpellItem.isAlly(owner, target) && isHarmful()));
     }
 
     public static boolean isMinionsOwner(LivingEntity owner, Mob mob) {

@@ -77,15 +77,12 @@ public class FireballEntity extends AbstractSpellEntity {
 
     private void doSplashDamage(@Nullable LivingEntity hitTarget) {
         if ( this.level().isClientSide ) return;
-        List<LivingEntity> exceptions = Lists.newArrayList();
+        List<Entity> list = ShadowEvents.getEntitiesAround(this, this.level(), Math.max(0, this.getSize() + 1), null);
         if ( hitTarget != null ) {
             causeDamage(hitTarget);
-            exceptions.add(hitTarget);
+            list.remove(hitTarget);
         }
-        ArrayList<LivingEntity> list = ShadowEvents.getEntitiesAround(this, this.level(), Math.max(0, this.getSize() + 1), exceptions);
-        for ( LivingEntity target : list ) {
-            causeDamage(target);
-        }
+        for ( Entity target : list ) if ( target instanceof LivingEntity living ) causeDamage(living);
     }
 
     private void doSplashEffects() {

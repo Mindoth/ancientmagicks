@@ -44,7 +44,7 @@ public class MindControlEffect extends MobEffect {
     }
 
     public static LivingEntity findMindControlTarget(Mob cMob, LivingEntity cMobOwner, Level level) {
-        List<LivingEntity> possibleTargets = ShadowEvents.getEntitiesAround(cMob, level, cMob.getAttributeValue(Attributes.FOLLOW_RANGE), null);
+        List<Entity> possibleTargets = ShadowEvents.getEntitiesAround(cMob, level, cMob.getAttributeValue(Attributes.FOLLOW_RANGE), null);
         possibleTargets.remove(cMob);
         possibleTargets.removeIf(e -> e instanceof ArmorStand);
         possibleTargets.removeIf(e -> SpellItem.isAlly(cMobOwner, e));
@@ -52,8 +52,8 @@ public class MindControlEffect extends MobEffect {
 
         LivingEntity newTarget = null;
 
-        for ( LivingEntity possibleTarget : possibleTargets ) {
-            if ( isTargetable(cMobOwner, possibleTarget) ) {
+        for ( Entity entity : possibleTargets ) {
+            if ( entity instanceof LivingEntity possibleTarget && isTargetable(cMobOwner, possibleTarget) ) {
                 if ( newTarget == null || cMob.distanceTo(possibleTarget) < cMob.distanceTo(newTarget) ) newTarget = possibleTarget;
             }
         }
@@ -72,7 +72,7 @@ public class MindControlEffect extends MobEffect {
         if ( !cMob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) ) return;
         CompoundTag tag = cMob.getPersistentData();
         if ( tag.hasUUID(NBT_KEY_CONTROL) ) {
-            Entity entity = getEntityByUUID(level, tag.getUUID(NBT_KEY_CONTROL));
+            Entity entity = ShadowEvents.getEntityByUUID(level, tag.getUUID(NBT_KEY_CONTROL));
             if ( entity instanceof LivingEntity owner ) {
                 if ( isTargetable(cMobTarget, cMob) || setMindControlTarget(cMob, owner, level) ) return;
             }
@@ -95,7 +95,7 @@ public class MindControlEffect extends MobEffect {
         if ( event.getEntity() instanceof Mob mob && event.getOriginalTarget() != null ) {
             CompoundTag tag = mob.getPersistentData();
             if ( !tag.hasUUID(NBT_KEY_CONTROL) ) return;
-            Entity entity = getEntityByUUID(event.getEntity().level(), tag.getUUID(NBT_KEY_CONTROL));
+            Entity entity = ShadowEvents.getEntityByUUID(event.getEntity().level(), tag.getUUID(NBT_KEY_CONTROL));
             if ( entity instanceof LivingEntity cMobOwner && SpellItem.isAlly(cMobOwner, event.getOriginalTarget()) ) {
                 handleTargeting(mob.level(), mob, event.getOriginalTarget());
                 event.setCanceled(true);
@@ -145,13 +145,5 @@ public class MindControlEffect extends MobEffect {
         if ( event.getEntity() instanceof Mob mob && mob.getPersistentData().getBoolean("am_is_minion") ) {
             event.setCanceled(true);
         }
-    }
-
-    //TODO Move this to ShadowizardLib
-    @Nullable
-    public static Entity getEntityByUUID(Level level, @Nullable UUID uuid) {
-        if ( uuid == null || !(level instanceof ServerLevel serverLevel) ) return null;
-        for ( Entity entity : serverLevel.getAllEntities() ) if ( entity != null && entity.getUUID().equals(uuid) ) return entity;
-        return null;
     }
 }

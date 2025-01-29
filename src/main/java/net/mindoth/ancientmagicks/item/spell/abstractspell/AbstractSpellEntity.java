@@ -117,12 +117,6 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     public void handleTravel() {
-        /*setPos(position().add(getDeltaMovement()));
-        this.updateRotation();
-        if ( !this.isNoGravity() ) {
-            Vec3 vec31 = this.getDeltaMovement();
-            this.setDeltaMovement(vec31.x, vec31.y - (double)this.getDefaultGravity(), vec31.z);
-        }*/
         this.xOld = getX();
         this.yOld = getY();
         this.zOld = getZ();
@@ -154,7 +148,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         }
         if ( result.getType() == HitResult.Type.ENTITY ) {
             Entity entity = ((EntityHitResult)result).getEntity();
-            flag = entity instanceof EnderDragon || entity instanceof EnderDragonPart || entity instanceof ArmorStand;
+            flag = entity instanceof EnderDragon || entity instanceof EnderDragonPart;
             if ( this.ignoredEntities != null && !this.ignoredEntities.isEmpty() ) {
                 for ( int id : this.ignoredEntities ) {
                     if ( entity.getId() == id ) {
@@ -169,10 +163,10 @@ public abstract class AbstractSpellEntity extends Projectile {
         }
     }
 
+    //Similar to SpellItem filter() method
     protected boolean checkTeamForHit(Entity target) {
-        if ( target instanceof LivingEntity living
-                && ((SpellItem.isAlly(this.owner, living) && this.isHarmful()) || (!SpellItem.isAlly(this.owner, living) && !this.isHarmful())) ) return false;
-        else return this.canHitEntity(target);
+        return this.canHitEntity(target) && target instanceof LivingEntity && !(target instanceof ArmorStand)
+                && ((SpellItem.isAlly(this.owner, target) && !this.isHarmful()) || (!SpellItem.isAlly(this.owner, target) && this.isHarmful()));
     }
 
     protected HitResult getHitResult(Vec3 pStartVec, Entity pProjectile, Predicate<Entity> pFilter, Vec3 pEndVecOffset, Level pLevel) {
@@ -235,18 +229,16 @@ public abstract class AbstractSpellEntity extends Projectile {
         }
     }
 
+    protected boolean homingFilter(Entity owner, Entity target) {
+        return checkTeamForHit(target);
+    }
+
     private void doHoming() {
         int range = 3;
-        //Need to do this haxxy way to still exclude targeting allies
-        List<LivingEntity> entitiesAround = ShadowEvents.getEntitiesAround(this, this.level(), range, null);
-        List<LivingEntity> excludeList = Lists.newArrayList();
-        for ( LivingEntity exception : entitiesAround ) {
-            if ( (getHarmful() && SpellItem.isAlly(this.owner, exception)) || (!getHarmful() && !SpellItem.isAlly(this.owner, exception)) || exception.isDeadOrDying() || !exception.isAttackable() ) {
-                excludeList.add(exception);
-            }
-        }
 
-        if ( this.target == null || !this.target.isAlive() ) this.target = ShadowEvents.getNearestEntity(this, this.level(), range, excludeList);
+        if ( this.target == null || !this.target.isAlive() ) {
+            this.target = ShadowEvents.getNearestEntity(this, this.level(), range, this::homingFilter);
+        }
         if ( this.target != null ) {
             if ( !this.isNoGravity() ) this.setNoGravity(true);
             double mX = getDeltaMovement().x();

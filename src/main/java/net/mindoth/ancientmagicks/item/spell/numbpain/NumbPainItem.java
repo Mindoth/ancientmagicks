@@ -28,12 +28,12 @@ public class NumbPainItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected boolean canApply(Level level, Player owner, Entity caster, LivingEntity target) {
+    protected boolean canApply(Level level, Player owner, Entity caster, Entity target) {
         return true;
     }
 
     @Override
-    protected void applyEffect(Level level, Player owner, Entity caster, LivingEntity target) {
-        target.addEffect(new MobEffectInstance(AncientMagicksEffects.NUMBNESS.get(), getLife(), 0));
+    protected void applyEffect(Level level, Player owner, Entity caster, Entity target) {
+        ((LivingEntity)target).addEffect(new MobEffectInstance(AncientMagicksEffects.NUMBNESS.get(), getLife(), 0));
     }
 }
