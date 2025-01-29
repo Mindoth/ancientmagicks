@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:parchment"
+    },
+    {
+      "item": "ancientmagicks:parchment"
+    },
+    {
+      "item": "ancientmagicks:parchment"
+    },
+    {
+      "item": "minecraft:leather"
+    }
+  ],
+  "result": {
+    "item": "ancientmagicks:spell_book"
+  }
+}

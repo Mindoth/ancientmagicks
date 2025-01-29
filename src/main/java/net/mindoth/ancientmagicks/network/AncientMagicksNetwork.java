@@ -51,6 +51,12 @@ public class AncientMagicksNetwork {
                 .consumerMainThread(PacketOpenAncientTablet::handle)
                 .add();
 
+        net.messageBuilder(PacketOpenSpellBook.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketOpenSpellBook::new)
+                .encoder(PacketOpenSpellBook::encode)
+                .consumerMainThread(PacketOpenSpellBook::handle)
+                .add();
+
         net.messageBuilder(PacketSendCustomParticles.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(PacketSendCustomParticles::new)
                 .encoder(PacketSendCustomParticles::encode)

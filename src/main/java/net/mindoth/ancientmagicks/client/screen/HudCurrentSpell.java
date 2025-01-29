@@ -27,12 +27,12 @@ public class HudCurrentSpell {
         int halfX = (MINECRAFT.getWindow().getGuiScaledWidth() / 2);
         int resultSlotX = MINECRAFT.options.mainHand().get() == HumanoidArm.RIGHT ? halfX + 98 : halfX - 120;
         int resultSlotY = MINECRAFT.getWindow().getGuiScaledHeight() - 22;
-        GuiSpellWheel.drawSlotTexture(SLOT_TEXTURE, resultSlotX, resultSlotY - 1, 60, 22, 24, 24, 256, 256, graphics);
+        AncientMagicksScreen.drawTexture(SLOT_TEXTURE, resultSlotX, resultSlotY - 1, 60, 22, 24, 24, 256, 256, graphics);
 
         if ( currentSpell().isEmpty() ) return;
         String id = currentSpell().getItem().toString();
         String modid = ForgeRegistries.ITEMS.getKey(currentSpell().getItem()).toString().split(":")[0];
-        GuiSpellWheel.drawSlotTexture(new ResourceLocation(modid, "textures/item/spell/" + id + ".png"),
+        AncientMagicksScreen.drawTexture(new ResourceLocation(modid, "textures/item/spell/" + id + ".png"),
                 resultSlotX + 3, resultSlotY + 3, 0, 0, 16, 16, 16, 16, graphics);
         graphics.renderItemDecorations(gui.getFont(), currentSpell(), resultSlotX + 3, resultSlotY + 3);
     }

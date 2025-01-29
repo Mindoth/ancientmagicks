@@ -13,8 +13,8 @@ import java.util.function.Supplier;
 public class PacketSetSpell {
     public CompoundTag selectedItem;
 
-    public PacketSetSpell(CompoundTag spellRune) {
-        this.selectedItem = spellRune;
+    public PacketSetSpell(CompoundTag spell) {
+        this.selectedItem = spell;
     }
 
     public PacketSetSpell(FriendlyByteBuf buf) {

@@ -5,16 +5,15 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSetSpell;
-import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
@@ -26,7 +25,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
@@ -58,8 +56,8 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         this.closing = false;
         minecraft = Minecraft.getInstance();
         this.selectedItem = -1;
-        if ( !stackList.isEmpty() ) this.itemList = stackList;
-        else this.itemList = List.of(new ItemStack(Items.AIR));
+        if ( stackList.isEmpty() ) this.itemList = List.of(ItemStack.EMPTY);
+        else this.itemList = stackList;
         this.hand = isOffhand ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
         int size = AncientMagicks.comboSizeCalc();
         if ( size == 4 ) this.hotbar = "hotbar4.png";
@@ -157,7 +155,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         int comboY = minecraft.getWindow().getGuiScaledHeight() - 22;
         int fileWidth = 62 + (20 * (AncientMagicks.comboSizeCalc() - 3));
 
-        GuiSpellWheel.drawSlotTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/" + this.hotbar),
+        drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/" + this.hotbar),
                 comboX, comboY, 0, 0, fileWidth, 22, fileWidth, 22, graphics);
         if ( !this.comboList.isEmpty() ) {
             for ( int i = 0; i < this.comboList.size(); ++i ) {
@@ -221,13 +219,13 @@ public class GuiSpellWheel extends AncientMagicksScreen {
             //graphics.drawCenteredString(this.font, name, width / 2, MINECRAFT.getWindow().getGuiScaledHeight() - 34, 16777215);
 
             //Square slot
-            GuiSpellWheel.drawSlotTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
+            drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
                     resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
 
             //Item and its decorations
             String id = slot.getItem().toString();
             String modid = ForgeRegistries.ITEMS.getKey(slot.getItem()).toString().split(":")[0];
-            GuiSpellWheel.drawSlotTexture(new ResourceLocation(modid, "textures/item/spell/" + id + ".png"),
+            drawTexture(new ResourceLocation(modid, "textures/item/spell/" + id + ".png"),
                     posX, posY, 0, 0, 16, 16, 16, 16, graphics);
             graphics.renderItemDecorations(this.font, slot, posX, posY);
         }
@@ -245,7 +243,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
             RenderSystem.disableDepthTest();
 
             if ( !slot.isEmpty() ) {
-                GuiSpellWheel.drawSlotTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
+                drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
                         posX - 3, posY - 3, 0, 0, 22, 22, 22, 22, graphics);
             }
 
@@ -320,9 +318,5 @@ public class GuiSpellWheel extends AncientMagicksScreen {
                 eInput.forwardImpulse = (float)((double)eInput.forwardImpulse * 0.3D);
             }
         }
-    }
-
-    public static void drawSlotTexture(ResourceLocation resourceLocation, int x, int y, int u, int v, int w, int h, int fileWidth, int fileHeight, GuiGraphics graphics) {
-        graphics.blit(resourceLocation, x, y, u, v, w, h, fileWidth, fileHeight);
     }
 }

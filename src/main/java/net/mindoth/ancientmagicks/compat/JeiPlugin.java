@@ -6,7 +6,7 @@ import mezz.jei.api.registration.ISubtypeRegistration;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellStorageItem;
+import net.mindoth.ancientmagicks.item.SpellStorageItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

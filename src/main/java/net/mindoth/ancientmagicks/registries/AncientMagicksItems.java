@@ -4,12 +4,13 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
+import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.WandItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellStorageItem;
+import net.mindoth.ancientmagicks.item.SpellStorageItem;
 import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindItem;
@@ -82,8 +83,8 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A7f"));
 
-    public static final RegistryObject<Item> SPELL_SCROLL = ITEMS.register("spell_scroll",
-            () -> new SpellStorageItem(new Item.Properties()));
+    public static final RegistryObject<Item> SPELL_BOOK = ITEMS.register("spell_book",
+            () -> new SpellBookItem(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
             () -> new AncientTabletItem(new Item.Properties().stacksTo(1)));
@@ -151,6 +152,9 @@ public class AncientMagicksItems {
 
 
     //Magic Spells
+    public static final RegistryObject<Item> SPELL_SCROLL = ITEMS.register("spell_scroll",
+            () -> new SpellStorageItem(new Item.Properties()));
+
     public static final RegistryObject<Item> FEATHER_FALL_ITEM = ITEMS.register("feather_fall",
             () -> new FeatherFallItem(new Item.Properties(), 1, 20, 10));
 

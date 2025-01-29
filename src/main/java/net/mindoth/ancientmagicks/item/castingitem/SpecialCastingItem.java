@@ -75,6 +75,7 @@ public class SpecialCastingItem extends CastingItem {
         return result;
     }
 
+    @Nullable
     public static SpellItem getStoredSpell(ItemStack vessel) {
         if ( vessel.getTag() != null && vessel.getTag().contains(TAG_STORED_SPELL) ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(vessel.getTag().getString(TAG_STORED_SPELL)));
