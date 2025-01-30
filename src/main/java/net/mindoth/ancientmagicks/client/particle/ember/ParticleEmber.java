@@ -68,7 +68,7 @@ public class ParticleEmber extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return this.disableDepthTest ? ParticleRenderTypes.AMAGICKS_RENDER : ParticleRenderTypes.AMAGICKS_RENDER_DARK;
+        return this.disableDepthTest ? ParticleRenderTypes.AM_RENDER : ParticleRenderTypes.AM_RENDER_DARK;
     }
 
 

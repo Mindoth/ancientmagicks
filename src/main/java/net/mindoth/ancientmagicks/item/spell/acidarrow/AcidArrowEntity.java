@@ -37,8 +37,8 @@ public class AcidArrowEntity extends AbstractSpellEntity {
 
     @Override
     protected void doMobEffects(EntityHitResult result) {
-        if ( this.getPower() > 0 && !SpellItem.isAlly(this.owner, (LivingEntity)result.getEntity()) ) {
-            LivingEntity target = (LivingEntity)result.getEntity();
+        Entity target = result.getEntity();
+        if ( this.getPower() > 0 && !SpellItem.isAlly(this.owner, target) ) {
             SpellItem.attackEntity(this.owner, target, this, SpellItem.getPowerInRange(4.0F, this.getPower()));
         }
     }

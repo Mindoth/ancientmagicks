@@ -70,7 +70,7 @@ public class AncientMagicks {
             }
             for ( int i = 1; i <= 9; i++ ) {
                 for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
-                    if ( item.get() instanceof SpellItem spell && isSpellEnabled(spell) && spell.spellTier == i ) event.accept(createSpellScroll(new ItemStack(AncientMagicksItems.SPELL_SCROLL.get()), spell));
+                    if ( item.get() instanceof SpellItem spell && spell.spellTier == i ) event.accept(createSpellScroll(new ItemStack(AncientMagicksItems.SPELL_SCROLL.get()), spell));
                 }
             }
         }

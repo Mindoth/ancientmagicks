@@ -28,6 +28,11 @@ public class FireballItem extends AbstractSpellShoot {
     }
 
     @Override
+    protected boolean hasGravity() {
+        return true;
+    }
+
+    @Override
     protected void playSound(Level level, Vec3 center) {
         playFireShootSound(level, center);
     }

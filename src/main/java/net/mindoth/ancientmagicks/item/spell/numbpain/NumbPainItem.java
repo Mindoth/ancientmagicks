@@ -28,6 +28,11 @@ public class NumbPainItem extends AbstractSpellRayCast {
     }
 
     @Override
+    protected boolean hasMask() {
+        return false;
+    }
+
+    @Override
     protected boolean canApply(Level level, Player owner, Entity caster, Entity target) {
         return true;
     }

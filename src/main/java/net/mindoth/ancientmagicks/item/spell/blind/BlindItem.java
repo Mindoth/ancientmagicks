@@ -29,12 +29,12 @@ public class BlindItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected void applyEffect(Level level, Player owner, Entity caster, Entity target) {
-        ((LivingEntity)target).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, getLife(), 0, false, isHarmful()));
+    protected boolean hasMask() {
+        return false;
     }
 
     @Override
-    protected boolean hasMask() {
-        return false;
+    protected void applyEffect(Level level, Player owner, Entity caster, Entity target) {
+        ((LivingEntity)target).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, getLife(), 0, false, isHarmful()));
     }
 }

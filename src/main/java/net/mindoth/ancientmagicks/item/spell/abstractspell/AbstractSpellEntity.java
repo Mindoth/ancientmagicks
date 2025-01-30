@@ -124,7 +124,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.updateRotation();
         if ( !this.isNoGravity() ) {
             Vec3 vec34 = this.getDeltaMovement();
-            this.setDeltaMovement(vec34.x, vec34.y - (double)this.getDefaultGravity(), vec34.z);
+            this.setDeltaMovement(vec34.x, vec34.y - (double)getDefaultGravity(), vec34.z);
         }
     }
 
@@ -148,6 +148,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         }
         if ( result.getType() == HitResult.Type.ENTITY ) {
             Entity entity = ((EntityHitResult)result).getEntity();
+            //TODO Make spells damage enderdragon
             flag = entity instanceof EnderDragon || entity instanceof EnderDragonPart;
             if ( this.ignoredEntities != null && !this.ignoredEntities.isEmpty() ) {
                 for ( int id : this.ignoredEntities ) {
@@ -194,7 +195,7 @@ public abstract class AbstractSpellEntity extends Projectile {
                     playHitSound();
                     this.ignoredEntities.add(result.getEntity().getId());
                 }
-                if ( this.ignoredEntities.size() > getDefaultEnemyPierce() ) doDeathEffects();
+                if ( this.ignoredEntities.size() > getEnemyPierce() ) doDeathEffects();
             }
         }
     }
@@ -208,7 +209,7 @@ public abstract class AbstractSpellEntity extends Projectile {
             playHitSound();
             BlockState blockState = this.level().getBlockState(result.getBlockPos());
             this.level().playSound(null, this.getX(), this.getY(), this.getZ(), blockState.getSoundType().getBreakSound(), SoundSource.PLAYERS, 0.3F, 2);
-            if ( this.bounces < getDefaultBlockBounce() ) {
+            if ( this.bounces < getBlockBounce() ) {
                 this.bounces++;
                 Direction face = result.getDirection();
                 blockState.onProjectileHit(this.level(), blockState, result, this);
