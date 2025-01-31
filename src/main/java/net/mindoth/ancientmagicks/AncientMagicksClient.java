@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks;
 
+import net.mindoth.ancientmagicks.client.model.SimpleRobeModel;
 import net.mindoth.ancientmagicks.client.screen.AncientMagicksScreen;
 import net.mindoth.ancientmagicks.client.screen.GuiSpellWheel;
 import net.mindoth.ancientmagicks.client.screen.HudCurrentSpell;
@@ -22,6 +23,8 @@ import net.mindoth.ancientmagicks.network.PacketSendRuneData;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.ancientmagicks.registries.AncientMagicksKeyBinds;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,6 +32,7 @@ import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -39,18 +43,16 @@ public class AncientMagicksClient {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         modBus.addListener(AncientMagicksClient::registerEntityRenderers);
         modBus.addListener(AncientMagicksClient::registerItemColors);
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> modBus.addListener(AncientMagicksClient::registerLayerDefinitions));
     }
 
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         for ( Item item : ForgeRegistries.ITEMS.getValues() ) {
             if ( item instanceof ColorableMagicArmorItem || item instanceof ColorableStaffItem ) {
-                event.getItemColors().register((color, armor) -> {
-                    return armor > 0 ? -1 : ((DyeableMagicItem)color.getItem()).getColor(color);
-                }, item);
+                event.getItemColors().register((color, armor) -> armor > 0 ? -1 : ((DyeableMagicItem)color.getItem()).getColor(color), item);
             }
         }
     }
-
 
     private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(AncientMagicksEntities.WITCH_ARROW.get(), WitchArrowRenderer::new);
@@ -62,6 +64,12 @@ public class AncientMagicksClient {
         event.registerEntityRenderer(AncientMagicksEntities.BURN_LANCE.get(), BurnLanceRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.FIRE_BOLT.get(), FireBoltRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.ACID_ARROW.get(), AcidArrowRenderer::new);
+    }
+
+    public static final ModelLayerLocation SIMPLE_ROBE = new ModelLayerLocation(new ResourceLocation(AncientMagicks.MOD_ID, "main"), "simple_robe");
+
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(SIMPLE_ROBE, SimpleRobeModel::createBodyLayer);
     }
 
     @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID, value = Dist.CLIENT)
