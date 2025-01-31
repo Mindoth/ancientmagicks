@@ -79,7 +79,7 @@ public class ChaoticPolymorphItem extends AbstractSpellRayCast {
             newMob.startRiding(entity, true);
         }
         oldMob.discard();
-        addEnchantParticles(newMob, getColor().r, getColor().g, getColor().b, 0.15F, 8, hasMask());
+        addEnchantParticles(newMob, getColor().r, getColor().g, getColor().b, 0.15F, 8, getRenderType());
         return newMob;
     }
 }

@@ -17,7 +17,7 @@ public class ColoredDynamicTypeData implements ParticleOptions {
     float scale;
     int age;
     boolean fade;
-    boolean mask;
+    int renderType;
 
     public static final Codec<ColoredDynamicTypeData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                     Codec.FLOAT.fieldOf("r").forGetter(d -> d.color.getRed()),
@@ -26,57 +26,57 @@ public class ColoredDynamicTypeData implements ParticleOptions {
                     Codec.FLOAT.fieldOf("scale").forGetter(d -> d.scale),
                     Codec.INT.fieldOf("age").forGetter(d -> d.age),
                     Codec.BOOL.fieldOf("fade").forGetter(d -> d.fade),
-                    Codec.BOOL.fieldOf("mask").forGetter(d -> d.mask)
+                    Codec.INT.fieldOf("mask").forGetter(d -> d.renderType)
             )
             .apply(instance, ColoredDynamicTypeData::new));
 
     @Override
     public ParticleType<?> getType() {
-        return type;
+        return this.type;
     }
 
     static final Deserializer<ColoredDynamicTypeData> DESERIALIZER = new Deserializer<>() {
         @Override
         public ColoredDynamicTypeData fromCommand(ParticleType<ColoredDynamicTypeData> type, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
-            return new ColoredDynamicTypeData(type, ParticleColor.deserialize(reader.readString()), reader.readFloat(), reader.readInt(), reader.readBoolean(), reader.readBoolean());
+            return new ColoredDynamicTypeData(type, ParticleColor.deserialize(reader.readString()), reader.readFloat(), reader.readInt(), reader.readBoolean(), reader.readInt());
         }
 
         @Override
         public ColoredDynamicTypeData fromNetwork(ParticleType<ColoredDynamicTypeData> type, FriendlyByteBuf buffer) {
-            return new ColoredDynamicTypeData(type, ParticleColor.deserialize(buffer.readUtf()), buffer.readFloat(), buffer.readInt(), buffer.readBoolean(), buffer.readBoolean());
+            return new ColoredDynamicTypeData(type, ParticleColor.deserialize(buffer.readUtf()), buffer.readFloat(), buffer.readInt(), buffer.readBoolean(), buffer.readInt());
         }
     };
 
-    public ColoredDynamicTypeData(float r, float g, float b, float scale, int age, boolean fade, boolean mask) {
+    public ColoredDynamicTypeData(float r, float g, float b, float scale, int age, boolean fade, int renderType) {
         this.type = AncientMagicksParticles.EMBER_TYPE.get();
         this.color = new ParticleColor(r, g, b);
         this.scale = scale;
         this.age = age;
         this.fade = fade;
-        this.mask = mask;
+        this.renderType = renderType;
     }
 
-    public ColoredDynamicTypeData(ParticleType<ColoredDynamicTypeData> particleTypeData, ParticleColor color, float scale, int age, boolean fade, boolean mask) {
+    public ColoredDynamicTypeData(ParticleType<ColoredDynamicTypeData> particleTypeData, ParticleColor color, float scale, int age, boolean fade, int renderType) {
         this.type = particleTypeData;
         this.color = color;
         this.scale = scale;
         this.age = age;
         this.fade = fade;
-        this.mask = mask;
+        this.renderType = renderType;
     }
 
     @Override
     public void writeToNetwork(FriendlyByteBuf buffer) {
-        buffer.writeUtf(color.serialize());
-        buffer.writeFloat(scale);
-        buffer.writeInt(age);
-        buffer.writeBoolean(fade);
-        buffer.writeBoolean(mask);
+        buffer.writeUtf(this.color.serialize());
+        buffer.writeFloat(this.scale);
+        buffer.writeInt(this.age);
+        buffer.writeBoolean(this.fade);
+        buffer.writeByte(this.renderType);
     }
 
     @Override
     public String writeToString() {
-        return ForgeRegistries.PARTICLE_TYPES.getKey(type).toString() + " " + color.serialize() + " " + scale + " " + age + " " + fade + " " + mask;
+        return ForgeRegistries.PARTICLE_TYPES.getKey(this.type).toString() + " " + this.color.serialize() + " " + this.scale + " " + this.age + " " + this.fade + " " + this.renderType;
     }
 }

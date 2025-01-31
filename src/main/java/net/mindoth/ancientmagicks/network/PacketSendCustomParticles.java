@@ -16,7 +16,7 @@ public class PacketSendCustomParticles {
     public float size;
     public int age;
     public boolean fade;
-    public boolean mask;
+    public int renderType;
     public double x;
     public double y;
     public double z;
@@ -24,14 +24,14 @@ public class PacketSendCustomParticles {
     public double vy;
     public double vz;
 
-    public PacketSendCustomParticles(int r, int g, int b, float size, int age, boolean fade, boolean mask, double x, double y, double z, double vx, double vy, double vz) {
+    public PacketSendCustomParticles(int r, int g, int b, float size, int age, boolean fade, int renderType, double x, double y, double z, double vx, double vy, double vz) {
         this.r = r;
         this.g = g;
         this.b = b;
         this.size = size;
         this.age = age;
         this.fade = fade;
-        this.mask = mask;
+        this.renderType = renderType;
         this.x = x;
         this.y = y;
         this.z = z;
@@ -47,7 +47,7 @@ public class PacketSendCustomParticles {
         this.size = buf.readFloat();
         this.age = buf.readInt();
         this.fade = buf.readBoolean();
-        this.mask = buf.readBoolean();
+        this.renderType = buf.readInt();
         this.x = buf.readDouble();
         this.y = buf.readDouble();
         this.z = buf.readDouble();
@@ -63,7 +63,7 @@ public class PacketSendCustomParticles {
         buf.writeFloat(this.size);
         buf.writeInt(this.age);
         buf.writeBoolean(this.fade);
-        buf.writeBoolean(this.mask);
+        buf.writeInt(this.renderType);
         buf.writeDouble(this.x);
         buf.writeDouble(this.y);
         buf.writeDouble(this.z);
@@ -75,7 +75,7 @@ public class PacketSendCustomParticles {
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         contextSupplier.get().enqueueWork(() -> {
             Minecraft minecraft = Minecraft.getInstance();
-            minecraft.level.addParticle(EmberParticleProvider.createData(new ParticleColor(this.r, this.g, this.b), this.size, this.age, this.fade, this.mask),
+            minecraft.level.addParticle(EmberParticleProvider.createData(new ParticleColor(this.r, this.g, this.b), this.size, this.age, this.fade, this.renderType),
                     this.x, this.y, this.z, this.vx, this.vy, this.vz);
         });
         contextSupplier.get().setPacketHandled(true);

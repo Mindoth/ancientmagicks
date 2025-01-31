@@ -20,9 +20,10 @@ public class ParticleEmber extends TextureSheetParticle {
     public float destX;
     public float destY;
     public float destZ;
-    public boolean disableDepthTest;
+    public int renderType;
 
-    protected ParticleEmber(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, float r, float g, float b, float scale, int lifetime, boolean fade, boolean mask, SpriteSet sprite) {
+    protected ParticleEmber(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, float r, float g, float b, float scale, int lifetime,
+                            boolean fade, int renderType, SpriteSet sprite) {
         super(level, x, y, z, xd, yd, zd);
         this.colorR = r;
         this.colorG = g;
@@ -46,7 +47,7 @@ public class ParticleEmber extends TextureSheetParticle {
         this.destZ = (float)zd;
         //this.roll = 2.0F * (float)Math.PI;
         this.pickSprite(sprite);
-        this.disableDepthTest = mask;
+        this.renderType = renderType;
     }
 
     @Override
@@ -68,7 +69,11 @@ public class ParticleEmber extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return this.disableDepthTest ? ParticleRenderTypes.AM_RENDER : ParticleRenderTypes.AM_RENDER_DARK;
+        ParticleRenderType type = ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+        if ( this.renderType == 1 ) type = ParticleRenderTypes.AM_RENDER_GLOW;
+        if ( this.renderType == 2 ) type = ParticleRenderTypes.AM_RENDER_NO_ALPHA;
+        if ( this.renderType == 3 ) type = ParticleRenderTypes.AM_RENDER_FLAT;
+        return type;
     }
 
 

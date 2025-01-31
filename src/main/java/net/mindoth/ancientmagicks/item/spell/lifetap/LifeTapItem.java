@@ -7,7 +7,6 @@ import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -34,7 +33,7 @@ public class LifeTapItem extends AbstractSpellRayCast {
 
     @Override
     protected void audiovisualEffects(Level level, Player owner, Entity caster, Entity target) {
-        addEnchantParticles(caster, getColor().r, getColor().g, getColor().b, 0.15F, 8, hasMask());
+        addEnchantParticles(caster, getColor().r, getColor().g, getColor().b, 0.15F, 8, getRenderType());
         playSound(level, caster.position());
     }
 
@@ -50,7 +49,7 @@ public class LifeTapItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected boolean hasMask() {
-        return false;
+    protected int getRenderType() {
+        return 3;
     }
 }

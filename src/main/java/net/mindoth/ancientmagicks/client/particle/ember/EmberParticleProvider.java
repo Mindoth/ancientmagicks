@@ -18,11 +18,11 @@ public class EmberParticleProvider implements ParticleProvider<ColoredDynamicTyp
 
     @Override
     public Particle createParticle(ColoredDynamicTypeData data, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-        return new ParticleEmber(worldIn, x, y, z, xSpeed, ySpeed, zSpeed,
-                data.color.getRed(), data.color.getGreen(), data.color.getBlue(), data.scale, data.age, data.fade, data.mask, this.spriteSet);
+        return new ParticleEmber(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, data.color.getRed(), data.color.getGreen(), data.color.getBlue(),
+                data.scale, data.age, data.fade, data.renderType, this.spriteSet);
     }
 
-    public static ParticleOptions createData(ParticleColor color, float scale, int age, boolean fade, boolean mask) {
-        return new ColoredDynamicTypeData(AncientMagicksParticles.EMBER_TYPE.get(), color, scale, age, fade, mask);
+    public static ParticleOptions createData(ParticleColor color, float scale, int age, boolean fade, int renderType) {
+        return new ColoredDynamicTypeData(AncientMagicksParticles.EMBER_TYPE.get(), color, scale, age, fade, renderType);
     }
 }

@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 
 public class ParticleRenderTypes {
 
-    static final ParticleRenderType AM_RENDER = new ParticleRenderType() {
+    static final ParticleRenderType AM_RENDER_GLOW = new ParticleRenderType() {
 
         @Override
         public void begin(BufferBuilder buffer, TextureManager textureManager) {
@@ -22,7 +22,7 @@ public class ParticleRenderTypes {
             RenderSystem.depthMask(false);
             RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
             RenderSystem.enableBlend();
-            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_COLOR, GlStateManager.DestFactor.ONE);
+            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
             //RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
         }
@@ -35,11 +35,11 @@ public class ParticleRenderTypes {
 
         @Override
         public String toString() {
-            return "ancientmagicks:am_rend";
+            return "ancientmagicks:am_rend_glow";
         }
     };
 
-    static final ParticleRenderType AM_RENDER_DARK = new ParticleRenderType() {
+    static final ParticleRenderType AM_RENDER_NO_ALPHA = new ParticleRenderType() {
 
         @Override
         public void begin(BufferBuilder buffer, TextureManager textureManager) {
@@ -50,7 +50,7 @@ public class ParticleRenderTypes {
             RenderSystem.enableBlend();
 
             //Solution from here https://community.khronos.org/t/best-blending-mode-for-particles/14987
-            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_COLOR, GlStateManager.DestFactor.ONE);
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 
             //Old method
@@ -76,7 +76,31 @@ public class ParticleRenderTypes {
 
         @Override
         public String toString() {
-            return "ancientmagicks:am_rend_dark";
+            return "ancientmagicks:am_rend_no_alpha";
+        }
+    };
+
+    static final ParticleRenderType AM_RENDER_FLAT = new ParticleRenderType() {
+
+        @Override
+        public void begin(BufferBuilder buffer, TextureManager textureManager) {
+            RenderSystem.enableDepthTest();
+            Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
+            RenderSystem.depthMask(false);
+            RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
+            RenderSystem.enableBlend();
+            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ZERO);
+            buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+        }
+
+        @Override
+        public void end(Tesselator tessellator) {
+            tessellator.end();
+        }
+
+        @Override
+        public String toString() {
+            return "ancientmagicks:am_rend_flat";
         }
     };
 }

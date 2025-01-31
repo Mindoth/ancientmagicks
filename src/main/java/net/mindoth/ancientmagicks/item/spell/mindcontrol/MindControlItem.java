@@ -43,7 +43,7 @@ public class MindControlItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected boolean hasMask() {
-        return false;
+    protected int getRenderType() {
+        return 3;
     }
 }

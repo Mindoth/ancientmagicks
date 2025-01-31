@@ -255,8 +255,8 @@ public abstract class AbstractSpellEntity extends Projectile {
         else if ( this.isNoGravity() ) this.setNoGravity(false);
     }
 
-    protected boolean hasMask() {
-        return true;
+    protected int getRenderType() {
+        return 1;
     }
 
     protected void doClientTickEffects() {
@@ -280,7 +280,7 @@ public abstract class AbstractSpellEntity extends Projectile {
                     float randX = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
                     float randY = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
                     float randZ = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
-                    world.addParticle(EmberParticleProvider.createData(getParticleColor(), particleSize, 10, true, hasMask()), true,
+                    world.addParticle(EmberParticleProvider.createData(getParticleColor(), particleSize, 10, true, getRenderType()), true,
                             pos.x + randX + d5 * (double)j / 4.0D, pos.y + randY + d6 * (double)j / 4.0D, pos.z + randZ + d1 * (double)j / 4.0D, 0, 0, 0);
                 }
                 //Trail twinkle
@@ -291,7 +291,7 @@ public abstract class AbstractSpellEntity extends Projectile {
                         float randY = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
                         float randZ = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
                         int life = 4 + level().random.nextInt(20);
-                        world.addParticle(EmberParticleProvider.createData(getParticleColor(), sphereSize, life, true, hasMask()), true,
+                        world.addParticle(EmberParticleProvider.createData(getParticleColor(), sphereSize, life, true, getRenderType()), true,
                                 pos.x + randX, pos.y + randY, pos.z + randZ, 0, 0, 0);
                     }
                 }
@@ -347,7 +347,7 @@ public abstract class AbstractSpellEntity extends Projectile {
             case WHITE -> new ParticleColor.IntWrapper(255, 255, 255);
             case GRAY -> new ParticleColor.IntWrapper(170, 170, 170);
             case DARK_GRAY -> new ParticleColor.IntWrapper(85, 85, 85);
-            case BLACK -> new ParticleColor.IntWrapper(25, 25, 25);
+            case BLACK -> new ParticleColor.IntWrapper(0, 0, 0);
         };
     }
 

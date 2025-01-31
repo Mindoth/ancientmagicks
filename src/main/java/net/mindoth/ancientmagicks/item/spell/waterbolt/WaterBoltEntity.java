@@ -1,8 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.waterbolt;
 
-import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.minecraft.world.entity.Entity;
@@ -11,8 +9,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.network.PlayMessages;
-
-import java.util.Random;
 
 public class WaterBoltEntity extends AbstractSpellEntity {
 
@@ -54,16 +50,15 @@ public class WaterBoltEntity extends AbstractSpellEntity {
     }
 
     @Override
+    protected int getRenderType() {
+        return 2;
+    }
+
+    @Override
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
         if ( this.getPower() > 0 && !SpellItem.isAlly(this.owner, target) && target instanceof LivingEntity ) {
             SpellItem.attackEntity(this.owner, target, this, SpellItem.getPowerInRange(1.0F, this.getPower()));
         }
     }
-
-    /*private ParticleColor getRandomColor() {
-        Random rand = new Random();
-        ColorCode color = ColorCode.BLUE;
-        return rand.nextBoolean() ? getParticleColor() : new ParticleColor(getSpellColor(color).r, getSpellColor(color).g, getSpellColor(color).b);
-    }*/
 }

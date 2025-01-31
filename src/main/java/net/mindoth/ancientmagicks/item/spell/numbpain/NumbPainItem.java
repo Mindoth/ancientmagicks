@@ -28,8 +28,8 @@ public class NumbPainItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected boolean hasMask() {
-        return false;
+    protected int getRenderType() {
+        return 3;
     }
 
     @Override

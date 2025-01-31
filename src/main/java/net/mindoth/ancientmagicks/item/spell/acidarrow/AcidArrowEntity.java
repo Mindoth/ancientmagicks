@@ -36,6 +36,11 @@ public class AcidArrowEntity extends AbstractSpellEntity {
     }
 
     @Override
+    protected int getRenderType() {
+        return 2;
+    }
+
+    @Override
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
         if ( this.getPower() > 0 && !SpellItem.isAlly(this.owner, target) ) {
