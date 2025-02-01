@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " C#",
+    " S#",
     " # ",
     "#  "
   ],
@@ -9,8 +9,8 @@
     "#": {
       "tag": "forge:rods/wooden"
     },
-    "C": {
-      "item": "ancientmagicks:wool_cloth"
+    "S": {
+      "tag": "forge:string"
     }
   },
   "result": {

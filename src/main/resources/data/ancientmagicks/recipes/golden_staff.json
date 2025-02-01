@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " 0#",
-    " #C",
+    " D#",
+    " #S",
     "#  "
   ],
   "key": {
     "#": {
       "item": "minecraft:gold_ingot"
     },
-    "C": {
-      "item": "ancientmagicks:wool_cloth"
+    "S": {
+      "tag": "forge:string"
     },
-    "0": {
-      "item": "ancientmagicks:arcane_crystal"
+    "D": {
+      "item": "minecraft:diamond"
     }
   },
   "result": {

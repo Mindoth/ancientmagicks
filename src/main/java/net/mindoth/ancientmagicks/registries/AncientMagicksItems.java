@@ -7,6 +7,7 @@ import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
+import net.mindoth.ancientmagicks.item.armor.MagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.WandItem;
@@ -126,9 +127,9 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
             () -> new ColorableStaffItem(new Item.Properties().durability(250), 0.0D, -3.0D,
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                                    "Weapon modifier", 0.25D, AttributeModifier.Operation.MULTIPLY_BASE),
+                                    "Weapon modifier", 0.20D, AttributeModifier.Operation.MULTIPLY_BASE),
                             AncientMagicksAttributes.MP_REG.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                            "Weapon modifier", 0.25D, AttributeModifier.Operation.MULTIPLY_BASE)
+                            "Weapon modifier", 0.20D, AttributeModifier.Operation.MULTIPLY_BASE)
                     )));
 
     public static final RegistryObject<Item> WOODEN_WAND = ITEMS.register("wooden_wand",
@@ -147,7 +148,13 @@ public class AncientMagicksItems {
             () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 
     public static final RegistryObject<Item> GOLDEN_CIRCLET = ITEMS.register("golden_circlet",
-            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.GAUDY, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.TRIMMED, ArmorItem.Type.HELMET, new Item.Properties()));
+
+    public static final RegistryObject<Item> TRIMMED_ROBE_TOP = ITEMS.register("trimmed_robe_top",
+            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.TRIMMED, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+
+    public static final RegistryObject<Item> TRIMMED_ROBE_BOTTOM = ITEMS.register("trimmed_robe_bottom",
+            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.TRIMMED, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 
 
 
