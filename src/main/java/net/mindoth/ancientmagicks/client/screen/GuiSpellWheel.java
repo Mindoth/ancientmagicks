@@ -84,17 +84,25 @@ public class GuiSpellWheel extends AncientMagicksScreen {
                     this.comboList.add((ColorRuneItem)clickedItem.getItem());
                 }
             }
-            SpellItem spell = ColorRuneItem.checkForSpellCombo(this.comboList);
-            if ( spell != null && (ClientMagicData.isSpellKnown(spell) || minecraft.player.isCreative()) ) {
-                this.comboResult = ColorRuneItem.checkForSpellCombo(this.comboList);
+            if ( getComboResult(this.comboList) != null ) {
+                this.comboResult = getComboResult(this.comboList);
                 String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
                 CompoundTag tag = new CompoundTag();
                 tag.putString("am_spell", spellString);
                 AncientMagicksNetwork.sendToServer(new PacketSetSpell(tag));
                 ClientMagicData.setCurrentSpell(spellString);
             }
+            else this.comboResult = null;
         }
         return true;
+    }
+
+    private SpellItem getComboResult(List<ColorRuneItem> comboList) {
+        SpellItem spell = ColorRuneItem.checkForSpellCombo(comboList);
+        if ( spell != null && (ClientMagicData.isSpellKnown(spell) || minecraft.player.isCreative()) ) {
+            return spell;
+        }
+        else return null;
     }
 
     @Override
@@ -162,8 +170,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
                 int ingX = comboX + 3 + (i * 20);
                 int ingY = comboY + 3;
                 ItemStack comboRune = new ItemStack(this.comboList.get(i));
-                graphics.renderItem(comboRune, ingX, ingY);
-                graphics.renderItemDecorations(this.font, comboRune, ingX, ingY);
+                renderItem(graphics, null, comboRune, ingX, ingY);
             }
         }
 
@@ -173,8 +180,8 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder buffer = tessellator.getBuilder();
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder buffer = tesselator.getBuilder();
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         boolean hasMouseOver = false;
         int mousedOverSlot = -1;
@@ -202,7 +209,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
             else drawSlice(buffer, x, y, 10, radiusIn, radiusOut, s, e, 55, 55, 55, 120);
         }
 
-        tessellator.end();
+        tesselator.end();
         RenderSystem.disableBlend();
 
         //Show comboResult square in the middle
@@ -216,18 +223,13 @@ public class GuiSpellWheel extends AncientMagicksScreen {
             //Spell name
             String name = I18n.get(slot.getDescriptionId());
             graphics.drawCenteredString(this.font, name, width / 2, (height - this.font.lineHeight) / 2 - 8, 16777215);
-            //graphics.drawCenteredString(this.font, name, width / 2, MINECRAFT.getWindow().getGuiScaledHeight() - 34, 16777215);
 
             //Square slot
             drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
                     resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
 
             //Item and its decorations
-            String id = slot.getItem().toString();
-            String modid = ForgeRegistries.ITEMS.getKey(slot.getItem()).toString().split(":")[0];
-            drawTexture(new ResourceLocation(modid, "textures/item/spell/" + id + ".png"),
-                    posX, posY, 0, 0, 16, 16, 16, 16, graphics);
-            graphics.renderItemDecorations(this.font, slot, posX, posY);
+            renderItem(graphics, null, slot, posX, posY);
         }
 
         ms.popPose();
@@ -236,8 +238,9 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         for ( int i = 0; i < numberOfSlices; i++ ) {
             int magnifier = 24;
             float middle = ((i / (float)numberOfSlices) + 0.25F) * 2 * (float)Math.PI;
-            int posX = (int)(x - ((float)magnifier / 2) + itemRadius * (float)Math.cos(middle)) + 4;
-            int posY = (int)(y - ((float)magnifier / 2) + itemRadius * (float)Math.sin(middle)) + 4;
+            int posX = (int)(x - ((float)magnifier * 0.5F) + itemRadius * (float)Math.cos(middle)) + 4;
+            int posY = (int)(y - ((float)magnifier * 0.5F) + itemRadius * (float)Math.sin(middle)) + 4;
+
             ItemStack slot = this.itemList.get(i);
 
             RenderSystem.disableDepthTest();
@@ -248,11 +251,23 @@ public class GuiSpellWheel extends AncientMagicksScreen {
             }
 
             ms.pushPose();
-
             ms.popPose();
 
-            graphics.renderItem(slot, posX, posY);
-            graphics.renderItemDecorations(this.font, slot, posX, posY);
+            renderItem(graphics, null, slot, posX, posY);
+
+            float dimItemRadius = (radiusIn + radiusOut) * 0.75F;
+            int dimPosX = (int)(x - ((float)magnifier * 0.5F) + dimItemRadius * (float)Math.cos(middle)) + 4;
+            int dimPosY = (int)(y - ((float)magnifier * 0.5F) + dimItemRadius * (float)Math.sin(middle)) + 4;
+            List<ColorRuneItem> tempList = Lists.newArrayList();
+            tempList.addAll(this.comboList);
+            if ( this.comboList.size() == AncientMagicks.comboSizeCalc() ) tempList.remove(0);
+            if ( this.comboList.size() == AncientMagicks.comboSizeCalc() || this.comboList.size() == AncientMagicks.comboSizeCalc() - 1 ) {
+                if ( slot.getItem() instanceof ColorRuneItem colorRuneItem ) tempList.add(colorRuneItem);
+                if ( getComboResult(tempList) != null ) {
+                    ItemStack dimItem = new ItemStack(getComboResult(tempList));
+                    renderItem(graphics, null, dimItem, dimPosX, dimPosY);
+                }
+            }
         }
 
         for ( ItemStack slot : this.itemList ) {

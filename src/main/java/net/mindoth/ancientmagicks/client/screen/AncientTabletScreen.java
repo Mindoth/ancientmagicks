@@ -84,8 +84,7 @@ public class AncientTabletScreen extends AncientMagicksScreen {
             int yPos = y - 26;
             if ( i == 3 || i == 4 || i == 5 ) yPos += 18;
             if ( i == 6 || i == 7 || i == 8 ) yPos += 36;
-            graphics.renderItem(this.itemList.get(i), xPos, yPos);
-            graphics.renderItemDecorations(this.font, this.itemList.get(i), xPos, yPos);
+            renderItem(graphics, null, this.itemList.get(i), xPos, yPos);
             if ( this.slotList.get(i).isHovered() ) {
                 graphics.fill(RenderType.guiOverlay(), xPos, yPos, xPos + 16, yPos + 16, Integer.MAX_VALUE);
                 graphics.renderTooltip(this.font, this.itemList.get(i), mouseX, mouseY);
@@ -94,8 +93,7 @@ public class AncientTabletScreen extends AncientMagicksScreen {
 
         int xPos = x + 37;
         int yPos = y - 8;
-        graphics.renderItem(this.arcaneDust, xPos, yPos);
-        graphics.renderItemDecorations(this.font, this.arcaneDust, xPos, yPos);
+        renderItem(graphics, null, this.arcaneDust, xPos, yPos);
         if ( this.outputSlot.isHovered() ) {
             graphics.fill(RenderType.guiOverlay(), xPos, yPos, xPos + 16, yPos + 16, Integer.MAX_VALUE);
             graphics.renderTooltip(this.font, this.arcaneDust, mouseX, mouseY);

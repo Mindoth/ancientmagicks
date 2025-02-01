@@ -197,12 +197,6 @@ public class SpellBookScreen extends AncientMagicksScreen {
         }
     }
 
-    private void renderItem(GuiGraphics graphics, @Nullable ItemStack spell, ItemStack stack, int xPos, int yPos) {
-        if ( spell != null ) graphics.renderItem(spell, xPos, yPos);
-        else graphics.renderItem(stack, xPos, yPos);
-        graphics.renderItemDecorations(this.font, stack, xPos, yPos);
-    }
-
     @Override
     public void tick() {
         if ( this.rightArrow.isFocused() ) this.rightArrow.setFocused(false);
