@@ -10,6 +10,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,28 +38,26 @@ public class BurnLanceEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public float getDefaultPower() {
-        return 24.0F;
+    public int defaultPower() {
+        return 2;
     }
 
     @Override
-    public float getDefaultSpeed() {
-        return 1.6F;
+    public int defaultDie() {
+        return 10;
     }
 
     @Override
-    public int getDefaultEnemyPierce() {
+    public int defaultEnemyPierce() {
         return 1;
     }
 
     @Override
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
-        if ( this.getPower() > 0 && !SpellItem.isAlly(this.owner, target) && target instanceof LivingEntity ) {
-            SpellItem.attackEntity(this.owner, target, this, SpellItem.getPowerInRange(4.0F, this.getPower()));
-            target.setSecondsOnFire(8);
-            spawnParticles();
-        }
+        SpellItem.attackEntity(this.owner, target, this, calcDamage());
+        if ( target instanceof LivingEntity ) target.setSecondsOnFire(8);
+        spawnParticles();
     }
 
     @Override

@@ -17,6 +17,10 @@ public abstract class AbstractSpellShoot extends SpellItem {
         return null;
     }
 
+    protected boolean hasGravity() {
+        return false;
+    }
+
     @Override
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
@@ -32,11 +36,10 @@ public abstract class AbstractSpellShoot extends SpellItem {
         if ( state ) {
             AbstractSpellEntity projectile = getProjectile(level, owner, caster);
             projectile.setAdditionalData(getColor());
-            projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
-            float power = projectile.getPower();
-            power *= (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
+            int power = projectile.getEntityData().get(AbstractSpellEntity.POWER) + (int)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
             projectile.getEntityData().set(AbstractSpellEntity.POWER, power);
             projectile.setNoGravity(!hasGravity());
+            projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
             projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0, Math.max(0, projectile.getSpeed()), 0.0F);
             level.addFreshEntity(projectile);
 
@@ -44,9 +47,5 @@ public abstract class AbstractSpellShoot extends SpellItem {
         }
 
         return state;
-    }
-
-    protected boolean hasGravity() {
-        return false;
     }
 }

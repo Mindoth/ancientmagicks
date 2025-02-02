@@ -26,25 +26,23 @@ public class WitchArrowEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public float getDefaultPower() {
-        return 6.0F;
+    public int defaultPower() {
+        return 3;
     }
 
     @Override
-    public float getDefaultSpeed() {
-        return 1.6F;
+    public int defaultDie() {
+        return 4;
     }
 
     @Override
-    public boolean getDefaultHoming() {
+    public boolean defaultHoming() {
         return true;
     }
 
     @Override
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
-        if ( this.getPower() > 0 && !SpellItem.isAlly(this.owner, target) && target instanceof LivingEntity ) {
-            SpellItem.attackEntity(this.owner, target, this, SpellItem.getPowerInRange(1.0F, this.getPower()));
-        }
+        SpellItem.attackEntity(this.owner, target, this, calcDamage());
     }
 }

@@ -36,30 +36,23 @@ public class IcicleEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public float getDefaultGravity() {
+    public float defaultGravity() {
         return 0.05F;
     }
 
     @Override
-    public float getDefaultPower() {
-        return 6.0F;
-    }
-
-    @Override
-    public float getDefaultSpeed() {
-        return 1.6F;
+    public int defaultDie() {
+        return 4;
     }
 
     @Override
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
-        if ( this.getPower() > 0 && !SpellItem.isAlly(this.owner, target) ) {
-            SpellItem.attackEntity(this.owner, target, this, SpellItem.getPowerInRange(1.0F, this.getPower()));
-            if ( target instanceof LivingEntity livingTarget ) {
-                livingTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1, false, false));
-            }
-            spawnParticles();
+        SpellItem.attackEntity(this.owner, target, this, calcDamage());
+        if ( target instanceof LivingEntity livingTarget ) {
+            livingTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1, false, false));
         }
+        spawnParticles();
     }
 
     @Override

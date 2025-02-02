@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.dragonbreath;
 
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class DragonBreathItem extends SpellItem {
+public class DragonBreathItem extends AbstractSpellRayCast {
 
     public DragonBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
@@ -26,6 +26,16 @@ public class DragonBreathItem extends SpellItem {
     @Override
     public boolean isChannel() {
         return true;
+    }
+
+    @Override
+    protected float getRange() {
+        return 2.5F;
+    }
+
+    @Override
+    protected float getSize() {
+        return 1.5F;
     }
 
     @Override
@@ -39,10 +49,10 @@ public class DragonBreathItem extends SpellItem {
             down = 0.0F;
         }
 
-        float range = 2.5F;
+        float range = getRange();
         if ( owner != caster ) range = 0.0F;
-        float size = 1.5F;
-        float power = 8.0F * (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
+        float size = getSize();
+        int power = 1 + (int)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
 
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, false, true, false);
         List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + size, point.y + size, point.z + size),
@@ -57,8 +67,8 @@ public class DragonBreathItem extends SpellItem {
         List<Entity> doubleList = Stream.concat(targets.stream(), targets2.stream()).toList();
 
         for ( Entity target : doubleList ) {
-            if ( target != caster && target instanceof LivingEntity living && !isAlly(owner, living) && hasLineOfSight(caster, target) ) {
-                attackEntityWithoutKnockback(owner, caster, target, getPowerInRange(1.0F, power));
+            if ( filter(owner, target) && hasLineOfSight(caster, target) ) {
+                attackEntityWithoutKnockback(owner, caster, target, rollForPower(power, 8));
             }
         }
 

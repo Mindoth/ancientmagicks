@@ -56,44 +56,44 @@ public abstract class AbstractSpellEntity extends Projectile {
     protected int bounces = 0;
     public Entity target = null;
 
-    public float getDefaultGravity() {
-        return 0.015F;
+    public int defaultPower() {
+        return 1;
     }
 
-    public float getDefaultPower() {
-        return 1.0F;
+    public int defaultDie() {
+        return 1;
     }
 
-    public float getDefaultSpeed() {
-        return 0.0F;
+    public float defaultSpeed() {
+        return 1.6F;
     }
 
-    public int getDefaultLife() {
+    public int defaultLife() {
         return 160;
     }
 
-    public float getDefaultSize() {
+    public float defaultSize() {
         return 0.2F;
     }
 
-    public int getDefaultEnemyPierce() {
+    public int defaultEnemyPierce() {
         return 0;
     }
 
-    public int getDefaultBlockBounce() {
+    public int defaultBlockBounce() {
         return 0;
     }
 
-    public boolean getDefaultHarmful() {
+    public boolean defaultHarmful() {
         return true;
     }
 
-    public boolean getDefaultHoming() {
+    public boolean defaultHoming() {
         return false;
     }
 
-    public boolean isHarmful() {
-        return true;
+    public float defaultGravity() {
+        return 0.015F;
     }
 
     public void anonShootFromRotation(float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
@@ -124,24 +124,24 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.updateRotation();
         if ( !this.isNoGravity() ) {
             Vec3 vec34 = this.getDeltaMovement();
-            this.setDeltaMovement(vec34.x, vec34.y - (double)getDefaultGravity(), vec34.z);
+            this.setDeltaMovement(vec34.x, vec34.y - (double) defaultGravity(), vec34.z);
         }
     }
 
     public void handleHitDetection() {
-        HitResult result = getHitResult(this.position(), this, this::checkTeamForHit, this.getDeltaMovement(), this.level());
+        HitResult result = getHitResult(position(), this, this::checkTeamForHit, getDeltaMovement(), level());
         boolean flag = false;
         if ( result.getType() == HitResult.Type.BLOCK ) {
             BlockPos blockpos = ((BlockHitResult)result).getBlockPos();
             BlockState blockstate = this.level().getBlockState(blockpos);
             if ( blockstate.is(Blocks.NETHER_PORTAL) ) {
-                this.handleInsidePortal(blockpos);
+                handleInsidePortal(blockpos);
                 flag = true;
             }
             else if ( blockstate.is(Blocks.END_GATEWAY) ) {
-                BlockEntity blockentity = this.level().getBlockEntity(blockpos);
+                BlockEntity blockentity = level().getBlockEntity(blockpos);
                 if ( blockentity instanceof TheEndGatewayBlockEntity && TheEndGatewayBlockEntity.canEntityTeleport(this) ) {
-                    TheEndGatewayBlockEntity.teleportEntity(this.level(), blockpos, blockstate, this, (TheEndGatewayBlockEntity)blockentity);
+                    TheEndGatewayBlockEntity.teleportEntity(level(), blockpos, blockstate, this, (TheEndGatewayBlockEntity)blockentity);
                 }
                 flag = true;
             }
@@ -159,15 +159,13 @@ public abstract class AbstractSpellEntity extends Projectile {
                 }
             }
         }
-        if ( result.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, result) ) {
-            this.onHit(result);
-        }
+        if ( result.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, result) ) onHit(result);
     }
 
     //Similar to SpellItem filter() method
     protected boolean checkTeamForHit(Entity target) {
-        return this.canHitEntity(target) && target instanceof LivingEntity && !(target instanceof ArmorStand)
-                && ((SpellItem.isAlly(this.owner, target) && !this.isHarmful()) || (!SpellItem.isAlly(this.owner, target) && this.isHarmful()));
+        return canHitEntity(target) && target instanceof LivingEntity && !(target instanceof ArmorStand)
+                && ((SpellItem.isAlly(this.owner, target) && !isHarmful()) || (!SpellItem.isAlly(this.owner, target) && isHarmful()));
     }
 
     protected HitResult getHitResult(Vec3 pStartVec, Entity pProjectile, Predicate<Entity> pFilter, Vec3 pEndVecOffset, Level pLevel) {
@@ -187,13 +185,13 @@ public abstract class AbstractSpellEntity extends Projectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
-        if ( this.level().isClientSide ) doClientHitEffects();
+        if ( level().isClientSide ) doClientHitEffects();
         else {
-            if ( result.getEntity() instanceof LivingEntity ) {
-                if ( !this.ignoredEntities.contains(result.getEntity().getId()) ) {
+            if ( result.getEntity() instanceof LivingEntity living ) {
+                if ( !this.ignoredEntities.contains(living.getId()) ) {
                     doMobEffects(result);
                     playHitSound();
-                    this.ignoredEntities.add(result.getEntity().getId());
+                    this.ignoredEntities.add(living.getId());
                 }
                 if ( this.ignoredEntities.size() > getEnemyPierce() ) doDeathEffects();
             }
@@ -203,17 +201,17 @@ public abstract class AbstractSpellEntity extends Projectile {
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        if ( this.level().isClientSide ) doClientHitEffects();
+        if ( level().isClientSide ) doClientHitEffects();
         else {
             doBlockEffects(result);
             playHitSound();
-            BlockState blockState = this.level().getBlockState(result.getBlockPos());
-            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), blockState.getSoundType().getBreakSound(), SoundSource.PLAYERS, 0.3F, 2);
+            BlockState blockState = level().getBlockState(result.getBlockPos());
+            level().playSound(null, getX(), getY(), getZ(), blockState.getSoundType().getBreakSound(), SoundSource.PLAYERS, 0.3F, 2);
             if ( this.bounces < getBlockBounce() ) {
                 this.bounces++;
                 Direction face = result.getDirection();
-                blockState.onProjectileHit(this.level(), blockState, result, this);
-                Vec3 motion = this.getDeltaMovement();
+                blockState.onProjectileHit(level(), blockState, result, this);
+                Vec3 motion = getDeltaMovement();
                 double motionX = motion.x();
                 double motionY = motion.y();
                 double motionZ = motion.z();
@@ -230,6 +228,10 @@ public abstract class AbstractSpellEntity extends Projectile {
         }
     }
 
+    protected int calcDamage() {
+        return SpellItem.rollForPower(getPower(), getDie());
+    }
+
     protected boolean homingFilter(Entity owner, Entity target) {
         return checkTeamForHit(target);
     }
@@ -238,21 +240,21 @@ public abstract class AbstractSpellEntity extends Projectile {
         int range = 3;
 
         if ( this.target == null || !this.target.isAlive() ) {
-            this.target = ShadowEvents.getNearestEntity(this, this.level(), range, this::homingFilter);
+            this.target = ShadowEvents.getNearestEntity(this, level(), range, this::homingFilter);
         }
         if ( this.target != null ) {
-            if ( !this.isNoGravity() ) this.setNoGravity(true);
+            if ( !isNoGravity() ) setNoGravity(true);
             double mX = getDeltaMovement().x();
             double mY = getDeltaMovement().y();
             double mZ = getDeltaMovement().z();
-            Vec3 lookVec = ShadowEvents.getEntityCenter(this.target).subtract(this.position()).normalize();
+            Vec3 lookVec = ShadowEvents.getEntityCenter(this.target).subtract(position()).normalize();
             Vec3 spellMotion = new Vec3(mX, mY, mZ);
             float arc = 0.2F;
-            if ( this.position().distanceTo(this.target.position()) < 2.0D ) arc = 1.0F;
+            if ( position().distanceTo(this.target.position()) < 2.0D ) arc = 1.0F;
             Vec3 lerpVec = new Vec3(Mth.lerp(arc, spellMotion.x, lookVec.x), Mth.lerp(arc, spellMotion.y, lookVec.y), Mth.lerp(arc, spellMotion.z, lookVec.z));
-            this.setDeltaMovement(lerpVec);
+            setDeltaMovement(lerpVec);
         }
-        else if ( this.isNoGravity() ) this.setNoGravity(false);
+        else if ( isNoGravity() ) setNoGravity(false);
     }
 
     protected int getRenderType() {
@@ -262,12 +264,12 @@ public abstract class AbstractSpellEntity extends Projectile {
     protected void doClientTickEffects() {
         if ( this.isRemoved() ) return;
         if ( !this.level().isClientSide ) return;
-        ClientLevel world = (ClientLevel)this.level();
+        ClientLevel world = (ClientLevel)level();
         Vec3 center = ShadowEvents.getEntityCenter(this);
-        Vec3 pos = new Vec3(center.x, this.getY(), center.z);
+        Vec3 pos = new Vec3(center.x, getY(), center.z);
 
-        if ( this.isRemoved() ) return;
-        Vec3 vec3 = this.getDeltaMovement();
+        if ( isRemoved() ) return;
+        Vec3 vec3 = getDeltaMovement();
         double d5 = vec3.x;
         double d6 = vec3.y;
         double d1 = vec3.z;
@@ -351,21 +353,12 @@ public abstract class AbstractSpellEntity extends Projectile {
         };
     }
 
-    public static final EntityDataAccessor<Integer> RED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> GREEN = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> BLUE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
-
-    public static final EntityDataAccessor<Float> POWER = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Integer> LIFE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> ENEMY_PIERCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> BLOCK_BOUNCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Boolean> IS_HARMFUL = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
-    public static final EntityDataAccessor<Boolean> IS_HOMING = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
-
-    public float getPower() {
+    public int getPower() {
         return this.entityData.get(POWER);
+    }
+
+    public int getDie() {
+        return this.entityData.get(DIE);
     }
 
     public float getSpeed() {
@@ -384,7 +377,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         return this.entityData.get(BLOCK_BOUNCE);
     }
 
-    public boolean getHarmful() {
+    public boolean isHarmful() {
         return this.entityData.get(IS_HARMFUL);
     }
 
@@ -392,19 +385,34 @@ public abstract class AbstractSpellEntity extends Projectile {
         return this.entityData.get(IS_HOMING);
     }
 
+    public static final EntityDataAccessor<Integer> RED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> GREEN = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> BLUE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
+
+    public static final EntityDataAccessor<Integer> POWER = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> DIE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Integer> LIFE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> ENEMY_PIERCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> BLOCK_BOUNCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Boolean> IS_HARMFUL = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> IS_HOMING = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
+
     public void setAdditionalData(ParticleColor.IntWrapper colors) {
         this.entityData.set(RED, colors.r);
         this.entityData.set(GREEN, colors.g);
         this.entityData.set(BLUE, colors.b);
-        this.entityData.set(SIZE, this.getDefaultSize());
+        this.entityData.set(SIZE, this.defaultSize());
 
-        this.entityData.set(POWER, this.getDefaultPower());
-        this.entityData.set(SPEED, this.getDefaultSpeed());
-        this.entityData.set(LIFE, this.getDefaultLife());
-        this.entityData.set(ENEMY_PIERCE, this.getDefaultEnemyPierce());
-        this.entityData.set(BLOCK_BOUNCE, this.getDefaultBlockBounce());
-        this.entityData.set(IS_HARMFUL, this.getDefaultHarmful());
-        this.entityData.set(IS_HOMING, this.getDefaultHoming());
+        this.entityData.set(POWER, this.defaultPower());
+        this.entityData.set(DIE, this.defaultDie());
+        this.entityData.set(SPEED, this.defaultSpeed());
+        this.entityData.set(LIFE, this.defaultLife());
+        this.entityData.set(ENEMY_PIERCE, this.defaultEnemyPierce());
+        this.entityData.set(BLOCK_BOUNCE, this.defaultBlockBounce());
+        this.entityData.set(IS_HARMFUL, this.defaultHarmful());
+        this.entityData.set(IS_HOMING, this.defaultHoming());
     }
 
     @Override
@@ -415,7 +423,8 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.set(BLUE, compound.getInt("blue"));
         this.entityData.set(SIZE, compound.getFloat("size"));
 
-        this.entityData.set(POWER, compound.getFloat("power"));
+        this.entityData.set(POWER, compound.getInt("power"));
+        this.entityData.set(DIE, compound.getInt("die"));
         this.entityData.set(SPEED, compound.getFloat("speed"));
         this.entityData.set(LIFE, compound.getInt("life"));
         this.entityData.set(ENEMY_PIERCE, compound.getInt("enemyPierce"));
@@ -432,7 +441,8 @@ public abstract class AbstractSpellEntity extends Projectile {
         compound.putInt("blue", this.entityData.get(BLUE));
         compound.putFloat("size", this.entityData.get(SIZE));
 
-        compound.putFloat("power", this.entityData.get(POWER));
+        compound.putInt("power", this.entityData.get(POWER));
+        compound.putInt("die", this.entityData.get(DIE));
         compound.putFloat("speed", this.entityData.get(SPEED));
         compound.putInt("life", this.entityData.get(LIFE));
         compound.putInt("enemyPierce", this.entityData.get(ENEMY_PIERCE));
@@ -448,12 +458,13 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.define(BLUE, 180);
         this.entityData.define(SIZE, 0.2F);
 
-        this.entityData.define(POWER, 1.0F);
+        this.entityData.define(POWER, 1);
+        this.entityData.define(DIE, 1);
         this.entityData.define(SPEED, 1.6F);
         this.entityData.define(LIFE, 160);
         this.entityData.define(ENEMY_PIERCE, 0);
         this.entityData.define(BLOCK_BOUNCE, 0);
-        this.entityData.define(IS_HARMFUL, false);
+        this.entityData.define(IS_HARMFUL, true);
         this.entityData.define(IS_HOMING, false);
     }
 

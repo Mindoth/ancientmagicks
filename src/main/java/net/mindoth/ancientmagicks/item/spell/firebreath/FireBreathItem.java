@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item.spell.firebreath;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
@@ -20,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class FireBreathItem extends SpellItem {
+public class FireBreathItem extends AbstractSpellRayCast {
 
     public FireBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
@@ -37,6 +38,16 @@ public class FireBreathItem extends SpellItem {
     }
 
     @Override
+    protected float getRange() {
+        return 2.5F;
+    }
+
+    @Override
+    protected float getSize() {
+        return 1.5F;
+    }
+
+    @Override
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
@@ -47,10 +58,10 @@ public class FireBreathItem extends SpellItem {
             down = 0.0F;
         }
 
-        float range = 2.5F;
+        float range = getRange();
         if ( owner != caster ) range = 0.0F;
-        float size = 1.5F;
-        float power = 2.0F * (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
+        float size = getSize();
+        int power = 1 + (int)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
 
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, false, true, false);
         List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + size, point.y + size, point.z + size),
@@ -65,9 +76,9 @@ public class FireBreathItem extends SpellItem {
         List<Entity> doubleList = Stream.concat(targets.stream(), targets2.stream()).toList();
 
         for ( Entity target : doubleList ) {
-            if ( target != caster && target instanceof LivingEntity living && !isAlly(owner, living) && hasLineOfSight(caster, target) ) {
-                attackEntityWithoutKnockback(owner, caster, target, getPowerInRange(1.0F, power));
-                target.setSecondsOnFire(8);
+            if ( filter(owner, target) && hasLineOfSight(caster, target) ) {
+                attackEntityWithoutKnockback(owner, caster, target, rollForPower(power, 4));
+                if ( target instanceof LivingEntity ) target.setSecondsOnFire(8);
             }
         }
 

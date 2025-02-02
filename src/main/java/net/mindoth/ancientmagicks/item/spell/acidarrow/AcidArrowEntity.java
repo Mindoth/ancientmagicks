@@ -26,13 +26,13 @@ public class AcidArrowEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public float getDefaultPower() {
-        return 8.0F;
+    public int defaultPower() {
+        return 4;
     }
 
     @Override
-    public float getDefaultSpeed() {
-        return 1.6F;
+    public int defaultDie() {
+        return 4;
     }
 
     @Override
@@ -43,8 +43,6 @@ public class AcidArrowEntity extends AbstractSpellEntity {
     @Override
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
-        if ( this.getPower() > 0 && !SpellItem.isAlly(this.owner, target) ) {
-            SpellItem.attackEntity(this.owner, target, this, SpellItem.getPowerInRange(4.0F, this.getPower()));
-        }
+        SpellItem.attackEntity(this.owner, target, this, calcDamage());
     }
 }

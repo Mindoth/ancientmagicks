@@ -38,17 +38,22 @@ public class FireballEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public float getDefaultPower() {
-        return 24.0F;
+    public int defaultPower() {
+        return 8;
     }
 
     @Override
-    public float getDefaultSpeed() {
+    public int defaultDie() {
+        return 6;
+    }
+
+    @Override
+    public float defaultSpeed() {
         return 1.2F;
     }
 
     @Override
-    public float getDefaultSize() {
+    public float defaultSize() {
         return 0.8F;
     }
 
@@ -62,10 +67,8 @@ public class FireballEntity extends AbstractSpellEntity {
     }
 
     private void causeDamage(Entity target) {
-        if ( !SpellItem.isAlly(this.owner, target) ) {
-            SpellItem.attackEntity(this.owner, target, this, SpellItem.getPowerInRange(8.0F, this.getPower()));
-            target.setSecondsOnFire(8);
-        }
+        SpellItem.attackEntity(this.owner, target, this, calcDamage());
+        if ( target instanceof LivingEntity ) target.setSecondsOnFire(8);
     }
 
     @Override
@@ -120,8 +123,6 @@ public class FireballEntity extends AbstractSpellEntity {
                 SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1.0F, 0.75F);
     }
 
-    private final float radius = 1.5F;
-
     private void fireExplosion() {
         Set<BlockPos> set = Sets.newHashSet();
         int i = 16;
@@ -136,7 +137,7 @@ public class FireballEntity extends AbstractSpellEntity {
                         d0 /= d3;
                         d1 /= d3;
                         d2 /= d3;
-                        float f = this.radius * (0.7F + this.level().random.nextFloat() * 0.6F);
+                        float f = (this.getSize() + 1) * (0.7F + this.level().random.nextFloat() * 0.6F);
                         double d4 = this.getX();
                         double d6 = this.getY();
                         double d8 = this.getZ();

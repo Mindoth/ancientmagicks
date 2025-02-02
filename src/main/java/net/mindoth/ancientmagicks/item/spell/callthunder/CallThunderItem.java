@@ -2,8 +2,8 @@ package net.mindoth.ancientmagicks.item.spell.callthunder;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class CallThunderItem extends SpellItem {
+public class CallThunderItem extends AbstractSpellRayCast {
 
     public CallThunderItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
@@ -30,11 +30,16 @@ public class CallThunderItem extends SpellItem {
     }
 
     @Override
+    protected float getRange() {
+        return 64.0F;
+    }
+
+    @Override
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        float power = 20.0F * (float)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
-        float range = 64.0F;
+        int power = 3 + (int)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
+        float range = getRange();
         if ( owner != caster ) range = 0.0F;
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, true, true, true, true);
         BlockPos blockPos = new BlockPos(Mth.floor(point.x), Mth.floor(point.y), Mth.floor(point.z));
@@ -45,7 +50,7 @@ public class CallThunderItem extends SpellItem {
             if ( lightningbolt != null && !level.isClientSide ) {
                 lightningbolt.moveTo(blockPos.getCenter().x, blockPos.getCenter().y - 0.5D, blockPos.getCenter().z);
                 lightningbolt.setCause(caster instanceof ServerPlayer ? (ServerPlayer)caster : null);
-                lightningbolt.setDamage(getPowerInRange(2.0F, power));
+                lightningbolt.setDamage(rollForPower(power, 10));
                 level.addFreshEntity(lightningbolt);
                 state = true;
             }

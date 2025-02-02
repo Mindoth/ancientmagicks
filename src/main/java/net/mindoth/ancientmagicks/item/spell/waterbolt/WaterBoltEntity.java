@@ -25,27 +25,27 @@ public class WaterBoltEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public float getDefaultPower() {
-        return 4.0F;
+    public int defaultDie() {
+        return 8;
     }
 
     @Override
-    public float getDefaultSpeed() {
+    public float defaultSpeed() {
         return 0.8F;
     }
 
     @Override
-    public int getDefaultLife() {
+    public int defaultLife() {
         return 100;
     }
 
     @Override
-    public int getDefaultEnemyPierce() {
+    public int defaultEnemyPierce() {
         return 3;
     }
 
     @Override
-    public int getDefaultBlockBounce() {
+    public int defaultBlockBounce() {
         return 3;
     }
 
@@ -57,8 +57,6 @@ public class WaterBoltEntity extends AbstractSpellEntity {
     @Override
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
-        if ( this.getPower() > 0 && !SpellItem.isAlly(this.owner, target) && target instanceof LivingEntity ) {
-            SpellItem.attackEntity(this.owner, target, this, SpellItem.getPowerInRange(1.0F, this.getPower()));
-        }
+        SpellItem.attackEntity(this.owner, target, this, calcDamage());
     }
 }

@@ -38,28 +38,28 @@ public class FreezeLanceEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public float getDefaultPower() {
-        return 24.0F;
+    public int defaultPower() {
+        return 2;
     }
 
     @Override
-    public float getDefaultSpeed() {
-        return 1.6F;
+    public int defaultDie() {
+        return 10;
     }
 
     @Override
-    public int getDefaultEnemyPierce() {
+    public int defaultEnemyPierce() {
         return 1;
     }
 
     @Override
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
-        if ( this.getPower() > 0 && !SpellItem.isAlly(this.owner, target) && target instanceof LivingEntity livingTarget ) {
-            SpellItem.attackEntity(this.owner, target, this, SpellItem.getPowerInRange(4.0F, this.getPower()));
+        SpellItem.attackEntity(this.owner, target, this, calcDamage());
+        if ( target instanceof LivingEntity livingTarget ) {
             livingTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1, false, false));
-            spawnParticles();
         }
+        spawnParticles();
     }
 
     @Override

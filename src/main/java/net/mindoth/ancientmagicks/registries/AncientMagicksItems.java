@@ -116,18 +116,14 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> WOODEN_STAFF = ITEMS.register("wooden_staff",
             () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Map.of(
-                    AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                            "Weapon modifier", 4.0D, AttributeModifier.Operation.ADDITION),
-                    AncientMagicksAttributes.MP_REG.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                            "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION)
             )));
 
     public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
             () -> new ColorableStaffItem(new Item.Properties().durability(250), 0.0D, -3.0D,
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                                    "Weapon modifier", 5.0D, AttributeModifier.Operation.ADDITION),
+                                    "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION),
                             AncientMagicksAttributes.MP_REG.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                            "Weapon modifier", 2.0D, AttributeModifier.Operation.ADDITION)
+                            "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION)
                     )));
 
     public static final RegistryObject<Item> SIMPLE_HOOD = ITEMS.register("simple_hood",
