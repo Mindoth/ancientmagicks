@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#P#",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "ancientmagicks:arcane_dust"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    }
+  },
+  "result": {
+    "item": "ancientmagicks:arcane_parchment",
+    "count": 1
+  }
+}

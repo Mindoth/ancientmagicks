@@ -57,16 +57,12 @@ public class SpellItem extends Item {
     }
 
     public static int rollForPower(int power, int die) {
-        System.out.println("POWER: " + power);
-        System.out.println("DIE: " + die);
         int finalHit = 0;
         for ( int i = 0; i < power; i++ ) {
             Random rand = new Random();
             int roll = (rand.nextInt(die) + 1);
-            System.out.println("ROLL: " + roll);
             finalHit += roll;
         }
-        System.out.println("FINAL HIT: " + finalHit);
         return finalHit;
     }
 
