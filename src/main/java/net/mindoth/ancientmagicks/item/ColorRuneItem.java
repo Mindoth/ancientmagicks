@@ -19,7 +19,9 @@ import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class ColorRuneItem extends Item {
+
     public String color;
+    public static final String AM_COMBOSTRING = "am_combostring";
 
     public ColorRuneItem(Properties pProperties, String color) {
         super(pProperties);

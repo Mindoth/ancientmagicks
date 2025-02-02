@@ -90,9 +90,6 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
             () -> new AncientTabletItem(new Item.Properties().stacksTo(1)));
 
-    public static final RegistryObject<Item> SPELL_PEARL = ITEMS.register("spell_pearl",
-            () -> new SpecialCastingItem(new Item.Properties()));
-
     public static final RegistryObject<Item> STONE_SLATE = ITEMS.register("empty_rune",
             () -> new Item(new Item.Properties()));
 
@@ -118,25 +115,20 @@ public class AncientMagicksItems {
             () -> new ParchmentItem(new Item.Properties()));
 
     public static final RegistryObject<Item> WOODEN_STAFF = ITEMS.register("wooden_staff",
-            () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                            "Weapon modifier", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE),
+            () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Map.of(
+                    AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
+                            "Weapon modifier", 4.0D, AttributeModifier.Operation.ADDITION),
                     AncientMagicksAttributes.MP_REG.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                            "Weapon modifier", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE)
+                            "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION)
             )));
 
     public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
             () -> new ColorableStaffItem(new Item.Properties().durability(250), 0.0D, -3.0D,
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                                    "Weapon modifier", 0.20D, AttributeModifier.Operation.MULTIPLY_BASE),
+                                    "Weapon modifier", 5.0D, AttributeModifier.Operation.ADDITION),
                             AncientMagicksAttributes.MP_REG.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                            "Weapon modifier", 0.20D, AttributeModifier.Operation.MULTIPLY_BASE)
+                            "Weapon modifier", 2.0D, AttributeModifier.Operation.ADDITION)
                     )));
-
-    public static final RegistryObject<Item> WOODEN_WAND = ITEMS.register("wooden_wand",
-            () -> new WandItem(new Item.Properties().durability(10)));
-
-    public static final RegistryObject<Item> GOLDEN_WAND = ITEMS.register("golden_wand",
-            () -> new WandItem(new Item.Properties().durability(25)));
 
     public static final RegistryObject<Item> SIMPLE_HOOD = ITEMS.register("simple_hood",
             () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.HELMET, new Item.Properties()));
@@ -155,6 +147,15 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> TRIMMED_ROBE_BOTTOM = ITEMS.register("trimmed_robe_bottom",
             () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.TRIMMED, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+
+    public static final RegistryObject<Item> SPELL_PEARL = ITEMS.register("spell_pearl",
+            () -> new SpecialCastingItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> WOODEN_WAND = ITEMS.register("wooden_wand",
+            () -> new WandItem(new Item.Properties().durability(10)));
+
+    public static final RegistryObject<Item> GOLDEN_WAND = ITEMS.register("golden_wand",
+            () -> new WandItem(new Item.Properties().durability(25)));
 
 
 

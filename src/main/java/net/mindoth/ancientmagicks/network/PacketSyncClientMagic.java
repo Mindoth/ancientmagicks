@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.network;
 
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagic;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -25,9 +26,9 @@ public class PacketSyncClientMagic {
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         contextSupplier.get().enqueueWork(() -> {
-            if ( this.spellTag.contains("am_spell") ) ClientMagicData.setCurrentSpell(this.spellTag.getString("am_spell"));
+            if ( this.spellTag.contains(PlayerMagic.AM_SPELL) ) ClientMagicData.setCurrentSpell(this.spellTag.getString(PlayerMagic.AM_SPELL));
             else ClientMagicData.setCurrentSpell("minecraft:air");
-            if ( this.spellTag.contains("am_known_spells") ) ClientMagicData.setKnownSpells(this.spellTag.getString("am_known_spells"));
+            if ( this.spellTag.contains(PlayerMagic.AM_KNOWN_SPELLS) ) ClientMagicData.setKnownSpells(this.spellTag.getString(PlayerMagic.AM_KNOWN_SPELLS));
             else ClientMagicData.setKnownSpells("");
         });
         contextSupplier.get().setPacketHandled(true);

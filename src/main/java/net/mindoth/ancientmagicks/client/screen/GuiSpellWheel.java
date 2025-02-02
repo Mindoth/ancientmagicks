@@ -6,6 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagic;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
@@ -88,7 +89,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
                 this.comboResult = getComboResult(this.comboList);
                 String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
                 CompoundTag tag = new CompoundTag();
-                tag.putString("am_spell", spellString);
+                tag.putString(PlayerMagic.AM_SPELL, spellString);
                 AncientMagicksNetwork.sendToServer(new PacketSetSpell(tag));
                 ClientMagicData.setCurrentSpell(spellString);
             }

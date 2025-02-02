@@ -98,12 +98,14 @@ public class SpellStorageItem extends Item {
         return result;
     }
 
+    public static final String AM_NEW_SPELL = "am_new_spell";
+
     public static void learnSpell(ServerPlayer serverPlayer, SpellItem spell, ItemStack vessel) {
         ItemStack stack = new ItemStack(spell);
         final String spellString = ForgeRegistries.ITEMS.getKey(spell).toString();
         serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
             CompoundTag tag = new CompoundTag();
-            tag.putString("am_secretspell", spellString);
+            tag.putString(AM_NEW_SPELL, spellString);
             if ( Objects.equals(magic.getKnownSpells(), "") ) {
                 magic.setKnownSpells(spellString);
                 AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);

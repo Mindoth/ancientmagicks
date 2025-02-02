@@ -18,22 +18,12 @@ public enum AncientMagicksArmorMaterials implements CustomArmorMaterial {
     SIMPLE("simple", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
             0, 0, () -> Ingredient.of(Items.STRING), Map.of(
             AncientMagicksAttributes.MP_MAX.get(), new AttributeModifier("Mana Maximum", 25.0D, AttributeModifier.Operation.ADDITION),
-            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 0.10D, AttributeModifier.Operation.MULTIPLY_BASE)
+            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 1.0D, AttributeModifier.Operation.ADDITION)
     )),
-    TRIMMED("trimmed", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_CHAIN,
+    TRIMMED("trimmed", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
             0, 0, () -> Ingredient.of(Items.GOLD_INGOT), Map.of(
             AncientMagicksAttributes.MP_MAX.get(), new AttributeModifier("Mana Maximum", 50.0D, AttributeModifier.Operation.ADDITION),
-            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 0.20D, AttributeModifier.Operation.MULTIPLY_BASE)
-    )),
-    GAUDY("gaudy", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_CHAIN,
-            0, 0, () -> Ingredient.of(Items.GOLD_INGOT), Map.of(
-            AncientMagicksAttributes.MP_MAX.get(), new AttributeModifier("Mana Maximum", 75.0D, AttributeModifier.Operation.ADDITION),
-            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 0.30D, AttributeModifier.Operation.MULTIPLY_BASE)
-    )),
-    ARCANE("arcane", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_CHAIN,
-            0, 0, () -> Ingredient.of(Items.GOLD_INGOT), Map.of(
-            AncientMagicksAttributes.MP_MAX.get(), new AttributeModifier("Mana Maximum", 100.0D, AttributeModifier.Operation.ADDITION),
-            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 0.50D, AttributeModifier.Operation.MULTIPLY_BASE)
+            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 2.0D, AttributeModifier.Operation.ADDITION)
     ));
 
     private final String name;

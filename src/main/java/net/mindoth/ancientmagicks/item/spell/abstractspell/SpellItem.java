@@ -44,10 +44,6 @@ public class SpellItem extends Item {
         return false;
     }
 
-    public ParticleColor.IntWrapper getColor() {
-        return AbstractSpellEntity.getSpellColor(ColorCode.DARK_PURPLE);
-    }
-
     public boolean isCraftable() {
         return true;
     }
@@ -60,12 +56,88 @@ public class SpellItem extends Item {
         return true;
     }
 
+    //TODO Dice damage
+    public static float getPowerInRange(float minPower, float maxPower) {
+        Random r = new Random();
+        return minPower + r.nextFloat() * (maxPower - minPower);
+    }
+
+    public static void attackEntity(LivingEntity owner, Entity target, Entity source, float amount) {
+        if ( target instanceof LivingEntity ) target.hurt(target.damageSources().indirectMagic(source, owner), amount);
+    }
+
+    public static void attackEntityWithoutKnockback(LivingEntity owner, Entity caster, Entity target, float amount) {
+        final double vx = target.getDeltaMovement().x;
+        final double vy = target.getDeltaMovement().y;
+        final double vz = target.getDeltaMovement().z;
+        target.hurt(target.damageSources().indirectMagic(caster, owner), amount);
+        target.setDeltaMovement(vx, vy, vz);
+        target.hurtMarked = true;
+    }
+
+    public static boolean isPushable(Entity entity) {
+        return ( entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof PrimedTnt || entity instanceof FallingBlockEntity );
+    }
+
+    public static boolean isAlly(Entity owner, Entity target) {
+        boolean flag = false;
+
+        if ( !(owner == null || target == null) ) {
+            if ( target == owner ) flag = true;
+            if ( owner.isAlliedTo(target) ) flag = true;
+            if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) flag = true;
+            if ( owner instanceof LivingEntity livingOwner ) {
+                if ( target instanceof LivingEntity livingTarget && !(livingOwner.canAttack(livingTarget)) ) flag = true;
+                if ( target instanceof TamableAnimal pet && pet.isOwnedBy(livingOwner) ) flag = true;
+                if ( target instanceof Mob mob && isMinionsSummoner(livingOwner, mob) ) flag = true;
+            }
+        }
+
+        return flag;
+    }
+
+    public static boolean isMinionsOwner(LivingEntity owner, Mob mob) {
+        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
+                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner;
+    }
+
+    public static boolean isMinionsSummoner(LivingEntity owner, Mob mob) {
+        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
+                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner
+                && mob.getPersistentData().getBoolean(MindControlEffect.NBT_KEY_SUMMON);
+    }
+
+    public boolean filter(Entity owner, Entity target) {
+        return target instanceof LivingEntity && !(target instanceof ArmorStand)
+                && ((SpellItem.isAlly(owner, target) && !isHarmful()) || (!SpellItem.isAlly(owner, target) && isHarmful()));
+    }
+
+    public static boolean hasLineOfSight(Entity start, Entity target) {
+        Vec3 vec3 = new Vec3(start.getX(), start.getEyeY(), start.getZ());
+        Vec3 vec31 = new Vec3(target.getX(), target.getEyeY(), target.getZ());
+        return start.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, start)).getType() == HitResult.Type.MISS;
+    }
+
     @Override
     public void onUseTick(Level level, LivingEntity living, ItemStack tablet, int timeLeft) {
         if ( level.isClientSide ) return;
         if ( living instanceof Player player && tablet.getItem() instanceof SpellItem spellItem) {
             CastingItem.doSpell(player, player, tablet, spellItem, getUseDuration(tablet) - timeLeft);
         }
+    }
+
+    @Override
+    public int getUseDuration(ItemStack pStack) {
+        return 72000;
+    }
+
+    @Override
+    public UseAnim getUseAnimation(ItemStack pStack) {
+        return UseAnim.BOW;
+    }
+
+    public ParticleColor.IntWrapper getColor() {
+        return AbstractSpellEntity.getSpellColor(ColorCode.DARK_PURPLE);
     }
 
     protected void addEnchantParticles(Entity target, int r, int g, int b, float size, int age, int renderType) {
@@ -109,77 +181,6 @@ public class SpellItem extends Item {
             AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, renderType,
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
-    }
-
-    public static float getPowerInRange(float minPower, float maxPower) {
-        Random r = new Random();
-        return minPower + r.nextFloat() * (maxPower - minPower);
-    }
-
-    public static void attackEntity(LivingEntity owner, Entity target, Entity source, float amount) {
-        if ( target instanceof LivingEntity ) target.hurt(target.damageSources().indirectMagic(source, owner), amount);
-    }
-
-    public static void attackEntityWithoutKnockback(LivingEntity owner, Entity caster, Entity target, float amount) {
-        final double vx = target.getDeltaMovement().x;
-        final double vy = target.getDeltaMovement().y;
-        final double vz = target.getDeltaMovement().z;
-        target.hurt(target.damageSources().indirectMagic(caster, owner), amount);
-        target.setDeltaMovement(vx, vy, vz);
-        target.hurtMarked = true;
-    }
-
-    public static boolean isAlly(Entity owner, Entity target) {
-        boolean flag = false;
-
-        if ( !(owner == null || target == null) ) {
-            if ( target == owner ) flag = true;
-            if ( owner.isAlliedTo(target) ) flag = true;
-            if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) flag = true;
-            if ( owner instanceof LivingEntity livingOwner ) {
-                if ( target instanceof LivingEntity livingTarget && !(livingOwner.canAttack(livingTarget)) ) flag = true;
-                if ( target instanceof TamableAnimal pet && pet.isOwnedBy(livingOwner) ) flag = true;
-                if ( target instanceof Mob mob && isMinionsSummoner(livingOwner, mob) ) flag = true;
-            }
-        }
-
-        return flag;
-    }
-
-    public boolean filter(Entity owner, Entity target) {
-        return target instanceof LivingEntity && !(target instanceof ArmorStand)
-                && ((SpellItem.isAlly(owner, target) && !isHarmful()) || (!SpellItem.isAlly(owner, target) && isHarmful()));
-    }
-
-    public static boolean isMinionsOwner(LivingEntity owner, Mob mob) {
-        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
-                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner;
-    }
-
-    public static boolean isMinionsSummoner(LivingEntity owner, Mob mob) {
-        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
-                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner
-                && mob.getPersistentData().getBoolean(MindControlEffect.NBT_KEY_SUMMON);
-    }
-
-    public static boolean isPushable(Entity entity) {
-        return ( entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof PrimedTnt || entity instanceof FallingBlockEntity );
-    }
-
-    public static boolean hasLineOfSight(Entity start, Entity target) {
-        Vec3 vec3 = new Vec3(start.getX(), start.getEyeY(), start.getZ());
-        Vec3 vec31 = new Vec3(target.getX(), target.getEyeY(), target.getZ());
-        return start.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, start)).getType() == HitResult.Type.MISS;
-    }
-
-    @Override
-    public int getUseDuration(ItemStack pStack) {
-        return 72000;
-    }
-
-    @Override
-    public UseAnim getUseAnimation(ItemStack pStack) {
-        return UseAnim.BOW;
     }
 
     protected void playSound(Level level, Vec3 center) {

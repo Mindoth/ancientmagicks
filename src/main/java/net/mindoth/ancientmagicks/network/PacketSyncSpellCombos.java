@@ -25,7 +25,7 @@ public class PacketSyncSpellCombos {
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         contextSupplier.get().enqueueWork(() -> {
-            ColorRuneItem.CURRENT_COMBO_MAP = ColorRuneItem.buildComboMap(this.comboTag.getString("am_combostring"));
+            ColorRuneItem.CURRENT_COMBO_MAP = ColorRuneItem.buildComboMap(this.comboTag.getString(ColorRuneItem.AM_COMBOSTRING));
         });
         contextSupplier.get().setPacketHandled(true);
     }

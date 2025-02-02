@@ -23,25 +23,27 @@ public class AncientMagicksCapabilities {
 
     @SubscribeEvent
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
+        if ( event.getObject().level().isClientSide ) return;
         if ( event.getObject() instanceof Player player ) {
             if ( !player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).isPresent() ) {
-                event.addCapability(new ResourceLocation(AncientMagicks.MOD_ID, "am_magic"), new PlayerMagicProvider());
+                event.addCapability(new ResourceLocation(AncientMagicks.MOD_ID, PlayerMagic.AM_MAGIC), new PlayerMagicProvider());
             }
         }
     }
 
     @SubscribeEvent
-    public static void onPlayerCreated(PlayerEvent.Clone event) {
+    public static void onPlayerCreatedAfterDeath(PlayerEvent.Clone event) {
+        if ( event.getEntity().level().isClientSide ) return;
         if ( event.isWasDeath() && event.getEntity() instanceof ServerPlayer serverPlayer ) {
             event.getOriginal().reviveCaps();
             event.getOriginal().getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(oldStore -> {
                 event.getEntity().getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
                     CompoundTag tag = new CompoundTag();
-                    tag.putString("am_spell", oldStore.getCurrentSpell());
-                    tag.putString("am_known_spells", oldStore.getKnownSpells());
+                    tag.putString(PlayerMagic.AM_SPELL, oldStore.getCurrentSpell());
+                    tag.putString(PlayerMagic.AM_KNOWN_SPELLS, oldStore.getKnownSpells());
                     AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMagic(tag), serverPlayer);
-                    MagickEvents.changeMana(serverPlayer, serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get()));
+                    MagickEvents.changeMana(serverPlayer, Integer.MIN_VALUE);
                 });
             });
             event.getOriginal().invalidateCaps();

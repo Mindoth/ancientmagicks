@@ -138,6 +138,6 @@
   "tooltip.ancientmagicks.shift": "\u00A77Hold SHIFT to read Spell effects\u00A7r",
 
   "attribute.ancientmagicks.mp_max": "\u00A79Maximum Mana\u00A7r",
-  "attribute.ancientmagicks.mp_regen": "\u00A79Mana Regeneration\u00A7r",
+  "attribute.ancientmagicks.mp_regen": "\u00A79Mana/s\u00A7r",
   "attribute.ancientmagicks.spell_power": "\u00A79Spell Power\u00A7r"
 }

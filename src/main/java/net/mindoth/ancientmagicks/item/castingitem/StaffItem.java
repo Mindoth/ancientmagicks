@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 
 public class StaffItem extends CastingItem implements Vanishable {
+
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
     public StaffItem(Properties pProperties, double attackDamage, double attackSpeed, Map<Attribute, AttributeModifier> additionalAttributes) {

@@ -14,13 +14,13 @@ public class AncientMagicksAttributes {
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, AncientMagicks.MOD_ID);
 
     public static final RegistryObject<Attribute> MP_REG = ATTRIBUTES.register("mp_regen",
-            () -> (new MagicAttribute("attribute.ancientmagicks.mp_regen", 1.0D, 0.0D, 100.0D).setSyncable(true)));
+            () -> (new MagicAttribute("attribute.ancientmagicks.mp_regen", 0.0D, 0.0D, Integer.MAX_VALUE).setSyncable(true)));
 
     public static final RegistryObject<Attribute> MP_MAX = ATTRIBUTES.register("mp_max",
-            () -> (new MagicAttribute("attribute.ancientmagicks.mp_max", 100.0D, 0.0D, 10000.0D).setSyncable(true)));
+            () -> (new MagicAttribute("attribute.ancientmagicks.mp_max", 100.0D, 0.0D, Integer.MAX_VALUE).setSyncable(true)));
 
     public static final RegistryObject<Attribute> SPELL_POWER = ATTRIBUTES.register("spell_power",
-            () -> (new MagicAttribute("attribute.ancientmagicks.spell_power", 1.0D, -100, 100.0D).setSyncable(true)));
+            () -> (new MagicAttribute("attribute.ancientmagicks.spell_power", 0.0D, Integer.MIN_VALUE, Integer.MAX_VALUE).setSyncable(true)));
 
     @SubscribeEvent
     public static void modifyEntityAttributes(EntityAttributeModificationEvent event) {
