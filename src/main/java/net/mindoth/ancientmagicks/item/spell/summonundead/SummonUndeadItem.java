@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.summonzombie;
+package net.mindoth.ancientmagicks.item.spell.summonundead;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
@@ -6,12 +6,12 @@ import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellSummon;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.level.Level;
 
-public class SummonZombieItem extends AbstractSpellSummon {
+public class SummonUndeadItem extends AbstractSpellSummon {
 
-    public SummonZombieItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+    public SummonUndeadItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
     }
 
@@ -22,6 +22,6 @@ public class SummonZombieItem extends AbstractSpellSummon {
 
     @Override
     protected Mob getMinion(Level level) {
-        return new Zombie(EntityType.ZOMBIE, level);
+        return new Husk(EntityType.HUSK, level);
     }
 }

@@ -5,17 +5,18 @@ import net.mindoth.ancientmagicks.client.screen.AncientMagicksScreen;
 import net.mindoth.ancientmagicks.client.screen.GuiSpellWheel;
 import net.mindoth.ancientmagicks.client.screen.HudCurrentSpell;
 import net.mindoth.ancientmagicks.client.screen.HudMana;
-import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
+import net.mindoth.ancientmagicks.config.AncientMagicksClientConfig;
 import net.mindoth.ancientmagicks.item.DyeableMagicItem;
+import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlRenderer;
 import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowRenderer;
+import net.mindoth.ancientmagicks.item.spell.blizzard.IcicleRenderer;
 import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceRenderer;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballRenderer;
 import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltRenderer;
 import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceRenderer;
-import net.mindoth.ancientmagicks.item.spell.blizzard.IcicleRenderer;
 import net.mindoth.ancientmagicks.item.spell.waterbolt.WaterBoltRenderer;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
@@ -33,7 +34,9 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -44,6 +47,7 @@ public class AncientMagicksClient {
         modBus.addListener(AncientMagicksClient::registerEntityRenderers);
         modBus.addListener(AncientMagicksClient::registerItemColors);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> modBus.addListener(AncientMagicksClient::registerLayerDefinitions));
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, AncientMagicksClientConfig.SPEC, "ancientmagicks-client.toml");
     }
 
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
@@ -88,7 +92,12 @@ public class AncientMagicksClient {
             Player player = mc.player;
             if ( mc.screen instanceof AncientMagicksScreen ) {
                 if ( key == inventory ) player.closeContainer();
-                if ( mc.screen instanceof GuiSpellWheel && keyAction == 0 && key == spellSelector ) player.closeContainer();
+                if ( mc.screen instanceof GuiSpellWheel && key == spellSelector ) {
+                    if ( (keyAction == 0 && AncientMagicksClientConfig.GUI_SPELL_WHEEL_HOLD.get())
+                            || (keyAction == 1 && !AncientMagicksClientConfig.GUI_SPELL_WHEEL_HOLD.get()) ) {
+                        player.closeContainer();
+                    }
+                }
             }
             else if ( mc.screen == null && key == spellSelector && keyAction == 1 ) {
                 if ( !CastingItem.getHeldStaff(player).isEmpty() ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());

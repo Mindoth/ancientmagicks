@@ -1,7 +1,35 @@
 {
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "ancientmagicks:item/wooden_staff_overlay",
-    "layer1": "ancientmagicks:item/wooden_staff"
+  "gui_light": "front",
+  "loader": "forge:separate_transforms",
+  "base": {
+    "texture_size": [32, 32],
+    "parent": "ancientmagicks:item/base/staff",
+    "textures": {
+      "layer0": "ancientmagicks:item/wooden_staff_model_overlay",
+      "layer1": "ancientmagicks:item/wooden_staff_model"
+    }
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "item/generated",
+      "textures": {
+        "layer0": "ancientmagicks:item/wooden_staff_overlay",
+        "layer1": "ancientmagicks:item/wooden_staff"
+      }
+    },
+    "ground": {
+      "parent": "item/generated",
+      "textures": {
+        "layer0": "ancientmagicks:item/wooden_staff_overlay",
+        "layer1": "ancientmagicks:item/wooden_staff"
+      }
+    },
+    "fixed": {
+      "parent": "item/generated",
+      "textures": {
+        "layer0": "ancientmagicks:item/wooden_staff_overlay",
+        "layer1": "ancientmagicks:item/wooden_staff"
+      }
+    }
   }
 }

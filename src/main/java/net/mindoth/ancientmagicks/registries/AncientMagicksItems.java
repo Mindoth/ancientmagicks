@@ -7,7 +7,6 @@ import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
-import net.mindoth.ancientmagicks.item.armor.MagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.WandItem;
@@ -44,7 +43,7 @@ import net.mindoth.ancientmagicks.item.spell.sleep.SleepItem;
 import net.mindoth.ancientmagicks.item.spell.spook.SpookItem;
 import net.mindoth.ancientmagicks.item.spell.summonbees.SummonBeesItem;
 import net.mindoth.ancientmagicks.item.spell.summondeathknight.SummonDeathKnightItem;
-import net.mindoth.ancientmagicks.item.spell.summonzombie.SummonZombieItem;
+import net.mindoth.ancientmagicks.item.spell.summonundead.SummonUndeadItem;
 import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockItem;
 import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabItem;
 import net.mindoth.ancientmagicks.item.spell.verminbane.VerminBaneItem;
@@ -222,8 +221,8 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> CALL_THUNDER_ITEM = ITEMS.register("call_thunder",
             () -> new CallThunderItem(new Item.Properties(), 3, 60, 4));
 
-    public static final RegistryObject<Item> SUMMON_ZOMBIE_ITEM = ITEMS.register("summon_zombie",
-            () -> new SummonZombieItem(new Item.Properties(), 3, 60, 10));
+    public static final RegistryObject<Item> SUMMON_UNDEAD_ITEM = ITEMS.register("summon_undead",
+            () -> new SummonUndeadItem(new Item.Properties(), 3, 60, 10));
 
     public static final RegistryObject<Item> FLY_ITEM = ITEMS.register("fly",
             () -> new FlyItem(new Item.Properties(), 3, 60, 10));

@@ -7,6 +7,7 @@ import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -25,7 +26,7 @@ public class SummonDeathKnightItem extends AbstractSpellSummon {
 
     @Override
     protected Mob getMinion(Level level) {
-        Mob minion = new Zombie(EntityType.ZOMBIE, level);
+        Mob minion = new Husk(EntityType.HUSK, level);
         minion.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
         minion.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.SHIELD));
         minion.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
