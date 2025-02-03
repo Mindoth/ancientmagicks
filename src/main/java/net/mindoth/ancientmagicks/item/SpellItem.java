@@ -1,8 +1,10 @@
-package net.mindoth.ancientmagicks.item.spell.abstractspell;
+package net.mindoth.ancientmagicks.item;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
@@ -83,20 +85,24 @@ public class SpellItem extends Item {
         return ( entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof PrimedTnt || entity instanceof FallingBlockEntity );
     }
 
+    //Similar to AbstractSpellEntity filter() method. CHANGE BOTH WHEN EDITING!
+    public boolean filter(Entity owner, Entity target) {
+        return target instanceof LivingEntity && !(target instanceof ArmorStand) && (owner != target || !isHarmful())
+                && ((AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get() && !SpellItem.isAlly(owner, target) && isHarmful())
+                || ((SpellItem.isAlly(owner, target) && !isHarmful()) || (!SpellItem.isAlly(owner, target) && isHarmful())));
+    }
+
     public static boolean isAlly(Entity owner, Entity target) {
         boolean flag = false;
-
-        if ( !(owner == null || target == null) ) {
+        if ( owner != null && target != null ) {
             if ( target == owner ) flag = true;
             if ( owner.isAlliedTo(target) ) flag = true;
-            if ( target instanceof Player && !AncientMagicksCommonConfig.PVP.get() ) flag = true;
             if ( owner instanceof LivingEntity livingOwner ) {
                 if ( target instanceof LivingEntity livingTarget && !(livingOwner.canAttack(livingTarget)) ) flag = true;
                 if ( target instanceof TamableAnimal pet && pet.isOwnedBy(livingOwner) ) flag = true;
                 if ( target instanceof Mob mob && isMinionsSummoner(livingOwner, mob) ) flag = true;
             }
         }
-
         return flag;
     }
 
@@ -109,11 +115,6 @@ public class SpellItem extends Item {
         return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
                 && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner
                 && mob.getPersistentData().getBoolean(MindControlEffect.NBT_KEY_SUMMON);
-    }
-
-    public boolean filter(Entity owner, Entity target) {
-        return target instanceof LivingEntity && !(target instanceof ArmorStand)
-                && ((SpellItem.isAlly(owner, target) && !isHarmful()) || (!SpellItem.isAlly(owner, target) && isHarmful()));
     }
 
     public static boolean hasLineOfSight(Entity start, Entity target) {

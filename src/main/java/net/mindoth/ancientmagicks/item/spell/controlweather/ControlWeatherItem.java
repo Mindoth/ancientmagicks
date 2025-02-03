@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.controlweather;
 
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;

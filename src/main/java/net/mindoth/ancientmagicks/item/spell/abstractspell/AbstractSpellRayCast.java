@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell;
 
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -53,7 +54,7 @@ public abstract class AbstractSpellRayCast extends SpellItem {
         Entity target;
         if ( caster == owner ) target = ShadowEvents.getPointedEntity(level, caster, getRange(), 0.25F, caster == owner, true, this::filter);
         else target = ShadowEvents.getNearestEntity(caster, level, getSize(), this::filter);
-        if ( caster == owner && !isHarmful() && !isAlly(owner, target) ) target = owner;
+        if ( caster == owner && !isHarmful() && !filter(owner, target) ) target = owner;
 
         if ( canApply(level, owner, caster, target) ) state = true;
 

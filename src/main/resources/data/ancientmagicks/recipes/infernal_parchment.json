@@ -7,7 +7,7 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:string"
+      "tag": "forge:string"
     },
     "L": {
       "item": "ancientmagicks:infernal_skin"

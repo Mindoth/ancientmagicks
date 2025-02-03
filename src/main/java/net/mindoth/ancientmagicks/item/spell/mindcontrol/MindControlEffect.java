@@ -1,11 +1,10 @@
 package net.mindoth.ancientmagicks.item.spell.mindcontrol;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -21,9 +20,7 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import javax.annotation.Nullable;
 import java.util.List;
-import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class MindControlEffect extends MobEffect {
@@ -47,6 +44,7 @@ public class MindControlEffect extends MobEffect {
         List<Entity> possibleTargets = ShadowEvents.getEntitiesAround(cMob, level, cMob.getAttributeValue(Attributes.FOLLOW_RANGE), null);
         possibleTargets.remove(cMob);
         possibleTargets.removeIf(e -> e instanceof ArmorStand);
+        possibleTargets.removeIf(e -> !(e instanceof LivingEntity));
         possibleTargets.removeIf(e -> SpellItem.isAlly(cMobOwner, e));
         possibleTargets.removeIf(e -> e instanceof Mob mob && SpellItem.isMinionsOwner(cMobOwner, mob) && cMobOwner.getLastHurtMob() != mob);
 

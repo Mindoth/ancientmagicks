@@ -3,7 +3,6 @@ package net.mindoth.ancientmagicks.item;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;

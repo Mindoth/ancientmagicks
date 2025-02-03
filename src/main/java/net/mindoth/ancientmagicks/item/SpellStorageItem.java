@@ -3,7 +3,6 @@ package net.mindoth.ancientmagicks.item;
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketItemActivationAnimation;
 import net.mindoth.ancientmagicks.network.PacketUpdateKnownSpells;

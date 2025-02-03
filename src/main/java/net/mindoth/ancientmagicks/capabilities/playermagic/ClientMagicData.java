@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.capabilities.playermagic;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;

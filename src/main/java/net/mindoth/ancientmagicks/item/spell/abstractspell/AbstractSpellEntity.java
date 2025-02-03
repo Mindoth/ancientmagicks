@@ -3,6 +3,8 @@ package net.mindoth.ancientmagicks.item.spell.abstractspell;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
+import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -162,10 +164,11 @@ public abstract class AbstractSpellEntity extends Projectile {
         if ( result.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, result) ) onHit(result);
     }
 
-    //Similar to SpellItem filter() method
+    //Similar to SpellItem filter() method. CHANGE BOTH WHEN EDITING!
     protected boolean checkTeamForHit(Entity target) {
-        return canHitEntity(target) && target instanceof LivingEntity && !(target instanceof ArmorStand)
-                && ((SpellItem.isAlly(this.owner, target) && !isHarmful()) || (!SpellItem.isAlly(this.owner, target) && isHarmful()));
+        return target instanceof LivingEntity && !(target instanceof ArmorStand) && (this.owner != target || !isHarmful())
+                && ((AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get() && !SpellItem.isAlly(this.owner, target) && isHarmful())
+                || ((SpellItem.isAlly(this.owner, target) && !isHarmful()) || (!SpellItem.isAlly(this.owner, target) && isHarmful())));
     }
 
     protected HitResult getHitResult(Vec3 pStartVec, Entity pProjectile, Predicate<Entity> pFilter, Vec3 pEndVecOffset, Level pLevel) {

@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.blizzard;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.BlockParticleOption;

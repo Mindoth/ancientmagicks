@@ -11,7 +11,7 @@ public class AncientMagicksCommonConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
-    public static final ForgeConfigSpec.ConfigValue<Boolean> PVP;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> SPELL_FREE_FOR_ALL;
     public static final ForgeConfigSpec.ConfigValue<List<String>> DISABLED_SPELLS;
     public static final ForgeConfigSpec.ConfigValue<List<String>> DISABLED_POLYMOBS;
     public static final ForgeConfigSpec.ConfigValue<List<String>> DISABLED_ARCANE_DUST_RECIPE_ENTRIES;
@@ -19,17 +19,17 @@ public class AncientMagicksCommonConfig {
     static {
         BUILDER.push("Configs for Ancient Magicks");
 
-        PVP = BUILDER.comment("true = Harmful spells can hurt and target other players. false = Harmful spells will ignore players.")
-                .define("pvp", true);
+        SPELL_FREE_FOR_ALL = BUILDER.comment("true = All spells can target both friends and foes. false = Harmful spells will ignore friends and helpful spells will ignore foes.")
+                .define("spellsFreeForAll", true);
 
         DISABLED_SPELLS = BUILDER.comment("Add any spells you wish to disable here.")
-                .define("spelldisablelist", Lists.newArrayList());
+                .define("spellDisableList", Lists.newArrayList());
 
         DISABLED_POLYMOBS = BUILDER.comment("Add any mobs you wish to not summon with Chaotic Polymorph here.")
-                .define("polydisablelist", Lists.newArrayList());
+                .define("polyDisableList", Lists.newArrayList());
 
         DISABLED_ARCANE_DUST_RECIPE_ENTRIES = BUILDER.comment("Add any items you wish to not be required to craft Arcane Dust here.")
-                .define("arcanedustrecipeentrydisablelist", disabledEntries());
+                .define("arcanedustRecipeEntryDisableList", disabledEntries());
 
         BUILDER.pop();
         SPEC = BUILDER.build();

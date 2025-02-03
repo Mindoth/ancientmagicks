@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.waterbolt;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.SpellItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

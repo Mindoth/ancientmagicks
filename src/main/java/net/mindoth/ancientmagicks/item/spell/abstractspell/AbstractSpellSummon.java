@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell;
 
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -60,7 +61,7 @@ public class AbstractSpellSummon extends SpellItem {
                 float range = 64.0F;
                 if ( owner != caster ) range = 0.0F;
                 Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, caster == owner, true, null);
-                if ( target != null && target != caster && (target instanceof LivingEntity living && !isAlly(owner, living)) ) minion.setTarget(living);
+                if ( target instanceof LivingEntity && target != caster && filter(owner, target) ) minion.setTarget((LivingEntity)target);
                 summonMinion(minion, owner, owner.level());
                 playSound(level, minion.position());
             }

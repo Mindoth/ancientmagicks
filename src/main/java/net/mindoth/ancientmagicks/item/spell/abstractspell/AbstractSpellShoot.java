@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.abstractspell;
 
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
