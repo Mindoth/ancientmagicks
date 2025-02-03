@@ -51,6 +51,14 @@ public class AncientMagicksCommonConfig {
         list.add("minecraft:barrier");
         list.add("minecraft:structure_void");
         list.add("minecraft:structure_block");
+        list.add("minecraft:light");
+        list.add("minecraft:infested_stone");
+        list.add("minecraft:infested_stone_bricks");
+        list.add("minecraft:infested_mossy_stone_bricks");
+        list.add("minecraft:infested_cracked_stone_bricks");
+        list.add("minecraft:infested_chiseled_stone_bricks");
+        list.add("minecraft:infested_deepslate");
+
         list.add("minecraft:potion");
         list.add("minecraft:splash_potion");
         list.add("minecraft:lingering_potion");
