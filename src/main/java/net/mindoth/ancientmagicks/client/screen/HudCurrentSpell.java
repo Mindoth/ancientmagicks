@@ -31,8 +31,8 @@ public class HudCurrentSpell {
 
         if ( currentSpell().isEmpty() ) return;
         String id = currentSpell().getItem().toString();
-        String modid = ForgeRegistries.ITEMS.getKey(currentSpell().getItem()).toString().split(":")[0];
-        AncientMagicksScreen.drawTexture(new ResourceLocation(modid, "textures/item/spell/" + id + ".png"),
+        String modId = ForgeRegistries.ITEMS.getKey(currentSpell().getItem()).toString().split(":")[0];
+        AncientMagicksScreen.drawTexture(new ResourceLocation(modId, "textures/item/spell/" + id + ".png"),
                 resultSlotX + 3, resultSlotY + 3, 0, 0, 16, 16, 16, 16, graphics);
         graphics.renderItemDecorations(gui.getFont(), currentSpell(), resultSlotX + 3, resultSlotY + 3);
     }

@@ -6,9 +6,7 @@ import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketItemActivationAnimation;
 import net.mindoth.ancientmagicks.network.PacketUpdateKnownSpells;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -48,28 +46,6 @@ public class SpellStorageItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         SpellItem spell = SpecialCastingItem.getStoredSpell(stack) != null ? SpecialCastingItem.getStoredSpell(stack) : null;
         if ( spell != null ) {
-            if ( ClientMagicData.isSpellKnown(spell) || Minecraft.getInstance().player.isCreative() ) {
-                if ( !Screen.hasShiftDown() ) {
-                    int spellTier = spell.spellTier;
-                    tooltip.add(Component.translatable("tooltip.ancientmagicks.tier").append(Component.literal(": " + spellTier)).withStyle(ChatFormatting.GRAY));
-                    if ( spell.isChannel() ) {
-                        int manaCost = spell.manaCost * 2;
-                        tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)
-                                .append(Component.literal("/s"))).withStyle(ChatFormatting.GRAY));
-                    }
-                    else {
-                        int manaCost = spell.manaCost;
-                        tooltip.add(Component.translatable("tooltip.ancientmagicks.mana_cost").append(Component.literal(": " + manaCost)).withStyle(ChatFormatting.GRAY));
-                    }
-                    int cooldown = spell.cooldown / 20;
-                    tooltip.add(Component.translatable("tooltip.ancientmagicks.cooldown").append(Component.literal(": " + cooldown + "s")).withStyle(ChatFormatting.GRAY));
-                    tooltip.add(Component.translatable("tooltip.ancientmagicks.shift"));
-                }
-                else {
-                    String modid = ForgeRegistries.ITEMS.getKey(spell).toString().split(":")[0];
-                    if ( modid != null ) tooltip.add(Component.translatable("tooltip." + modid + "." + spell).withStyle(ChatFormatting.GRAY));
-                }
-            }
             if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(spell) && Minecraft.getInstance().player != null ) {
                 StringBuilder tooltipString = new StringBuilder();
                 List<ColorRuneItem> list = ColorRuneItem.stringListToActualList(ColorRuneItem.CURRENT_COMBO_MAP.get(spell).toString());

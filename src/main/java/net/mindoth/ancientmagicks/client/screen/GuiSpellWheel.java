@@ -171,7 +171,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
                 int ingX = comboX + 3 + (i * 20);
                 int ingY = comboY + 3;
                 ItemStack comboRune = new ItemStack(this.comboList.get(i));
-                renderItem(graphics, null, comboRune, ingX, ingY);
+                renderItemWithDecorations(graphics, comboRune, ingX, ingY);
             }
         }
 
@@ -230,7 +230,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
                     resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
 
             //Item and its decorations
-            renderItem(graphics, null, slot, posX, posY);
+            renderItemWithDecorations(graphics, slot, posX, posY);
         }
 
         ms.popPose();
@@ -254,7 +254,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
             ms.pushPose();
             ms.popPose();
 
-            renderItem(graphics, null, slot, posX, posY);
+            renderItemWithDecorations(graphics, slot, posX, posY);
 
             float dimItemRadius = (radiusIn + radiusOut) * 0.75F;
             int dimPosX = (int)(x - ((float)magnifier * 0.5F) + dimItemRadius * (float)Math.cos(middle)) + 4;
@@ -266,7 +266,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
                 if ( slot.getItem() instanceof ColorRuneItem colorRuneItem ) tempList.add(colorRuneItem);
                 if ( getComboResult(tempList) != null ) {
                     ItemStack dimItem = new ItemStack(getComboResult(tempList));
-                    renderItem(graphics, null, dimItem, dimPosX, dimPosY);
+                    renderItemWithDecorations(graphics, dimItem, dimPosX, dimPosY);
                 }
             }
         }

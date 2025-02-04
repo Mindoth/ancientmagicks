@@ -30,7 +30,6 @@ public class SpellBookItem extends Item {
                 List<ItemStack> stackList = Lists.newArrayList();
                 for ( int i = 1; i <= 9; i++ ) {
                     for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( AncientMagicks.isSpellEnabled(spell) && spell.spellTier == i ) {
-                        //player.playNotifySound(SoundEvents.BOOK_PAGE_TURN, SoundSource.PLAYERS, 1.0F, 1.0F);
                         stackList.add(AncientMagicks.createSpellScroll(new ItemStack(AncientMagicksItems.SPELL_SCROLL.get()), spell));
                     }
                 }

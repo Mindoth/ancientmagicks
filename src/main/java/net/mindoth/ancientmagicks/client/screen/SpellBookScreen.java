@@ -3,9 +3,7 @@ package net.mindoth.ancientmagicks.client.screen;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
-import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.item.SpellStorageItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -57,7 +55,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
 
     public static void open(List<ItemStack> itemList) {
         Minecraft MINECRAFT = Minecraft.getInstance();
-        if ( MINECRAFT.screen == null ) MINECRAFT.setScreen(new SpellBookScreen(itemList));
+        if ( !(MINECRAFT.screen instanceof SpellBookScreen) ) MINECRAFT.setScreen(new SpellBookScreen(itemList));
     }
 
     private boolean isFirstPage() {
@@ -81,7 +79,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
         int row = 0;
         int column = 0;
         for ( int i = 0; i < this.maxRows * this.maxColumns * 2; i++ ) {
-            if (column == this.maxColumns) {
+            if ( column == this.maxColumns ) {
                 row++;
                 column = 0;
                 if (row == this.maxRows) {
@@ -126,15 +124,20 @@ public class SpellBookScreen extends AncientMagicksScreen {
         }
     }
 
-    private Button buildSlotButton(int xPos, int yPos) {
-        Button button = addRenderableOnly(Button.builder(Component.literal(""), this::handleSlotButton)
+    private void buildSlotButton(int xPos, int yPos) {
+        Button button = addRenderableWidget(Button.builder(Component.literal(""), this::handleSlotButton)
                 .bounds(xPos - 1, yPos - 1, 18, 18)
                 .build());
         this.slotList.add(button);
-        return button;
     }
 
     private void handleSlotButton(Button button) {
+        if ( !this.slotList.contains(button) ) return;
+        ItemStack stack = this.itemList.get(this.slotList.indexOf(button));
+        ItemStack spell = getPossibleContainedSpell(stack);
+        if ( !(spell.getItem() instanceof SpellItem) ) return;
+        if ( !ClientMagicData.isSpellKnown((SpellItem)spell.getItem()) && !minecraft.player.isCreative() ) return;
+        SpellScreen.open(spell, this.itemList);
     }
 
     @Override
@@ -162,14 +165,12 @@ public class SpellBookScreen extends AncientMagicksScreen {
                 int column = 0;
                 for ( int i = 0; i < page.size(); i++ ) {
                     ItemStack stack = page.get(i);
-                    ItemStack spell;
-                    SpellItem vesselSpell = SpecialCastingItem.getStoredSpell(stack);
-                    if ( stack.getItem() instanceof SpellStorageItem && vesselSpell != null ) spell = new ItemStack(vesselSpell);
-                    else spell = stack;
-                    if (column == this.maxColumns) {
+                    ItemStack spell = getPossibleContainedSpell(stack);
+
+                    if ( column == this.maxColumns ) {
                         row++;
                         column = 0;
-                        if (row == this.maxRows) {
+                        if ( row == this.maxRows ) {
                             row = 0;
                             isRightPage = !isRightPage;
                         }
@@ -181,9 +182,8 @@ public class SpellBookScreen extends AncientMagicksScreen {
                     drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
                             xPos - 3, yPos - 3, 0, 0, 22, 22, 22, 22, graphics);
 
-                    if ( spell.getItem() instanceof SpellItem spellItem ) {
-                        if ( ClientMagicData.isSpellKnown(spellItem) || minecraft.player.isCreative() ) renderItem(graphics, spell, stack, xPos, yPos);
-                        else renderItem(graphics, stack, stack, xPos, yPos);
+                    if ( spell.getItem() instanceof SpellItem ) {
+                        renderItemWithDecorations(graphics, spell, xPos, yPos);
                         if ( this.slotList.get(i).isHovered() ) {
                             graphics.fill(RenderType.guiOverlay(), xPos, yPos, xPos + 16, yPos + 16, Integer.MAX_VALUE);
                             graphics.renderTooltip(this.font, stack, mouseX, mouseY);

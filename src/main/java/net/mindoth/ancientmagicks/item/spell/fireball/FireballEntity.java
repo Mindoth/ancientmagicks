@@ -137,7 +137,7 @@ public class FireballEntity extends AbstractSpellEntity {
                         d0 /= d3;
                         d1 /= d3;
                         d2 /= d3;
-                        float f = (this.getSize() + 1) * (0.7F + this.level().random.nextFloat() * 0.6F);
+                        float f = this.getSize() * (0.7F + this.level().random.nextFloat() * 0.6F);
                         double d4 = this.getX();
                         double d6 = this.getY();
                         double d8 = this.getZ();
