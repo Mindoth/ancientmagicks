@@ -79,17 +79,24 @@ public class SpellStorageItem extends Item {
         ItemStack stack = new ItemStack(spell);
         final String spellString = ForgeRegistries.ITEMS.getKey(spell).toString();
         serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-            CompoundTag tag = new CompoundTag();
-            tag.putString(AM_NEW_SPELL, spellString);
-            if ( Objects.equals(magic.getKnownSpells(), "") ) {
-                magic.setKnownSpells(spellString);
-                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
-                playLearnEffects(serverPlayer, stack, vessel);
+            if ( magic.getKnownSpells().contains(spellString) ) {
+                serverPlayer.displayClientMessage(Component.translatable("message.ancientmagicks.spell_already_known"), true);
+                SpellItem.playWhiffSound(serverPlayer);
+                serverPlayer.getCooldowns().addCooldown(vessel.getItem(), 20);
             }
-            else if ( !ClientMagicData.stringListToSpellList(magic.getKnownSpells()).contains(spell) ) {
-                magic.setKnownSpells(magic.getKnownSpells() + "," + spellString);
-                AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
-                playLearnEffects(serverPlayer, stack, vessel);
+            else {
+                CompoundTag tag = new CompoundTag();
+                tag.putString(AM_NEW_SPELL, spellString);
+                if ( Objects.equals(magic.getKnownSpells(), "") ) {
+                    magic.setKnownSpells(spellString);
+                    AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
+                    playLearnEffects(serverPlayer, stack, vessel);
+                }
+                else if ( !ClientMagicData.stringListToSpellList(magic.getKnownSpells()).contains(spell) ) {
+                    magic.setKnownSpells(magic.getKnownSpells() + "," + spellString);
+                    AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
+                    playLearnEffects(serverPlayer, stack, vessel);
+                }
             }
         });
     }

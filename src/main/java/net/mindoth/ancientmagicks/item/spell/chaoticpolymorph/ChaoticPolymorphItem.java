@@ -13,6 +13,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ChaoticPolymorphItem extends AbstractSpellRayCast {
@@ -29,7 +30,15 @@ public class ChaoticPolymorphItem extends AbstractSpellRayCast {
     public static boolean isPolymobEnabled(EntityType<?> entityType) {
         List<EntityType<?>> disabledPolymobs = Lists.newArrayList();
         List<String> configString = AncientMagicksCommonConfig.DISABLED_POLYMOBS.get();
-        configString.forEach(string -> disabledPolymobs.add(ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(string))));
+        for ( String string : configString ) {
+            if ( Objects.equals(string.split(":")[1], "*") ) {
+                for ( EntityType<?> type : ForgeRegistries.ENTITY_TYPES.getValues() ) {
+                    String typeId = type.toString().split("\\.")[1];
+                    if ( typeId.equals(string.split(":")[0]) ) disabledPolymobs.add(type);
+                }
+            }
+            else disabledPolymobs.add(ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(string)));
+        }
         return disabledPolymobs.isEmpty() || !disabledPolymobs.contains(entityType);
     }
 
@@ -39,12 +48,13 @@ public class ChaoticPolymorphItem extends AbstractSpellRayCast {
             Mob oldMob = (Mob)target;
             List<EntityType<?>> polymobList = ForgeRegistries.ENTITY_TYPES.getValues().stream()
                     .filter(entityType -> isPolymobEnabled(entityType) && entityType != oldMob.getType() && entityType.create(level) instanceof Mob).toList();
-            int index = ThreadLocalRandom.current().nextInt(0, polymobList.size());
-            Entity entity = polymobList.get(index).create(level);
-            System.out.println("ENTITY: " + entity);
-            if ( entity instanceof Mob newMob ) {
-                Mob mob = convertMob(oldMob, newMob, serverLevel, false);
-                while ( !mob.isAddedToWorld() ) convertMob(oldMob, newMob, serverLevel, false);
+            if ( !polymobList.isEmpty() ) {
+                int index = ThreadLocalRandom.current().nextInt(0, polymobList.size());
+                Entity entity = polymobList.get(index).create(level);
+                if ( entity instanceof Mob newMob ) {
+                    Mob mob = convertMob(oldMob, newMob, serverLevel, false);
+                    while ( !mob.isAddedToWorld() ) convertMob(oldMob, newMob, serverLevel, false);
+                }
             }
         }
     }

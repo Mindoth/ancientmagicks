@@ -3,7 +3,7 @@
 
 
   "key.category.ancientmagicks": "Ancient Magicks",
-  "key.ancientmagicks.spell_selector": "Rune Selector",
+  "key.ancientmagicks.spell_selector": "Spell Wheel",
 
 
   "item.ancientmagicks.empty_rune": "Stone Slate",
@@ -131,6 +131,9 @@
   "effect.ancientmagicks.greater_invisibility": "Greater Invisibility",
   "effect.ancientmagicks.witch_armor": "Witch Armor",
   "effect.ancientmagicks.perfect_invisibility": "Perfect Invisibility",
+
+
+  "message.ancientmagicks.spell_already_known": "You already know this spell",
 
 
   "tooltip.ancientmagicks.stats": "Stats: ",
