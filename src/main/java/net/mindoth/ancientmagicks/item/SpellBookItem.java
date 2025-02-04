@@ -2,6 +2,8 @@ package net.mindoth.ancientmagicks.item;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketOpenSpellBook;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
@@ -26,7 +28,8 @@ public class SpellBookItem extends Item {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
             ItemStack stack = player.getItemInHand(handIn);
-            if ( stack.getItem() == AncientMagicksItems.SPELL_BOOK.get() ) {
+            if ( stack.getItem() == AncientMagicksItems.SPELL_BOOK.get()
+                    && (CastingItem.getHeldStaff(player) == ItemStack.EMPTY || player.isCrouching()) ) {
                 List<ItemStack> stackList = Lists.newArrayList();
                 for ( int i = 1; i <= 9; i++ ) {
                     for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( AncientMagicks.isSpellEnabled(spell) && spell.spellTier == i ) {
@@ -37,5 +40,11 @@ public class SpellBookItem extends Item {
             }
         }
         return result;
+    }
+
+    public static @Nonnull ItemStack getHeldSpellBook(Player playerEntity) {
+        ItemStack book = playerEntity.getMainHandItem().getItem() instanceof SpellBookItem ? playerEntity.getMainHandItem() : ItemStack.EMPTY;
+        if ( book == ItemStack.EMPTY ) book = playerEntity.getOffhandItem().getItem() instanceof SpellBookItem ? playerEntity.getOffhandItem() : ItemStack.EMPTY;
+        return book;
     }
 }

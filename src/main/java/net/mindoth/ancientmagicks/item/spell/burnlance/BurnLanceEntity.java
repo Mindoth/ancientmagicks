@@ -37,12 +37,12 @@ public class BurnLanceEntity extends AbstractSpellEntity {
 
     @Override
     public int defaultPower() {
-        return 2;
+        return 10;
     }
 
     @Override
     public int defaultDie() {
-        return 10;
+        return 2;
     }
 
     @Override

@@ -41,8 +41,13 @@ public class IcicleEntity extends AbstractSpellEntity {
     }
 
     @Override
+    public int defaultPower() {
+        return 3;
+    }
+
+    @Override
     public int defaultDie() {
-        return 4;
+        return 6;
     }
 
     @Override

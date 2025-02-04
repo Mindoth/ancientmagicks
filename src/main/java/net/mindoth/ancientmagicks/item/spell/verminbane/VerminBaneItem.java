@@ -68,7 +68,7 @@ public class VerminBaneItem extends AbstractSpellRayCast {
 
         for ( Entity target : doubleList ) {
             if ( filter(owner, target) && hasLineOfSight(caster, target) && target instanceof Mob mob && mob.getMobType() == MobType.ARTHROPOD ) {
-                attackEntityWithoutKnockback(owner, caster, target, rollForPower(power, 20));
+                attackEntityWithoutKnockback(owner, caster, target, rollForPower(power, 10));
             }
         }
 

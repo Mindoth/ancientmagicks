@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item.castingitem;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -48,7 +49,7 @@ public class StaffItem extends CastingItem implements Vanishable {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(hand));
         if ( !level.isClientSide ) {
             ItemStack staff = player.getItemInHand(hand);
-            if ( isValidCastingItem(staff) ) {
+            if ( isValidCastingItem(staff) && !(player.isCrouching() && SpellBookItem.getHeldSpellBook(player) != ItemStack.EMPTY) ) {
                 player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
                     if ( item instanceof SpellItem spell && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spell) ) {

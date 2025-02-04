@@ -8,6 +8,7 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagic;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
+import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
@@ -256,24 +257,30 @@ public class GuiSpellWheel extends AncientMagicksScreen {
 
             renderItemWithDecorations(graphics, slot, posX, posY);
 
-            float dimItemRadius = (radiusIn + radiusOut) * 0.75F;
-            int dimPosX = (int)(x - ((float)magnifier * 0.5F) + dimItemRadius * (float)Math.cos(middle)) + 4;
-            int dimPosY = (int)(y - ((float)magnifier * 0.5F) + dimItemRadius * (float)Math.sin(middle)) + 4;
-            List<ColorRuneItem> tempList = Lists.newArrayList();
-            tempList.addAll(this.comboList);
-            if ( this.comboList.size() == AncientMagicks.comboSizeCalc() ) tempList.remove(0);
-            if ( this.comboList.size() == AncientMagicks.comboSizeCalc() || this.comboList.size() == AncientMagicks.comboSizeCalc() - 1 ) {
-                if ( slot.getItem() instanceof ColorRuneItem colorRuneItem ) tempList.add(colorRuneItem);
-                if ( getComboResult(tempList) != null ) {
-                    ItemStack dimItem = new ItemStack(getComboResult(tempList));
-                    renderItemWithDecorations(graphics, dimItem, dimPosX, dimPosY);
+            //Possibility vision
+            Player player = minecraft.player;
+            ItemStack main = player.getMainHandItem();
+            ItemStack off = player.getOffhandItem();
+            if ( player.isCreative() || main.getItem() instanceof SpellBookItem || off.getItem() instanceof SpellBookItem ) {
+                float dimItemRadius = (radiusIn + radiusOut) * 0.75F;
+                int dimPosX = (int)(x - ((float)magnifier * 0.5F) + dimItemRadius * (float)Math.cos(middle)) + 4;
+                int dimPosY = (int)(y - ((float)magnifier * 0.5F) + dimItemRadius * (float)Math.sin(middle)) + 4;
+                List<ColorRuneItem> tempList = Lists.newArrayList();
+                tempList.addAll(this.comboList);
+                if ( this.comboList.size() == AncientMagicks.comboSizeCalc() ) tempList.remove(0);
+                if ( this.comboList.size() == AncientMagicks.comboSizeCalc() || this.comboList.size() == AncientMagicks.comboSizeCalc() - 1 ) {
+                    if ( slot.getItem() instanceof ColorRuneItem colorRuneItem ) tempList.add(colorRuneItem);
+                    if ( getComboResult(tempList) != null ) {
+                        ItemStack dimItem = new ItemStack(getComboResult(tempList));
+                        renderItemWithDecorations(graphics, dimItem, dimPosX, dimPosY);
+                    }
                 }
             }
         }
 
+        //Hover tooltip
         for ( ItemStack slot : this.itemList ) {
             RenderSystem.disableDepthTest();
-
             ms.pushPose();
 
             if ( hasMouseOver && mousedOverSlot != -1 ) {

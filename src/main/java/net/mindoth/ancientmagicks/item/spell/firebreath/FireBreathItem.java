@@ -76,7 +76,7 @@ public class FireBreathItem extends AbstractSpellRayCast {
 
         for ( Entity target : doubleList ) {
             if ( filter(owner, target) && hasLineOfSight(caster, target) ) {
-                attackEntityWithoutKnockback(owner, caster, target, rollForPower(power, 4));
+                attackEntityWithoutKnockback(owner, caster, target, rollForPower(power, 3));
                 if ( target instanceof LivingEntity ) target.setSecondsOnFire(8);
             }
         }

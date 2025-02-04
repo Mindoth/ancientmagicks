@@ -21,7 +21,7 @@ public class FlyItem extends AbstractSpellRayCast {
 
     @Override
     protected int getLife() {
-        return 1200;
+        return 600;
     }
 
     @Override

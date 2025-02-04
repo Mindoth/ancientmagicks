@@ -85,8 +85,11 @@ public class MagickEvents {
 
     @SubscribeEvent
     public static void hideWithGhostwalk(final LivingEvent.LivingVisibilityEvent event) {
-        if ( event.getEntity().hasEffect(AncientMagicksEffects.GHOSTWALK.get()) ) event.modifyVisibility(0);
-        if ( event.getEntity().hasEffect(AncientMagicksEffects.GREATER_INVISIBILITY.get()) ) event.modifyVisibility(0);
+        if ( event.getEntity().level().isClientSide ) return;
+        LivingEntity living = event.getEntity();
+        if ( living.hasEffect(AncientMagicksEffects.GREATER_INVISIBILITY.get()) || living.hasEffect(AncientMagicksEffects.PERFECT_INVISIBILITY.get()) ) {
+            event.modifyVisibility(0);
+        }
     }
 
     @SubscribeEvent

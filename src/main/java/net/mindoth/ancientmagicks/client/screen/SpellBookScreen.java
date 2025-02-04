@@ -10,6 +10,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
@@ -23,16 +24,18 @@ public class SpellBookScreen extends AncientMagicksScreen {
 
     private final List<ItemStack> itemList;
     private final List<List<ItemStack>> pageList;
+    private int spreadNumber;
     private int pageNumber;
     private final List<Button> slotList = Lists.newArrayList();
 
-    private final int arrowYOffset = 77;
+    private final int arrowYOffset = 68;
+    private final int arrowXOffset = 94;
     private Button rightArrow;
-    private final int rightArrowXOffset = 120;
+    private final int rightArrowXOffset = this.arrowXOffset;
     private Button leftArrow;
-    private final int leftArrowXOffset = -18 - 120;
+    private final int leftArrowXOffset = -18 - this.arrowXOffset;
 
-    private final int maxRows = 6;
+    private final int maxRows = 5;
     private final int maxColumns = 4;
     private final int squareSpacing = 26;
 
@@ -59,17 +62,18 @@ public class SpellBookScreen extends AncientMagicksScreen {
     }
 
     private boolean isFirstPage() {
-        return this.pageNumber == 0;
+        return this.spreadNumber == 0;
     }
 
     private boolean isLastPage() {
-        return this.pageNumber == this.pageList.size() - 1;
+        return this.spreadNumber == this.pageList.size() - 1;
     }
 
     @Override
     protected void init() {
         super.init();
-        this.pageNumber = 0;
+        this.spreadNumber = 0;
+        this.pageNumber = 1;
 
         int x = minecraft.getWindow().getGuiScaledWidth() / 2;
         int y = minecraft.getWindow().getGuiScaledHeight() / 2;
@@ -112,14 +116,16 @@ public class SpellBookScreen extends AncientMagicksScreen {
 
     private void handlePageLeft(Button button) {
         if ( !isFirstPage() ) {
-            this.pageNumber--;
+            this.spreadNumber--;
+            this.pageNumber -= 2;
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
         }
     }
 
     private void handlePageRight(Button button) {
         if ( !isLastPage() ) {
-            this.pageNumber++;
+            this.spreadNumber++;
+            this.pageNumber += 2;
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
         }
     }
@@ -135,8 +141,8 @@ public class SpellBookScreen extends AncientMagicksScreen {
         if ( !this.slotList.contains(button) ) return;
         ItemStack stack = this.itemList.get(this.slotList.indexOf(button));
         ItemStack spell = getPossibleContainedSpell(stack);
-        if ( !(spell.getItem() instanceof SpellItem) ) return;
-        if ( !ClientMagicData.isSpellKnown((SpellItem)spell.getItem()) && !minecraft.player.isCreative() ) return;
+        if ( !(spell.getItem() instanceof SpellItem spellItem) ) return;
+        if ( !ClientMagicData.isSpellKnown(spellItem) && !minecraft.player.isCreative() ) return;
         SpellScreen.open(spell, this.itemList);
     }
 
@@ -159,7 +165,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
                 x + this.leftArrowXOffset, y + this.arrowYOffset, 18, 0, 10, 18, 10, 36, 20);
 
         for ( List<ItemStack> page : this.pageList ) {
-            if ( this.pageNumber == this.pageList.indexOf(page) ) {
+            if ( this.spreadNumber == this.pageList.indexOf(page) ) {
                 boolean isRightPage = false;
                 int row = 0;
                 int column = 0;
@@ -167,6 +173,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
                     ItemStack stack = page.get(i);
                     ItemStack spell = getPossibleContainedSpell(stack);
 
+                    //Spot calc
                     if ( column == this.maxColumns ) {
                         row++;
                         column = 0;
@@ -182,8 +189,9 @@ public class SpellBookScreen extends AncientMagicksScreen {
                     drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
                             xPos - 3, yPos - 3, 0, 0, 22, 22, 22, 22, graphics);
 
-                    if ( spell.getItem() instanceof SpellItem ) {
-                        renderItemWithDecorations(graphics, spell, xPos, yPos);
+                    if ( spell.getItem() instanceof SpellItem spellItem ) {
+                        if ( ClientMagicData.isSpellKnown(spellItem) || minecraft.player.isCreative() ) renderItemWithDecorations(graphics, spell, xPos, yPos);
+                        else renderItemWithDecorations(graphics, stack, xPos, yPos);
                         if ( this.slotList.get(i).isHovered() ) {
                             graphics.fill(RenderType.guiOverlay(), xPos, yPos, xPos + 16, yPos + 16, Integer.MAX_VALUE);
                             graphics.renderTooltip(this.font, stack, mouseX, mouseY);
@@ -193,6 +201,16 @@ public class SpellBookScreen extends AncientMagicksScreen {
                     column++;
                 }
             }
+        }
+
+        //Page number
+        for ( int i = 0; i < 2; i++ ) {
+            int pageNum = this.pageNumber + i;
+            Component pageNumTxt = Component.literal(String.valueOf(pageNum)).setStyle(Style.EMPTY.withBold(true));
+            int textX = x - (this.font.width(pageNumTxt) / 2);
+            int pageNumXOff = 67;
+            int pageNumX = pageNum % 2 == 0 ? textX + pageNumXOff : textX - pageNumXOff;
+            graphics.drawString(this.font, pageNumTxt, pageNumX, y + this.arrowYOffset, 0, false);
         }
     }
 

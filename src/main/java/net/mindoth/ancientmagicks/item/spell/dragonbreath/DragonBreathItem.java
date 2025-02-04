@@ -68,7 +68,7 @@ public class DragonBreathItem extends AbstractSpellRayCast {
 
         for ( Entity target : doubleList ) {
             if ( filter(owner, target) && hasLineOfSight(caster, target) ) {
-                attackEntityWithoutKnockback(owner, caster, target, rollForPower(power, 8));
+                attackEntityWithoutKnockback(owner, caster, target, rollForPower(power, 6));
             }
         }
 

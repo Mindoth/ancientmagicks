@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -24,9 +25,10 @@ public class SpellScreen extends AncientMagicksScreen {
     private final ItemStack stack;
     private final List<ItemStack> itemList;
 
-    private final int arrowYOffset = 77;
+    private final int arrowYOffset = 68;
+    private final int arrowXOffset = 94;
     private Button leftArrow;
-    private final int leftArrowXOffset = -18 - 120;
+    private final int leftArrowXOffset = -18 - arrowXOffset;
 
     protected SpellScreen(ItemStack stack, List<ItemStack> itemList) {
         super(Component.literal(""));
@@ -130,13 +132,13 @@ public class SpellScreen extends AncientMagicksScreen {
             Component descriptionTitle = Component.translatable("tooltip.ancientmagicks.description").setStyle(Style.EMPTY.withBold(true));
             componentList.add(descriptionTitle);
             String spellDesc = Component.translatable("tooltip." + modId + "." + spell).getString();
-            int charLimit = 20;
-            if ( spellDesc.length() < charLimit ) {
+            int rowLimit = 118;
+            if ( this.font.width(spellDesc) < rowLimit ) {
                 Component desc = Component.literal(spellDesc);
                 componentList.add(desc);
             }
             else {
-                List<String> lines = putTextToLines(spellDesc, charLimit);
+                List<String> lines = putTextToLines(spellDesc, rowLimit, this.font);
                 lines.forEach(s -> componentList.add(Component.literal(s)));
             }
 
@@ -146,7 +148,7 @@ public class SpellScreen extends AncientMagicksScreen {
         }
     }
 
-    private static @NotNull List<String> putTextToLines(String spellDesc, int charLimit) {
+    private static @NotNull List<String> putTextToLines(String spellDesc, int rowLimit, Font font) {
         List<String> words = Arrays.stream(spellDesc.split(" ")).toList();
         List<String> lines = Lists.newArrayList();
         StringBuilder desc = new StringBuilder();
@@ -154,7 +156,7 @@ public class SpellScreen extends AncientMagicksScreen {
             boolean isLast = i == words.size() - 1;
             String word = words.get(i);
             String tempString = desc.isEmpty() ? word : " " + word;
-            boolean isOverLimit = (desc + tempString).length() >= charLimit;
+            boolean isOverLimit = font.width(desc + tempString) >= rowLimit;
             if ( isOverLimit ) {
                 lines.add(desc.toString());
                 desc.setLength(0);
