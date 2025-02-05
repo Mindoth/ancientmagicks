@@ -25,8 +25,7 @@ public interface DyeableMagicItem extends DyeableLeatherItem {
         CompoundTag compoundtag = pStack.getTagElement(TAG_DISPLAY);
         if ( compoundtag != null && compoundtag.contains(TAG_COLOR, 99) ) return compoundtag.getInt(TAG_COLOR);
         else if ( pStack.getItem() instanceof ColorableMagicArmorItem item && item.getMaterial() == AncientMagicksArmorMaterials.SIMPLE ) return BROWN;
-        /*else if ( (pStack.getItem() instanceof ColorableMagicArmorItem item && item.getMaterial() == AncientMagicksArmorMaterials.TRIMMED)
-                || pStack.getItem() == AncientMagicksItems.GOLDEN_STAFF.get() ) return RED;*/
+        else if ( pStack.getItem() instanceof SpellBookItem ) return RED;
         else return WHITE;
     }
 

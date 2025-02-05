@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.armor;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -16,11 +17,11 @@ import java.util.function.Supplier;
 public enum AncientMagicksArmorMaterials implements CustomArmorMaterial {
 
     SIMPLE("simple", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
-            0, 0, () -> Ingredient.of(Items.STRING), Map.of(
+            0, 0, () -> Ingredient.of(AncientMagicksItems.WOOL_CLOTH.get()), Map.of(
             AncientMagicksAttributes.MP_MAX.get(), new AttributeModifier("Mana Maximum", 25.0D, AttributeModifier.Operation.ADDITION)
     )),
     TRIMMED("trimmed", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
-            0, 0, () -> Ingredient.of(Items.GOLD_INGOT), Map.of(
+            0, 0, () -> Ingredient.of(AncientMagicksItems.WOOL_CLOTH.get()), Map.of(
             AncientMagicksAttributes.MP_MAX.get(), new AttributeModifier("Mana Maximum", 50.0D, AttributeModifier.Operation.ADDITION),
             AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 1.0D, AttributeModifier.Operation.ADDITION)
     ));

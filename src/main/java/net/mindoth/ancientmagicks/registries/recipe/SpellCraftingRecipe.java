@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -31,9 +32,9 @@ public class SpellCraftingRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() instanceof ColorRuneItem rune ) list.add(rune);
-            else if ( stack.getItem() instanceof ParchmentItem item ) rest.add(item);
+            else if ( stack.getItem() instanceof ParchmentItem || stack.getItem() != Items.AIR ) rest.add(stack.getItem());
         }
-        if ( ColorRuneItem.checkForSpellCombo(list) != null ) {
+        if ( ColorRuneItem.checkForSpellCombo(list) != null && list.size() + rest.size() == AncientMagicks.comboSizeCalc() + 1 ) {
             SpellItem spell = ColorRuneItem.checkForSpellCombo(list);
             if ( spell.isCraftable() && rest.size() == 1 ) {
                 if ( spell.spellTier >= 1 && spell.spellTier <= 3 && rest.contains(AncientMagicksItems.PARCHMENT.get()) ) return true;
@@ -47,12 +48,17 @@ public class SpellCraftingRecipe extends CustomRecipe {
     @Override
     public ItemStack assemble(CraftingContainer container, RegistryAccess regAcc) {
         List<ColorRuneItem> list = Lists.newArrayList();
+        List<Item> rest = Lists.newArrayList();
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() instanceof ColorRuneItem rune ) list.add(rune);
+            else if ( stack.getItem() instanceof ParchmentItem || stack.getItem() != Items.AIR ) rest.add(stack.getItem());
         }
-        ItemStack spellStack = new ItemStack(AncientMagicksItems.SPELL_SCROLL.get());
-        return AncientMagicks.createSpellScroll(spellStack, ColorRuneItem.checkForSpellCombo(list));
+        if ( ColorRuneItem.checkForSpellCombo(list) != null && list.size() + rest.size() == AncientMagicks.comboSizeCalc() + 1 ) {
+            ItemStack spellStack = new ItemStack(AncientMagicksItems.SPELL_SCROLL.get());
+            return AncientMagicks.createSpellScroll(spellStack, ColorRuneItem.checkForSpellCombo(list));
+        }
+        return ItemStack.EMPTY;
     }
 
     @Override

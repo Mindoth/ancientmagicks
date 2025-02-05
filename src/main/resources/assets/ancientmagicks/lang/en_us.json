@@ -138,6 +138,7 @@
 
 
   "message.ancientmagicks.spell_already_known": "You already know this spell",
+  "tooltip.ancientmagicks.book_owner": "Owner: ",
 
 
   "tooltip.ancientmagicks.stats": "Stats: ",

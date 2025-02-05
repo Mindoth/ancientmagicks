@@ -16,6 +16,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Vanishable;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -26,8 +27,9 @@ import java.util.Map;
 public class StaffItem extends CastingItem implements Vanishable {
 
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
+    private final Item repairItem;
 
-    public StaffItem(Properties pProperties, double attackDamage, double attackSpeed, Map<Attribute, AttributeModifier> additionalAttributes) {
+    public StaffItem(Properties pProperties, double attackDamage, double attackSpeed, Item repairItem, Map<Attribute, AttributeModifier> additionalAttributes) {
         super(pProperties);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", attackDamage, AttributeModifier.Operation.ADDITION));
@@ -36,6 +38,22 @@ public class StaffItem extends CastingItem implements Vanishable {
             builder.put(modifierEntry.getKey(), modifierEntry.getValue());
         }
         this.defaultModifiers = builder.build();
+        this.repairItem = repairItem;
+    }
+
+    @Override
+    public boolean isValidRepairItem(ItemStack pToRepair, ItemStack pRepair) {
+        return pRepair.is(this.repairItem);
+    }
+
+    @Override
+    public boolean isEnchantable(@Nonnull ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return 3;
     }
 
     @Override
@@ -76,10 +94,5 @@ public class StaffItem extends CastingItem implements Vanishable {
                 });
             }
         }
-    }
-
-    @Override
-    public boolean isEnchantable(@Nonnull ItemStack stack) {
-        return true;
     }
 }

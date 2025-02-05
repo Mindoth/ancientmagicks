@@ -7,6 +7,7 @@ import net.mindoth.ancientmagicks.client.screen.HudCurrentSpell;
 import net.mindoth.ancientmagicks.client.screen.HudMana;
 import net.mindoth.ancientmagicks.config.AncientMagicksClientConfig;
 import net.mindoth.ancientmagicks.item.DyeableMagicItem;
+import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
@@ -52,7 +53,7 @@ public class AncientMagicksClient {
 
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         for ( Item item : ForgeRegistries.ITEMS.getValues() ) {
-            if ( item instanceof ColorableMagicArmorItem || item instanceof ColorableStaffItem ) {
+            if ( item instanceof ColorableMagicArmorItem || item instanceof ColorableStaffItem || item instanceof SpellBookItem ) {
                 event.getItemColors().register((color, armor) -> armor > 0 ? -1 : ((DyeableMagicItem)color.getItem()).getColor(color), item);
             }
         }

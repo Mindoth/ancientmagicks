@@ -53,6 +53,7 @@ import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -112,11 +113,11 @@ public class AncientMagicksItems {
             () -> new ParchmentItem(new Item.Properties()));
 
     public static final RegistryObject<Item> WOODEN_STAFF = ITEMS.register("wooden_staff",
-            () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Map.of(
+            () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Items.STICK, Map.of(
             )));
 
     public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
-            () -> new ColorableStaffItem(new Item.Properties().durability(250), 0.0D, -3.0D,
+            () -> new ColorableStaffItem(new Item.Properties().durability(250), 0.0D, -3.0D, Items.GOLD_INGOT,
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                                     "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION),
                             AncientMagicksAttributes.MP_REG.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),

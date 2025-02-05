@@ -16,4 +16,7 @@ public class AncientMagicksRecipes {
 
     public static final RegistryObject<SimpleCraftingRecipeSerializer<ArcaneDustCraftingRecipe>> ARCANE_DUST_CRAFTING_RECIPE =
             SERIALIZERS.register("arcane_dust_crafting", () -> new SimpleCraftingRecipeSerializer<>(ArcaneDustCraftingRecipe::new));
+
+    public static final RegistryObject<SimpleCraftingRecipeSerializer<SpellBookResettingRecipe>> SPELL_BOOK_RESETTING_RECIPE =
+            SERIALIZERS.register("spell_book_resetting_crafting", () -> new SimpleCraftingRecipeSerializer<>(SpellBookResettingRecipe::new));
 }
