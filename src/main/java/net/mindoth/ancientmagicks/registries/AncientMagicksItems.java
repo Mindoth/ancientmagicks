@@ -16,6 +16,7 @@ import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceItem;
 import net.mindoth.ancientmagicks.item.spell.callthunder.CallThunderItem;
 import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphItem;
 import net.mindoth.ancientmagicks.item.spell.controlweather.ControlWeatherItem;
+import net.mindoth.ancientmagicks.item.spell.createordestroywater.CreateOrDestroyWaterItem;
 import net.mindoth.ancientmagicks.item.spell.darkvision.DarkvisionItem;
 import net.mindoth.ancientmagicks.item.spell.dragonbreath.DragonBreathItem;
 import net.mindoth.ancientmagicks.item.spell.endlessbreath.EndlessBreathItem;
@@ -184,6 +185,9 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> BLIND_ITEM = ITEMS.register("blind",
             () -> new BlindItem(new Item.Properties(), 1, 20, 10));
+
+    public static final RegistryObject<Item> CREATE_OR_DESTROY_WATER_ITEM = ITEMS.register("create_or_destroy_water",
+            () -> new CreateOrDestroyWaterItem(new Item.Properties(), 1, 20, 10));
 
     public static final RegistryObject<Item> SLEEP_ITEM = ITEMS.register("sleep",
             () -> new SleepItem(new Item.Properties(), 2, 40, 10));

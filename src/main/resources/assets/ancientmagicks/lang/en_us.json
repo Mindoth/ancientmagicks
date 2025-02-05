@@ -120,6 +120,8 @@
   "tooltip.ancientmagicks.perfect_invisibility": "Perfectly conceals target from the world.",
   "item.ancientmagicks.summon_skeleton_warrior": "Summon Skeleton Warrior",
   "tooltip.ancientmagicks.summon_skeleton_warrior": "Summons a subservient Skeleton Warrior to fight for you.",
+  "item.ancientmagicks.create_or_destroy_water": "Create or destroy Water",
+  "tooltip.ancientmagicks.create_or_destroy_water": "Creates or destroys Water.",
 
 
   "effect.ancientmagicks.frost_armor": "Frost Armor",

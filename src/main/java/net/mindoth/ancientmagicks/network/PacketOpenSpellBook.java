@@ -32,7 +32,7 @@ public class PacketOpenSpellBook {
     }
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
-        contextSupplier.get().enqueueWork(() -> SpellBookScreen.open(this.itemList));
+        contextSupplier.get().enqueueWork(() -> SpellBookScreen.open(this.itemList, 0));
         contextSupplier.get().setPacketHandled(true);
     }
 }

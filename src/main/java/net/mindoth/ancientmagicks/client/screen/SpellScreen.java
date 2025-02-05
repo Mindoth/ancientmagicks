@@ -24,21 +24,24 @@ public class SpellScreen extends AncientMagicksScreen {
 
     private final ItemStack stack;
     private final List<ItemStack> itemList;
+    private final int bookSpreadNumber;
 
     private final int arrowYOffset = 68;
     private final int arrowXOffset = 94;
     private Button leftArrow;
     private final int leftArrowXOffset = -18 - arrowXOffset;
+    private final int rowLimit = 118;
 
-    protected SpellScreen(ItemStack stack, List<ItemStack> itemList) {
+    protected SpellScreen(ItemStack stack, List<ItemStack> itemList, int spreadNumber) {
         super(Component.literal(""));
         this.stack = stack;
         this.itemList = itemList;
+        this.bookSpreadNumber = spreadNumber;
     }
 
-    public static void open(ItemStack stack, List<ItemStack> itemList) {
+    public static void open(ItemStack stack, List<ItemStack> itemList, int spreadNumber) {
         Minecraft MINECRAFT = Minecraft.getInstance();
-        if ( MINECRAFT.screen instanceof SpellBookScreen && stack != ItemStack.EMPTY ) MINECRAFT.setScreen(new SpellScreen(stack, itemList));
+        if ( MINECRAFT.screen instanceof SpellBookScreen && stack != ItemStack.EMPTY ) MINECRAFT.setScreen(new SpellScreen(stack, itemList, spreadNumber));
     }
 
     @Override
@@ -54,7 +57,7 @@ public class SpellScreen extends AncientMagicksScreen {
     }
 
     private void handleBackArrow(Button button) {
-        SpellBookScreen.open(this.itemList);
+        SpellBookScreen.open(this.itemList, this.bookSpreadNumber);
     }
 
     @Override
@@ -89,8 +92,21 @@ public class SpellScreen extends AncientMagicksScreen {
             String modId = ForgeRegistries.ITEMS.getKey(spell).toString().split(":")[0];
 
             //Spell name
-            Component name = Component.translatable("item." + modId + "." + id).setStyle(Style.EMPTY.withBold(true));
-            graphics.drawString(this.font, name, xPos + 32 - (this.font.width(name) / 2), yPos - 24 - this.font.lineHeight, 0, false);
+            Component formattedName = Component.translatable("item." + modId + "." + id).setStyle(Style.EMPTY.withBold(true));
+            String name = formattedName.getString();
+            List<Component> nameLineList = Lists.newArrayList();
+            int length = this.font.width(formattedName);
+            int limit = 100;
+            if ( length < limit ) nameLineList.add(formattedName);
+            else {
+                List<String> lines = putTextToLines(name, this.font, limit);
+                lines.forEach(s -> nameLineList.add(Component.literal(s).setStyle(formattedName.getStyle())));
+            }
+            for ( int i = 0; i < nameLineList.size(); i++ ) {
+                Component component = nameLineList.get(i);
+                int height = yPos - 40 - (nameLineList.size() - 1) * 4;
+                graphics.drawString(this.font, component, xPos + 32 - this.font.width(component) / 2, height + this.font.lineHeight * (i + 1), 0, false);
+            }
 
             //Spell icon
             AncientMagicksScreen.drawTexture(new ResourceLocation(modId, "textures/item/spell/" + id + ".png"),
@@ -132,23 +148,18 @@ public class SpellScreen extends AncientMagicksScreen {
             Component descriptionTitle = Component.translatable("tooltip.ancientmagicks.description").setStyle(Style.EMPTY.withBold(true));
             componentList.add(descriptionTitle);
             String spellDesc = Component.translatable("tooltip." + modId + "." + spell).getString();
-            int rowLimit = 118;
-            if ( this.font.width(spellDesc) < rowLimit ) {
-                Component desc = Component.literal(spellDesc);
-                componentList.add(desc);
-            }
+            if ( this.font.width(spellDesc) < rowLimit ) componentList.add(Component.literal(spellDesc));
             else {
-                List<String> lines = putTextToLines(spellDesc, rowLimit, this.font);
+                List<String> lines = putTextToLines(spellDesc, this.font, this.rowLimit);
                 lines.forEach(s -> componentList.add(Component.literal(s)));
             }
-
             for ( int i = 0; i < componentList.size(); i++ ) {
-                graphics.drawString(this.font, componentList.get(i), xInfo, yInfo + (this.font.lineHeight * i), 0, false);
+                graphics.drawString(this.font, componentList.get(i), xInfo, yInfo + this.font.lineHeight * i, 0, false);
             }
         }
     }
 
-    private static @NotNull List<String> putTextToLines(String spellDesc, int rowLimit, Font font) {
+    private static @NotNull List<String> putTextToLines(String spellDesc, Font font, int rowLimit) {
         List<String> words = Arrays.stream(spellDesc.split(" ")).toList();
         List<String> lines = Lists.newArrayList();
         StringBuilder desc = new StringBuilder();

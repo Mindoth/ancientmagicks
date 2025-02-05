@@ -25,7 +25,6 @@ public class SpellBookScreen extends AncientMagicksScreen {
     private final List<ItemStack> itemList;
     private final List<List<ItemStack>> pageList;
     private int spreadNumber;
-    private int pageNumber;
     private final List<Button> slotList = Lists.newArrayList();
 
     private final int arrowYOffset = 68;
@@ -39,9 +38,10 @@ public class SpellBookScreen extends AncientMagicksScreen {
     private final int maxColumns = 4;
     private final int squareSpacing = 26;
 
-    protected SpellBookScreen(List<ItemStack> stackList) {
+    protected SpellBookScreen(List<ItemStack> stackList, int spreadNumber) {
         super(Component.literal(""));
         this.pageList = Lists.newArrayList();
+        this.spreadNumber = spreadNumber;
         if ( stackList.isEmpty() ) this.itemList = List.of(ItemStack.EMPTY);
         else {
             this.itemList = stackList;
@@ -56,9 +56,9 @@ public class SpellBookScreen extends AncientMagicksScreen {
         }
     }
 
-    public static void open(List<ItemStack> itemList) {
+    public static void open(List<ItemStack> itemList, int spreadNumber) {
         Minecraft MINECRAFT = Minecraft.getInstance();
-        if ( !(MINECRAFT.screen instanceof SpellBookScreen) ) MINECRAFT.setScreen(new SpellBookScreen(itemList));
+        if ( !(MINECRAFT.screen instanceof SpellBookScreen) ) MINECRAFT.setScreen(new SpellBookScreen(itemList, spreadNumber));
     }
 
     private boolean isFirstPage() {
@@ -72,33 +72,12 @@ public class SpellBookScreen extends AncientMagicksScreen {
     @Override
     protected void init() {
         super.init();
-        this.spreadNumber = 0;
-        this.pageNumber = 1;
 
         int x = minecraft.getWindow().getGuiScaledWidth() / 2;
         int y = minecraft.getWindow().getGuiScaledHeight() / 2;
 
         //Slot Widgets
-        boolean isRightPage = false;
-        int row = 0;
-        int column = 0;
-        for ( int i = 0; i < this.maxRows * this.maxColumns * 2; i++ ) {
-            if ( column == this.maxColumns ) {
-                row++;
-                column = 0;
-                if (row == this.maxRows) {
-                    row = 0;
-                    isRightPage = !isRightPage;
-                }
-            }
-
-            int xPos = isRightPage ? x + 20 + (column * this.squareSpacing) : x - 114 + (column * this.squareSpacing);
-            int yPos = y - 74 + (row * this.squareSpacing);
-
-            buildSlotButton(xPos - 1, yPos - 1);
-
-            column++;
-        }
+        buildButtons(x, y);
 
         //Page Arrows
         this.rightArrow = addRenderableWidget(Button.builder(Component.literal(""), this::handlePageRight)
@@ -114,10 +93,34 @@ public class SpellBookScreen extends AncientMagicksScreen {
         if ( !isFirstPage() && !this.leftArrow.visible ) this.leftArrow.visible = true;
     }
 
+    private void buildButtons(int x, int y) {
+        boolean isRightPage = false;
+        int row = 0;
+        int column = 0;
+        for ( int i = 0; i < this.maxRows * this.maxColumns * 2; i++ ) {
+            if ( column == this.maxColumns ) {
+                row++;
+                column = 0;
+                if ( row == this.maxRows ) {
+                    row = 0;
+                    isRightPage = !isRightPage;
+                }
+            }
+
+            int xPos = isRightPage ? x + 20 + (column * this.squareSpacing) : x - 114 + (column * this.squareSpacing);
+            int yPos = y - 74 + (row * this.squareSpacing);
+
+            buildSlotButton(xPos - 1, yPos - 1);
+
+            column++;
+        }
+        handleSlotButtonVisibility();
+    }
+
     private void handlePageLeft(Button button) {
         if ( !isFirstPage() ) {
             this.spreadNumber--;
-            this.pageNumber -= 2;
+            handleSlotButtonVisibility();
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
         }
     }
@@ -125,8 +128,16 @@ public class SpellBookScreen extends AncientMagicksScreen {
     private void handlePageRight(Button button) {
         if ( !isLastPage() ) {
             this.spreadNumber++;
-            this.pageNumber += 2;
+            handleSlotButtonVisibility();
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
+        }
+    }
+
+    private void handleSlotButtonVisibility() {
+        for ( Button button : this.slotList ) {
+            int stackIndex = this.slotList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
+            if ( stackIndex >= this.itemList.size() && button.visible ) button.visible = false;
+            else if ( !button.visible ) button.visible = true;
         }
     }
 
@@ -139,11 +150,13 @@ public class SpellBookScreen extends AncientMagicksScreen {
 
     private void handleSlotButton(Button button) {
         if ( !this.slotList.contains(button) ) return;
-        ItemStack stack = this.itemList.get(this.slotList.indexOf(button));
+        int stackIndex = this.slotList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
+        if ( stackIndex >= this.itemList.size() ) return;
+        ItemStack stack = this.pageList.get(this.spreadNumber).get(this.slotList.indexOf(button));
         ItemStack spell = getPossibleContainedSpell(stack);
         if ( !(spell.getItem() instanceof SpellItem spellItem) ) return;
         if ( !ClientMagicData.isSpellKnown(spellItem) && !minecraft.player.isCreative() ) return;
-        SpellScreen.open(spell, this.itemList);
+        SpellScreen.open(spell, this.itemList, this.spreadNumber);
     }
 
     @Override
@@ -205,7 +218,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
 
         //Page number
         for ( int i = 0; i < 2; i++ ) {
-            int pageNum = this.pageNumber + i;
+            int pageNum = this.spreadNumber * 2 + 1 + i;
             Component pageNumTxt = Component.literal(String.valueOf(pageNum)).setStyle(Style.EMPTY.withBold(true));
             int textX = x - (this.font.width(pageNumTxt) / 2);
             int pageNumXOff = 67;
@@ -216,6 +229,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
 
     @Override
     public void tick() {
+        //Arrow button visibility
         if ( this.rightArrow.isFocused() ) this.rightArrow.setFocused(false);
         if ( isLastPage() && this.rightArrow.visible ) this.rightArrow.visible = false;
         if ( !isLastPage() && !this.rightArrow.visible ) this.rightArrow.visible = true;
