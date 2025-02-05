@@ -158,24 +158,4 @@ public class SpellScreen extends AncientMagicksScreen {
             }
         }
     }
-
-    private static @NotNull List<String> putTextToLines(String spellDesc, Font font, int rowLimit) {
-        List<String> words = Arrays.stream(spellDesc.split(" ")).toList();
-        List<String> lines = Lists.newArrayList();
-        StringBuilder desc = new StringBuilder();
-        for ( int i = 0; i < words.size(); i++ ) {
-            boolean isLast = i == words.size() - 1;
-            String word = words.get(i);
-            String tempString = desc.isEmpty() ? word : " " + word;
-            boolean isOverLimit = font.width(desc + tempString) >= rowLimit;
-            if ( isOverLimit ) {
-                lines.add(desc.toString());
-                desc.setLength(0);
-                desc.append(word);
-            }
-            else desc.append(tempString);
-            if ( isLast ) lines.add(desc.toString());
-        }
-        return lines;
-    }
 }

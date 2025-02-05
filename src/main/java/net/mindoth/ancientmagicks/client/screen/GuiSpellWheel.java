@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -35,6 +36,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
@@ -50,6 +52,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
     private final List<ItemStack> itemList;
     private final List<ColorRuneItem> comboList = Lists.newArrayList();
     private SpellItem comboResult;
+    private HashMap<Integer, ItemStack> possibleResults;
     private final InteractionHand hand;
     private final String hotbar;
 
@@ -66,6 +69,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         else if ( size == 5 ) this.hotbar = "hotbar5.png";
         else if ( size == 6 ) this.hotbar = "hotbar6.png";
         else this.hotbar = "hotbar3.png";
+        this.possibleResults = new HashMap<>();
     }
 
     public static void open(List<ItemStack> itemList, boolean isOffHand) {
@@ -78,6 +82,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
     @Override
     public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
         if ( this.selectedItem != -1 ) {
+            this.possibleResults = new HashMap<>();
             ItemStack clickedItem = this.itemList.get(this.selectedItem);
             if ( clickedItem.getItem() instanceof ColorRuneItem ) {
                 if ( this.comboList.size() < AncientMagicks.comboSizeCalc() ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
@@ -224,7 +229,21 @@ public class GuiSpellWheel extends AncientMagicksScreen {
 
             //Spell name
             String name = I18n.get(slot.getDescriptionId());
-            graphics.drawCenteredString(this.font, name, width / 2, (height - this.font.lineHeight) / 2 - 8, 16777215);
+            List<Component> componentList = Lists.newArrayList();
+            int rowLimit = 100;
+            if ( this.font.width(name) < rowLimit ) componentList.add(Component.literal(name));
+            else {
+                List<String> lines = putTextToLines(name, this.font, rowLimit);
+                lines.forEach(s -> componentList.add(Component.literal(s)));
+            }
+            int xInfo = width / 2;
+            int yInfo = (height - this.font.lineHeight) / 2 - 20;
+            for ( int i = 0; i < componentList.size(); i++ ) {
+                Component component = componentList.get(i);
+                int height = yInfo - (componentList.size() - 1) * 4;
+                graphics.drawCenteredString(this.font, component, xInfo, height + this.font.lineHeight * (i + 1), 16777215);
+                //graphics.drawCenteredString(this.font, name, width / 2, (height - this.font.lineHeight) / 2 - 8, 16777215);
+            }
 
             //Square slot
             drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
@@ -271,8 +290,9 @@ public class GuiSpellWheel extends AncientMagicksScreen {
                 if ( this.comboList.size() == AncientMagicks.comboSizeCalc() || this.comboList.size() == AncientMagicks.comboSizeCalc() - 1 ) {
                     if ( slot.getItem() instanceof ColorRuneItem colorRuneItem ) tempList.add(colorRuneItem);
                     if ( getComboResult(tempList) != null ) {
-                        ItemStack dimItem = new ItemStack(getComboResult(tempList));
-                        renderItemWithDecorations(graphics, dimItem, dimPosX, dimPosY);
+                        ItemStack possibleResult = new ItemStack(getComboResult(tempList));
+                        this.possibleResults.put(i, possibleResult);
+                        renderItemWithDecorations(graphics, possibleResult, dimPosX, dimPosY);
                     }
                 }
             }
@@ -285,7 +305,8 @@ public class GuiSpellWheel extends AncientMagicksScreen {
 
             if ( hasMouseOver && mousedOverSlot != -1 ) {
                 if ( !this.itemList.get(mousedOverSlot).isEmpty() && slot.equals(this.itemList.get(mousedOverSlot)) ) {
-                    graphics.renderTooltip(this.font, this.itemList.get(mousedOverSlot), mouseX, mouseY);
+                    ItemStack tooltipItem = this.possibleResults.containsKey(mousedOverSlot) ? this.possibleResults.get(mousedOverSlot) : this.itemList.get(mousedOverSlot);
+                    graphics.renderTooltip(this.font, tooltipItem, mouseX, mouseY);
                 }
             }
 
