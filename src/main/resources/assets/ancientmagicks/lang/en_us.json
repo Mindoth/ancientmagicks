@@ -46,8 +46,8 @@
   "tooltip.ancientmagicks.telekinetic_grab": "Pulls targeted dropped items towards you.",
   "item.ancientmagicks.fly": "Fly",
   "tooltip.ancientmagicks.fly": "Grants target the ability to fly for a short period.",
-  "item.ancientmagicks.summon_undead": "Summon Undead",
-  "tooltip.ancientmagicks.summon_undead": "Summons a subservient Undead creature to fight for you.",
+  "item.ancientmagicks.summon_zombie": "Summon Zombie",
+  "tooltip.ancientmagicks.summon_zombie": "Summons a subservient Undead creature to fight for you.",
   "item.ancientmagicks.blink": "Blink",
   "tooltip.ancientmagicks.blink": "Teleports you a short distance forwards.",
   "item.ancientmagicks.wind_burst": "Wind Burst",
@@ -118,6 +118,8 @@
   "tooltip.ancientmagicks.life_tap": "Convert some of your health into mana.",
   "item.ancientmagicks.perfect_invisibility": "Perfect Invisibility",
   "tooltip.ancientmagicks.perfect_invisibility": "Perfectly conceals target from the world.",
+  "item.ancientmagicks.summon_skeleton_warrior": "Summon Skeleton Warrior",
+  "tooltip.ancientmagicks.summon_skeleton_warrior": "Summons a subservient Skeleton Warrior to fight for you.",
 
 
   "effect.ancientmagicks.frost_armor": "Frost Armor",

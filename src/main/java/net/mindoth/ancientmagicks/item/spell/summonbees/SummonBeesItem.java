@@ -25,7 +25,7 @@ public class SummonBeesItem extends AbstractSpellSummon {
 
     @Override
     protected int getAmount() {
-        return 4;
+        return 3;
     }
 
     @Override

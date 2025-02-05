@@ -81,7 +81,7 @@ public class MindControlEffect extends MobEffect {
     @SubscribeEvent
     public static void onMindControlledUpdate(final LivingEvent.LivingTickEvent event) {
         if ( event.getEntity().level().isClientSide ) return;
-        if ( event.getEntity() instanceof Mob mob && mob.tickCount % 50 == 0 && mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) ) {
+        if ( event.getEntity() instanceof Mob mob && mob.tickCount % 20 == 0 && mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) ) {
             if ( mob.getTarget() == null || !mob.getTarget().isAlive() ) handleTargeting(mob.level(), mob, mob.getTarget());
         }
     }
@@ -115,7 +115,7 @@ public class MindControlEffect extends MobEffect {
 
     private static void onMindControlEnd(MobEffectInstance instance, Entity entity) {
         if ( instance != null && instance.getEffect() == AncientMagicksEffects.MIND_CONTROL.get() && entity instanceof Mob mob ) {
-            if ( mob.getPersistentData().getBoolean("am_is_minion") ) mob.kill();
+            if ( mob.getPersistentData().getBoolean(NBT_KEY_SUMMON) ) mob.kill();
             else {
                 mob.setTarget(null);
                 mob.setLastHurtByMob(null);
@@ -133,14 +133,14 @@ public class MindControlEffect extends MobEffect {
 
     @SubscribeEvent
     public static void onMinionLootDrop(final LivingDropsEvent event) {
-        if ( event.getEntity() instanceof Mob mob && mob.getPersistentData().getBoolean("am_is_minion") ) {
+        if ( event.getEntity() instanceof Mob mob && mob.getPersistentData().getBoolean(NBT_KEY_SUMMON) ) {
             event.setCanceled(true);
         }
     }
 
     @SubscribeEvent
     public static void onMinionXpDrop(final LivingExperienceDropEvent event) {
-        if ( event.getEntity() instanceof Mob mob && mob.getPersistentData().getBoolean("am_is_minion") ) {
+        if ( event.getEntity() instanceof Mob mob && mob.getPersistentData().getBoolean(NBT_KEY_SUMMON) ) {
             event.setCanceled(true);
         }
     }

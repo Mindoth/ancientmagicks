@@ -32,6 +32,9 @@ public class AbstractSpellSummon extends SpellItem {
         return new Sheep(EntityType.SHEEP, level);
     }
 
+    protected void populateSlots(Mob minion) {
+    }
+
     @Override
     protected void playSound(Level level, Vec3 center) {
         playMagicSummonSound(level, center);
@@ -75,6 +78,7 @@ public class AbstractSpellSummon extends SpellItem {
         minion.getPersistentData().putBoolean(MindControlEffect.NBT_KEY_SUMMON, true);
         minion.addEffect(new MobEffectInstance(AncientMagicksEffects.MIND_CONTROL.get(), getLife()));
         ForgeEventFactory.onFinalizeSpawn(minion, (ServerLevel)level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+        populateSlots(minion);
         level.addFreshEntity(minion);
         minion.spawnAnim();
     }

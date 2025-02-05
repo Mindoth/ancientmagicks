@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.spell.summonundead;
+package net.mindoth.ancientmagicks.item.spell.summonzombie;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
@@ -9,9 +9,9 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.level.Level;
 
-public class SummonUndeadItem extends AbstractSpellSummon {
+public class SummonZombieItem extends AbstractSpellSummon {
 
-    public SummonUndeadItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
+    public SummonZombieItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
         super(pProperties, spellTier, manaCost, cooldown);
     }
 

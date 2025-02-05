@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.mindcontrol;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
@@ -30,7 +31,7 @@ public class MindControlItem extends AbstractSpellRayCast {
 
     @Override
     protected boolean canApply(Level level, Player owner, Entity caster, Entity target) {
-        return target instanceof Mob mob && !isAlly(owner, mob);
+        return target instanceof Mob mob && !isAlly(owner, mob) && !mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get());
     }
 
     @Override
