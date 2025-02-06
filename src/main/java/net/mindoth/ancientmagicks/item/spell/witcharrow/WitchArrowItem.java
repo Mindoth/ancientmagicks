@@ -9,8 +9,8 @@ import net.minecraft.world.level.Level;
 
 public class WitchArrowItem extends AbstractSpellShoot {
 
-    public WitchArrowItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public WitchArrowItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override

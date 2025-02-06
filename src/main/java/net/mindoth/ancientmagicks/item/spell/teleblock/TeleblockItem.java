@@ -10,13 +10,8 @@ import net.minecraft.world.level.Level;
 
 public class TeleblockItem extends AbstractSpellRayCast {
 
-    public TeleblockItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
-    }
-
-    @Override
-    protected boolean isHarmful() {
-        return true;
+    public TeleblockItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override
@@ -31,6 +26,6 @@ public class TeleblockItem extends AbstractSpellRayCast {
 
     @Override
     protected void applyEffect(Level level, Player owner, Entity caster, Entity target) {
-        ((LivingEntity)target).addEffect(new MobEffectInstance(AncientMagicksEffects.TELEBLOCK.get(), getLife(), 0, false, this.isHarmful()));
+        ((LivingEntity)target).addEffect(new MobEffectInstance(AncientMagicksEffects.TELEBLOCK.get(), getLife(), 0, false, isHarmful()));
     }
 }

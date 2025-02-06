@@ -10,13 +10,8 @@ import net.minecraft.world.level.Level;
 
 public class InvisibilityItem extends AbstractSpellRayCast {
 
-    public InvisibilityItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
-    }
-
-    @Override
-    protected boolean isHarmful() {
-        return false;
+    public InvisibilityItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override

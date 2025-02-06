@@ -2,7 +2,6 @@ package net.mindoth.ancientmagicks.item.spell.extinguish;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -20,13 +19,13 @@ import java.util.List;
 
 public class ExtinguishItem extends SpellItem {
 
-    public ExtinguishItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public ExtinguishItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override
-    public ParticleColor.IntWrapper getColor() {
-        return AbstractSpellEntity.getSpellColor(ColorCode.BLACK);
+    public ParticleColor.IntWrapper getParticleColor() {
+        return ColorCode.BLACK.getParticleColor();
     }
 
     @Override

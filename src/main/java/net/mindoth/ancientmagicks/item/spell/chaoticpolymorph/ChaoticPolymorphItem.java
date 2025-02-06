@@ -18,8 +18,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ChaoticPolymorphItem extends AbstractSpellRayCast {
 
-    public ChaoticPolymorphItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public ChaoticPolymorphItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class ChaoticPolymorphItem extends AbstractSpellRayCast {
             newMob.startRiding(entity, true);
         }
         oldMob.discard();
-        addEnchantParticles(newMob, getColor().r, getColor().g, getColor().b, 0.15F, 8, getRenderType());
+        addEnchantParticles(newMob, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, getRenderType());
         return newMob;
     }
 }

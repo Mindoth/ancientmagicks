@@ -11,8 +11,8 @@ import net.minecraft.world.level.Level;
 
 public class SleepItem extends AbstractSpellRayCast {
 
-    public SleepItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public SleepItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override

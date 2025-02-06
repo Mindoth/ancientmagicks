@@ -20,8 +20,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class CreateOrDestroyWaterItem extends SpellItem {
 
-    public CreateOrDestroyWaterItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public CreateOrDestroyWaterItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override

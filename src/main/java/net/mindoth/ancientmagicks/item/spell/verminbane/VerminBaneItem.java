@@ -19,8 +19,8 @@ import java.util.stream.Stream;
 
 public class VerminBaneItem extends AbstractSpellRayCast {
 
-    public VerminBaneItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public VerminBaneItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override

@@ -53,7 +53,7 @@ public class StaffItem extends CastingItem implements Vanishable {
 
     @Override
     public int getEnchantmentValue(ItemStack stack) {
-        return 3;
+        return 25;
     }
 
     @Override

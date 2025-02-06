@@ -85,7 +85,7 @@
   "item.ancientmagicks.dragon_breath": "Dragon Breath",
   "tooltip.ancientmagicks.dragon_breath": "Channel to spew out damaging dragon flames.",
   "item.ancientmagicks.summon_death_knight": "Summon Death Knight",
-  "tooltip.ancientmagicks.summon_death_knight": "Summons a subservient Death Knight to fight for you.",
+  "tooltip.ancientmagicks.summon_death_knight": "Summons a subservient Death Knight to fight for you. It can survive lethal damage once.",
   "item.ancientmagicks.blind": "Blind",
   "tooltip.ancientmagicks.blind": "Blinds a target.",
   "item.ancientmagicks.water_bolt": "Water Bolt",

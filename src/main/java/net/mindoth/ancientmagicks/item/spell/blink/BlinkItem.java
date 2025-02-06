@@ -10,8 +10,8 @@ import net.minecraftforge.event.entity.EntityTeleportEvent;
 
 public class BlinkItem extends SpellItem {
 
-    public BlinkItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public BlinkItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override

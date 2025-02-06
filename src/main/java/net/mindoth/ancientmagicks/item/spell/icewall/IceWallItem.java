@@ -2,7 +2,6 @@ package net.mindoth.ancientmagicks.item.spell.icewall;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -19,13 +18,13 @@ import net.minecraft.world.phys.Vec3;
 
 public class IceWallItem extends SpellItem {
 
-    public IceWallItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public IceWallItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override
-    public ParticleColor.IntWrapper getColor() {
-        return AbstractSpellEntity.getSpellColor(ColorCode.AQUA);
+    public ParticleColor.IntWrapper getParticleColor() {
+        return ColorCode.AQUA.getParticleColor();
     }
 
     @Override

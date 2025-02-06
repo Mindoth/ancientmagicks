@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractSpellRayCast extends SpellItem {
 
-    public AbstractSpellRayCast(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public AbstractSpellRayCast(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     protected int getLife() {
@@ -38,7 +38,7 @@ public abstract class AbstractSpellRayCast extends SpellItem {
     }
 
     protected void audiovisualEffects(Level level, Player owner, Entity caster, Entity target) {
-        addEnchantParticles(target, getColor().r, getColor().g, getColor().b, 0.15F, 8, getRenderType());
+        addEnchantParticles(target, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, getRenderType());
         playSound(level, target.position());
     }
 

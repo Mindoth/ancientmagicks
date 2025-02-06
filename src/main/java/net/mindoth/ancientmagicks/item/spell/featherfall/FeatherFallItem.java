@@ -13,12 +13,12 @@ import java.util.List;
 
 public class FeatherFallItem extends AbstractSpellRayCast {
 
-    public FeatherFallItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public FeatherFallItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override
-    protected boolean isHarmful() {
+    public boolean isHarmful() {
         return false;
     }
 
@@ -49,7 +49,7 @@ public class FeatherFallItem extends AbstractSpellRayCast {
         for ( Entity entity : list ) {
             if ( entity instanceof LivingEntity living ) {
                 living.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, getLife(), 0, false, false));
-                if ( living != caster ) addEnchantParticles(living, getColor().r, getColor().g, getColor().b, 0.15F, 8, 1);
+                if ( living != caster ) addEnchantParticles(living, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, 1);
             }
         }
     }

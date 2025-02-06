@@ -335,27 +335,6 @@ public abstract class AbstractSpellEntity extends Projectile {
         return this.entityData.get(SIZE);
     }
 
-    public static ParticleColor.IntWrapper getSpellColor(ColorCode color) {
-        return switch (color) {
-            case DARK_RED -> new ParticleColor.IntWrapper(170, 25, 25);
-            case RED -> new ParticleColor.IntWrapper(255, 85, 85);
-            case GOLD -> new ParticleColor.IntWrapper(255, 170, 25);
-            case YELLOW -> new ParticleColor.IntWrapper(255, 255, 85);
-            case DARK_GREEN -> new ParticleColor.IntWrapper(25, 170, 25);
-            case GREEN -> new ParticleColor.IntWrapper(85, 225, 85);
-            case AQUA -> new ParticleColor.IntWrapper(85, 255, 255);
-            case DARK_AQUA -> new ParticleColor.IntWrapper(25, 170, 170);
-            case DARK_BLUE -> new ParticleColor.IntWrapper(25, 25, 170);
-            case BLUE -> new ParticleColor.IntWrapper(85, 85, 255);
-            case LIGHT_PURPLE -> new ParticleColor.IntWrapper(255, 85, 255);
-            case DARK_PURPLE -> new ParticleColor.IntWrapper(170, 25, 170);
-            case WHITE -> new ParticleColor.IntWrapper(255, 255, 255);
-            case GRAY -> new ParticleColor.IntWrapper(170, 170, 170);
-            case DARK_GRAY -> new ParticleColor.IntWrapper(85, 85, 85);
-            case BLACK -> new ParticleColor.IntWrapper(0, 0, 0);
-        };
-    }
-
     public int getPower() {
         return this.entityData.get(POWER);
     }

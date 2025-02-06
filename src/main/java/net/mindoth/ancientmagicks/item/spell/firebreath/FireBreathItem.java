@@ -3,7 +3,6 @@ package net.mindoth.ancientmagicks.item.spell.firebreath;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,13 +21,13 @@ import java.util.stream.Stream;
 
 public class FireBreathItem extends AbstractSpellRayCast {
 
-    public FireBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public FireBreathItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override
-    public ParticleColor.IntWrapper getColor() {
-        return AbstractSpellEntity.getSpellColor(ColorCode.GOLD);
+    public ParticleColor.IntWrapper getParticleColor() {
+        return ColorCode.GOLD.getParticleColor();
     }
 
     @Override

@@ -3,8 +3,6 @@ package net.mindoth.ancientmagicks.item;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
@@ -31,20 +29,15 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Random;
 
 public class SpellItem extends Item {
-    public final int spellTier;
-    public final int manaCost;
-    public final int cooldown;
-
-    public SpellItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties);
-        this.spellTier = spellTier;
-        this.manaCost = manaCost;
-        this.cooldown = cooldown * 20;
-    }
 
     public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         return false;
     }
+
+    public final int spellTier;
+    public final int manaCost;
+    public final int cooldown;
+    private final SpellType spellType;
 
     public boolean isCraftable() {
         return true;
@@ -54,8 +47,66 @@ public class SpellItem extends Item {
         return false;
     }
 
-    protected boolean isHarmful() {
-        return true;
+    public boolean isHarmful() {
+        return this.spellType.getType() != SpellType.BUFF;
+    }
+
+    public ParticleColor.IntWrapper getParticleColor() {
+        return ColorCode.DARK_PURPLE.getParticleColor();
+    }
+
+    public SpellItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties);
+        this.spellTier = spellTier;
+        if ( manaCost == -1 ) this.manaCost = isChannel() ? spellTier * 2 : spellTier * spellType.getMultiplier();
+        else this.manaCost = manaCost;
+        this.cooldown = cooldown * 20;
+        this.spellType = spellType;
+    }
+
+    public enum SpellType {
+        ATTACK(10),
+        BUFF(20),
+        SUMMON(20),
+        SPECIAL(1);
+
+        private int multiplier;
+        SpellType(int i) {
+            this.multiplier = i;
+        }
+        int getMultiplier() {
+            return this.multiplier;
+        }
+        SpellType getType() {
+            return this;
+        }
+    }
+
+    public enum ColorCode {
+        DARK_RED(new ParticleColor.IntWrapper(170, 25, 25)),
+        RED(new ParticleColor.IntWrapper(255, 85, 85)),
+        GOLD(new ParticleColor.IntWrapper(255, 170, 25)),
+        YELLOW(new ParticleColor.IntWrapper(255, 255, 85)),
+        DARK_GREEN(new ParticleColor.IntWrapper(25, 170, 25)),
+        GREEN(new ParticleColor.IntWrapper(85, 225, 85)),
+        AQUA(new ParticleColor.IntWrapper(85, 255, 255)),
+        DARK_AQUA(new ParticleColor.IntWrapper(25, 170, 170)),
+        DARK_BLUE(new ParticleColor.IntWrapper(25, 25, 170)),
+        BLUE(new ParticleColor.IntWrapper(85, 85, 255)),
+        LIGHT_PURPLE(new ParticleColor.IntWrapper(255, 85, 255)),
+        DARK_PURPLE(new ParticleColor.IntWrapper(170, 25, 170)),
+        WHITE(new ParticleColor.IntWrapper(255, 255, 255)),
+        GRAY(new ParticleColor.IntWrapper(170, 170, 170)),
+        DARK_GRAY(new ParticleColor.IntWrapper(85, 85, 85)),
+        BLACK(new ParticleColor.IntWrapper(0, 0, 0));
+
+        private ParticleColor.IntWrapper color;
+        ColorCode(ParticleColor.IntWrapper color) {
+            this.color = color;
+        }
+        public ParticleColor.IntWrapper getParticleColor() {
+            return this.color;
+        }
     }
 
     public static int rollForPower(int power, int die) {
@@ -139,10 +190,6 @@ public class SpellItem extends Item {
     @Override
     public UseAnim getUseAnimation(ItemStack pStack) {
         return UseAnim.BOW;
-    }
-
-    public ParticleColor.IntWrapper getColor() {
-        return AbstractSpellEntity.getSpellColor(ColorCode.DARK_PURPLE);
     }
 
     protected void addEnchantParticles(Entity target, int r, int g, int b, float size, int age, int renderType) {

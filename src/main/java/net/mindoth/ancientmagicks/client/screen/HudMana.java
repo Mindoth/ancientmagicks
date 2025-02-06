@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.client.screen;
 
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.config.AncientMagicksClientConfig;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
@@ -25,8 +26,8 @@ public class HudMana implements IGuiOverlay {
         double maxMana = player.getAttributeValue(AncientMagicksAttributes.MP_MAX.get());
         double currentMana = ClientMagicData.getCurrentMana();
         String mana = (int)currentMana + "/" + (int)maxMana;
-        int posX = (MINECRAFT.getWindow().getGuiScaledWidth() / 2) + 30;
-        int posY = MINECRAFT.getWindow().getGuiScaledHeight() - 48;
+        int posX = (MINECRAFT.getWindow().getGuiScaledWidth() / 2) + 30 + AncientMagicksClientConfig.MANA_BAR_X_OFFSET.get();
+        int posY = MINECRAFT.getWindow().getGuiScaledHeight() - 48 + AncientMagicksClientConfig.MANA_BAR_Y_OFFSET.get();
         graphics.drawString(gui.getFont(), mana, posX, posY, ChatFormatting.AQUA.getColor());
     }
 

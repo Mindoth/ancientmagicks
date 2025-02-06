@@ -3,7 +3,6 @@ package net.mindoth.ancientmagicks.item.spell.numbpain;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -13,13 +12,13 @@ import net.minecraft.world.level.Level;
 
 public class NumbPainItem extends AbstractSpellRayCast {
 
-    public NumbPainItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public NumbPainItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override
-    public ParticleColor.IntWrapper getColor() {
-        return AbstractSpellEntity.getSpellColor(ColorCode.BLACK);
+    public ParticleColor.IntWrapper getParticleColor() {
+        return ColorCode.BLACK.getParticleColor();
     }
 
     @Override
@@ -34,7 +33,7 @@ public class NumbPainItem extends AbstractSpellRayCast {
 
     @Override
     protected boolean canApply(Level level, Player owner, Entity caster, Entity target) {
-        return true;
+        return target instanceof LivingEntity;
     }
 
     @Override

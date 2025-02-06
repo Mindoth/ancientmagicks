@@ -9,8 +9,8 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractSpellShoot extends SpellItem {
 
-    public AbstractSpellShoot(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public AbstractSpellShoot(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     //This needs to return an actual entity, it is not @Nullable
@@ -36,7 +36,7 @@ public abstract class AbstractSpellShoot extends SpellItem {
 
         if ( state ) {
             AbstractSpellEntity projectile = getProjectile(level, owner, caster);
-            projectile.setAdditionalData(getColor());
+            projectile.setAdditionalData(getParticleColor());
             int power = projectile.getEntityData().get(AbstractSpellEntity.POWER) + (int)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
             projectile.getEntityData().set(AbstractSpellEntity.POWER, power);
             projectile.setNoGravity(!hasGravity());

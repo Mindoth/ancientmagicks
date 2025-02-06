@@ -20,8 +20,8 @@ import java.util.List;
 
 public class TelekineticGrabItem extends SpellItem {
 
-    public TelekineticGrabItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public TelekineticGrabItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override

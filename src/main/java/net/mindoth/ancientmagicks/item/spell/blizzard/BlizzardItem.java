@@ -2,7 +2,6 @@ package net.mindoth.ancientmagicks.item.spell.blizzard;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.ColorCode;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -16,13 +15,13 @@ import net.minecraft.world.phys.Vec3;
 
 public class BlizzardItem extends SpellItem {
 
-    public BlizzardItem(Properties pProperties, int spellTier, int manaCost, int cooldown) {
-        super(pProperties, spellTier, manaCost, cooldown);
+    public BlizzardItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
+        super(pProperties, spellTier, manaCost, cooldown, spellType);
     }
 
     @Override
-    public ParticleColor.IntWrapper getColor() {
-        return AbstractSpellEntity.getSpellColor(ColorCode.AQUA);
+    public ParticleColor.IntWrapper getParticleColor() {
+        return ColorCode.AQUA.getParticleColor();
     }
 
     @Override
@@ -58,7 +57,7 @@ public class BlizzardItem extends SpellItem {
 
     private void spawnIcicles(Player owner, Entity caster, Level level, Vec3 center, float yRot, int adjuster, int useTime) {
         AbstractSpellEntity projectile = new IcicleEntity(level, owner, caster, this);
-        projectile.setAdditionalData(AbstractSpellEntity.getSpellColor(ColorCode.AQUA));
+        projectile.setAdditionalData(getParticleColor());
         double newX = center.x;
         double newY = getHeight(level, center);
         double newZ = center.z;
