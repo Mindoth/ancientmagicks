@@ -1,8 +1,8 @@
 package net.mindoth.ancientmagicks.item.spell.summonskeletoncaster;
 
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellSummon;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -30,10 +30,9 @@ public class SummonSkeletonCasterItem extends AbstractSpellSummon {
     @Override
     protected Mob getMinion(Level level) {
         Mob minion = new Skeleton(EntityType.SKELETON, level);
-        int i = 20;
-        if ( minion.level().getDifficulty() != Difficulty.HARD ) i = 40;
+        SpellItem spell = (SpellItem)AncientMagicksItems.FIRE_BOLT_ITEM.get();
         //TODO rework so goal stays on world reload
-        minion.goalSelector.addGoal(4, new RangedMagickAttackGoal<>((Skeleton) minion, 1.0D, i, 15.0F));
+        minion.goalSelector.addGoal(4, new RangedMagickAttackGoal<>((Skeleton)minion, 1.0D, spell.getCooldown(), 15.0F, spell));
         return minion;
     }
 }

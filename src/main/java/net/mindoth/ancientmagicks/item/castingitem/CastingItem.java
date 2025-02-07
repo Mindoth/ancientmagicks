@@ -35,7 +35,7 @@ public class CastingItem extends Item {
         Vec3 center = caster instanceof SpellPearlEntity ? caster.position() : caster.getEyePosition();
 
         //Check casting bonuses
-        boolean hasAlacrity = caster == owner && owner.hasEffect(AncientMagicksEffects.ALACRITY.get());
+        boolean hasAlacrity = caster instanceof LivingEntity living && living.hasEffect(AncientMagicksEffects.ALACRITY.get());
 
         //Cast the given Spell
         if ( AncientMagicks.isSpellEnabled(spell) ) {
@@ -47,44 +47,46 @@ public class CastingItem extends Item {
                 storeSpell(owner, caster, spell, vessel);
             }
             //ACTUALLY cast the spell
-            else if ( stack != null && caster == owner ) {
+            else if ( stack != null ) {
                 if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) ) {
-                    if ( castingItem instanceof StaffItem && useTime % 10 == 0 ) MagickEvents.changeMana(owner, -spell.getManaCost());
-                    //Handle cooldown on non-channel spells right after casting
-                    if ( !spell.isChannel() ) handleCooldownsAndStuff(owner, stack, spell, hasAlacrity);
-                    //Reduce durability on first tick of spells
-                    if ( useTime == 0 ) addItemDamage(stack, 1, owner);
+                    if ( castingItem instanceof StaffItem && useTime % 10 == 0 ) MagickEvents.changeMana(caster, -spell.getManaCost());
+                    if ( caster instanceof LivingEntity living ) {
+                        //Handle cooldown on non-channel spells right after casting
+                        if ( !spell.isChannel() ) handleCooldownsAndStuff(living, stack, spell, hasAlacrity);
+                        //Reduce durability on first tick of spells
+                        if ( useTime == 0 ) addItemDamage(stack, 1, living);
+                    }
                 }
                 else {
-                    if ( useTime == 0 ) whiffSpell(owner, caster, spell);
+                    if ( useTime == 0 ) whiffSpell(caster, spell);
                     //If spell fails while it's being used, it is a channel spell
-                    else if ( spell.isChannel() ) handleCooldownsAndStuff(owner, stack, spell, hasAlacrity);
+                    else if ( spell.isChannel() ) handleCooldownsAndStuff(caster, stack, spell, hasAlacrity);
                     //Manual channel spell stopping is handled in MagickEvents.class
                 }
             }
-            //Handling for Non-players
+            //Handling for Spell Pearl
             else spell.castMagic(owner, caster, center, xRot, yRot, useTime);
         }
-        else whiffSpell(owner, caster, spell);
+        else whiffSpell(caster, spell);
     }
 
-    private static void handleCooldownsAndStuff(LivingEntity living, ItemStack castingItem, SpellItem spell, boolean hasAlacrity) {
+    private static void handleCooldownsAndStuff(Entity entity, ItemStack castingItem, SpellItem spell, boolean hasAlacrity) {
         Item item = castingItem.getItem();
         float alacrityBonus = hasAlacrity ? 0.5F : 1.0F;
         int spellCooldown = (int)(spell.getCooldown() * alacrityBonus);
         if ( item instanceof StaffItem || item instanceof WandItem ) {
             if ( item instanceof WandItem ) spell = SpecialCastingItem.getStoredSpell(castingItem);
-            addCastingCooldown(living, spell, spellCooldown);
+            addCastingCooldown(entity, spell, spellCooldown);
         }
-        living.stopUsingItem();
+        if ( entity instanceof LivingEntity living ) living.stopUsingItem();
     }
 
     public static void addItemDamage(ItemStack castingItem, int amount, LivingEntity living) {
         castingItem.hurtAndBreak(amount, living, (holder) -> holder.broadcastBreakEvent(living.getUsedItemHand()));
     }
 
-    public static void addCastingCooldown(LivingEntity living, SpellItem spell, int cooldown) {
-        if ( living instanceof Player player ) player.getCooldowns().addCooldown(spell, cooldown);
+    public static void addCastingCooldown(Entity entity, SpellItem spell, int cooldown) {
+        if ( entity instanceof Player player ) player.getCooldowns().addCooldown(spell, cooldown);
     }
 
     public static void storeSpell(LivingEntity living, Entity caster, SpellItem spell, ItemStack vessel) {
@@ -108,23 +110,25 @@ public class CastingItem extends Item {
                 addCastingCooldown(owner, spell, spell.getCooldown());
                 owner.stopUsingItem();
             }
-            else whiffSpell(owner, caster, spell);
+            else whiffSpell(caster, spell);
         });
     }
 
-    public static void whiffSpell(LivingEntity living, Entity caster, SpellItem spell) {
+    public static void whiffSpell(Entity caster, SpellItem spell) {
         SpellItem.playWhiffSound(caster);
-        addCastingCooldown(living, spell, 20);
-        living.stopUsingItem();
+        if ( caster instanceof LivingEntity living ) {
+            addCastingCooldown(living, spell, 20);
+            living.stopUsingItem();
+        }
     }
 
-    public static @Nonnull ItemStack getHeldStaff(Player playerEntity) {
+    public static @Nonnull ItemStack getHeldStaff(LivingEntity playerEntity) {
         ItemStack staff = playerEntity.getMainHandItem().getItem() instanceof StaffItem ? playerEntity.getMainHandItem() : ItemStack.EMPTY;
         if ( staff == ItemStack.EMPTY ) staff = playerEntity.getOffhandItem().getItem() instanceof StaffItem ? playerEntity.getOffhandItem() : ItemStack.EMPTY;
         return staff;
     }
 
-    public static @Nonnull ItemStack getHeldCastingItem(Player playerEntity) {
+    public static @Nonnull ItemStack getHeldCastingItem(LivingEntity playerEntity) {
         ItemStack staff = isValidCastingItem(playerEntity.getMainHandItem()) ? playerEntity.getMainHandItem() : null;
         return staff == null ? (isValidCastingItem(playerEntity.getOffhandItem()) ? playerEntity.getOffhandItem() : ItemStack.EMPTY) : staff;
     }

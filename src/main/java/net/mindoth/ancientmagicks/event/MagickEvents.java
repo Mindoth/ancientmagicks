@@ -17,6 +17,7 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -52,8 +53,8 @@ public class MagickEvents {
     }
 
     //ANY CHANGES IN A PLAYER'S MANA SHOULD BE DONE HERE
-    public static void changeMana(LivingEntity living, double addition) {
-        if ( !(living instanceof ServerPlayer serverPlayer) || living.isRemoved() || (serverPlayer.isCreative() && addition < 0) ) return;
+    public static void changeMana(Entity entity, double addition) {
+        if ( !(entity instanceof ServerPlayer serverPlayer) || serverPlayer.isRemoved() || (serverPlayer.isCreative() && addition < 0) ) return;
         serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
             final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get());
             final double currentMana = magic.getCurrentMana();

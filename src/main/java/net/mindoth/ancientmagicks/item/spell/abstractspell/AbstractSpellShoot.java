@@ -42,7 +42,7 @@ public abstract class AbstractSpellShoot extends SpellItem {
             projectile.getEntityData().set(AbstractSpellEntity.POWER, power);
             projectile.setNoGravity(!hasGravity());
             projectile.setPos(center.add(0, down, 0).add(caster.getForward()));
-            projectile.anonShootFromRotation(xRot * adjuster, yRot * adjuster, 0, Math.max(0, projectile.getSpeed()), 0.0F);
+            projectile.anonShootFromRotation(caster.getXRot(), caster.getYRot(), 0, Math.max(0, projectile.getSpeed()), 0.0F);
             level.addFreshEntity(projectile);
 
             playSound(level, center);

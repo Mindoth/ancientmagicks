@@ -3,34 +3,40 @@ package net.mindoth.ancientmagicks.item.spell.summonskeletoncaster;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
-import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltItem;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
+import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.shadowizardlib.event.ShadowEvents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.EnumSet;
-import java.util.Random;
 
 public class RangedMagickAttackGoal<T extends net.minecraft.world.entity.Mob & RangedAttackMob> extends Goal {
     private final T mob;
     private final double speedModifier;
     private int attackIntervalMin;
     private final float attackRadiusSqr;
+    private final SpellItem spell;
     private int attackTime = -1;
     private int seeTime;
     private boolean strafingClockwise;
     private boolean strafingBackwards;
     private int strafingTime = -1;
 
-    public RangedMagickAttackGoal(T pMob, double pSpeedModifier, int pAttackIntervalMin, float pAttackRadius) {
+    public RangedMagickAttackGoal(T pMob, double pSpeedModifier, int pAttackIntervalMin, float pAttackRadius, SpellItem spell) {
         this.mob = pMob;
         this.speedModifier = pSpeedModifier;
         this.attackIntervalMin = pAttackIntervalMin;
         this.attackRadiusSqr = pAttackRadius * pAttackRadius;
+        this.spell = spell;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
@@ -116,23 +122,28 @@ public class RangedMagickAttackGoal<T extends net.minecraft.world.entity.Mob & R
             }
             else this.mob.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
 
+            InteractionHand hand = ProjectileUtil.getWeaponHoldingHand(this.mob, item -> item instanceof StaffItem);
+            ItemStack stack = this.mob.getItemInHand(hand);
             if ( this.mob.isUsingItem() ) {
                 if ( !flag && this.seeTime < -60 ) this.mob.stopUsingItem();
                 else if ( flag ) {
                     int i = this.mob.getTicksUsingItem();
                     if ( i >= 20 ) {
-                        this.mob.stopUsingItem();
-                        //this.mob.performRangedAttack(livingentity, BowItem.getPowerForTime(i));
-                        SpellItem spell = new Random().nextBoolean() ? (SpellItem)AncientMagicksItems.FREEZE_LANCE_ITEM.get() : (SpellItem)AncientMagicksItems.BURN_LANCE_ITEM.get();
-                        CastingItem.doSpell(this.mob, this.mob, null, spell, 0);
+                        /*this.mob.stopUsingItem();
+                        this.mob.performRangedAttack(livingentity, BowItem.getPowerForTime(i));*/
+
+                        LivingEntity controller = this.mob;
+                        CompoundTag tag = this.mob.getPersistentData();
+                        if ( this.mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && tag.contains(MindControlEffect.NBT_KEY_CONTROL) ) {
+                            Entity owner = ShadowEvents.getEntityByUUID(this.mob.level(), tag.getUUID(MindControlEffect.NBT_KEY_CONTROL));
+                            if ( owner instanceof LivingEntity living ) controller = living;
+                        }
+                        CastingItem.doSpell(controller, this.mob, stack, this.spell, i);
                         this.attackTime = this.attackIntervalMin;
                     }
                 }
             }
-            else if (--this.attackTime <= 0 && this.seeTime >= -60) {
-                this.mob.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.mob, item -> item instanceof StaffItem));
-            }
-
+            else if ( --this.attackTime <= 0 && this.seeTime >= -60 ) this.mob.startUsingItem(hand);
         }
     }
 }

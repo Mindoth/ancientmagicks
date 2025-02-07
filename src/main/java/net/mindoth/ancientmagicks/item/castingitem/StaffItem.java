@@ -72,7 +72,7 @@ public class StaffItem extends CastingItem implements Vanishable {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
                     if ( item instanceof SpellItem spell && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spell) ) {
                         if ( magic.getCurrentMana() >= spell.getManaCost() || player.isCreative() ) player.startUsingItem(hand);
-                        else CastingItem.whiffSpell(player, player, spell);
+                        else CastingItem.whiffSpell(player, spell);
                     }
                 });
             }

@@ -80,7 +80,7 @@ public class FireBreathItem extends AbstractSpellRayCast {
             }
         }
 
-        spawnParticles(level, caster, adjuster, down);
+        spawnParticles(level, caster, down);
         state = true;
 
         if ( state ) {
@@ -93,7 +93,7 @@ public class FireBreathItem extends AbstractSpellRayCast {
         return state;
     }
 
-    private void spawnParticles(Level level, Entity caster, int adjuster, float down) {
+    private void spawnParticles(Level level, Entity caster, float down) {
         if ( !(level instanceof ServerLevel world) ) return;
         Vec3 center = caster.getEyePosition(1.0F).add(0, down, 0);
         Vec3 lookVec = caster.getLookAngle();
