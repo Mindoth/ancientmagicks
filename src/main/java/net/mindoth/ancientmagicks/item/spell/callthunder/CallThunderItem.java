@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.callthunder;
 
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -28,13 +29,13 @@ public class CallThunderItem extends AbstractSpellRayCast {
     }
 
     @Override
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         boolean state = false;
         Level level = caster.level();
         int power = 3 + (int)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
         float range = getRange();
-        if ( owner != caster ) range = 0.0F;
-        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, true, true, true, true);
+        if ( caster instanceof SpellPearlEntity ) range = 0.0F;
+        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, true, true, true, true);
         BlockPos blockPos = new BlockPos(Mth.floor(point.x), Mth.floor(point.y), Mth.floor(point.z));
         BlockState blockState = level.getBlockState(blockPos.below());
         if ( !blockState.isSolid() || !(blockState.getBlock() instanceof LiquidBlock) ) blockPos = getBlockBelow(level, blockPos);

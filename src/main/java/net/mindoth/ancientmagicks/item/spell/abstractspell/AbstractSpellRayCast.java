@@ -47,12 +47,12 @@ public abstract class AbstractSpellRayCast extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         boolean state = false;
         Level level = caster.level();
 
         Entity target;
-        if ( caster == owner ) target = ShadowEvents.getPointedEntity(level, caster, getRange(), 0.25F, caster == owner, true, this::filter);
+        if ( caster == owner ) target = ShadowEvents.getPointedEntity(level, caster, getRange(), 0.25F, true, this::filter);
         else target = ShadowEvents.getNearestEntity(caster, level, getSize(), this::filter);
         if ( caster == owner && !isHarmful() && !filter(owner, target) ) target = owner;
 

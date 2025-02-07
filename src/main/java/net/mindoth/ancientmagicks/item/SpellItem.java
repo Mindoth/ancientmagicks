@@ -30,7 +30,7 @@ import java.util.Random;
 
 public class SpellItem extends Item {
 
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         return false;
     }
 

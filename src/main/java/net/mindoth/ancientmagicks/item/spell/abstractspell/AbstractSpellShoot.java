@@ -24,15 +24,10 @@ public abstract class AbstractSpellShoot extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        int adjuster = 1;
-        float down = -0.2F;
-        if ( caster != owner ) {
-            adjuster = -1;
-            down = 0.0F;
-        }
+        float down = caster instanceof Player ? -0.2F : 0.0F;
         state = true;
 
         if ( state ) {

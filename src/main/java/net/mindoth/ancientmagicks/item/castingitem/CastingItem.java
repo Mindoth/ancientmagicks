@@ -30,8 +30,6 @@ public class CastingItem extends Item {
 
     public static void doSpell(LivingEntity owner, Entity caster, @Nullable ItemStack stack, SpellItem spell, int useTime) {
         Item castingItem = stack != null ? stack.getItem() : null;
-        float xRot = caster.getXRot();
-        float yRot = caster.getYRot();
         Vec3 center = caster instanceof SpellPearlEntity ? caster.position() : caster.getEyePosition();
 
         //Check casting bonuses
@@ -48,7 +46,7 @@ public class CastingItem extends Item {
             }
             //ACTUALLY cast the spell
             else if ( stack != null ) {
-                if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) ) {
+                if ( spell.castMagic(owner, caster, center, useTime) ) {
                     if ( castingItem instanceof StaffItem && useTime % 10 == 0 ) MagickEvents.changeMana(caster, -spell.getManaCost());
                     if ( caster instanceof LivingEntity living ) {
                         //Handle cooldown on non-channel spells right after casting
@@ -65,7 +63,7 @@ public class CastingItem extends Item {
                 }
             }
             //Handling for Spell Pearl
-            else spell.castMagic(owner, caster, center, xRot, yRot, useTime);
+            else spell.castMagic(owner, caster, center, useTime);
         }
         else whiffSpell(caster, spell);
     }

@@ -39,27 +39,21 @@ public class DragonBreathItem extends AbstractSpellRayCast {
     }
 
     @Override
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        int adjuster = 1;
-        float down = -0.2F;
-        if ( caster != owner ) {
-            adjuster = -1;
-            down = 0.0F;
-        }
+        float down = caster instanceof Player ? -0.2F : 0.0F;
 
         float range = getRange();
-        if ( owner != caster ) range = 0.0F;
         float size = getSize();
         int power = 1 + (int)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
 
-        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, false, true, false);
+        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, false, false, true, false);
         List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + size, point.y + size, point.z + size),
                 new Vec3(point.x - size, point.y - size, point.z - size)));
         targets.removeIf(target -> !(target instanceof LivingEntity));
 
-        Vec3 point2 = ShadowEvents.getPoint(level, caster, range * 2, 0, caster == owner, false, false, true, false);
+        Vec3 point2 = ShadowEvents.getPoint(level, caster, range * 2, 0, false, false, true, false);
         List<Entity> targets2 = level.getEntities(caster, new AABB(new Vec3(point2.x + size, point2.y + size, point2.z + size),
                 new Vec3(point2.x - size, point2.y - size, point2.z - size)));
         targets2.removeIf(target -> !(target instanceof LivingEntity) || targets.contains(target));
@@ -72,7 +66,7 @@ public class DragonBreathItem extends AbstractSpellRayCast {
             }
         }
 
-        spawnParticles(level, caster, adjuster, down);
+        spawnParticles(level, caster, down);
         state = true;
 
         if ( state ) {
@@ -85,7 +79,7 @@ public class DragonBreathItem extends AbstractSpellRayCast {
         return state;
     }
 
-    private void spawnParticles(Level level, Entity caster, int adjuster, float down) {
+    private void spawnParticles(Level level, Entity caster, float down) {
         if ( !(level instanceof ServerLevel world) ) return;
         Vec3 center = caster.getEyePosition(1.0F).add(0, down, 0);
         Vec3 lookVec = caster.getLookAngle();

@@ -31,22 +31,20 @@ public class BlizzardItem extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        int adjuster = 1;
         float down = -0.2F;
         if ( caster != owner ) {
-            adjuster = -1;
             down = 0.0F;
         }
 
         float range = 14.0F;
         if ( owner != caster ) range = 0.0F;
 
-        Vec3 pos = ShadowEvents.getPoint(level, caster, range, 0.25F, caster == owner, false, true, true, false);
+        Vec3 pos = ShadowEvents.getPoint(level, caster, range, 0.25F, false, true, true, false);
 
-        for ( int i = 0; i < 2; i++ ) spawnIcicles(owner, caster, level, pos, yRot, adjuster, useTime);
+        for ( int i = 0; i < 2; i++ ) spawnIcicles(owner, caster, level, pos, useTime);
         state = true;
 
         if ( state ) {
@@ -56,7 +54,7 @@ public class BlizzardItem extends SpellItem {
         return state;
     }
 
-    private void spawnIcicles(LivingEntity owner, Entity caster, Level level, Vec3 center, float yRot, int adjuster, int useTime) {
+    private void spawnIcicles(LivingEntity owner, Entity caster, Level level, Vec3 center, int useTime) {
         AbstractSpellEntity projectile = new IcicleEntity(level, owner, caster, this);
         projectile.setAdditionalData(getParticleColor());
         double newX = center.x;
@@ -67,7 +65,7 @@ public class BlizzardItem extends SpellItem {
             newZ += getRandomPos().z;
         }
         projectile.setPos(newX, newY, newZ);
-        projectile.anonShootFromRotation(90 * adjuster, 0, 0, 0.15F, 0.0F);
+        projectile.anonShootFromRotation(90, 0, 0, 0.15F, 0.0F);
         level.addFreshEntity(projectile);
 
         ServerLevel serverLevel = (ServerLevel)level;

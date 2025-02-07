@@ -172,7 +172,7 @@ public class AncientMagicksItems {
             () -> new WitchArrowItem(new Item.Properties(), 1, -1, 2, SpellItem.SpellType.ATTACK));
 
     public static final RegistryObject<Item> NUMB_PAIN_ITEM = ITEMS.register("numb_pain",
-            () -> new NumbPainItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.BUFF));
+            () -> new NumbPainItem(new Item.Properties(), 3, -1, 10, SpellItem.SpellType.BUFF));
 
     public static final RegistryObject<Item> FROST_ARMOR_ITEM = ITEMS.register("frost_armor",
             () -> new FrostArmorItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.BUFF));

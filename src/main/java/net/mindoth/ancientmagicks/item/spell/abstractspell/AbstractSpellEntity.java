@@ -23,6 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
@@ -277,7 +278,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         double d6 = vec3.y;
         double d1 = vec3.z;
         for ( int j = -4; j < 0; j++ ) {
-            if ( -this.tickCount < j ) {
+            if ( -this.tickCount < j || !(this.owner instanceof Player) ) {
                 //Main body
                 float particleSize = Math.min(this.entityData.get(SIZE), (this.entityData.get(SIZE) * 0.1F) * this.tickCount);
                 for ( int i = 0; i < 2; i++ ) {
@@ -289,7 +290,7 @@ public abstract class AbstractSpellEntity extends Projectile {
                             pos.x + randX + d5 * (double)j / 4.0D, pos.y + randY + d6 * (double)j / 4.0D, pos.z + randZ + d1 * (double)j / 4.0D, 0, 0, 0);
                 }
                 //Trail twinkle
-                if ( j == -1 ) {
+                if ( j == -1 || !(this.owner instanceof Player) ) {
                     for ( int i = 0; i < 8; i++ ) {
                         float sphereSize = this.entityData.get(SIZE) / 3;
                         float randX = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));

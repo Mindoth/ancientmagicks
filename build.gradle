@@ -139,7 +139,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
 
-    implementation fg.deobf("curse.maven:shadowizardlib-887125:6136014")
+    implementation fg.deobf("curse.maven:shadowizardlib-887125:6166830")
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 

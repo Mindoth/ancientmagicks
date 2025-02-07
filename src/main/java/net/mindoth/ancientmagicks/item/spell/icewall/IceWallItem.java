@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item.spell.icewall;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -34,7 +35,7 @@ public class IceWallItem extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         boolean state = false;
         Level level = caster.level();
         float down = -0.2F;
@@ -43,19 +44,19 @@ public class IceWallItem extends SpellItem {
         }
 
         float range = 3.5F;
-        if ( owner != caster ) range = 0.0F;
+        if ( caster instanceof SpellPearlEntity) range = 0.0F;
         int height = 2;
         Block wallMaterial = Blocks.PACKED_ICE;
 
-        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, false, false, false);
-        Vec3 blockPoint = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, false, true, false);
+        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, false, false, false, false);
+        Vec3 blockPoint = ShadowEvents.getPoint(level, caster, range, 0, false, false, true, false);
         BlockPos pos;
         if ( point == blockPoint ) pos = new BlockPos(Mth.floor(point.x), Mth.floor(point.y), Mth.floor(point.z));
         else pos = new BlockPos(Mth.floor(blockPoint.x), Mth.floor(blockPoint.y), Mth.floor(blockPoint.z));
 
         if ( checkHeight(level, pos, height) != null ) {
             state = true;
-            BlockPos lookAtBlockPoint = ShadowEvents.getBlockPoint(caster, range, caster == owner);
+            BlockPos lookAtBlockPoint = ShadowEvents.getBlockPoint(caster, range);
             Block block = level.getBlockState(lookAtBlockPoint).getBlock();
             if ( block != wallMaterial ) {
                 BlockPos placePos = checkHeight(level, pos, height);

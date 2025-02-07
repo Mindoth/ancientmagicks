@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.blink;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,27 +17,27 @@ public class BlinkItem extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         boolean state = false;
         Level level = caster.level();
 
         float range = 32.0F;
-        if ( owner != caster ) range = 0.0F;
+        if ( caster instanceof SpellPearlEntity ) range = 0.0F;
 
         Vec3 pos;
 
-        Vec3 freePoint = ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, false, false, false, false);
-        Vec3 blockPoint = ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, false, false, true, false);
+        Vec3 freePoint = ShadowEvents.getPoint(level, caster, range, 0.0F, false, false, false, false);
+        Vec3 blockPoint = ShadowEvents.getPoint(level, caster, range, 0.0F, false, false, true, false);
         if ( freePoint == blockPoint ) pos = freePoint;
-        else pos = ShadowEvents.getPoint(level, caster, range, 0.0F, caster == owner, true, false, true, false);
+        else pos = ShadowEvents.getPoint(level, caster, range, 0.0F, true, false, true, false);
 
         pos = new Vec3(pos.x, pos.y - 0.5D, pos.z);
 
         //TODO maybe try teleportToWithTicket?
         EntityTeleportEvent.TeleportCommand event = net.minecraftforge.event.ForgeEventFactory.onEntityTeleportCommand(caster, pos.x, pos.y, pos.z);
         if ( !event.isCanceled() ) {
-            if ( owner == caster ) caster.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
-            else if ( owner != null && owner.level() == caster.level() ) owner.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+            if ( caster instanceof LivingEntity ) caster.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+            else if ( caster instanceof SpellPearlEntity && owner != null && owner.level() == caster.level() ) owner.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
             state = true;
         }
 

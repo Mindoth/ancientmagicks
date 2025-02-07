@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.telekineticgrab;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -26,20 +27,22 @@ public class TelekineticGrabItem extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         boolean state = false;
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);
         if ( owner != caster && owner != null && owner.level() == caster.level() ) casterPos = owner.getEyePosition(1.0F);
 
         float range = 14.0F;
-        if ( owner != caster ) range = 0.0F;
         float size = 0.4F;
-        if ( owner != caster ) size = 1.0F;
+        if ( caster instanceof SpellPearlEntity) {
+            range = 0.0F;
+            size = 1.0F;
+        }
 
         Vec3 soundPos = center;
         Entity target;
-        if ( owner == caster ) target = getPointedItemEntity(level, caster, range, size, caster == owner);
+        if ( owner == caster ) target = getPointedItemEntity(level, caster, range, size);
         else target = getNearestItemEntity(caster, level, size);
         if ( target instanceof ItemEntity ) {
             ArrayList<ItemEntity> itemPile = getItemEntitiesAround(target, level, 1.0F, null);
@@ -97,10 +100,8 @@ public class TelekineticGrabItem extends SpellItem {
         return target;
     }
 
-    private static Entity getPointedItemEntity(Level level, Entity caster, float range, float error, boolean isPlayer) {
-        int adjuster = 1;
-        if ( !isPlayer ) adjuster = -1;
-        Vec3 direction = ShadowEvents.calculateViewVector(caster.getXRot() * adjuster, caster.getYRot() * adjuster).normalize();
+    private static Entity getPointedItemEntity(Level level, Entity caster, float range, float error) {
+        Vec3 direction = ShadowEvents.calculateViewVector(caster.getXRot(), caster.getYRot()).normalize();
         direction = direction.multiply(range, range, range);
         Vec3 center = caster.getEyePosition(0).add(direction);
         Entity returnEntity = caster;
@@ -139,10 +140,7 @@ public class TelekineticGrabItem extends SpellItem {
     }
 
     public static BlockPos getBlockPoint(Entity caster, float range, boolean isPlayer) {
-        int adjuster = 1;
-        if ( !isPlayer ) adjuster = -1;
-
-        Vec3 direction = ShadowEvents.calculateViewVector(caster.getXRot() * (float)adjuster, caster.getYRot() * (float)adjuster).normalize();
+        Vec3 direction = ShadowEvents.calculateViewVector(caster.getXRot(), caster.getYRot()).normalize();
         direction = direction.multiply(range, range, range);
         Vec3 center = caster.getEyePosition().add(direction);
         double playerX = caster.getEyePosition().x;

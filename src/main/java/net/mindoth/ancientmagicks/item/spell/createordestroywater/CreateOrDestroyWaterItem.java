@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.spell.createordestroywater;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,12 +30,12 @@ public class CreateOrDestroyWaterItem extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         boolean state = false;
         Level level = caster.level();
 
         float range = 4.5F;
-        if ( owner != caster ) range = 0.0F;
+        if ( caster instanceof SpellPearlEntity ) range = 0.0F;
 
         BlockPos pos = caster.getOnPos();
         SoundEvent sound = SoundEvents.BUCKET_EMPTY;

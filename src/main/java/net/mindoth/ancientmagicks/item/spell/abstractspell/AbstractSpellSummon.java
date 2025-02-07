@@ -42,7 +42,7 @@ public class AbstractSpellSummon extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         boolean state = false;
         Level level = caster.level();
         state = true;
@@ -64,7 +64,7 @@ public class AbstractSpellSummon extends SpellItem {
                 }
                 float range = 64.0F;
                 if ( owner != caster ) range = 0.0F;
-                Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, caster == owner, true, null);
+                Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, true, null);
                 if ( target instanceof LivingEntity && target != caster && filter(owner, target) ) minion.setTarget((LivingEntity)target);
                 summonMinion(minion, owner, owner.level());
                 playSound(level, minion.position());

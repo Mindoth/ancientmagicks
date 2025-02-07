@@ -18,12 +18,12 @@ public class EndlessBreathItem extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
-        boolean state = caster == owner && owner.getAirSupply() < owner.getMaxAirSupply();
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
+        boolean state = caster instanceof LivingEntity && caster.getAirSupply() < caster.getMaxAirSupply();
 
         if ( state ) {
             if ( useTime % 10 == 0 ) {
-                owner.setAirSupply(Math.min(owner.getAirSupply() + 39, owner.getMaxAirSupply()));
+                caster.setAirSupply(Math.min(caster.getAirSupply() + 39, caster.getMaxAirSupply()));
             }
         }
 

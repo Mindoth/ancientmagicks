@@ -20,20 +20,20 @@ public class WindBurstItem extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         boolean state = false;
         Level level = caster.level();
-        Vec3 casterPos = caster.getEyePosition(1.0F);
+        Vec3 casterPos = caster.getEyePosition();
 
         float range = 2.0F;
         float size = 2.0F;
         float power = 2.0F;
 
-        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true, false);
+        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, false, true, true, false);
         List<Entity> targets = level.getEntities(caster, new AABB(new Vec3(point.x + size, point.y + size, point.z + size),
                 new Vec3(point.x - size, point.y - size, point.z - size)));
         for ( Entity target : targets ) {
-            Vec3 targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, caster == owner, false, true, true, false);
+            Vec3 targetPoint = ShadowEvents.getPoint(level, caster, 1, 0.25F, false, true, true, false);
             if ( target != caster && isPushable(target) && hasLineOfSight(caster, target) ) {
                 target.push((targetPoint.x - casterPos.x) * power, (targetPoint.y - casterPos.y + 0.5F) * power, (targetPoint.z - casterPos.z) * power);
                 target.hurtMarked = true;
@@ -42,7 +42,7 @@ public class WindBurstItem extends SpellItem {
         }
 
         if ( state ) {
-            Vec3 particlePoint = ShadowEvents.getPoint(level, caster, range, 0, caster == owner, false, true, true, false);
+            Vec3 particlePoint = ShadowEvents.getPoint(level, caster, range, 0, false, true, true, false);
             addParticles(level, casterPos, particlePoint);
             playWindSound(level, center);
         }
