@@ -65,7 +65,7 @@
   "item.ancientmagicks.extinguish": "Extinguish",
   "tooltip.ancientmagicks.extinguish": "Extinguishes nearby fires.",
   "item.ancientmagicks.numb_pain": "Numb Pain",
-  "tooltip.ancientmagicks.numb_pain": "Numbs all pain from target preventing all damage taken. Damage taken is stored and dealt after the effect ends.",
+  "tooltip.ancientmagicks.numb_pain": "Numbs all pain from target preventing all damage taken. Damage taken is stored and dealt after the effect ends if it would be lethal.",
   "item.ancientmagicks.alacrity": "Alacrity",
   "tooltip.ancientmagicks.alacrity": "Hastens target causing them to momentarily do most actions faster.",
   "item.ancientmagicks.spook": "Spook",
