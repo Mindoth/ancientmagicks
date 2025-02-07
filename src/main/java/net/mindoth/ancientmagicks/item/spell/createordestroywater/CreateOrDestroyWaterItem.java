@@ -4,8 +4,12 @@ import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -25,7 +29,7 @@ public class CreateOrDestroyWaterItem extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
 
@@ -33,12 +37,14 @@ public class CreateOrDestroyWaterItem extends SpellItem {
         if ( owner != caster ) range = 0.0F;
 
         BlockPos pos = caster.getOnPos();
+        SoundEvent sound = SoundEvents.BUCKET_EMPTY;
 
         BlockHitResult blockhitresult = getPlayerPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range);
         if ( blockhitresult.getType() == HitResult.Type.BLOCK ) {
             pos = blockhitresult.getBlockPos();
             Block block = level.getBlockState(pos).getBlock();
             if ( block == Blocks.WATER ) {
+                sound = SoundEvents.BUCKET_FILL;
                 level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
                 state = true;
             }
@@ -54,6 +60,8 @@ public class CreateOrDestroyWaterItem extends SpellItem {
 
         if ( state ) {
             playMagicSound(level, pos.getCenter());
+            level.playSound(null, pos.getCenter().x, pos.getCenter().y, pos.getCenter().z,
+                    sound, SoundSource.PLAYERS, 1.0F, 1.0F);
         }
 
         return state;

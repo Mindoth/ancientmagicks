@@ -15,7 +15,7 @@ public class GreaterInvisibilityItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected void applyEffect(Level level, Player owner, Entity caster, Entity target) {
+    protected void applyEffect(Level level, LivingEntity owner, Entity caster, Entity target) {
         ((LivingEntity)target).addEffect(new MobEffectInstance(AncientMagicksEffects.GREATER_INVISIBILITY.get(), getLife(), 0, false, isHarmful()));
     }
 }

@@ -5,6 +5,7 @@ import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -25,7 +26,7 @@ public class TelekineticGrabItem extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
         Vec3 casterPos = caster.getEyePosition(1.0F);

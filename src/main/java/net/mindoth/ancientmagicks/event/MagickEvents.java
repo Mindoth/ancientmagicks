@@ -52,8 +52,8 @@ public class MagickEvents {
     }
 
     //ANY CHANGES IN A PLAYER'S MANA SHOULD BE DONE HERE
-    public static void changeMana(Player player, double addition) {
-        if ( !(player instanceof ServerPlayer serverPlayer) || player.isRemoved() || (player.isCreative() && addition < 0) ) return;
+    public static void changeMana(LivingEntity living, double addition) {
+        if ( !(living instanceof ServerPlayer serverPlayer) || living.isRemoved() || (serverPlayer.isCreative() && addition < 0) ) return;
         serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
             final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get());
             final double currentMana = magic.getCurrentMana();

@@ -22,10 +22,11 @@ public class SummonBeesItem extends AbstractSpellSummon {
 
     @Override
     protected Mob getMinion(Level level) {
-        Bee mob = new Bee(EntityType.BEE, level);
-        for ( Goal goal : mob.goalSelector.getAvailableGoals() ) mob.goalSelector.removeGoal(goal);
-        mob.goalSelector.addGoal(0, new MeleeAttackGoal(mob, 1.4D, true));
-        mob.goalSelector.addGoal(1, new FloatGoal(mob));
-        return mob;
+        Bee minion = new Bee(EntityType.BEE, level);
+        for ( Goal goal : minion.goalSelector.getAvailableGoals() ) minion.goalSelector.removeGoal(goal);
+        //TODO rework so goals stay on world reload
+        minion.goalSelector.addGoal(0, new MeleeAttackGoal(minion, 1.4D, true));
+        minion.goalSelector.addGoal(1, new FloatGoal(minion));
+        return minion;
     }
 }

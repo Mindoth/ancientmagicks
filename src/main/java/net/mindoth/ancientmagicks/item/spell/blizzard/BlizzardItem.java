@@ -9,6 +9,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -30,7 +31,7 @@ public class BlizzardItem extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
         int adjuster = 1;
@@ -55,7 +56,7 @@ public class BlizzardItem extends SpellItem {
         return state;
     }
 
-    private void spawnIcicles(Player owner, Entity caster, Level level, Vec3 center, float yRot, int adjuster, int useTime) {
+    private void spawnIcicles(LivingEntity owner, Entity caster, Level level, Vec3 center, float yRot, int adjuster, int useTime) {
         AbstractSpellEntity projectile = new IcicleEntity(level, owner, caster, this);
         projectile.setAdditionalData(getParticleColor());
         double newX = center.x;

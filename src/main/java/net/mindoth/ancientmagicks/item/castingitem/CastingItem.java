@@ -10,6 +10,7 @@ import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -27,7 +28,7 @@ public class CastingItem extends Item {
         super(pProperties);
     }
 
-    public static void doSpell(Player owner, Entity caster, @Nullable ItemStack stack, SpellItem spell, int useTime) {
+    public static void doSpell(LivingEntity owner, Entity caster, @Nullable ItemStack stack, SpellItem spell, int useTime) {
         Item castingItem = stack != null ? stack.getItem() : null;
         float xRot = caster.getXRot();
         float yRot = caster.getYRot();
@@ -61,33 +62,33 @@ public class CastingItem extends Item {
                     //Manual channel spell stopping is handled in MagickEvents.class
                 }
             }
-            //Handling for Spell Pearl
+            //Handling for Non-players
             else spell.castMagic(owner, caster, center, xRot, yRot, useTime);
         }
         else whiffSpell(owner, caster, spell);
     }
 
-    private static void handleCooldownsAndStuff(Player owner, ItemStack castingItem, SpellItem spell, boolean hasAlacrity) {
+    private static void handleCooldownsAndStuff(LivingEntity living, ItemStack castingItem, SpellItem spell, boolean hasAlacrity) {
         Item item = castingItem.getItem();
         float alacrityBonus = hasAlacrity ? 0.5F : 1.0F;
         int spellCooldown = (int)(spell.getCooldown() * alacrityBonus);
         if ( item instanceof StaffItem || item instanceof WandItem ) {
             if ( item instanceof WandItem ) spell = SpecialCastingItem.getStoredSpell(castingItem);
-            addCastingCooldown(owner, spell, spellCooldown);
+            addCastingCooldown(living, spell, spellCooldown);
         }
-        owner.stopUsingItem();
+        living.stopUsingItem();
     }
 
-    public static void addItemDamage(ItemStack castingItem, int amount, Player player) {
-        castingItem.hurtAndBreak(amount, player, (holder) -> holder.broadcastBreakEvent(player.getUsedItemHand()));
+    public static void addItemDamage(ItemStack castingItem, int amount, LivingEntity living) {
+        castingItem.hurtAndBreak(amount, living, (holder) -> holder.broadcastBreakEvent(living.getUsedItemHand()));
     }
 
-    public static void addCastingCooldown(Player player, SpellItem spell, int cooldown) {
-        player.getCooldowns().addCooldown(spell, cooldown);
+    public static void addCastingCooldown(LivingEntity living, SpellItem spell, int cooldown) {
+        if ( living instanceof Player player ) player.getCooldowns().addCooldown(spell, cooldown);
     }
 
-    public static void storeSpell(Player player, Entity caster, SpellItem spell, ItemStack vessel) {
-        if ( !(player instanceof ServerPlayer owner) ) return;
+    public static void storeSpell(LivingEntity living, Entity caster, SpellItem spell, ItemStack vessel) {
+        if ( !(living instanceof ServerPlayer owner) ) return;
         owner.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
             boolean state = AncientMagicks.isSpellEnabled(spell);
             int manaCost = 0;
@@ -111,10 +112,10 @@ public class CastingItem extends Item {
         });
     }
 
-    public static void whiffSpell(Player owner, Entity caster, SpellItem spell) {
+    public static void whiffSpell(LivingEntity living, Entity caster, SpellItem spell) {
         SpellItem.playWhiffSound(caster);
-        addCastingCooldown(owner, spell, 20);
-        owner.stopUsingItem();
+        addCastingCooldown(living, spell, 20);
+        living.stopUsingItem();
     }
 
     public static @Nonnull ItemStack getHeldStaff(Player playerEntity) {

@@ -122,6 +122,8 @@
   "tooltip.ancientmagicks.summon_skeleton_warrior": "Summons a subservient Skeleton Warrior to fight for you.",
   "item.ancientmagicks.create_or_destroy_water": "Create or destroy Water",
   "tooltip.ancientmagicks.create_or_destroy_water": "Creates or destroys Water.",
+  "item.ancientmagicks.summon_skeleton_caster": "Summon Skeleton Caster",
+  "tooltip.ancientmagicks.summon_skeleton_caster": "Summons a subservient Skeleton Caster to aid you in battle.",
 
 
   "enchantment.ancientmagicks.open_mind": "Open Mind",

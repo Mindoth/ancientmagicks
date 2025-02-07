@@ -46,7 +46,7 @@ public class FireBreathItem extends AbstractSpellRayCast {
     }
 
     @Override
-    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
         int adjuster = 1;

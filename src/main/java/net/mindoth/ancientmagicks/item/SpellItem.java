@@ -30,38 +30,33 @@ import java.util.Random;
 
 public class SpellItem extends Item {
 
-    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         return false;
     }
 
-    private final int spellTier;
+    private final SpellType spellType;
 
+    private final int spellTier;
     public int getSpellTier() {
         return this.spellTier;
     }
 
     private final int manaCost;
-
     public int getManaCost() {
         return this.manaCost;
     }
 
     private final int cooldown;
-
     public int getCooldown() {
         return this.cooldown;
     }
 
-    private final SpellType spellType;
-
     private final int spellXpTier;
-
     public int getSpellXpTier() {
         return this.spellXpTier;
     }
 
     private final int spellXpCost;
-
     public int getSpellXpCost() {
         return this.spellXpCost;
     }

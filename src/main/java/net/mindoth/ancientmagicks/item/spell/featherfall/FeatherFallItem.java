@@ -38,12 +38,12 @@ public class FeatherFallItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected boolean canApply(Level level, Player owner, Entity caster, Entity target) {
+    protected boolean canApply(Level level, LivingEntity owner, Entity caster, Entity target) {
         return true;
     }
 
     @Override
-    protected void applyEffect(Level level, Player owner, Entity caster, Entity target) {
+    protected void applyEffect(Level level, LivingEntity owner, Entity caster, Entity target) {
         List<Entity> list = ShadowEvents.getEntitiesAround(caster, getSize(), getSize(), getSize());
         if ( caster instanceof LivingEntity living ) list.add(living);
         for ( Entity entity : list ) {

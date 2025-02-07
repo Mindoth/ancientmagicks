@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item.spell.abstractspell;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -14,7 +15,7 @@ public abstract class AbstractSpellShoot extends SpellItem {
     }
 
     //This needs to return an actual entity, it is not @Nullable
-    protected AbstractSpellEntity getProjectile(Level level, Player owner, Entity caster) {
+    protected AbstractSpellEntity getProjectile(Level level, LivingEntity owner, Entity caster) {
         return null;
     }
 
@@ -23,7 +24,7 @@ public abstract class AbstractSpellShoot extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
         int adjuster = 1;

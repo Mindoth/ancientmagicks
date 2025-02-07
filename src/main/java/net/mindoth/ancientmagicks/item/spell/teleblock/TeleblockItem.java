@@ -25,7 +25,7 @@ public class TeleblockItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected void applyEffect(Level level, Player owner, Entity caster, Entity target) {
+    protected void applyEffect(Level level, LivingEntity owner, Entity caster, Entity target) {
         ((LivingEntity)target).addEffect(new MobEffectInstance(AncientMagicksEffects.TELEBLOCK.get(), getLife(), 0, false, isHarmful()));
     }
 }

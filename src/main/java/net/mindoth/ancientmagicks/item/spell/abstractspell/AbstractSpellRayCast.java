@@ -28,16 +28,16 @@ public abstract class AbstractSpellRayCast extends SpellItem {
         return getRange() * 0.5F;
     }
 
-    protected boolean canApply(Level level, Player owner, Entity caster, Entity target) {
+    protected boolean canApply(Level level, LivingEntity owner, Entity caster, Entity target) {
         return filter(owner, target);
     }
 
     //Example result
-    protected void applyEffect(Level level, Player owner, Entity caster, Entity target) {
+    protected void applyEffect(Level level, LivingEntity owner, Entity caster, Entity target) {
         ((LivingEntity)target).addEffect(new MobEffectInstance(MobEffects.GLOWING, getLife(), 0, false, isHarmful()));
     }
 
-    protected void audiovisualEffects(Level level, Player owner, Entity caster, Entity target) {
+    protected void audiovisualEffects(Level level, LivingEntity owner, Entity caster, Entity target) {
         addEnchantParticles(target, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, getRenderType());
         playSound(level, target.position());
     }
@@ -47,7 +47,7 @@ public abstract class AbstractSpellRayCast extends SpellItem {
     }
 
     @Override
-    public boolean castMagic(Player owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
+    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, float xRot, float yRot, int useTime) {
         boolean state = false;
         Level level = caster.level();
 

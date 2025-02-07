@@ -40,6 +40,7 @@ import net.mindoth.ancientmagicks.item.spell.sleep.SleepItem;
 import net.mindoth.ancientmagicks.item.spell.spook.SpookItem;
 import net.mindoth.ancientmagicks.item.spell.summonbees.SummonBeesItem;
 import net.mindoth.ancientmagicks.item.spell.summondeathknight.SummonDeathKnightItem;
+import net.mindoth.ancientmagicks.item.spell.summonskeletoncaster.SummonSkeletonCasterItem;
 import net.mindoth.ancientmagicks.item.spell.summonskeletonwarrior.SummonSkeletonWarriorItem;
 import net.mindoth.ancientmagicks.item.spell.summonzombie.SummonZombieItem;
 import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockItem;
@@ -250,6 +251,9 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> ICE_WALL_ITEM = ITEMS.register("ice_wall",
             () -> new IceWallItem(new Item.Properties(), 5, 10, 2, SpellItem.SpellType.SPECIAL));
+
+    public static final RegistryObject<Item> SUMMON_SKELETON_CASTER_ITEM = ITEMS.register("summon_skeleton_caster",
+            () -> new SummonSkeletonCasterItem(new Item.Properties(), 4, -1, 10, SpellItem.SpellType.SUMMON));
 
     public static final RegistryObject<Item> SUMMON_SKELETON_WARRIOR_ITEM = ITEMS.register("summon_skeleton_warrior",
             () -> new SummonSkeletonWarriorItem(new Item.Properties(), 5, -1, 10, SpellItem.SpellType.SUMMON));

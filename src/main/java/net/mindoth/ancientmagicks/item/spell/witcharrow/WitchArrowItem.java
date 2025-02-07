@@ -4,6 +4,7 @@ import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellShoot;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -14,7 +15,7 @@ public class WitchArrowItem extends AbstractSpellShoot {
     }
 
     @Override
-    protected AbstractSpellEntity getProjectile(Level level, Player owner, Entity caster) {
+    protected AbstractSpellEntity getProjectile(Level level, LivingEntity owner, Entity caster) {
         AbstractSpellEntity projectile = new WitchArrowEntity(level, owner, caster, this);
         float range = 64.0F;
         if ( owner == caster ) {

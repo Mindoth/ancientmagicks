@@ -12,7 +12,7 @@ public class CelestialEnchantment extends Enchantment {
 
     @Override
     public int getMinCost(int pEnchantmentLevel) {
-        return 10 + pEnchantmentLevel * 10;
+        return 7 + pEnchantmentLevel * 10;
     }
 
     @Override
