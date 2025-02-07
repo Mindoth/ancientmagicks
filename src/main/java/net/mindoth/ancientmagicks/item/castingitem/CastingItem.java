@@ -48,7 +48,7 @@ public class CastingItem extends Item {
             //ACTUALLY cast the spell
             else if ( stack != null && caster == owner ) {
                 if ( spell.castMagic(owner, caster, center, xRot, yRot, useTime) ) {
-                    if ( castingItem instanceof StaffItem && useTime % 10 == 0 ) MagickEvents.changeMana(owner, -spell.manaCost);
+                    if ( castingItem instanceof StaffItem && useTime % 10 == 0 ) MagickEvents.changeMana(owner, -spell.getManaCost());
                     //Handle cooldown on non-channel spells right after casting
                     if ( !spell.isChannel() ) handleCooldownsAndStuff(owner, stack, spell, hasAlacrity);
                     //Reduce durability on first tick of spells
@@ -70,7 +70,7 @@ public class CastingItem extends Item {
     private static void handleCooldownsAndStuff(Player owner, ItemStack castingItem, SpellItem spell, boolean hasAlacrity) {
         Item item = castingItem.getItem();
         float alacrityBonus = hasAlacrity ? 0.5F : 1.0F;
-        int spellCooldown = (int)(spell.cooldown * alacrityBonus);
+        int spellCooldown = (int)(spell.getCooldown() * alacrityBonus);
         if ( item instanceof StaffItem || item instanceof WandItem ) {
             if ( item instanceof WandItem ) spell = SpecialCastingItem.getStoredSpell(castingItem);
             addCastingCooldown(owner, spell, spellCooldown);
@@ -91,7 +91,7 @@ public class CastingItem extends Item {
         owner.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
             boolean state = AncientMagicks.isSpellEnabled(spell);
             int manaCost = 0;
-            if ( !owner.isCreative() ) manaCost += spell.manaCost;
+            if ( !owner.isCreative() ) manaCost += spell.getManaCost();
             if ( magic.getCurrentMana() < manaCost ) state = false;
             if ( state ) {
                 if ( !owner.isCreative() ) MagickEvents.changeMana(owner, -manaCost);
@@ -104,7 +104,7 @@ public class CastingItem extends Item {
                 drop.setDeltaMovement(0, 0, 0);
                 drop.setNoPickUpDelay();
                 caster.level().addFreshEntity(drop);
-                addCastingCooldown(owner, spell, spell.cooldown);
+                addCastingCooldown(owner, spell, spell.getCooldown());
                 owner.stopUsingItem();
             }
             else whiffSpell(owner, caster, spell);

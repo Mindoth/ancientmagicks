@@ -71,7 +71,7 @@ public class StaffItem extends CastingItem implements Vanishable {
                 player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
                     if ( item instanceof SpellItem spell && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spell) ) {
-                        if ( magic.getCurrentMana() >= spell.manaCost || player.isCreative() ) player.startUsingItem(hand);
+                        if ( magic.getCurrentMana() >= spell.getManaCost() || player.isCreative() ) player.startUsingItem(hand);
                         else CastingItem.whiffSpell(player, player, spell);
                     }
                 });
@@ -87,7 +87,7 @@ public class StaffItem extends CastingItem implements Vanishable {
             if ( isValidCastingItem(staff) ) {
                 player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
-                    if ( item instanceof SpellItem spell && (magic.getCurrentMana() >= spell.manaCost || player.isCreative()) ) {
+                    if ( item instanceof SpellItem spell && (magic.getCurrentMana() >= spell.getManaCost() || player.isCreative()) ) {
                         doSpell(player, player, staff, spell, getUseDuration(staff) - timeLeft);
                     }
                     else living.stopUsingItem();

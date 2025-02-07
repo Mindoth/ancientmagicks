@@ -22,7 +22,7 @@ public class AncientMagicksEntities {
 
     public static final RegistryObject<EntityType<WitchArrowEntity>> WITCH_ARROW
             = registerEntity(EntityType.Builder.<WitchArrowEntity>of(WitchArrowEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(WitchArrowEntity::new), "witch_arrow");
+            MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(WitchArrowEntity::new), "witch_arrow");
 
     public static final RegistryObject<EntityType<FireballEntity>> FIREBALL
             = registerEntity(EntityType.Builder.<FireballEntity>of(FireballEntity::new,
@@ -30,31 +30,31 @@ public class AncientMagicksEntities {
 
     public static final RegistryObject<EntityType<WaterBoltEntity>> WATER_BOLT
             = registerEntity(EntityType.Builder.<WaterBoltEntity>of(WaterBoltEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(WaterBoltEntity::new), "water_bolt");
+            MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(WaterBoltEntity::new), "water_bolt");
 
     public static final RegistryObject<EntityType<SpellPearlEntity>> SPELL_PEARL
             = registerEntity(EntityType.Builder.<SpellPearlEntity>of(SpellPearlEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(SpellPearlEntity::new), "spell_pearl");
+            MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(SpellPearlEntity::new), "spell_pearl");
 
     public static final RegistryObject<EntityType<IcicleEntity>> ICICLE
             = registerEntity(EntityType.Builder.<IcicleEntity>of(IcicleEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(IcicleEntity::new), "icicle");
+            MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(IcicleEntity::new), "icicle");
 
     public static final RegistryObject<EntityType<FreezeLanceEntity>> FREEZE_LANCE
             = registerEntity(EntityType.Builder.<FreezeLanceEntity>of(FreezeLanceEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(FreezeLanceEntity::new), "freeze_lance");
+            MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(FreezeLanceEntity::new), "freeze_lance");
 
     public static final RegistryObject<EntityType<BurnLanceEntity>> BURN_LANCE
             = registerEntity(EntityType.Builder.<BurnLanceEntity>of(BurnLanceEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(BurnLanceEntity::new), "burn_lance");
+            MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(BurnLanceEntity::new), "burn_lance");
 
     public static final RegistryObject<EntityType<FireBoltEntity>> FIRE_BOLT
             = registerEntity(EntityType.Builder.<FireBoltEntity>of(FireBoltEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(FireBoltEntity::new), "fire_bolt");
+            MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(FireBoltEntity::new), "fire_bolt");
 
     public static final RegistryObject<EntityType<AcidArrowEntity>> ACID_ARROW
             = registerEntity(EntityType.Builder.<AcidArrowEntity>of(AcidArrowEntity::new,
-            MobCategory.MISC).sized(0.4F, 0.4F).setCustomClientFactory(AcidArrowEntity::new), "acid_arrow");
+            MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(AcidArrowEntity::new), "acid_arrow");
 
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntity(EntityType.Builder<T> builder, String entityName) {

@@ -35,7 +35,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         super(pProperties);
     }
 
-    @OnlyIn(Dist.CLIENT)
+    /*@OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         if ( stack.getOrCreateTag().contains(NBT_KEY_OWNER) ) {
@@ -46,7 +46,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         }
 
         super.appendHoverText(stack, world, tooltip, flagIn);
-    }
+    }*/
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
@@ -55,10 +55,10 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
             ItemStack stack = player.getItemInHand(handIn);
             if ( stack.getItem() == AncientMagicksItems.SPELL_BOOK.get()
                     && (CastingItem.getHeldStaff(player) == ItemStack.EMPTY || player.isCrouching()) ) {
-                if ( !stack.getOrCreateTag().contains(NBT_KEY_OWNER) ) stack.getOrCreateTag().putString(NBT_KEY_OWNER, player.getScoreboardName());
+                //if ( !stack.getOrCreateTag().contains(NBT_KEY_OWNER) ) stack.getOrCreateTag().putString(NBT_KEY_OWNER, player.getScoreboardName());
                 List<ItemStack> stackList = Lists.newArrayList();
                 for ( int i = 1; i <= 9; i++ ) {
-                    for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( AncientMagicks.isSpellEnabled(spell) && spell.spellTier == i ) {
+                    for ( SpellItem spell : AncientMagicks.SPELL_LIST ) if ( AncientMagicks.isSpellEnabled(spell) && spell.getSpellTier() == i ) {
                         stackList.add(AncientMagicks.createSpellScroll(new ItemStack(AncientMagicksItems.SPELL_SCROLL.get()), spell));
                     }
                 }

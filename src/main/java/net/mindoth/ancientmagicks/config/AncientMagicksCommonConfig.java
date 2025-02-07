@@ -81,6 +81,7 @@ public class AncientMagicksCommonConfig {
         list.add("minecraft:black_shulker_box");
         list.add("minecraf:chorus_plant");
         list.add("minecraft:grass_path");
+        list.add("minecraft:dragon_egg");
 
         list.add("minecraft:spawn_egg");
         list.add("minecraft:monster_egg");

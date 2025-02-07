@@ -16,7 +16,7 @@
   "item.ancientmagicks.arcane_crystal": "Arcane Crystal",
   "item.ancientmagicks.spell_scroll": "Spell Scroll",
   "item.ancientmagicks.ancient_tablet": "Ancient Tablet",
-  "item.ancientmagicks.spell_book": "Spell Book",
+  "item.ancientmagicks.spell_book": "Book of Spells",
   "item.ancientmagicks.spell_pearl": "Spell Pearl",
   "item.ancientmagicks.wooden_staff": "Wooden Staff",
   "item.ancientmagicks.wooden_wand": "Wooden Wand",
@@ -53,7 +53,7 @@
   "item.ancientmagicks.wind_burst": "Wind Burst",
   "tooltip.ancientmagicks.wind_burst": "Causes a sudden burst of wind to blow past you and towards where you're looking at moving ANYONE caught in it.",
   "item.ancientmagicks.frost_armor": "Frost Armor",
-  "tooltip.ancientmagicks.frost_armor": "Grants target a protective shield that slows attackers.",
+  "tooltip.ancientmagicks.frost_armor": "Grants target a protective shield that slows attackers. You can only have one Armor Spell active at once.",
   "item.ancientmagicks.call_thunder": "Call Thunder",
   "tooltip.ancientmagicks.call_thunder": "Directs a powerful lightning strike towards where you're looking. The lightning will always hit a surface.",
   "item.ancientmagicks.polymorph": "Polymorph",
@@ -89,11 +89,11 @@
   "item.ancientmagicks.blind": "Blind",
   "tooltip.ancientmagicks.blind": "Blinds a target.",
   "item.ancientmagicks.water_bolt": "Water Bolt",
-  "tooltip.ancientmagicks.water_bolt": "Launches a Projectile made of water that bounces from walls and other surfaces and damages hit enemies.",
+  "tooltip.ancientmagicks.water_bolt": "Launches a projectile made of water that bounces from walls and other surfaces and damages hit enemies.",
   "item.ancientmagicks.vermin_bane": "Vermin Bane",
   "tooltip.ancientmagicks.vermin_bane": "Channel to spew forth a mist that damages only arthropods.",
   "item.ancientmagicks.control_weather": "Control Weather",
-  "tooltip.ancientmagicks.control_weather": "Change the Weather.",
+  "tooltip.ancientmagicks.control_weather": "Change the weather.",
   "item.ancientmagicks.darkvision": "Darkvision",
   "tooltip.ancientmagicks.darkvision": "Enables a target to see clearly in the dark.",
   "item.ancientmagicks.freeze_lance": "Freeze Lance",
@@ -101,7 +101,7 @@
   "item.ancientmagicks.burn_lance": "Burn Lance",
   "tooltip.ancientmagicks.burn_lance": "Launches a piercing lance that damages and burns enemies.",
   "item.ancientmagicks.teleblock": "Teleblock",
-  "tooltip.ancientmagicks.teleblock": "Prevent a target enemy from teleporting for a short duration.",
+  "tooltip.ancientmagicks.teleblock": "Prevent a target from teleporting for a short duration.",
   "item.ancientmagicks.fire_bolt": "Fire Bolt",
   "tooltip.ancientmagicks.fire_bolt": "Launches a small fiery bolt that damages and burns hit enemies.",
   "item.ancientmagicks.fire_breath": "Fire Breath",
@@ -113,7 +113,7 @@
   "item.ancientmagicks.acid_arrow": "Acid Arrow",
   "tooltip.ancientmagicks.acid_arrow": "Launches a caustic magical damaging arrow.",
   "item.ancientmagicks.witch_armor": "Witch Armor",
-  "tooltip.ancientmagicks.witch_armor": "Grants a shield that uses mana to block damage",
+  "tooltip.ancientmagicks.witch_armor": "Grants a shield that uses mana to block damage. You can only have one Armor Spell active at once.",
   "item.ancientmagicks.life_tap": "Life Tap",
   "tooltip.ancientmagicks.life_tap": "Convert some of your health into mana.",
   "item.ancientmagicks.perfect_invisibility": "Perfect Invisibility",
@@ -122,6 +122,10 @@
   "tooltip.ancientmagicks.summon_skeleton_warrior": "Summons a subservient Skeleton Warrior to fight for you.",
   "item.ancientmagicks.create_or_destroy_water": "Create or destroy Water",
   "tooltip.ancientmagicks.create_or_destroy_water": "Creates or destroys Water.",
+
+
+  "enchantment.ancientmagicks.open_mind": "Open Mind",
+  "enchantment.ancientmagicks.celestial": "Celestial",
 
 
   "effect.ancientmagicks.frost_armor": "Frost Armor",
@@ -138,6 +142,7 @@
 
 
   "message.ancientmagicks.spell_already_known": "You already know this spell",
+  "message.ancientmagicks.no_xp_to_learn_spell": "You don't have enough experience to learn that spell",
   "tooltip.ancientmagicks.book_owner": "Owner: ",
 
 

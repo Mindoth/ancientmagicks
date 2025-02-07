@@ -57,6 +57,7 @@ public class AncientMagicks {
         AncientMagicksModifiers.LOOT_FUNCTIONS.register(modEventBus);
         AncientMagicksAttributes.ATTRIBUTES.register(modEventBus);
         AncientMagicksRecipes.SERIALIZERS.register(modEventBus);
+        AncientMagicksEnchantments.ENCHANTMENTS.register(modEventBus);
 
         //KEEP THESE LAST
         modEventBus.addListener(this::commonSetup);
@@ -70,7 +71,7 @@ public class AncientMagicks {
             }
             for ( int i = 1; i <= 9; i++ ) {
                 for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
-                    if ( item.get() instanceof SpellItem spell && spell.spellTier == i ) event.accept(createSpellScroll(new ItemStack(AncientMagicksItems.SPELL_SCROLL.get()), spell));
+                    if ( item.get() instanceof SpellItem spell && spell.getSpellTier() == i ) event.accept(createSpellScroll(new ItemStack(AncientMagicksItems.SPELL_SCROLL.get()), spell));
                 }
             }
         }
@@ -79,8 +80,8 @@ public class AncientMagicks {
     public static ItemStack createSpellScroll(ItemStack stack, SpellItem spell) {
         String spellString = ForgeRegistries.ITEMS.getKey(spell).toString();
         stack.getOrCreateTag().putString(SpecialCastingItem.TAG_STORED_SPELL, spellString);
-        if ( spell.spellTier >= 4 && spell.spellTier <= 6 ) stack.getOrCreateTag().putInt("CustomModelData", 1);
-        if ( spell.spellTier >= 7 ) stack.getOrCreateTag().putInt("CustomModelData", 2);
+        if ( spell.getSpellTier() >= 4 && spell.getSpellTier() <= 6 ) stack.getOrCreateTag().putInt("CustomModelData", 1);
+        if ( spell.getSpellTier() >= 7 ) stack.getOrCreateTag().putInt("CustomModelData", 2);
         return stack;
     }
 

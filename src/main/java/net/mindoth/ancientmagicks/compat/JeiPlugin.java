@@ -27,7 +27,7 @@ public class JeiPlugin implements IModPlugin {
     private static final IIngredientSubtypeInterpreter<ItemStack> SCROLL_INTERPRETER = (stack, context) -> {
         if ( stack.getItem() instanceof SpellStorageItem && SpecialCastingItem.getStoredSpell(stack) != null ) {
             SpellItem spell = SpecialCastingItem.getStoredSpell(stack);
-            return String.format("scroll:%s:%d", spell, spell.spellTier);
+            return String.format("scroll:%s:%d", spell, spell.getSpellTier());
         }
         return IIngredientSubtypeInterpreter.NONE;
     };

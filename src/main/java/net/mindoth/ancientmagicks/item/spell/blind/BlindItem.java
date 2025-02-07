@@ -7,6 +7,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -34,5 +35,6 @@ public class BlindItem extends AbstractSpellRayCast {
     @Override
     protected void applyEffect(Level level, Player owner, Entity caster, Entity target) {
         ((LivingEntity)target).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, getLife(), 0, false, isHarmful()));
+        if ( target instanceof Mob mob && mob.getTarget() != null ) mob.setTarget(null);
     }
 }

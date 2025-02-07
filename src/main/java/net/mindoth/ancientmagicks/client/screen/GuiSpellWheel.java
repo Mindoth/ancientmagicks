@@ -8,11 +8,11 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagic;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSetSpell;
+import net.mindoth.ancientmagicks.registries.AncientMagicksEnchantments;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
@@ -21,10 +21,10 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -278,9 +278,8 @@ public class GuiSpellWheel extends AncientMagicksScreen {
 
             //Possibility vision
             Player player = minecraft.player;
-            ItemStack main = player.getMainHandItem();
-            ItemStack off = player.getOffhandItem();
-            if ( player.isCreative() || main.getItem() instanceof SpellBookItem || off.getItem() instanceof SpellBookItem ) {
+            ItemStack head = player.getItemBySlot(EquipmentSlot.HEAD);
+            if ( head.getEnchantmentLevel(AncientMagicksEnchantments.OPEN_MIND.get()) > 0 ) {
                 float dimItemRadius = (radiusIn + radiusOut) * 0.75F;
                 int dimPosX = (int)(x - ((float)magnifier * 0.5F) + dimItemRadius * (float)Math.cos(middle)) + 4;
                 int dimPosY = (int)(y - ((float)magnifier * 0.5F) + dimItemRadius * (float)Math.sin(middle)) + 4;

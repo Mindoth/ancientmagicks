@@ -119,9 +119,7 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
             () -> new ColorableStaffItem(new Item.Properties().durability(250), 0.0D, -3.0D, Items.GOLD_INGOT,
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                                    "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION),
-                            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                            "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION)
+                                    "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION)
                     )));
 
     public static final RegistryObject<Item> SIMPLE_HOOD = ITEMS.register("simple_hood",
@@ -188,7 +186,7 @@ public class AncientMagicksItems {
             () -> new BlindItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.ATTACK));
 
     public static final RegistryObject<Item> CREATE_OR_DESTROY_WATER_ITEM = ITEMS.register("create_or_destroy_water",
-            () -> new CreateOrDestroyWaterItem(new Item.Properties(), 1, 20, 10, SpellItem.SpellType.SPECIAL));
+            () -> new CreateOrDestroyWaterItem(new Item.Properties(), 1, 20, 2, SpellItem.SpellType.SPECIAL));
 
     public static final RegistryObject<Item> SLEEP_ITEM = ITEMS.register("sleep",
             () -> new SleepItem(new Item.Properties(), 2, -1, 10, SpellItem.SpellType.ATTACK));
@@ -197,7 +195,7 @@ public class AncientMagicksItems {
             () -> new EndlessBreathItem(new Item.Properties(), 2, -1, 2, SpellItem.SpellType.BUFF));
 
     public static final RegistryObject<Item> WIND_BURST_ITEM = ITEMS.register("wind_burst",
-            () -> new WindBurstItem(new Item.Properties(), 2, -1, 3, SpellItem.SpellType.ATTACK));
+            () -> new WindBurstItem(new Item.Properties(), 2, -1, 4, SpellItem.SpellType.ATTACK));
 
     public static final RegistryObject<Item> DARKVISION_ITEM = ITEMS.register("darkvision",
             () -> new DarkvisionItem(new Item.Properties(), 2, -1, 10, SpellItem.SpellType.BUFF));
@@ -236,10 +234,10 @@ public class AncientMagicksItems {
             () -> new PolymorphItem(new Item.Properties(), 4, -1, 10, SpellItem.SpellType.ATTACK));
 
     public static final RegistryObject<Item> FREEZE_LANCE_ITEM = ITEMS.register("freeze_lance",
-            () -> new FreezeLanceItem(new Item.Properties(), 4, -1, 3, SpellItem.SpellType.ATTACK));
+            () -> new FreezeLanceItem(new Item.Properties(), 4, -1, 2, SpellItem.SpellType.ATTACK));
 
     public static final RegistryObject<Item> BURN_LANCE_ITEM = ITEMS.register("burn_lance",
-            () -> new BurnLanceItem(new Item.Properties(), 4, -1, 3, SpellItem.SpellType.ATTACK));
+            () -> new BurnLanceItem(new Item.Properties(), 4, -1, 2, SpellItem.SpellType.ATTACK));
 
     public static final RegistryObject<Item> GREATER_INVISIBILITY_ITEM = ITEMS.register("greater_invisibility",
             () -> new GreaterInvisibilityItem(new Item.Properties(), 4, -1, 10, SpellItem.SpellType.BUFF));
