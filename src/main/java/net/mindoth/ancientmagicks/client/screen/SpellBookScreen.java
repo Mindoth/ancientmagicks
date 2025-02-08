@@ -91,6 +91,8 @@ public class SpellBookScreen extends AncientMagicksScreen {
                 .build());
         if ( isFirstPage() && this.leftArrow.visible ) this.leftArrow.visible = false;
         if ( !isFirstPage() && !this.leftArrow.visible ) this.leftArrow.visible = true;
+
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
     }
 
     private void buildButtons(int x, int y) {

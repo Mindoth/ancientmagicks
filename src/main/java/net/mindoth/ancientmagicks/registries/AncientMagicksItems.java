@@ -5,9 +5,7 @@ import net.mindoth.ancientmagicks.item.*;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.armor.MagickArmorItem;
-import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
-import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.WandItem;
+import net.mindoth.ancientmagicks.item.castingitem.*;
 import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindItem;
@@ -118,10 +116,18 @@ public class AncientMagicksItems {
             () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Items.STICK, Map.of(
             )));
 
+    public static final RegistryObject<Item> CANDLE_STAFF = ITEMS.register("candle_staff",
+            () -> new CandleStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Items.HONEYCOMB, Map.of(
+                            AncientMagicksAttributes.CAST_TIER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
+                                    "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION)
+                    )));
+
     public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
             () -> new ColorableStaffItem(new Item.Properties().durability(250), 0.0D, -3.0D, Items.GOLD_INGOT,
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                                    "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION)
+                                    "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION),
+                            AncientMagicksAttributes.CAST_TIER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
+                                    "Weapon modifier", 2.0D, AttributeModifier.Operation.ADDITION)
                     )));
 
     public static final RegistryObject<Item> SIMPLE_HOOD = ITEMS.register("simple_hood",

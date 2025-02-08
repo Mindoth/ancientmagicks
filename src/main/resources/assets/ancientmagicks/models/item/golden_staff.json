@@ -5,30 +5,30 @@
     "texture_size": [32, 32],
     "parent": "ancientmagicks:item/base/staff",
     "textures": {
-      "layer0": "ancientmagicks:item/golden_staff_model_overlay",
-      "layer1": "ancientmagicks:item/golden_staff_model"
+      "layer0": "ancientmagicks:item/golden_staff_model",
+      "layer1": "ancientmagicks:item/golden_staff_model_overlay"
     }
   },
   "perspectives": {
     "gui": {
       "parent": "item/generated",
       "textures": {
-        "layer0": "ancientmagicks:item/golden_staff_overlay",
-        "layer1": "ancientmagicks:item/golden_staff"
+        "layer0": "ancientmagicks:item/golden_staff",
+        "layer1": "ancientmagicks:item/golden_staff_overlay"
       }
     },
     "ground": {
       "parent": "item/generated",
       "textures": {
-        "layer0": "ancientmagicks:item/golden_staff_overlay",
-        "layer1": "ancientmagicks:item/golden_staff"
+        "layer0": "ancientmagicks:item/golden_staff",
+        "layer1": "ancientmagicks:item/golden_staff_overlay"
       }
     },
     "fixed": {
       "parent": "item/generated",
       "textures": {
-        "layer0": "ancientmagicks:item/golden_staff_overlay",
-        "layer1": "ancientmagicks:item/golden_staff"
+        "layer0": "ancientmagicks:item/golden_staff",
+        "layer1": "ancientmagicks:item/golden_staff_overlay"
       }
     }
   }

@@ -1,13 +1,9 @@
 package net.mindoth.ancientmagicks.capabilities;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.event.MagickEvents;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketSyncClientMagic;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagic;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
-import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
-import net.minecraft.nbt.CompoundTag;
+import net.mindoth.ancientmagicks.event.MagickEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -33,17 +29,17 @@ public class AncientMagicksCapabilities {
 
     @SubscribeEvent
     public static void onPlayerCreatedAfterDeath(PlayerEvent.Clone event) {
-        if ( event.getEntity().level().isClientSide ) return;
-        if ( event.isWasDeath() && event.getEntity() instanceof ServerPlayer serverPlayer ) {
+        //if ( event.getEntity().level().isClientSide ) return;
+        if ( /*event.isWasDeath() &&*/ event.getEntity() instanceof ServerPlayer serverPlayer ) {
             event.getOriginal().reviveCaps();
             event.getOriginal().getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(oldStore -> {
                 event.getEntity().getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
-                    CompoundTag tag = new CompoundTag();
+                    if ( event.isWasDeath() ) MagickEvents.changeMana(serverPlayer, Integer.MIN_VALUE);
+                    /*CompoundTag tag = new CompoundTag();
                     tag.putString(PlayerMagic.AM_SPELL, oldStore.getCurrentSpell());
                     tag.putString(PlayerMagic.AM_KNOWN_SPELLS, oldStore.getKnownSpells());
-                    AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMagic(tag), serverPlayer);
-                    MagickEvents.changeMana(serverPlayer, Integer.MIN_VALUE);
+                    AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMagic(tag), serverPlayer);*/
                 });
             });
             event.getOriginal().invalidateCaps();

@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.config;
 
 import com.google.common.collect.Lists;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -20,22 +21,31 @@ public class AncientMagicksCommonConfig {
         BUILDER.push("Configs for Ancient Magicks");
 
         SPELL_FREE_FOR_ALL = BUILDER.comment("true = All spells can target both friends and foes. false = Harmful spells will ignore friends and helpful spells will ignore foes.")
-                .define("spellsFreeForAll", true);
+                .define("spellFreeForAll", true);
 
         DISABLED_SPELLS = BUILDER.comment("Add any spells you wish to disable here.")
                 .define("spellDisableList", Lists.newArrayList());
 
-        DISABLED_POLYMOBS = BUILDER.comment("Add any mobs you wish to not summon with Chaotic Polymorph here, like: minecraft:sheep. Use * to ban all mobs from a mod, like: twilightforest:*.")
-                .define("polyDisableList", Lists.newArrayList());
+        DISABLED_POLYMOBS = BUILDER.comment("Add any mobs you wish to not summon with Chaotic Polymorph here. Use * to ban all mobs from a mod, like: twilightforest:*.")
+                .define("polyDisableList", disabledPolymobs());
 
         DISABLED_ARCANE_DUST_RECIPE_ENTRIES = BUILDER.comment("Add any items you wish to not be required to craft Arcane Dust here.")
-                .define("arcanedustRecipeEntryDisableList", disabledEntries());
+                .define("arcaneDustRecipeEntryDisableList", disabledArcaneDustItems());
 
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
 
-    private static List<String> disabledEntries() {
+    private static List<String> disabledPolymobs() {
+        List<String> list = Lists.newArrayList();
+
+        list.add("minecraft:ender_dragon");
+        list.add("minecraft:wither");
+
+        return list;
+    }
+
+    private static List<String> disabledArcaneDustItems() {
         List<String> list = Lists.newArrayList();
 
         list.add("minecraft:air");

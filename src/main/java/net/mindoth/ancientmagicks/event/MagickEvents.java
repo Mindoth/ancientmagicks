@@ -10,6 +10,7 @@ import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.ancientmagicks.registries.AncientMagicksEnchantments;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -38,7 +39,8 @@ public class MagickEvents {
     public static void baseManaRegen(final TickEvent.LevelTickEvent event) {
         if ( event.phase != TickEvent.Phase.END || event.level.isClientSide ) return;
         event.level.players().stream().toList().forEach(player -> {
-            final double manaRegen = player.getAttributeValue(AncientMagicksAttributes.MP_REG.get()) + MagickEnchantmentHelper.getArmorMpReg(player);
+            final double manaRegen = player.getAttributeValue(AncientMagicksAttributes.MP_REG.get())
+                    + MagickEnchantmentHelper.getArmorEnchantLevels(player, AncientMagicksEnchantments.CELESTIAL.get());
             if ( !(player instanceof ServerPlayer serverPlayer ) || player.isDeadOrDying() || player.isRemoved() ) return;
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                 final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get());
@@ -86,7 +88,7 @@ public class MagickEvents {
     }
 
     @SubscribeEvent
-    public static void hideWithGhostwalk(final LivingEvent.LivingVisibilityEvent event) {
+    public static void hideWithInvisibilitySpells(final LivingEvent.LivingVisibilityEvent event) {
         if ( event.getEntity().level().isClientSide ) return;
         LivingEntity living = event.getEntity();
         if ( living.hasEffect(AncientMagicksEffects.GREATER_INVISIBILITY.get()) || living.hasEffect(AncientMagicksEffects.PERFECT_INVISIBILITY.get()) ) {

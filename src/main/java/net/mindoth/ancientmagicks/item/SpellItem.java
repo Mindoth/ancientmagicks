@@ -179,7 +179,7 @@ public class SpellItem extends Item {
     //Similar to AbstractSpellEntity filter() method. CHANGE BOTH WHEN EDITING!
     public boolean filter(Entity owner, Entity target) {
         return target instanceof LivingEntity && !(target instanceof ArmorStand) && (owner != target || !isHarmful())
-                && ((AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get() && !SpellItem.isAlly(owner, target) && isHarmful())
+                && (AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get()
                 || ((SpellItem.isAlly(owner, target) && !isHarmful()) || (!SpellItem.isAlly(owner, target) && isHarmful())));
     }
 

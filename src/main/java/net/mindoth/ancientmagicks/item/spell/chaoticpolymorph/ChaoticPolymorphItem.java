@@ -39,6 +39,7 @@ public class ChaoticPolymorphItem extends AbstractSpellRayCast {
             }
             else disabledPolymobs.add(ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(string)));
         }
+        System.out.println(disabledPolymobs);
         return disabledPolymobs.isEmpty() || !disabledPolymobs.contains(entityType);
     }
 

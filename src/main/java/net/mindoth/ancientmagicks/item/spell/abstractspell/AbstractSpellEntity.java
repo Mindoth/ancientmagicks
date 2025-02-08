@@ -151,8 +151,6 @@ public abstract class AbstractSpellEntity extends Projectile {
         }
         if ( result.getType() == HitResult.Type.ENTITY ) {
             Entity entity = ((EntityHitResult)result).getEntity();
-            //TODO Make spells damage enderdragon
-            flag = entity instanceof EnderDragon || entity instanceof EnderDragonPart;
             if ( this.ignoredEntities != null && !this.ignoredEntities.isEmpty() ) {
                 for ( int id : this.ignoredEntities ) {
                     if ( entity.getId() == id ) {
@@ -168,7 +166,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     //Similar to SpellItem filter() method. CHANGE BOTH WHEN EDITING!
     protected boolean checkTeamForHit(Entity target) {
         return target instanceof LivingEntity && !(target instanceof ArmorStand) && (this.owner != target || !isHarmful())
-                && ((AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get() && !SpellItem.isAlly(this.owner, target) && isHarmful())
+                && (AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get()
                 || ((SpellItem.isAlly(this.owner, target) && !isHarmful()) || (!SpellItem.isAlly(this.owner, target) && isHarmful())));
     }
 
@@ -243,15 +241,15 @@ public abstract class AbstractSpellEntity extends Projectile {
     private void doHoming() {
         int range = 3;
 
-        if ( this.target == null || !this.target.isAlive() ) {
-            this.target = ShadowEvents.getNearestEntity(this, level(), range, this::homingFilter);
-        }
+        if ( this.target == null || !this.target.isAlive() ) this.target = ShadowEvents.getNearestEntity(this, level(), range, this::homingFilter);
         if ( this.target != null ) {
             if ( !isNoGravity() ) setNoGravity(true);
             double mX = getDeltaMovement().x();
             double mY = getDeltaMovement().y();
             double mZ = getDeltaMovement().z();
-            Vec3 lookVec = ShadowEvents.getEntityCenter(this.target).subtract(position()).normalize();
+            Vec3 targetPos = ShadowEvents.getEntityCenter(this.target);
+            if ( this.target instanceof EnderDragon || this.target instanceof EnderDragonPart ) targetPos = new Vec3(targetPos.x, this.target.getY(), targetPos.z);
+            Vec3 lookVec = targetPos.subtract(position()).normalize();
             Vec3 spellMotion = new Vec3(mX, mY, mZ);
             float arc = 0.2F;
             if ( position().distanceTo(this.target.position()) < 2.0D ) arc = 1.0F;
@@ -278,7 +276,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         double d6 = vec3.y;
         double d1 = vec3.z;
         for ( int j = -4; j < 0; j++ ) {
-            if ( -this.tickCount < j || !(this.owner instanceof Player) ) {
+            if ( -this.tickCount < j ) {
                 //Main body
                 float particleSize = Math.min(this.entityData.get(SIZE), (this.entityData.get(SIZE) * 0.1F) * this.tickCount);
                 for ( int i = 0; i < 2; i++ ) {
@@ -290,7 +288,7 @@ public abstract class AbstractSpellEntity extends Projectile {
                             pos.x + randX + d5 * (double)j / 4.0D, pos.y + randY + d6 * (double)j / 4.0D, pos.z + randZ + d1 * (double)j / 4.0D, 0, 0, 0);
                 }
                 //Trail twinkle
-                if ( j == -1 || !(this.owner instanceof Player) ) {
+                if ( j == -1 ) {
                     for ( int i = 0; i < 8; i++ ) {
                         float sphereSize = this.entityData.get(SIZE) / 3;
                         float randX = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));

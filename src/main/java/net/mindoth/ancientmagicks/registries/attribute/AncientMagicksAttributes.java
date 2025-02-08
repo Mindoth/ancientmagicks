@@ -22,6 +22,9 @@ public class AncientMagicksAttributes {
     public static final RegistryObject<Attribute> SPELL_POWER = ATTRIBUTES.register("spell_power",
             () -> (new MagicAttribute("attribute.ancientmagicks.spell_power", 0.0D, Integer.MIN_VALUE, Integer.MAX_VALUE).setSyncable(true)));
 
+    public static final RegistryObject<Attribute> CAST_TIER = ATTRIBUTES.register("cast_tier",
+            () -> (new MagicAttribute("attribute.ancientmagicks.cast_tier", 1.0D, 0.0D, Integer.MAX_VALUE).setSyncable(true)));
+
     @SubscribeEvent
     public static void modifyEntityAttributes(EntityAttributeModificationEvent event) {
         event.getTypes().forEach(entity -> ATTRIBUTES.getEntries().forEach(attribute -> event.add(entity, attribute.get())));

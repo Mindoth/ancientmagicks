@@ -31,6 +31,10 @@
   "item.ancientmagicks.arcane_hood": "Arcane Hood",
   "item.ancientmagicks.arcane_robe_top": "Arcane Robe Top",
   "item.ancientmagicks.arcane_robe_bottom": "Arcane Robe Bottom",
+  "item.ancientmagicks.candle_staff": "Candle Staff",
+
+  "tooltip.ancientmagicks.book_owner": "Owner: ",
+  "tooltip.ancientmagicks.candle_staff": "+1 Spell Power to Fire Bolt",
 
   "item.ancientmagicks.blue_rune": "Blue Rune",
   "item.ancientmagicks.purple_rune": "Purple Rune",
@@ -131,6 +135,7 @@
 
   "enchantment.ancientmagicks.open_mind": "Open Mind",
   "enchantment.ancientmagicks.celestial": "Celestial",
+  "enchantment.ancientmagicks.over_magick": "Over Magick",
 
 
   "effect.ancientmagicks.frost_armor": "Frost Armor",
@@ -148,7 +153,6 @@
 
   "message.ancientmagicks.spell_already_known": "You already know this spell",
   "message.ancientmagicks.no_xp_to_learn_spell": "You don't have enough experience to learn that spell",
-  "tooltip.ancientmagicks.book_owner": "Owner: ",
 
 
   "tooltip.ancientmagicks.stats": "Stats: ",
@@ -158,6 +162,7 @@
   "tooltip.ancientmagicks.description": "Description: ",
 
   "attribute.ancientmagicks.mp_max": "\u00A79Maximum Mana\u00A7r",
-  "attribute.ancientmagicks.mp_regen": "\u00A79Mana/s\u00A7r",
-  "attribute.ancientmagicks.spell_power": "\u00A79Spell Power\u00A7r"
+  "attribute.ancientmagicks.mp_regen": "\u00A79Mana Regeneration\u00A7r",
+  "attribute.ancientmagicks.spell_power": "\u00A79Spell Power\u00A7r",
+  "attribute.ancientmagicks.cast_tier": "\u00A79Casting Tier\u00A7r"
 }
