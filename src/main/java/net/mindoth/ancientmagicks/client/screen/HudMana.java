@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.client.screen;
 
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
 import net.mindoth.ancientmagicks.config.AncientMagicksClientConfig;
-import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
+import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.ChatFormatting;
@@ -41,7 +41,7 @@ public class HudMana implements IGuiOverlay {
     }
 
     private static boolean isWearingMagicArmor(Player player) {
-        for ( ItemStack slot : player.getArmorSlots() ) if ( slot.getItem() instanceof ColorableMagicArmorItem) return true;
+        for ( ItemStack slot : player.getArmorSlots() ) if ( slot.getItem() instanceof ColorableMagickArmorItem) return true;
         return false;
     }
 }

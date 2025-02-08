@@ -52,14 +52,14 @@ public class ChaoticPolymorphItem extends AbstractSpellRayCast {
                 int index = ThreadLocalRandom.current().nextInt(0, polymobList.size());
                 Entity entity = polymobList.get(index).create(level);
                 if ( entity instanceof Mob newMob ) {
-                    Mob mob = convertMob(oldMob, newMob, serverLevel, false);
-                    while ( !mob.isAddedToWorld() ) convertMob(oldMob, newMob, serverLevel, false);
+                    convertMob(oldMob, newMob, serverLevel, false);
+                    addEnchantParticles(newMob, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, getRenderType());
                 }
             }
         }
     }
 
-    private Mob convertMob(Mob oldMob, Mob newMob, ServerLevel serverLevel, boolean pTransferInventory) {
+    public static void convertMob(Mob oldMob, Mob newMob, ServerLevel serverLevel, boolean pTransferInventory) {
         newMob.copyPosition(oldMob);
         newMob.setBaby(oldMob.isBaby());
         newMob.setNoAi(oldMob.isNoAi());
@@ -89,7 +89,6 @@ public class ChaoticPolymorphItem extends AbstractSpellRayCast {
             newMob.startRiding(entity, true);
         }
         oldMob.discard();
-        addEnchantParticles(newMob, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, getRenderType());
-        return newMob;
+        //return newMob;
     }
 }

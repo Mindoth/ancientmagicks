@@ -9,6 +9,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,7 +27,7 @@ public class SleepEffect extends MobEffect {
     }
 
     @SubscribeEvent
-    public static void wakeUpWhenAttacked(final LivingAttackEvent event) {
+    public static void wakeUpWhenAttacked(final LivingHurtEvent event) {
         LivingEntity living = event.getEntity();
         if ( living.hasEffect(AncientMagicksEffects.SLEEP.get()) ) living.removeEffect(AncientMagicksEffects.SLEEP.get());
     }
@@ -37,9 +38,9 @@ public class SleepEffect extends MobEffect {
     }
 
     @SubscribeEvent
-    public static void onPlayerMindControl(final MobEffectEvent.Applicable event) {
+    public static void onEntitySleep(final MobEffectEvent.Applicable event) {
         if ( event.getEffectInstance().getEffect() == AncientMagicksEffects.SLEEP.get() ) {
-            if ( event.getEntity() instanceof Player) event.setResult(Event.Result.DENY);
+            if ( event.getEntity() instanceof Player ) event.setResult(Event.Result.DENY);
             else event.setResult(Event.Result.DEFAULT);
         }
     }

@@ -3,7 +3,8 @@ package net.mindoth.ancientmagicks.registries;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.*;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
-import net.mindoth.ancientmagicks.item.armor.ColorableMagicArmorItem;
+import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
+import net.mindoth.ancientmagicks.item.armor.MagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.WandItem;
@@ -124,22 +125,31 @@ public class AncientMagicksItems {
                     )));
 
     public static final RegistryObject<Item> SIMPLE_HOOD = ITEMS.register("simple_hood",
-            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.HELMET, new Item.Properties()));
 
     public static final RegistryObject<Item> SIMPLE_ROBE_TOP = ITEMS.register("simple_robe_top",
-            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
 
     public static final RegistryObject<Item> SIMPLE_ROBE_BOTTOM = ITEMS.register("simple_robe_bottom",
-            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 
     public static final RegistryObject<Item> GOLDEN_CIRCLET = ITEMS.register("golden_circlet",
-            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.TRIMMED, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.TRIMMED, ArmorItem.Type.HELMET, new Item.Properties()));
 
     public static final RegistryObject<Item> TRIMMED_ROBE_TOP = ITEMS.register("trimmed_robe_top",
-            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.TRIMMED, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.TRIMMED, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
 
     public static final RegistryObject<Item> TRIMMED_ROBE_BOTTOM = ITEMS.register("trimmed_robe_bottom",
-            () -> new ColorableMagicArmorItem(AncientMagicksArmorMaterials.TRIMMED, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.TRIMMED, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+
+    public static final RegistryObject<Item> ARCANE_HOOD = ITEMS.register("arcane_hood",
+            () -> new MagickArmorItem(AncientMagicksArmorMaterials.ARCANE, ArmorItem.Type.HELMET, new Item.Properties()));
+
+    public static final RegistryObject<Item> ARCANE_ROBE_TOP = ITEMS.register("arcane_robe_top",
+            () -> new MagickArmorItem(AncientMagicksArmorMaterials.ARCANE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+
+    public static final RegistryObject<Item> ARCANE_ROBE_BOTTOM = ITEMS.register("arcane_robe_bottom",
+            () -> new MagickArmorItem(AncientMagicksArmorMaterials.ARCANE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 
     public static final RegistryObject<Item> SPELL_PEARL = ITEMS.register("spell_pearl",
             () -> new SpecialCastingItem(new Item.Properties()));
@@ -270,9 +280,6 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> LIFE_TAP_ITEM = ITEMS.register("life_tap",
             () -> new LifeTapItem(new Item.Properties(), 6, 0, 1, SpellItem.SpellType.SPECIAL));
 
-    public static final RegistryObject<Item> CHAOTIC_POLYMORPH_ITEM = ITEMS.register("chaotic_polymorph",
-            () -> new ChaoticPolymorphItem(new Item.Properties(), 6, -1, 10, SpellItem.SpellType.ATTACK));
-
     public static final RegistryObject<Item> MIND_CONTROL_ITEM = ITEMS.register("mind_control",
             () -> new MindControlItem(new Item.Properties(), 7, -1, 10, SpellItem.SpellType.ATTACK));
 
@@ -284,4 +291,7 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> PERFECT_INVISIBILITY_ITEM = ITEMS.register("perfect_invisibility",
             () -> new PerfectInvisibilityItem(new Item.Properties(), 9, -1, 10, SpellItem.SpellType.BUFF));
+
+    public static final RegistryObject<Item> CHAOTIC_POLYMORPH_ITEM = ITEMS.register("chaotic_polymorph",
+            () -> new ChaoticPolymorphItem(new Item.Properties(), 9, -1, 10, SpellItem.SpellType.ATTACK));
 }

@@ -8,6 +8,7 @@ import net.mindoth.ancientmagicks.item.spell.greaterinvisibility.GreaterInvisibi
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.item.spell.numbpain.NumbnessEffect;
 import net.mindoth.ancientmagicks.item.spell.perfectinvisibility.PerfectInvisibilityEffect;
+import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphEffect;
 import net.mindoth.ancientmagicks.item.spell.sleep.SleepEffect;
 import net.mindoth.ancientmagicks.item.spell.spook.SpookEffect;
 import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockEffect;
@@ -37,4 +38,5 @@ public class AncientMagicksEffects {
     public static final RegistryObject<TeleblockEffect> TELEBLOCK = EFFECTS.register("teleblock", () -> new TeleblockEffect(MobEffectCategory.HARMFUL, 16733695));
     public static final RegistryObject<WitchArmorEffect> WITCH_ARMOR = EFFECTS.register("witch_armor", () -> new WitchArmorEffect(MobEffectCategory.BENEFICIAL, 16733695));
     public static final RegistryObject<PerfectInvisibilityEffect> PERFECT_INVISIBILITY = EFFECTS.register("perfect_invisibility", () -> new PerfectInvisibilityEffect(MobEffectCategory.BENEFICIAL, 16185078));
+    public static final RegistryObject<PolymorphEffect> POLYMORPH = EFFECTS.register("polymorph", () -> new PolymorphEffect(MobEffectCategory.HARMFUL, 16733695));
 }

@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class MagicArmorItem extends ArmorItem {
+public class MagickArmorItem extends ArmorItem {
 
     private static final UUID[] ARMOR_MODIFIER_UUID_PER_SLOT = new UUID[]{UUID.fromString("97dabdf2-86e4-4e1f-a7a9-40ce47f6ce08"),
             UUID.fromString("1c5644db-ba8c-4ebb-a1f3-193f87acf9ef"),
@@ -42,7 +42,7 @@ public class MagicArmorItem extends ArmorItem {
         return true;
     }
 
-    public MagicArmorItem(AncientMagicksArmorMaterials pMaterial, Type pType, Properties pProperties) {
+    public MagickArmorItem(AncientMagicksArmorMaterials pMaterial, Type pType, Properties pProperties) {
         super(pMaterial, pType, pProperties);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         float defense = pMaterial.getDefenseForType(pType);

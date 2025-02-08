@@ -24,6 +24,11 @@ public enum AncientMagicksArmorMaterials implements CustomArmorMaterial {
             0, 0, () -> Ingredient.of(AncientMagicksItems.WOOL_CLOTH.get()), Map.of(
             AncientMagicksAttributes.MP_MAX.get(), new AttributeModifier("Mana Maximum", 75.0D, AttributeModifier.Operation.ADDITION),
             AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 1.0D, AttributeModifier.Operation.ADDITION)
+    )),
+    ARCANE("arcane", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
+            0, 0, () -> Ingredient.of(AncientMagicksItems.WOOL_CLOTH.get()), Map.of(
+            AncientMagicksAttributes.MP_MAX.get(), new AttributeModifier("Mana Maximum", 100.0D, AttributeModifier.Operation.ADDITION),
+            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Mana Regeneration", 2.0D, AttributeModifier.Operation.ADDITION)
     ));
 
     private final String name;

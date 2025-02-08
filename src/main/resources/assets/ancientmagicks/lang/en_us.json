@@ -28,6 +28,9 @@
   "item.ancientmagicks.golden_circlet": "Golden Circlet",
   "item.ancientmagicks.trimmed_robe_top": "Trimmed Robe Top",
   "item.ancientmagicks.trimmed_robe_bottom": "Trimmed Robe Bottom",
+  "item.ancientmagicks.arcane_hood": "Arcane Hood",
+  "item.ancientmagicks.arcane_robe_top": "Arcane Robe Top",
+  "item.ancientmagicks.arcane_robe_bottom": "Arcane Robe Bottom",
 
   "item.ancientmagicks.blue_rune": "Blue Rune",
   "item.ancientmagicks.purple_rune": "Purple Rune",
@@ -57,7 +60,7 @@
   "item.ancientmagicks.call_thunder": "Call Thunder",
   "tooltip.ancientmagicks.call_thunder": "Directs a powerful lightning strike towards where you're looking. The lightning will always hit a surface.",
   "item.ancientmagicks.polymorph": "Polymorph",
-  "tooltip.ancientmagicks.polymorph": "Transforms a target into a harmless sheep. This transformation is not reversible.",
+  "tooltip.ancientmagicks.polymorph": "Transforms a target into a harmless sheep. If the effect runs out or if the sheep takes damage it's transformed back into its original form.",
   "item.ancientmagicks.chaotic_polymorph": "Chaotic Polymorph",
   "tooltip.ancientmagicks.chaotic_polymorph": "Transforms a target into another RANDOM creature. This transformation is not reversible.",
   "item.ancientmagicks.feather_fall": "Feather Fall",
@@ -131,16 +134,16 @@
 
 
   "effect.ancientmagicks.frost_armor": "Frost Armor",
+  "effect.ancientmagicks.witch_armor": "Witch Armor",
+  "effect.ancientmagicks.sleep": "Magickal Sleep",
+  "effect.ancientmagicks.polymorph": "Polymorphed",
+  "effect.ancientmagicks.teleblock": "Teleblocked",
+  "effect.ancientmagicks.greater_invisibility": "Greater Invisibility",
+  "effect.ancientmagicks.perfect_invisibility": "Perfect Invisibility",
   "effect.ancientmagicks.flight": "Flight",
   "effect.ancientmagicks.numbness": "Numbness",
   "effect.ancientmagicks.alacrity": "Alacrity",
   "effect.ancientmagicks.spook": "Spook",
-  "effect.ancientmagicks.ghostwalk": "Ghostwalk",
-  "effect.ancientmagicks.sleep": "Sleep",
-  "effect.ancientmagicks.teleblock": "Teleblock",
-  "effect.ancientmagicks.greater_invisibility": "Greater Invisibility",
-  "effect.ancientmagicks.witch_armor": "Witch Armor",
-  "effect.ancientmagicks.perfect_invisibility": "Perfect Invisibility",
 
 
   "message.ancientmagicks.spell_already_known": "You already know this spell",
