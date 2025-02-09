@@ -26,7 +26,7 @@ public class FireBoltEntity extends AbstractSpellEntity {
 
     @Override
     public int defaultDie() {
-        return 10;
+        return 8;
     }
 
     @Override

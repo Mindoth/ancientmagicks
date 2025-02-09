@@ -26,7 +26,7 @@ public class WaterBoltEntity extends AbstractSpellEntity {
 
     @Override
     public int defaultDie() {
-        return 8;
+        return 6;
     }
 
     @Override
