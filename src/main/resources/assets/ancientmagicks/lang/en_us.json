@@ -8,12 +8,10 @@
 
   "item.ancientmagicks.empty_rune": "Stone Slate",
   "item.ancientmagicks.wool_cloth": "Wool Cloth",
-  "item.ancientmagicks.infernal_skin": "Infernal Skin",
   "item.ancientmagicks.parchment": "Parchment",
   "item.ancientmagicks.infernal_parchment": "Infernal Parchment",
   "item.ancientmagicks.arcane_parchment": "Arcane Parchment",
   "item.ancientmagicks.arcane_dust": "Arcane Dust",
-  "item.ancientmagicks.arcane_crystal": "Arcane Crystal",
   "item.ancientmagicks.spell_scroll": "Spell Scroll",
   "item.ancientmagicks.ancient_tablet": "Ancient Tablet",
   "item.ancientmagicks.spell_book": "Book of Spells",
@@ -32,6 +30,8 @@
   "item.ancientmagicks.arcane_robe_top": "Arcane Robe Top",
   "item.ancientmagicks.arcane_robe_bottom": "Arcane Robe Bottom",
   "item.ancientmagicks.candle_staff": "Candle Staff",
+  "item.ancientmagicks.netherite_staff": "Netherite Staff",
+  "item.ancientmagicks.ancient_staff": "Ancient Staff",
 
   "tooltip.ancientmagicks.book_owner": "Owner: ",
   "tooltip.ancientmagicks.candle_staff": "+1 Spell Power to Fire Bolt",
@@ -161,8 +161,8 @@
   "tooltip.ancientmagicks.cooldown": "Cooldown: ",
   "tooltip.ancientmagicks.description": "Description: ",
 
-  "attribute.ancientmagicks.mp_max": "\u00A79Maximum Mana\u00A7r",
-  "attribute.ancientmagicks.mp_regen": "\u00A79Mana Regeneration\u00A7r",
-  "attribute.ancientmagicks.spell_power": "\u00A79Spell Power\u00A7r",
-  "attribute.ancientmagicks.cast_tier": "\u00A79Casting Tier\u00A7r"
+  "attribute.ancientmagicks.magick_max": "\u00A79Maximum Mana\u00A7r",
+  "attribute.ancientmagicks.magick_regen": "\u00A79Mana Regeneration\u00A7r",
+  "attribute.ancientmagicks.magick_power": "\u00A79Spell Power\u00A7r",
+  "attribute.ancientmagicks.magick_tier": "\u00A79Casting Tier\u00A7r"
 }

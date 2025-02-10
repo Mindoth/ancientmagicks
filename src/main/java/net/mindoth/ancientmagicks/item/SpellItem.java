@@ -51,7 +51,7 @@ public class SpellItem extends Item {
         return this.cooldown;
     }
 
-    private final int spellXpTier;
+    /*private final int spellXpTier;
     public int getSpellXpTier() {
         return this.spellXpTier;
     }
@@ -59,7 +59,7 @@ public class SpellItem extends Item {
     private final int spellXpCost;
     public int getSpellXpCost() {
         return this.spellXpCost;
-    }
+    }*/
 
     public boolean isCraftable() {
         return true;
@@ -84,7 +84,7 @@ public class SpellItem extends Item {
         else this.manaCost = manaCost;
         this.cooldown = cooldown * 20;
         this.spellType = spellType;
-        int spellXpTier = 0;
+        /*int spellXpTier = 0;
         int spellXpCost = switch (spellTier) {
             case 1, 2, 3 -> {
                 spellXpTier = 5;
@@ -101,7 +101,7 @@ public class SpellItem extends Item {
             default -> 0;
         };
         this.spellXpTier = spellXpTier;
-        this.spellXpCost = spellXpCost;
+        this.spellXpCost = spellXpCost;*/
     }
 
     public enum SpellType {

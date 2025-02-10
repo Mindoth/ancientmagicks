@@ -17,8 +17,8 @@ import java.util.Map;
 
 public class CandleStaffItem extends StaffItem {
 
-    public CandleStaffItem(Properties pProperties, double attackDamage, double attackSpeed, Item repairItem, Map<Attribute, AttributeModifier> additionalAttributes) {
-        super(pProperties, attackDamage, attackSpeed, repairItem, additionalAttributes);
+    public CandleStaffItem(Properties pProperties, Item repairItem, Map<Attribute, AttributeModifier> additionalAttributes) {
+        super(pProperties, repairItem, additionalAttributes);
     }
 
     @OnlyIn(Dist.CLIENT)

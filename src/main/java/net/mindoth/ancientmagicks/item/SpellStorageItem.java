@@ -84,7 +84,7 @@ public class SpellStorageItem extends Item {
                 serverPlayer.getCooldowns().addCooldown(vessel.getItem(), 20);
             }
             else {
-                if ( serverPlayer.experienceLevel >= spell.getSpellXpTier() || serverPlayer.isCreative() ) {
+                //if ( serverPlayer.experienceLevel >= spell.getSpellXpTier() || serverPlayer.isCreative() ) {
                     CompoundTag tag = new CompoundTag();
                     tag.putString(AM_NEW_SPELL, spellString);
                     if ( Objects.equals(magic.getKnownSpells(), "") ) {
@@ -97,18 +97,18 @@ public class SpellStorageItem extends Item {
                         AncientMagicksNetwork.sendToPlayer(new PacketUpdateKnownSpells(tag), serverPlayer);
                         playLearnEffects(serverPlayer, stack, vessel);
                     }
-                }
+                /*}
                 else {
                     serverPlayer.displayClientMessage(Component.translatable("message.ancientmagicks.no_xp_to_learn_spell"), true);
                     SpellItem.playWhiffSound(serverPlayer);
                     serverPlayer.getCooldowns().addCooldown(vessel.getItem(), 20);
-                }
+                }*/
             }
         });
     }
 
     public static void playLearnEffects(Player player, ItemStack stack, ItemStack vessel) {
-        if ( !player.isCreative() && stack.getItem() instanceof SpellItem spell ) player.giveExperienceLevels(-spell.getSpellXpCost());
+        //if ( !player.isCreative() && stack.getItem() instanceof SpellItem spell ) player.giveExperienceLevels(-spell.getSpellXpCost());
         player.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0F, 0.75F);
         player.playNotifySound(SoundEvents.FIREWORK_ROCKET_BLAST_FAR, SoundSource.PLAYERS, 1.0F, 0.75F);
         player.playNotifySound(SoundEvents.FIREWORK_ROCKET_TWINKLE_FAR, SoundSource.PLAYERS, 1.0F, 0.75F);

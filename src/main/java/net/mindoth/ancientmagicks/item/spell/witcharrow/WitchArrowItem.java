@@ -24,9 +24,4 @@ public class WitchArrowItem extends AbstractSpellShoot {
         }
         return projectile;
     }
-
-    @Override
-    protected boolean hasGravity() {
-        return true;
-    }
 }

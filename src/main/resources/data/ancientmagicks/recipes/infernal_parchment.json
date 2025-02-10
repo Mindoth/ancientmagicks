@@ -2,15 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     " # ",
-    "#L#",
+    "#P#",
     " # "
   ],
   "key": {
     "#": {
-      "tag": "forge:string"
+      "item": "minecraft:blaze_powder"
     },
-    "L": {
-      "item": "ancientmagicks:infernal_skin"
+    "P": {
+      "item": "ancientmagicks:parchment"
     }
   },
   "result": {

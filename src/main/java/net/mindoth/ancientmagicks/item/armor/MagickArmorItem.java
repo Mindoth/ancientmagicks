@@ -25,10 +25,12 @@ import java.util.function.Consumer;
 
 public class MagickArmorItem extends ArmorItem {
 
-    private static final UUID[] ARMOR_MODIFIER_UUID_PER_SLOT = new UUID[]{UUID.fromString("97dabdf2-86e4-4e1f-a7a9-40ce47f6ce08"),
+    private static final UUID[] ARMOR_MODIFIER_UUID_PER_SLOT = new UUID[] {
+            UUID.fromString("97dabdf2-86e4-4e1f-a7a9-40ce47f6ce08"),
             UUID.fromString("1c5644db-ba8c-4ebb-a1f3-193f87acf9ef"),
             UUID.fromString("0cf2c2f2-f8cb-4437-b195-1a4e314223c8"),
-            UUID.fromString("9d14a000-3e5a-45bf-8dba-5684ea315a05")};
+            UUID.fromString("9d14a000-3e5a-45bf-8dba-5684ea315a05")
+    };
 
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 

@@ -94,13 +94,7 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> WOOL_CLOTH = ITEMS.register("wool_cloth",
             () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> INFERNAL_SKIN = ITEMS.register("infernal_skin",
-            () -> new Item(new Item.Properties()));
-
     public static final RegistryObject<Item> ARCANE_DUST = ITEMS.register("arcane_dust",
-            () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> ARCANE_CRYSTAL = ITEMS.register("arcane_crystal",
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> PARCHMENT = ITEMS.register("parchment",
@@ -113,21 +107,37 @@ public class AncientMagicksItems {
             () -> new ParchmentItem(new Item.Properties()));
 
     public static final RegistryObject<Item> WOODEN_STAFF = ITEMS.register("wooden_staff",
-            () -> new ColorableStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Items.STICK, Map.of(
+            () -> new ColorableStaffItem(new Item.Properties().durability(100), Items.STICK, Map.of(
             )));
 
     public static final RegistryObject<Item> CANDLE_STAFF = ITEMS.register("candle_staff",
-            () -> new CandleStaffItem(new Item.Properties().durability(100), 0.0D, -3.0D, Items.HONEYCOMB, Map.of(
+            () -> new CandleStaffItem(new Item.Properties().durability(216), Items.HONEYCOMB, Map.of(
                             AncientMagicksAttributes.CAST_TIER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                                     "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION)
                     )));
 
     public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
-            () -> new ColorableStaffItem(new Item.Properties().durability(250), 0.0D, -3.0D, Items.GOLD_INGOT,
+            () -> new ColorableStaffItem(new Item.Properties().durability(216), Items.GOLD_INGOT,
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                                     "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION),
                             AncientMagicksAttributes.CAST_TIER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                                     "Weapon modifier", 2.0D, AttributeModifier.Operation.ADDITION)
+                    )));
+
+    public static final RegistryObject<Item> ANCIENT_STAFF = ITEMS.register("ancient_staff",
+            () -> new StaffItem(new Item.Properties().durability(100), Items.ANCIENT_DEBRIS,
+                    Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
+                                    "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION),
+                            AncientMagicksAttributes.CAST_TIER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
+                                    "Weapon modifier", 4.0D, AttributeModifier.Operation.ADDITION)
+                    )));
+
+    public static final RegistryObject<Item> NETHERITE_STAFF = ITEMS.register("netherite_staff",
+            () -> new StaffItem(new Item.Properties().durability(1296), Items.NETHERITE_INGOT,
+                    Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
+                                    "Weapon modifier", 2.0D, AttributeModifier.Operation.ADDITION),
+                            AncientMagicksAttributes.CAST_TIER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
+                                    "Weapon modifier", 5.0D, AttributeModifier.Operation.ADDITION)
                     )));
 
     public static final RegistryObject<Item> SIMPLE_HOOD = ITEMS.register("simple_hood",

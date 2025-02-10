@@ -34,16 +34,19 @@ public class StaffItem extends CastingItem implements Vanishable {
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
     private final Item repairItem;
 
-    public StaffItem(Properties pProperties, double attackDamage, double attackSpeed, Item repairItem, Map<Attribute, AttributeModifier> additionalAttributes) {
+    public StaffItem(Properties pProperties,/* double attackDamage, double attackSpeed,*/ Item repairItem, Map<Attribute, AttributeModifier> additionalAttributes) {
         super(pProperties);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", attackDamage, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", attackSpeed, AttributeModifier.Operation.ADDITION));
-        for ( Map.Entry<Attribute, AttributeModifier> modifierEntry : additionalAttributes.entrySet() ) {
-            builder.put(modifierEntry.getKey(), modifierEntry.getValue());
-        }
+        //builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", attackDamage, AttributeModifier.Operation.ADDITION));
+        //builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", attackSpeed, AttributeModifier.Operation.ADDITION));
+        for ( Map.Entry<Attribute, AttributeModifier> modifierEntry : additionalAttributes.entrySet() ) builder.put(modifierEntry.getKey(), modifierEntry.getValue());
         this.defaultModifiers = builder.build();
         this.repairItem = repairItem;
+    }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getAttributeModifiers(slot, stack);
     }
 
     @Override
@@ -59,11 +62,6 @@ public class StaffItem extends CastingItem implements Vanishable {
     @Override
     public int getEnchantmentValue(ItemStack stack) {
         return 25;
-    }
-
-    @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-        return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getAttributeModifiers(slot, stack);
     }
 
     @Override

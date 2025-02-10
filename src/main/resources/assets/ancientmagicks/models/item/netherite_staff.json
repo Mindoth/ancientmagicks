@@ -1,0 +1,31 @@
+{
+  "gui_light": "front",
+  "loader": "forge:separate_transforms",
+  "base": {
+    "texture_size": [32, 32],
+    "parent": "ancientmagicks:item/base/staff",
+    "textures": {
+      "layer0": "ancientmagicks:item/netherite_staff_model"
+    }
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "item/generated",
+      "textures": {
+        "layer0": "ancientmagicks:item/netherite_staff"
+      }
+    },
+    "ground": {
+      "parent": "item/generated",
+      "textures": {
+        "layer0": "ancientmagicks:item/netherite_staff"
+      }
+    },
+    "fixed": {
+      "parent": "item/generated",
+      "textures": {
+        "layer0": "ancientmagicks:item/netherite_staff"
+      }
+    }
+  }
+}

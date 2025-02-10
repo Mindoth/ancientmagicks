@@ -23,9 +23,4 @@ public class AcidArrowItem extends AbstractSpellShoot {
     protected AbstractSpellEntity getProjectile(Level level, LivingEntity owner, Entity caster) {
         return new AcidArrowEntity(level, owner, caster, this);
     }
-
-    @Override
-    protected boolean hasGravity() {
-        return true;
-    }
 }
