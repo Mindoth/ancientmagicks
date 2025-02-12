@@ -39,7 +39,7 @@ public class FireballEntity extends AbstractSpellEntity {
 
     @Override
     public int defaultPower() {
-        return 8;
+        return 4;
     }
 
     @Override
@@ -67,8 +67,10 @@ public class FireballEntity extends AbstractSpellEntity {
     }
 
     private void causeDamage(Entity target) {
-        SpellItem.attackEntity(this.owner, target, this, calcDamage());
-        if ( target instanceof LivingEntity ) target.setSecondsOnFire(8);
+        if ( !target.fireImmune() ) {
+            SpellItem.attackEntity(this.owner, target, this, calcDamage());
+            if ( target instanceof LivingEntity ) target.setSecondsOnFire(8);
+        }
     }
 
     @Override

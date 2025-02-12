@@ -42,7 +42,9 @@ public class LifeTapItem extends AbstractSpellRayCast {
         final double vx = owner.getDeltaMovement().x;
         final double vy = owner.getDeltaMovement().y;
         final double vz = owner.getDeltaMovement().z;
-        owner.hurt(owner.damageSources().wither(), owner.getMaxHealth() * 0.20F);
+        if ( owner instanceof Player player && !player.isCreative() || !(owner instanceof Player) ) {
+            owner.hurt(owner.damageSources().genericKill(), owner.getMaxHealth() * 0.20F);
+        }
         owner.setDeltaMovement(vx, vy, vz);
         owner.hurtMarked = true;
         MagickEvents.changeMana(owner, owner.getAttributeValue(AncientMagicksAttributes.MP_MAX.get()) * 0.20F);

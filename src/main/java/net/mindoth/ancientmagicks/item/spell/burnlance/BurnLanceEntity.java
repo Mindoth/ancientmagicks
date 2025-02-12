@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PlayMessages;
 
@@ -53,9 +54,11 @@ public class BurnLanceEntity extends AbstractSpellEntity {
     @Override
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
-        SpellItem.attackEntity(this.owner, target, this, calcDamage());
-        if ( target instanceof LivingEntity ) target.setSecondsOnFire(8);
-        spawnParticles();
+        if ( !target.fireImmune() ) {
+            SpellItem.attackEntity(this.owner, target, this, calcDamage());
+            if ( target instanceof LivingEntity ) target.setSecondsOnFire(8);
+            spawnParticles();
+        }
     }
 
     @Override
@@ -77,7 +80,8 @@ public class BurnLanceEntity extends AbstractSpellEntity {
     }
 
     @Override
-    protected void playHitSound() {
+    protected void playHitSound(HitResult result) {
+        if ( !(result instanceof EntityHitResult entityHitResult) || entityHitResult.getEntity().fireImmune() ) return;
         Vec3 center = ShadowEvents.getEntityCenter(this);
         this.level().playSound(null, center.x, center.y, center.z,
                 SoundEvents.PLAYER_HURT_ON_FIRE, SoundSource.PLAYERS, 1.0F, 1.0F);

@@ -108,12 +108,14 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> WOODEN_STAFF = ITEMS.register("wooden_staff",
             () -> new ColorableStaffItem(new Item.Properties().durability(100), Items.STICK, Map.of(
+                    AncientMagicksAttributes.CAST_TIER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
+                            "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION)
             )));
 
     public static final RegistryObject<Item> CANDLE_STAFF = ITEMS.register("candle_staff",
             () -> new CandleStaffItem(new Item.Properties().durability(216), Items.HONEYCOMB, Map.of(
                             AncientMagicksAttributes.CAST_TIER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                                    "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION)
+                                    "Weapon modifier", 2.0D, AttributeModifier.Operation.ADDITION)
                     )));
 
     public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
@@ -121,7 +123,7 @@ public class AncientMagicksItems {
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                                     "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION),
                             AncientMagicksAttributes.CAST_TIER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                                    "Weapon modifier", 2.0D, AttributeModifier.Operation.ADDITION)
+                                    "Weapon modifier", 3.0D, AttributeModifier.Operation.ADDITION)
                     )));
 
     public static final RegistryObject<Item> ANCIENT_STAFF = ITEMS.register("ancient_staff",
@@ -129,7 +131,7 @@ public class AncientMagicksItems {
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                                     "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION),
                             AncientMagicksAttributes.CAST_TIER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                                    "Weapon modifier", 4.0D, AttributeModifier.Operation.ADDITION)
+                                    "Weapon modifier", 5.0D, AttributeModifier.Operation.ADDITION)
                     )));
 
     public static final RegistryObject<Item> NETHERITE_STAFF = ITEMS.register("netherite_staff",
@@ -137,7 +139,7 @@ public class AncientMagicksItems {
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                                     "Weapon modifier", 2.0D, AttributeModifier.Operation.ADDITION),
                             AncientMagicksAttributes.CAST_TIER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                                    "Weapon modifier", 5.0D, AttributeModifier.Operation.ADDITION)
+                                    "Weapon modifier", 6.0D, AttributeModifier.Operation.ADDITION)
                     )));
 
     public static final RegistryObject<Item> SIMPLE_HOOD = ITEMS.register("simple_hood",

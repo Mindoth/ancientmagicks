@@ -23,7 +23,7 @@ public class AncientMagicksAttributes {
             () -> (new MagicAttribute("attribute.ancientmagicks.magick_power", 0.0D, Integer.MIN_VALUE, Integer.MAX_VALUE).setSyncable(true)));
 
     public static final RegistryObject<Attribute> CAST_TIER = ATTRIBUTES.register("magick_tier",
-            () -> (new MagicAttribute("attribute.ancientmagicks.magick_tier", 1.0D, 0.0D, Integer.MAX_VALUE).setSyncable(true)));
+            () -> (new MagicAttribute("attribute.ancientmagicks.magick_tier", 0.0D, 0.0D, Integer.MAX_VALUE).setSyncable(true)));
 
     @SubscribeEvent
     public static void modifyEntityAttributes(EntityAttributeModificationEvent event) {

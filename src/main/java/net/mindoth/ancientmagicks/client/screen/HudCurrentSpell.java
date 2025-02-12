@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.client.screen;
 
 import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.config.AncientMagicksClientConfig;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
@@ -26,7 +27,9 @@ public class HudCurrentSpell {
         if (shouldHideSlot()) return;
         int halfX = (MINECRAFT.getWindow().getGuiScaledWidth() / 2);
         int resultSlotX = MINECRAFT.options.mainHand().get() == HumanoidArm.RIGHT ? halfX + 98 : halfX - 120;
+        resultSlotX += AncientMagicksClientConfig.CURRENT_SPELL_X_OFFSET.get();
         int resultSlotY = MINECRAFT.getWindow().getGuiScaledHeight() - 22;
+        resultSlotY += AncientMagicksClientConfig.CURRENT_SPELL_Y_OFFSET.get();
         AncientMagicksScreen.drawTexture(SLOT_TEXTURE, resultSlotX, resultSlotY - 1, 60, 22, 24, 24, 256, 256, graphics);
 
         if ( currentSpell().isEmpty() ) return;

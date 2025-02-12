@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PlayMessages;
 
@@ -81,7 +82,7 @@ public class FreezeLanceEntity extends AbstractSpellEntity {
     }
 
     @Override
-    protected void playHitSound() {
+    protected void playHitSound(HitResult result) {
         Vec3 center = ShadowEvents.getEntityCenter(this);
         this.level().playSound(null, center.x, center.y, center.z,
                 SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);

@@ -10,6 +10,8 @@ public class AncientMagicksClientConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> GUI_SPELL_WHEEL_HOLD;
     public static final ForgeConfigSpec.ConfigValue<Integer> MANA_BAR_X_OFFSET;
     public static final ForgeConfigSpec.ConfigValue<Integer> MANA_BAR_Y_OFFSET;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CURRENT_SPELL_X_OFFSET;
+    public static final ForgeConfigSpec.ConfigValue<Integer> CURRENT_SPELL_Y_OFFSET;
 
     static {
         BUILDER.push("Client Configs for Ancient Magicks");
@@ -22,6 +24,12 @@ public class AncientMagicksClientConfig {
 
         MANA_BAR_Y_OFFSET = BUILDER.comment("Y Offset for mana bar in hud.")
                 .define("manaBarYOffset", 0);
+
+        CURRENT_SPELL_X_OFFSET = BUILDER.comment("X Offset for current spell in hud.")
+                .define("currentSpellXOffset", 0);
+
+        CURRENT_SPELL_Y_OFFSET = BUILDER.comment("Y Offset for current spell in hud.")
+                .define("currentSpellYOffset", 0);
 
 
         BUILDER.pop();

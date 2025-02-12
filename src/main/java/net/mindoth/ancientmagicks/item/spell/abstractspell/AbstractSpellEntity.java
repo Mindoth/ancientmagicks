@@ -191,7 +191,7 @@ public abstract class AbstractSpellEntity extends Projectile {
             if ( result.getEntity() instanceof LivingEntity living ) {
                 if ( !this.ignoredEntities.contains(living.getId()) ) {
                     doMobEffects(result);
-                    playHitSound();
+                    playHitSound(result);
                     this.ignoredEntities.add(living.getId());
                 }
                 if ( this.ignoredEntities.size() > getEnemyPierce() ) doDeathEffects();
@@ -205,7 +205,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         if ( level().isClientSide ) doClientHitEffects();
         else {
             doBlockEffects(result);
-            playHitSound();
+            playHitSound(result);
             BlockState blockState = level().getBlockState(result.getBlockPos());
             level().playSound(null, getX(), getY(), getZ(), blockState.getSoundType().getBreakSound(), SoundSource.PLAYERS, 0.3F, 2);
             if ( this.bounces < getBlockBounce() ) {
@@ -310,7 +310,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     protected void doBlockEffects(BlockHitResult result) {
     }
 
-    protected void playHitSound() {
+    protected void playHitSound(HitResult result) {
     }
 
     protected void doTickEffects() {
