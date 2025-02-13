@@ -34,8 +34,6 @@ public class SpellItem extends Item {
         return false;
     }
 
-    private final SpellType spellType;
-
     private final int spellTier;
     public int getSpellTier() {
         return this.spellTier;
@@ -51,16 +49,6 @@ public class SpellItem extends Item {
         return this.cooldown;
     }
 
-    /*private final int spellXpTier;
-    public int getSpellXpTier() {
-        return this.spellXpTier;
-    }
-
-    private final int spellXpCost;
-    public int getSpellXpCost() {
-        return this.spellXpCost;
-    }*/
-
     public boolean isCraftable() {
         return true;
     }
@@ -69,6 +57,7 @@ public class SpellItem extends Item {
         return false;
     }
 
+    private final SpellType spellType;
     public boolean isHarmful() {
         return this.spellType.getType() != SpellType.BUFF;
     }
@@ -80,34 +69,16 @@ public class SpellItem extends Item {
     public SpellItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
         super(pProperties);
         this.spellTier = spellTier;
-        if ( manaCost < 0 ) this.manaCost = isChannel() ? spellTier * 2 : spellTier * spellType.getMultiplier();
+        if ( manaCost < 0 ) this.manaCost = isChannel() ? spellTier : spellTier * spellType.getMultiplier();
         else this.manaCost = manaCost;
         this.cooldown = cooldown * 20;
         this.spellType = spellType;
-        /*int spellXpTier = 0;
-        int spellXpCost = switch (spellTier) {
-            case 1, 2, 3 -> {
-                spellXpTier = 5;
-                yield 1;
-            }
-            case 4, 5, 6 -> {
-                spellXpTier = 15;
-                yield 2;
-            }
-            case 7, 8, 9 -> {
-                spellXpTier = 30;
-                yield 3;
-            }
-            default -> 0;
-        };
-        this.spellXpTier = spellXpTier;
-        this.spellXpCost = spellXpCost;*/
     }
 
     public enum SpellType {
-        ATTACK(5),
-        BUFF(10),
-        SUMMON(10),
+        ATTACK(1),
+        BUFF(2),
+        SUMMON(2),
         SPECIAL(1);
 
         private int multiplier;
