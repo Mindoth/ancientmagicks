@@ -3,19 +3,25 @@ package net.mindoth.ancientmagicks.item.castingitem;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagic;
-import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.enchantment.MagickEnchantmentHelper;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.registries.AncientMagicksEnchantments;
+import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Vanishable;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -68,7 +74,7 @@ public class StaffItem extends CastingItem implements Vanishable {
                 player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
                     if ( item instanceof SpellItem spell && !player.isUsingItem() && !player.getCooldowns().isOnCooldown(spell) ) {
-                        if ( canCast(player, magic) ) player.startUsingItem(hand);
+                        if ( canCast(player, staff, magic) ) player.startUsingItem(hand);
                         else CastingItem.whiffSpell(player, spell);
                     }
                 });
@@ -83,7 +89,7 @@ public class StaffItem extends CastingItem implements Vanishable {
         if ( living instanceof Player player ) {
             if ( isValidCastingItem(staff) ) {
                 player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-                    if ( canCast(player, magic) ) {
+                    if ( canCast(player, staff, magic) ) {
                         Item spell = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
                         doSpell(player, player, staff, (SpellItem)spell, getUseDuration(staff) - timeLeft);
                     }
@@ -93,8 +99,11 @@ public class StaffItem extends CastingItem implements Vanishable {
         }
     }
 
-    public boolean canCast(Player player, PlayerMagic magic) {
+    public boolean canCast(Player player, ItemStack staff, PlayerMagic magic) {
         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
-        return item instanceof SpellItem spell && (magic.getCurrentMana() >= spell.getManaCost() || player.isCreative());
+        int castTier = (int)player.getAttributeValue(AncientMagicksAttributes.CAST_TIER.get()) + staff.getEnchantmentLevel(AncientMagicksEnchantments.OVER_MAGICK.get());
+        return item instanceof SpellItem spell
+                && (castTier >= spell.getSpellTier() || player.isCreative())
+                && (magic.getCurrentMana() >= spell.getManaCost() || player.isCreative());
     }
 }

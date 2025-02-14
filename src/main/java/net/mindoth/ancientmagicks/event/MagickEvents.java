@@ -2,13 +2,15 @@ package net.mindoth.ancientmagicks.event;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.enchantment.MagickEnchantmentHelper;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.WandItem;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.ancientmagicks.registries.AncientMagicksEnchantments;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,15 +35,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class MagickEvents {
 
-    public static double getPlayerMpRegen(Player player) {
-        return player.getAttributeValue(AncientMagicksAttributes.MP_REG.get());
-    }
-
     @SubscribeEvent
     public static void baseManaRegen(final TickEvent.LevelTickEvent event) {
         if ( event.phase != TickEvent.Phase.END || event.level.isClientSide ) return;
         event.level.players().stream().toList().forEach(player -> {
-            final double manaRegen = getPlayerMpRegen(player);
+            final double manaRegen = player.getAttributeValue(AncientMagicksAttributes.MP_REG.get())
+                    + MagickEnchantmentHelper.getArmorEnchantLevels(player, AncientMagicksEnchantments.CELESTIAL.get());
             if ( !(player instanceof ServerPlayer serverPlayer ) || player.isDeadOrDying() || player.isRemoved() ) return;
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                 final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get());

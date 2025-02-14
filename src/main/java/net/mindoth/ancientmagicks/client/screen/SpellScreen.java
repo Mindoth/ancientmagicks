@@ -123,11 +123,8 @@ public class SpellScreen extends AncientMagicksScreen {
             componentList.add(title);
 
             //Tier
-            Component tierString = Component.literal("Undefined");
-            if ( spell.getSpellTier() == 1 ) tierString = Component.translatable("tooltip.ancientmagicks.tier_basic");
-            if ( spell.getSpellTier() == 2 ) tierString = Component.translatable("tooltip.ancientmagicks.tier_intermediate");
-            if ( spell.getSpellTier() == 3 ) tierString = Component.translatable("tooltip.ancientmagicks.tier_advanced");
-            Component tier = Component.translatable("tooltip.ancientmagicks.tier").append(tierString);
+            Component tier = Component.translatable("tooltip.ancientmagicks.tier")
+                    .append(String.valueOf(spell.getSpellTier()));
             componentList.add(tier);
 
             //Mana cost

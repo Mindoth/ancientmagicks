@@ -26,13 +26,13 @@ public class FireBoltItem extends AbstractSpellShoot {
         return new FireBoltEntity(level, owner, caster, this);
     }
 
-    /*@Override
+    @Override
     protected void addData(LivingEntity owner, Entity caster, AbstractSpellEntity projectile) {
         projectile.setAdditionalData(getParticleColor());
         int power = projectile.getEntityData().get(AbstractSpellEntity.POWER) + (int)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
         if ( caster instanceof LivingEntity living && living.getMainHandItem().getItem() == AncientMagicksItems.CANDLE_STAFF.get() ) power += 1;
         projectile.getEntityData().set(AbstractSpellEntity.POWER, power);
-    }*/
+    }
 
     @Override
     protected void playSound(Level level, Vec3 center) {

@@ -69,7 +69,7 @@ public class AncientMagicks {
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
                 if ( !(item.get() instanceof SpellItem || item.get() instanceof SpellStorageItem) ) event.accept(item);
             }
-            for ( int i = 1; i <= 3; i++ ) {
+            for ( int i = 1; i <= 9; i++ ) {
                 for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
                     if ( item.get() instanceof SpellItem spell && spell.getSpellTier() == i ) event.accept(createSpellScroll(new ItemStack(AncientMagicksItems.SPELL_SCROLL.get()), spell));
                 }
@@ -80,8 +80,8 @@ public class AncientMagicks {
     public static ItemStack createSpellScroll(ItemStack stack, SpellItem spell) {
         String spellString = ForgeRegistries.ITEMS.getKey(spell).toString();
         stack.getOrCreateTag().putString(SpecialCastingItem.TAG_STORED_SPELL, spellString);
-        if ( spell.getSpellTier() == 2 ) stack.getOrCreateTag().putInt("CustomModelData", 1);
-        if ( spell.getSpellTier() == 3 ) stack.getOrCreateTag().putInt("CustomModelData", 2);
+        if ( spell.getSpellTier() >= 4 && spell.getSpellTier() <= 6 ) stack.getOrCreateTag().putInt("CustomModelData", 1);
+        if ( spell.getSpellTier() >= 7 ) stack.getOrCreateTag().putInt("CustomModelData", 2);
         return stack;
     }
 

@@ -17,10 +17,10 @@ public class AncientMagicksEnchantments {
     public static RegistryObject<Enchantment> OPEN_MIND = ENCHANTMENTS.register("open_mind",
             () -> new OpenMindEnchantment(Enchantment.Rarity.RARE, EnchantmentCategory.ARMOR_HEAD, EquipmentSlot.HEAD));
 
-    /*public static RegistryObject<Enchantment> CELESTIAL = ENCHANTMENTS.register("celestial",
+    public static RegistryObject<Enchantment> CELESTIAL = ENCHANTMENTS.register("celestial",
             () -> new CelestialEnchantment(Enchantment.Rarity.UNCOMMON, EnchantmentCategory.ARMOR, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET));
 
     public static RegistryObject<Enchantment> OVER_MAGICK = ENCHANTMENTS.register("over_magick",
-            () -> new OverMagickEnchantment(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON, EquipmentSlot.MAINHAND));*/
+            () -> new OverMagickEnchantment(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON, EquipmentSlot.MAINHAND));
 
 }
