@@ -19,4 +19,7 @@ public class AncientMagicksRecipes {
 
     public static final RegistryObject<SimpleCraftingRecipeSerializer<SpellBookResettingRecipe>> SPELL_BOOK_RESETTING_RECIPE =
             SERIALIZERS.register("spell_book_resetting_crafting", () -> new SimpleCraftingRecipeSerializer<>(SpellBookResettingRecipe::new));
+
+    public static final RegistryObject<SimpleCraftingRecipeSerializer<AddSpellToBookRecipe>> ADD_SPELL_TO_BOOK_RECIPE =
+            SERIALIZERS.register("add_spell_to_book_crafting", () -> new SimpleCraftingRecipeSerializer<>(AddSpellToBookRecipe::new));
 }

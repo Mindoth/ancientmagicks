@@ -21,9 +21,9 @@ public class SummonSkeletonCasterItem extends AbstractSpellSummon {
     protected void populateSlots(Mob minion) {
         minion.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AncientMagicksItems.WOODEN_STAFF.get()));
         minion.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
-        minion.setItemSlot(EquipmentSlot.HEAD, new ItemStack(AncientMagicksItems.SIMPLE_HOOD.get()));
-        minion.setItemSlot(EquipmentSlot.CHEST, new ItemStack(AncientMagicksItems.SIMPLE_ROBE_TOP.get()));
-        minion.setItemSlot(EquipmentSlot.LEGS, new ItemStack(AncientMagicksItems.SIMPLE_ROBE_BOTTOM.get()));
+        minion.setItemSlot(EquipmentSlot.HEAD, new ItemStack(AncientMagicksItems.ROBE_HOOD.get()));
+        minion.setItemSlot(EquipmentSlot.CHEST, new ItemStack(AncientMagicksItems.ROBE_TOP.get()));
+        minion.setItemSlot(EquipmentSlot.LEGS, new ItemStack(AncientMagicksItems.ROBE_BOTTOM.get()));
         minion.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.LEATHER_BOOTS));
     }
 
