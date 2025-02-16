@@ -28,7 +28,8 @@ public class HudMana implements IGuiOverlay {
         String mana = (int)currentMana + "/" + (int)maxMana;
         int posX = (MINECRAFT.getWindow().getGuiScaledWidth() / 2) + 30 + AncientMagicksClientConfig.MANA_BAR_X_OFFSET.get();
         int posY = MINECRAFT.getWindow().getGuiScaledHeight() - 48 + AncientMagicksClientConfig.MANA_BAR_Y_OFFSET.get();
-        if ( player.getAirSupply() != player.getMaxAirSupply() ) posY -= 10;
+        if ( player.getAirSupply() != player.getMaxAirSupply()
+                && AncientMagicksClientConfig.MANA_BAR_X_OFFSET.get() == 0 && AncientMagicksClientConfig.MANA_BAR_Y_OFFSET.get() == 0 ) posY -= 10;
         graphics.drawString(gui.getFont(), mana, posX, posY, 2744299);
     }
 
