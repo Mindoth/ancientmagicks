@@ -124,18 +124,17 @@ public class SpellScreen extends AncientMagicksScreen {
 
             //Tier
             Component tier = Component.translatable("tooltip.ancientmagicks.tier")
-                    .append(String.valueOf(spell.getSpellTier()));
+                    .append(Component.translatable("tooltip.ancientmagicks.tier" + "_" + spell.getSpellTier()));
             componentList.add(tier);
 
             //Mana cost
             Component manaCost;
             if ( spell.isChannel() ) {
                 manaCost = Component.translatable("tooltip.ancientmagicks.mana_cost")
-                        .append(String.valueOf(spell.getManaCost() * 2)).append(Component.literal("/s"));
+                        .append(String.valueOf(spell.getManaCost())).append(Component.literal("/s"));
             }
             else {
-                manaCost = Component.translatable("tooltip.ancientmagicks.mana_cost")
-                        .append(String.valueOf(spell.getManaCost()));
+                manaCost = Component.translatable("tooltip.ancientmagicks.mana_cost").append(String.valueOf(spell.getManaCost()));
             }
             componentList.add(manaCost);
 

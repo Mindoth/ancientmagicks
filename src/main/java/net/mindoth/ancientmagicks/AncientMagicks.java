@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -69,7 +70,7 @@ public class AncientMagicks {
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
                 if ( !(item.get() instanceof SpellItem || item.get() instanceof SpellStorageItem) ) event.accept(item);
             }
-            for ( int i = 1; i <= 9; i++ ) {
+            for ( int i = 0; i <= 5; i++ ) {
                 for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) {
                     if ( item.get() instanceof SpellItem spell && spell.getSpellTier() == i ) event.accept(createSpellScroll(new ItemStack(AncientMagicksItems.SPELL_SCROLL.get()), spell));
                 }
@@ -77,11 +78,19 @@ public class AncientMagicks {
         }
     }
 
+    public static Item getParchmentForSpell(int tier) {
+        Item parchment = ItemStack.EMPTY.getItem();
+        if ( tier == 0 ) parchment = Items.PAPER;
+        if ( tier == 1 ) parchment = AncientMagicksItems.PARCHMENT.get();
+        if ( tier == 2 ) parchment = AncientMagicksItems.INFERNAL_PARCHMENT.get();
+        if ( tier == 3 ) parchment = AncientMagicksItems.ARCANE_PARCHMENT.get();
+        return parchment;
+    }
+
     public static ItemStack createSpellScroll(ItemStack stack, SpellItem spell) {
         String spellString = ForgeRegistries.ITEMS.getKey(spell).toString();
         stack.getOrCreateTag().putString(SpecialCastingItem.TAG_STORED_SPELL, spellString);
-        if ( spell.getSpellTier() >= 4 && spell.getSpellTier() <= 6 ) stack.getOrCreateTag().putInt("CustomModelData", 1);
-        if ( spell.getSpellTier() >= 7 ) stack.getOrCreateTag().putInt("CustomModelData", 2);
+        if ( spell.getSpellTier() > 0 ) stack.getOrCreateTag().putInt("CustomModelData", spell.getSpellTier());
         return stack;
     }
 

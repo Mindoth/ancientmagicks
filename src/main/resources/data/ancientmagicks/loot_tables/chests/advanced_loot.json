@@ -11,7 +11,7 @@
           "functions": [
             {
               "function": "ancientmagicks:randomize_spell",
-              "quality": 0
+              "quality": 3
             }
           ]
         }

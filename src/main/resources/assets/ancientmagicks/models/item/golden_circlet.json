@@ -1,7 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "ancientmagicks:item/golden_circlet",
-    "layer1": "ancientmagicks:item/golden_circlet_overlay"
-  }
-}

@@ -3,19 +3,31 @@ package net.mindoth.ancientmagicks.item.spell.frostarmor;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractArmorEffect;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class FrostArmorEffect extends AbstractArmorEffect {
 
     public FrostArmorEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
+    }
+
+    @Override
+    public void addAttributeModifiers(LivingEntity living, AttributeMap map, int amp) {
+        super.addAttributeModifiers(living, map, amp);
+        List<MobEffectInstance> list = living.getActiveEffects().stream()
+                .filter(effect -> effect.getEffect() instanceof AbstractArmorEffect && effect.getEffect() != AncientMagicksEffects.FROST_ARMOR.get()).toList();
+        for ( MobEffectInstance effect : list ) living.removeEffect(effect.getEffect());
     }
 
     @SubscribeEvent

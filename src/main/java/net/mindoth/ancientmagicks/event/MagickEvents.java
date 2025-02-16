@@ -2,15 +2,13 @@ package net.mindoth.ancientmagicks.event;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
-import net.mindoth.ancientmagicks.enchantment.MagickEnchantmentHelper;
+import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.WandItem;
-import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEnchantments;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,17 +37,13 @@ public class MagickEvents {
     public static void baseManaRegen(final TickEvent.LevelTickEvent event) {
         if ( event.phase != TickEvent.Phase.END || event.level.isClientSide ) return;
         event.level.players().stream().toList().forEach(player -> {
-            final double manaRegen = player.getAttributeValue(AncientMagicksAttributes.MP_REG.get())
-                    + MagickEnchantmentHelper.getArmorEnchantLevels(player, AncientMagicksEnchantments.CELESTIAL.get());
+            final double manaRegen = player.getAttributeValue(AncientMagicksAttributes.MP_REG.get());
             if ( !(player instanceof ServerPlayer serverPlayer ) || player.isDeadOrDying() || player.isRemoved() ) return;
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                 final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get());
                 final double currentMana = magic.getCurrentMana();
-                boolean isCasting = serverPlayer.isUsingItem() && serverPlayer.getUseItem().getItem() instanceof StaffItem;
-                if ( player.tickCount % 80 == 0 ) {
-                    if ( currentMana < maxMana && !isCasting ) changeMana(player, manaRegen);
-                    else if ( currentMana > maxMana ) changeMana(player, maxMana - currentMana);
-                }
+                if ( player.tickCount % 80 == 0 ) changeMana(player, manaRegen);
+                if ( currentMana > maxMana ) changeMana(player, maxMana - currentMana);
             });
         });
     }

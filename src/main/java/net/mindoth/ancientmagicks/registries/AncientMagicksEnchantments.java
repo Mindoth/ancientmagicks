@@ -1,9 +1,7 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.enchantment.CelestialEnchantment;
 import net.mindoth.ancientmagicks.enchantment.OpenMindEnchantment;
-import net.mindoth.ancientmagicks.enchantment.OverMagickEnchantment;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
@@ -16,11 +14,5 @@ public class AncientMagicksEnchantments {
 
     public static RegistryObject<Enchantment> OPEN_MIND = ENCHANTMENTS.register("open_mind",
             () -> new OpenMindEnchantment(Enchantment.Rarity.RARE, EnchantmentCategory.ARMOR_HEAD, EquipmentSlot.HEAD));
-
-    public static RegistryObject<Enchantment> CELESTIAL = ENCHANTMENTS.register("celestial",
-            () -> new CelestialEnchantment(Enchantment.Rarity.UNCOMMON, EnchantmentCategory.ARMOR, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET));
-
-    public static RegistryObject<Enchantment> OVER_MAGICK = ENCHANTMENTS.register("over_magick",
-            () -> new OverMagickEnchantment(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON, EquipmentSlot.MAINHAND));
 
 }

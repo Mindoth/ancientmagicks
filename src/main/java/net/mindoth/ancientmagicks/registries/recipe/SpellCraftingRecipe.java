@@ -32,15 +32,11 @@ public class SpellCraftingRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() instanceof ColorRuneItem rune ) list.add(rune);
-            else if ( stack.getItem() instanceof ParchmentItem || stack.getItem() != Items.AIR ) rest.add(stack.getItem());
+            else if ( stack.getItem() != Items.AIR ) rest.add(stack.getItem());
         }
         if ( ColorRuneItem.checkForSpellCombo(list) != null && list.size() + rest.size() == AncientMagicks.comboSizeCalc() + 1 ) {
             SpellItem spell = ColorRuneItem.checkForSpellCombo(list);
-            if ( spell.isCraftable() && rest.size() == 1 ) {
-                if ( spell.getSpellTier() >= 1 && spell.getSpellTier() <= 3 && rest.contains(AncientMagicksItems.PARCHMENT.get()) ) return true;
-                else if ( spell.getSpellTier() >= 4 && spell.getSpellTier() <= 6 && rest.contains(AncientMagicksItems.INFERNAL_PARCHMENT.get()) ) return true;
-                else if ( spell.getSpellTier() >= 7 && rest.contains(AncientMagicksItems.ARCANE_PARCHMENT.get()) ) return true;
-            }
+            if ( spell.isCraftable() && rest.size() == 1 ) return rest.contains(AncientMagicks.getParchmentForSpell(spell.getSpellTier()));
         }
         return false;
     }
@@ -52,7 +48,7 @@ public class SpellCraftingRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() instanceof ColorRuneItem rune ) list.add(rune);
-            else if ( stack.getItem() instanceof ParchmentItem || stack.getItem() != Items.AIR ) rest.add(stack.getItem());
+            else if ( stack.getItem() != Items.AIR ) rest.add(stack.getItem());
         }
         if ( ColorRuneItem.checkForSpellCombo(list) != null && list.size() + rest.size() == AncientMagicks.comboSizeCalc() + 1 ) {
             ItemStack spellStack = new ItemStack(AncientMagicksItems.SPELL_SCROLL.get());

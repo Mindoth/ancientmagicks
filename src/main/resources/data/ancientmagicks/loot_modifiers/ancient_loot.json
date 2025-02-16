@@ -6,35 +6,7 @@
       "terms": [
         {
           "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/jungle_temple"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/desert_pyramid"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/underwater_ruin_big"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/underwater_ruin_small"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/bastion_treasure"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/bastion_bridge"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/bastion_other"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/nether_bridge"
+          "loot_table_id": "minecraft:chests/ancient_city"
         },
         {
           "condition": "forge:loot_table_id",
@@ -47,14 +19,6 @@
         {
           "condition": "forge:loot_table_id",
           "loot_table_id": "minecraft:chests/stronghold_library"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/end_city_treasure"
-        },
-        {
-          "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/ancient_city"
         }
       ]
     }

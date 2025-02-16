@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "# #",
+    "# #"
+  ],
+  "key": {
+    "#": {
+      "item": "ancientmagicks:wool_cloth"
+    }
+  },
+  "result": {
+    "item": "ancientmagicks:robe_bottom",
+    "count": 1
+  }
+}

@@ -6,7 +6,6 @@
   "key.ancientmagicks.spell_selector": "Spell Wheel",
 
 
-  "item.ancientmagicks.empty_rune": "Stone Slate",
   "item.ancientmagicks.wool_cloth": "Wool Cloth",
   "item.ancientmagicks.parchment": "Parchment",
   "item.ancientmagicks.infernal_parchment": "Infernal Parchment",
@@ -16,25 +15,12 @@
   "item.ancientmagicks.ancient_tablet": "Ancient Tablet",
   "item.ancientmagicks.spell_book": "Book of Spells",
   "item.ancientmagicks.spell_pearl": "Spell Pearl",
+  "item.ancientmagicks.robe_hood": "Robe Hood",
+  "item.ancientmagicks.robe_top": "Robe Top",
+  "item.ancientmagicks.robe_bottom": "Robe Bottom",
   "item.ancientmagicks.wooden_staff": "Wooden Staff",
-  "item.ancientmagicks.wooden_wand": "Wooden Wand",
-  "item.ancientmagicks.simple_hood": "Simple Hood",
-  "item.ancientmagicks.simple_robe_top": "Simple Robe Top",
-  "item.ancientmagicks.simple_robe_bottom": "Simple Robe Bottom",
   "item.ancientmagicks.golden_staff": "Golden Staff",
-  "item.ancientmagicks.golden_wand": "Golden Wand",
-  "item.ancientmagicks.golden_circlet": "Golden Circlet",
-  "item.ancientmagicks.trimmed_robe_top": "Trimmed Robe Top",
-  "item.ancientmagicks.trimmed_robe_bottom": "Trimmed Robe Bottom",
-  "item.ancientmagicks.arcane_hood": "Arcane Hood",
-  "item.ancientmagicks.arcane_robe_top": "Arcane Robe Top",
-  "item.ancientmagicks.arcane_robe_bottom": "Arcane Robe Bottom",
-  "item.ancientmagicks.candle_staff": "Candle Staff",
   "item.ancientmagicks.netherite_staff": "Netherite Staff",
-  "item.ancientmagicks.ancient_staff": "Ancient Staff",
-
-  "tooltip.ancientmagicks.book_owner": "Owner: ",
-  "tooltip.ancientmagicks.candle_staff": "+1 Spell Power to Fire Bolt",
 
   "item.ancientmagicks.blue_rune": "Blue Rune",
   "item.ancientmagicks.purple_rune": "Purple Rune",
@@ -44,6 +30,7 @@
   "item.ancientmagicks.black_rune": "Black Rune",
   "item.ancientmagicks.brown_rune": "Brown Rune",
   "item.ancientmagicks.red_rune": "Red Rune",
+
 
   "item.ancientmagicks.witch_arrow": "Witch Arrow",
   "tooltip.ancientmagicks.witch_arrow": "Launches a damaging magical arrow that flies towards enemies.",
@@ -138,6 +125,10 @@
   "enchantment.ancientmagicks.over_magick": "Over Magick",
 
 
+  "tooltip.ancientmagicks.book_owner": "Owner: ",
+  "tooltip.ancientmagicks.candle_staff": "+1 Spell Power to Fire Bolt",
+
+
   "effect.ancientmagicks.frost_armor": "Frost Armor",
   "effect.ancientmagicks.witch_armor": "Witch Armor",
   "effect.ancientmagicks.sleep": "Magickal Sleep",
@@ -157,6 +148,12 @@
 
   "tooltip.ancientmagicks.stats": "Stats: ",
   "tooltip.ancientmagicks.tier": "Spell Tier: ",
+  "tooltip.ancientmagicks.tier_0": "Folk",
+  "tooltip.ancientmagicks.tier_1": "Basic",
+  "tooltip.ancientmagicks.tier_2": "Intermediate",
+  "tooltip.ancientmagicks.tier_3": "Advanced",
+  "tooltip.ancientmagicks.tier_4": "Master",
+  "tooltip.ancientmagicks.tier_5": "Super",
   "tooltip.ancientmagicks.mana_cost": "Mana Cost: ",
   "tooltip.ancientmagicks.cooldown": "Cooldown: ",
   "tooltip.ancientmagicks.description": "Description: ",

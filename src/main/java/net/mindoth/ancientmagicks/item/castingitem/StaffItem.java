@@ -101,9 +101,6 @@ public class StaffItem extends CastingItem implements Vanishable {
 
     public boolean canCast(Player player, ItemStack staff, PlayerMagic magic) {
         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
-        int castTier = (int)player.getAttributeValue(AncientMagicksAttributes.CAST_TIER.get()) + staff.getEnchantmentLevel(AncientMagicksEnchantments.OVER_MAGICK.get());
-        return item instanceof SpellItem spell
-                && (castTier >= spell.getSpellTier() || player.isCreative())
-                && (magic.getCurrentMana() >= spell.getManaCost() || player.isCreative());
+        return item instanceof SpellItem spell && (magic.getCurrentMana() >= spell.getManaCost() || player.isCreative());
     }
 }
