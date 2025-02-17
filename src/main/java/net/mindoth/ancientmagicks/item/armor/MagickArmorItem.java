@@ -64,8 +64,7 @@ public class MagickArmorItem extends ArmorItem {
         }
         this.defaultModifiers = builder.build();
 
-        this.model = DistExecutor.unsafeRunForDist(() -> () -> new LazyLoadedValue<>(this::provideArmorModelForSlot),
-                () -> () -> null);
+        this.model = DistExecutor.unsafeRunForDist(() -> () -> new LazyLoadedValue<>(this::provideArmorModelForSlot), () -> () -> null);
     }
 
     private final LazyLoadedValue<HumanoidModel<?>> model;

@@ -1,7 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "ancientmagicks:item/trimmed_robe_bottom",
-    "layer1": "ancientmagicks:item/trimmed_robe_bottom_overlay"
-  }
-}

@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +22,6 @@ import java.util.List;
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class SpellScreen extends AncientMagicksScreen {
 
-    private final CompoundTag bookNbt;
     private final ItemStack stack;
     private final List<ItemStack> itemList;
     private final int bookSpreadNumber;
@@ -34,17 +32,16 @@ public class SpellScreen extends AncientMagicksScreen {
     private final int leftArrowXOffset = -18 - arrowXOffset;
     private final int rowLimit = 118;
 
-    protected SpellScreen(CompoundTag tag, ItemStack stack, List<ItemStack> itemList, int spreadNumber) {
+    protected SpellScreen(ItemStack stack, List<ItemStack> itemList, int spreadNumber) {
         super(Component.literal(""));
-        this.bookNbt = tag;
         this.stack = stack;
         this.itemList = itemList;
         this.bookSpreadNumber = spreadNumber;
     }
 
-    public static void open(CompoundTag tag, ItemStack stack, List<ItemStack> itemList, int spreadNumber) {
+    public static void open(ItemStack stack, List<ItemStack> itemList, int spreadNumber) {
         Minecraft MINECRAFT = Minecraft.getInstance();
-        if ( MINECRAFT.screen instanceof SpellBookScreen && stack != ItemStack.EMPTY ) MINECRAFT.setScreen(new SpellScreen(tag, stack, itemList, spreadNumber));
+        if ( MINECRAFT.screen instanceof SpellBookScreen && stack != ItemStack.EMPTY ) MINECRAFT.setScreen(new SpellScreen(stack, itemList, spreadNumber));
     }
 
     @Override
@@ -60,7 +57,7 @@ public class SpellScreen extends AncientMagicksScreen {
     }
 
     private void handleBackArrow(Button button) {
-        SpellBookScreen.open(this.bookNbt, this.itemList, this.bookSpreadNumber);
+        SpellBookScreen.open(this.itemList, this.bookSpreadNumber);
     }
 
     @Override
@@ -79,7 +76,7 @@ public class SpellScreen extends AncientMagicksScreen {
         if ( this.leftArrow.visible ) this.leftArrow.renderTexture(graphics, new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/page_arrows.png"),
                 x + this.leftArrowXOffset, y + this.arrowYOffset, 18, 0, 10, 18, 10, 36, 20);
 
-        ItemStack stack = getPossibleContainedSpell(this.stack);
+        ItemStack stack = this.stack;
         if ( stack.getItem() instanceof SpellItem spell ) {
 
             int xPos = x - 100;
@@ -126,22 +123,18 @@ public class SpellScreen extends AncientMagicksScreen {
             componentList.add(title);
 
             //Tier
-            Component tierString = Component.literal("Undefined");
-            if ( spell.getSpellTier() == 1 ) tierString = Component.translatable("tooltip.ancientmagicks.tier_basic");
-            if ( spell.getSpellTier() == 2 ) tierString = Component.translatable("tooltip.ancientmagicks.tier_intermediate");
-            if ( spell.getSpellTier() == 3 ) tierString = Component.translatable("tooltip.ancientmagicks.tier_advanced");
-            Component tier = Component.translatable("tooltip.ancientmagicks.tier").append(tierString);
+            Component tier = Component.translatable("tooltip.ancientmagicks.tier")
+                    .append(Component.translatable("tooltip.ancientmagicks.tier" + "_" + spell.getSpellTier()));
             componentList.add(tier);
 
             //Mana cost
             Component manaCost;
             if ( spell.isChannel() ) {
                 manaCost = Component.translatable("tooltip.ancientmagicks.mana_cost")
-                        .append(String.valueOf(spell.getManaCost() * 2)).append(Component.literal("/s"));
+                        .append(String.valueOf(spell.getManaCost())).append(Component.literal("/s"));
             }
             else {
-                manaCost = Component.translatable("tooltip.ancientmagicks.mana_cost")
-                        .append(String.valueOf(spell.getManaCost()));
+                manaCost = Component.translatable("tooltip.ancientmagicks.mana_cost").append(String.valueOf(spell.getManaCost()));
             }
             componentList.add(manaCost);
 

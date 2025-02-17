@@ -13,7 +13,7 @@
       "conditions": [
         {
           "condition": "minecraft:random_chance",
-          "chance": 0.10
+          "chance": 0.25
         }
       ]
     },
@@ -38,48 +38,7 @@
       "conditions": [
         {
           "condition": "minecraft:random_chance",
-          "chance": 0.10
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "ancientmagicks:ancient_staff"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance",
-          "chance": 0.10
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "ancientmagicks:spell_scroll",
-          "functions": [
-            {
-              "function": "ancientmagicks:randomize_spell",
-              "quality": {
-                "min": 4,
-                "max": 6
-              }
-            }
-          ]
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance",
-          "chance": 0.25
+          "chance": 0.35
         }
       ]
     }

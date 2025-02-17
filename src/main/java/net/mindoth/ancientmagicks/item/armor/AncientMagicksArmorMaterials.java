@@ -18,6 +18,7 @@ public enum AncientMagicksArmorMaterials implements CustomArmorMaterial {
 
     ROBE("robe", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
             0, 0, () -> Ingredient.of(AncientMagicksItems.WOOL_CLOTH.get()), Map.of(
+            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Magick Regeneration", 1.0D, AttributeModifier.Operation.ADDITION)
     ))/*,
     SIMPLE("simple", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
             0, 0, () -> Ingredient.of(AncientMagicksItems.WOOL_CLOTH.get()), Map.of(

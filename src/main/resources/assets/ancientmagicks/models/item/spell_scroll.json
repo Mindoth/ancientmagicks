@@ -1,10 +1,11 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ancientmagicks:item/spell_scroll"
+    "layer0": "ancientmagicks:item/folk_spell_scroll"
   },
   "overrides": [
-    { "predicate": { "custom_model_data": 1 }, "model": "ancientmagicks:item/infernal_spell_scroll" },
-    { "predicate": { "custom_model_data": 2 }, "model": "ancientmagicks:item/arcane_spell_scroll" }
+    { "predicate": { "custom_model_data": 1 }, "model": "ancientmagicks:item/basic_spell_scroll" },
+    { "predicate": { "custom_model_data": 2 }, "model": "ancientmagicks:item/infernal_spell_scroll" },
+    { "predicate": { "custom_model_data": 3 }, "model": "ancientmagicks:item/arcane_spell_scroll" }
   ]
 }

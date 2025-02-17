@@ -88,9 +88,6 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
             () -> new AncientTabletItem(new Item.Properties().stacksTo(1)));
 
-    public static final RegistryObject<Item> STONE_SLATE = ITEMS.register("empty_rune",
-            () -> new Item(new Item.Properties()));
-
     public static final RegistryObject<Item> WOOL_CLOTH = ITEMS.register("wool_cloth",
             () -> new Item(new Item.Properties()));
 
@@ -110,18 +107,8 @@ public class AncientMagicksItems {
             () -> new ColorableStaffItem(new Item.Properties().durability(100), Items.STICK, Map.of(
             )));
 
-    /*public static final RegistryObject<Item> CANDLE_STAFF = ITEMS.register("candle_staff",
-            () -> new CandleStaffItem(new Item.Properties().durability(216), Items.HONEYCOMB, Map.of(
-                    )));
-
     public static final RegistryObject<Item> GOLDEN_STAFF = ITEMS.register("golden_staff",
             () -> new ColorableStaffItem(new Item.Properties().durability(216), Items.GOLD_INGOT,
-                    Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                                    "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION)
-                    )));
-
-    public static final RegistryObject<Item> ANCIENT_STAFF = ITEMS.register("ancient_staff",
-            () -> new StaffItem(new Item.Properties().durability(100), Items.ANCIENT_DEBRIS,
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
                                     "Weapon modifier", 1.0D, AttributeModifier.Operation.ADDITION)
                     )));
@@ -129,8 +116,8 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> NETHERITE_STAFF = ITEMS.register("netherite_staff",
             () -> new StaffItem(new Item.Properties().durability(1296), Items.NETHERITE_INGOT,
                     Map.of(AncientMagicksAttributes.SPELL_POWER.get(), new AttributeModifier(UUID.fromString("1e043d3d-df87-4519-bd13-7c71552bba2b"),
-                                    "Weapon modifier", 2.0D, AttributeModifier.Operation.ADDITION)
-                    )));*/
+                            "Weapon modifier", 2.0D, AttributeModifier.Operation.ADDITION)
+                    )));
 
     public static final RegistryObject<Item> ROBE_HOOD = ITEMS.register("robe_hood",
             () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.ROBE, ArmorItem.Type.HELMET, new Item.Properties()));
@@ -141,41 +128,14 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> ROBE_BOTTOM = ITEMS.register("robe_bottom",
             () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.ROBE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 
-    /*public static final RegistryObject<Item> SIMPLE_HOOD = ITEMS.register("simple_hood",
-            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.HELMET, new Item.Properties()));
-
-    public static final RegistryObject<Item> SIMPLE_ROBE_TOP = ITEMS.register("simple_robe_top",
-            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-
-    public static final RegistryObject<Item> SIMPLE_ROBE_BOTTOM = ITEMS.register("simple_robe_bottom",
-            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.SIMPLE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
-
-    public static final RegistryObject<Item> GOLDEN_CIRCLET = ITEMS.register("golden_circlet",
-            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.TRIMMED, ArmorItem.Type.HELMET, new Item.Properties()));
-
-    public static final RegistryObject<Item> TRIMMED_ROBE_TOP = ITEMS.register("trimmed_robe_top",
-            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.TRIMMED, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-
-    public static final RegistryObject<Item> TRIMMED_ROBE_BOTTOM = ITEMS.register("trimmed_robe_bottom",
-            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.TRIMMED, ArmorItem.Type.LEGGINGS, new Item.Properties()));
-
-    public static final RegistryObject<Item> ARCANE_HOOD = ITEMS.register("arcane_hood",
-            () -> new MagickArmorItem(AncientMagicksArmorMaterials.ARCANE, ArmorItem.Type.HELMET, new Item.Properties()));
-
-    public static final RegistryObject<Item> ARCANE_ROBE_TOP = ITEMS.register("arcane_robe_top",
-            () -> new MagickArmorItem(AncientMagicksArmorMaterials.ARCANE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
-
-    public static final RegistryObject<Item> ARCANE_ROBE_BOTTOM = ITEMS.register("arcane_robe_bottom",
-            () -> new MagickArmorItem(AncientMagicksArmorMaterials.ARCANE, ArmorItem.Type.LEGGINGS, new Item.Properties()));*/
-
     public static final RegistryObject<Item> SPELL_PEARL = ITEMS.register("spell_pearl",
             () -> new SpecialCastingItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> WOODEN_WAND = ITEMS.register("wooden_wand",
+    /*public static final RegistryObject<Item> WOODEN_WAND = ITEMS.register("wooden_wand",
             () -> new WandItem(new Item.Properties().durability(10)));
 
     public static final RegistryObject<Item> GOLDEN_WAND = ITEMS.register("golden_wand",
-            () -> new WandItem(new Item.Properties().durability(25)));
+            () -> new WandItem(new Item.Properties().durability(25)));*/
 
 
 
@@ -184,22 +144,25 @@ public class AncientMagicksItems {
             () -> new SpellStorageItem(new Item.Properties()));
 
     public static final RegistryObject<Item> FEATHER_FALL_ITEM = ITEMS.register("feather_fall",
-            () -> new FeatherFallItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.BUFF));
+            () -> new FeatherFallItem(new Item.Properties(), 0, -1, 10, SpellItem.SpellType.BUFF));
 
     public static final RegistryObject<Item> TELEKINETIC_GRAB_ITEM = ITEMS.register("telekinetic_grab",
-            () -> new TelekineticGrabItem(new Item.Properties(), 1, -1, 1, SpellItem.SpellType.SPECIAL));
+            () -> new TelekineticGrabItem(new Item.Properties(), 0, -1, 1, SpellItem.SpellType.SPECIAL));
 
     public static final RegistryObject<Item> EXTINGUISH_ITEM = ITEMS.register("extinguish",
-            () -> new ExtinguishItem(new Item.Properties(), 1, -1, 2, SpellItem.SpellType.SPECIAL));
+            () -> new ExtinguishItem(new Item.Properties(), 0, -1, 2, SpellItem.SpellType.SPECIAL));
 
     public static final RegistryObject<Item> SPOOK_ITEM = ITEMS.register("spook",
-            () -> new SpookItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.BUFF));
+            () -> new SpookItem(new Item.Properties(), 0, -1, 10, SpellItem.SpellType.BUFF));
+
+    public static final RegistryObject<Item> CREATE_OR_DESTROY_WATER_ITEM = ITEMS.register("create_or_destroy_water",
+            () -> new CreateOrDestroyWaterItem(new Item.Properties(), 0, -1, 2, SpellItem.SpellType.SPECIAL));
+
+    public static final RegistryObject<Item> ENDLESS_BREATH_ITEM = ITEMS.register("endless_breath",
+            () -> new EndlessBreathItem(new Item.Properties(), 0, -1, 2, SpellItem.SpellType.BUFF));
 
     public static final RegistryObject<Item> WITCH_ARROW_ITEM = ITEMS.register("witch_arrow",
-            () -> new WitchArrowItem(new Item.Properties(), 1, -1, 2, SpellItem.SpellType.ATTACK));
-
-    public static final RegistryObject<Item> NUMB_PAIN_ITEM = ITEMS.register("numb_pain",
-            () -> new NumbPainItem(new Item.Properties(), 3, -1, 10, SpellItem.SpellType.BUFF));
+            () -> new WitchArrowItem(new Item.Properties(), 1, -1, 1, SpellItem.SpellType.ATTACK));
 
     public static final RegistryObject<Item> FROST_ARMOR_ITEM = ITEMS.register("frost_armor",
             () -> new FrostArmorItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.BUFF));
@@ -213,14 +176,8 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> BLIND_ITEM = ITEMS.register("blind",
             () -> new BlindItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.ATTACK));
 
-    public static final RegistryObject<Item> CREATE_OR_DESTROY_WATER_ITEM = ITEMS.register("create_or_destroy_water",
-            () -> new CreateOrDestroyWaterItem(new Item.Properties(), 1, -1, 2, SpellItem.SpellType.SPECIAL));
-
     public static final RegistryObject<Item> SLEEP_ITEM = ITEMS.register("sleep",
             () -> new SleepItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.ATTACK));
-
-    public static final RegistryObject<Item> ENDLESS_BREATH_ITEM = ITEMS.register("endless_breath",
-            () -> new EndlessBreathItem(new Item.Properties(), 1, -1, 2, SpellItem.SpellType.BUFF));
 
     public static final RegistryObject<Item> WIND_BURST_ITEM = ITEMS.register("wind_burst",
             () -> new WindBurstItem(new Item.Properties(), 1, -1, 4, SpellItem.SpellType.ATTACK));
@@ -231,41 +188,32 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> INVISIBILITY_ITEM = ITEMS.register("invisibility",
             () -> new InvisibilityItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.BUFF));
 
-    public static final RegistryObject<Item> ACID_ARROW_ITEM = ITEMS.register("acid_arrow",
-            () -> new AcidArrowItem(new Item.Properties(), 1, -1, 2, SpellItem.SpellType.ATTACK));
-
-    public static final RegistryObject<Item> BLINK_ITEM = ITEMS.register("blink",
-            () -> new BlinkItem(new Item.Properties(), 1, -1, 3, SpellItem.SpellType.SPECIAL));
-
     public static final RegistryObject<Item> SUMMON_BEES_ITEM = ITEMS.register("summon_bees",
             () -> new SummonBeesItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.SUMMON));
 
+    public static final RegistryObject<Item> ACID_ARROW_ITEM = ITEMS.register("acid_arrow",
+            () -> new AcidArrowItem(new Item.Properties(), 2, -1, 2, SpellItem.SpellType.ATTACK));
+
+    public static final RegistryObject<Item> BLINK_ITEM = ITEMS.register("blink",
+            () -> new BlinkItem(new Item.Properties(), 2, -1, 3, SpellItem.SpellType.SPECIAL));
+
     public static final RegistryObject<Item> ALACRITY_ITEM = ITEMS.register("alacrity",
-            () -> new AlacrityItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.BUFF));
+            () -> new AlacrityItem(new Item.Properties(), 2, -1, 10, SpellItem.SpellType.BUFF));
 
     public static final RegistryObject<Item> FIREBALL_ITEM = ITEMS.register("fireball",
-            () -> new FireballItem(new Item.Properties(), 1, -1, 4, SpellItem.SpellType.ATTACK));
+            () -> new FireballItem(new Item.Properties(), 2, -1, 4, SpellItem.SpellType.ATTACK));
 
     public static final RegistryObject<Item> CALL_THUNDER_ITEM = ITEMS.register("call_thunder",
-            () -> new CallThunderItem(new Item.Properties(), 1, -1, 4, SpellItem.SpellType.ATTACK));
+            () -> new CallThunderItem(new Item.Properties(), 3, -1, 4, SpellItem.SpellType.ATTACK));
 
     public static final RegistryObject<Item> SUMMON_ZOMBIE_ITEM = ITEMS.register("summon_zombie",
             () -> new SummonZombieItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.SUMMON));
 
     public static final RegistryObject<Item> FIRE_BREATH_ITEM = ITEMS.register("fire_breath",
-            () -> new FireBreathItem(new Item.Properties(), 1, -1, 2, SpellItem.SpellType.ATTACK));
+            () -> new FireBreathItem(new Item.Properties(), 2, -1, 2, SpellItem.SpellType.ATTACK));
 
-    public static final RegistryObject<Item> FLY_ITEM = ITEMS.register("fly",
-            () -> new FlyItem(new Item.Properties(), 2, -1, 10, SpellItem.SpellType.BUFF));
-
-    public static final RegistryObject<Item> POLYMORPH_ITEM = ITEMS.register("polymorph",
-            () -> new PolymorphItem(new Item.Properties(), 2, -1, 10, SpellItem.SpellType.ATTACK));
-
-    public static final RegistryObject<Item> FREEZE_LANCE_ITEM = ITEMS.register("freeze_lance",
-            () -> new FreezeLanceItem(new Item.Properties(), 2, -1, 2, SpellItem.SpellType.ATTACK));
-
-    public static final RegistryObject<Item> BURN_LANCE_ITEM = ITEMS.register("burn_lance",
-            () -> new BurnLanceItem(new Item.Properties(), 2, -1, 2, SpellItem.SpellType.ATTACK));
+    public static final RegistryObject<Item> NUMB_PAIN_ITEM = ITEMS.register("numb_pain",
+            () -> new NumbPainItem(new Item.Properties(), 2, -1, 10, SpellItem.SpellType.BUFF));
 
     public static final RegistryObject<Item> GREATER_INVISIBILITY_ITEM = ITEMS.register("greater_invisibility",
             () -> new GreaterInvisibilityItem(new Item.Properties(), 2, -1, 10, SpellItem.SpellType.BUFF));
@@ -285,17 +233,29 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> SUMMON_SKELETON_WARRIOR_ITEM = ITEMS.register("summon_skeleton_warrior",
             () -> new SummonSkeletonWarriorItem(new Item.Properties(), 2, -1, 10, SpellItem.SpellType.SUMMON));
 
-    public static final RegistryObject<Item> SUMMON_DEATH_KNIGHT_ITEM = ITEMS.register("summon_death_knight",
-            () -> new SummonDeathKnightItem(new Item.Properties(), 2, -1, 10, SpellItem.SpellType.SUMMON));
-
-    public static final RegistryObject<Item> BLIZZARD_ITEM = ITEMS.register("blizzard",
-            () -> new BlizzardItem(new Item.Properties(), 2, -1, 2, SpellItem.SpellType.ATTACK));
-
     public static final RegistryObject<Item> CONTROL_WEATHER_ITEM = ITEMS.register("control_weather",
             () -> new ControlWeatherItem(new Item.Properties(), 2, -1, 10, SpellItem.SpellType.BUFF));
 
     public static final RegistryObject<Item> LIFE_TAP_ITEM = ITEMS.register("life_tap",
             () -> new LifeTapItem(new Item.Properties(), 2, 0, 1, SpellItem.SpellType.SPECIAL));
+
+    public static final RegistryObject<Item> POLYMORPH_ITEM = ITEMS.register("polymorph",
+            () -> new PolymorphItem(new Item.Properties(), 2, -1, 10, SpellItem.SpellType.ATTACK));
+
+    public static final RegistryObject<Item> SUMMON_DEATH_KNIGHT_ITEM = ITEMS.register("summon_death_knight",
+            () -> new SummonDeathKnightItem(new Item.Properties(), 3, -1, 10, SpellItem.SpellType.SUMMON));
+
+    public static final RegistryObject<Item> BLIZZARD_ITEM = ITEMS.register("blizzard",
+            () -> new BlizzardItem(new Item.Properties(), 3, -1, 2, SpellItem.SpellType.ATTACK));
+
+    public static final RegistryObject<Item> FLY_ITEM = ITEMS.register("fly",
+            () -> new FlyItem(new Item.Properties(), 3, -1, 10, SpellItem.SpellType.BUFF));
+
+    public static final RegistryObject<Item> FREEZE_LANCE_ITEM = ITEMS.register("freeze_lance",
+            () -> new FreezeLanceItem(new Item.Properties(), 3, -1, 2, SpellItem.SpellType.ATTACK));
+
+    public static final RegistryObject<Item> BURN_LANCE_ITEM = ITEMS.register("burn_lance",
+            () -> new BurnLanceItem(new Item.Properties(), 3, -1, 2, SpellItem.SpellType.ATTACK));
 
     public static final RegistryObject<Item> MIND_CONTROL_ITEM = ITEMS.register("mind_control",
             () -> new MindControlItem(new Item.Properties(), 3, -1, 10, SpellItem.SpellType.ATTACK));

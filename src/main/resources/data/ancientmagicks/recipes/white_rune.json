@@ -1,14 +1,18 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "ancientmagicks:empty_rune"
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#D#",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:clay_ball"
     },
-    {
+    "D": {
       "item": "minecraft:white_dye"
     }
-  ],
-
+  },
   "result": {
     "item": "ancientmagicks:white_rune",
     "count": 1

@@ -1,7 +1,10 @@
 {
   "entries": [
+    "ancientmagicks:ancient_loot",
     "ancientmagicks:folk_loot",
-    "ancientmagicks:ancient_loot"
+    "ancientmagicks:basic_loot",
+    "ancientmagicks:intermediate_loot",
+    "ancientmagicks:advanced_loot"
   ],
   "replace": false
 }

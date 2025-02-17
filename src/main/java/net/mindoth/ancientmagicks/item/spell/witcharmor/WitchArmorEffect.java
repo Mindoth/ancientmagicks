@@ -8,10 +8,15 @@ import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class WitchArmorEffect extends AbstractArmorEffect {
@@ -20,8 +25,16 @@ public class WitchArmorEffect extends AbstractArmorEffect {
         super(pCategory, pColor);
     }
 
+    @Override
+    public void addAttributeModifiers(LivingEntity living, AttributeMap map, int amp) {
+        super.addAttributeModifiers(living, map, amp);
+        List<MobEffectInstance> list = living.getActiveEffects().stream()
+                .filter(effect -> effect.getEffect() instanceof AbstractArmorEffect && effect.getEffect() != AncientMagicksEffects.WITCH_ARMOR.get()).toList();
+        for ( MobEffectInstance effect : list ) living.removeEffect(effect.getEffect());
+    }
+
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void manaShieldDamageBlock(final LivingDamageEvent event) {
+    public static void witchArmorDamageBlock(final LivingDamageEvent event) {
         if ( !(event.getEntity() instanceof ServerPlayer serverPlayer) ) return;
         DamageType type = event.getSource().type();
         if ( serverPlayer.hasEffect(AncientMagicksEffects.WITCH_ARMOR.get())

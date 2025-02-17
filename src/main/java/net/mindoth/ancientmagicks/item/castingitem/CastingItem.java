@@ -47,7 +47,7 @@ public class CastingItem extends Item {
             //ACTUALLY cast the spell
             else if ( stack != null ) {
                 if ( spell.castMagic(owner, caster, center, useTime) ) {
-                    if ( castingItem instanceof StaffItem && useTime % 10 == 0 ) MagickEvents.changeMana(caster, -spell.getManaCost());
+                    if ( castingItem instanceof StaffItem && useTime % 20 == 0 ) MagickEvents.changeMana(caster, -spell.getManaCost());
                     if ( caster instanceof LivingEntity living ) {
                         //Handle cooldown on non-channel spells right after casting
                         if ( !spell.isChannel() ) handleCooldownsAndStuff(living, stack, spell, hasAlacrity);

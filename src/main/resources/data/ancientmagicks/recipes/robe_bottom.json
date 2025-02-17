@@ -1,20 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
+    "###",
     "# #",
-    "#D#",
-    "#D#"
+    "# #"
   ],
   "key": {
     "#": {
       "item": "ancientmagicks:wool_cloth"
-    },
-    "D": {
-      "item": "ancientmagicks:arcane_dust"
     }
   },
   "result": {
-    "item": "ancientmagicks:arcane_robe_top",
+    "item": "ancientmagicks:robe_bottom",
     "count": 1
   }
 }

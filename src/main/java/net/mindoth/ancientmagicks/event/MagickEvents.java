@@ -33,24 +33,17 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class MagickEvents {
 
-    public static double getPlayerMpRegen(Player player) {
-        return player.getAttributeValue(AncientMagicksAttributes.MP_REG.get());
-    }
-
     @SubscribeEvent
     public static void baseManaRegen(final TickEvent.LevelTickEvent event) {
         if ( event.phase != TickEvent.Phase.END || event.level.isClientSide ) return;
         event.level.players().stream().toList().forEach(player -> {
-            final double manaRegen = getPlayerMpRegen(player);
+            final double manaRegen = player.getAttributeValue(AncientMagicksAttributes.MP_REG.get());
             if ( !(player instanceof ServerPlayer serverPlayer ) || player.isDeadOrDying() || player.isRemoved() ) return;
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                 final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get());
                 final double currentMana = magic.getCurrentMana();
-                boolean isCasting = serverPlayer.isUsingItem() && serverPlayer.getUseItem().getItem() instanceof StaffItem;
-                if ( player.tickCount % 80 == 0 ) {
-                    if ( currentMana < maxMana && !isCasting ) changeMana(player, manaRegen);
-                    else if ( currentMana > maxMana ) changeMana(player, maxMana - currentMana);
-                }
+                if ( player.tickCount % 80 == 0 ) changeMana(player, manaRegen);
+                if ( currentMana > maxMana ) changeMana(player, maxMana - currentMana);
             });
         });
     }

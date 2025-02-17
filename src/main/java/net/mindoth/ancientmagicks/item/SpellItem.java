@@ -3,10 +3,13 @@ package net.mindoth.ancientmagicks.item;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -20,12 +23,17 @@ import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 public class SpellItem extends Item {
@@ -33,6 +41,8 @@ public class SpellItem extends Item {
     public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         return false;
     }
+
+    private final SpellType spellType;
 
     private final int spellTier;
     public int getSpellTier() {
@@ -57,7 +67,6 @@ public class SpellItem extends Item {
         return false;
     }
 
-    private final SpellType spellType;
     public boolean isHarmful() {
         return this.spellType.getType() != SpellType.BUFF;
     }
@@ -69,7 +78,7 @@ public class SpellItem extends Item {
     public SpellItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
         super(pProperties);
         this.spellTier = spellTier;
-        if ( manaCost < 0 ) this.manaCost = isChannel() ? spellTier : spellTier * spellType.getMultiplier();
+        if ( manaCost < 0 ) this.manaCost = isChannel() ? spellTier : spellTier * 2 * spellType.getMultiplier();
         else this.manaCost = manaCost;
         this.cooldown = cooldown * 20;
         this.spellType = spellType;
@@ -302,5 +311,22 @@ public class SpellItem extends Item {
     public static void playXpSound(Level level, Vec3 center) {
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.25F, (new Random().nextFloat() - new Random().nextFloat()) * 0.35F + 0.9F);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
+        SpellItem spell = this;
+        if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(spell) && Minecraft.getInstance().player != null ) {
+            StringBuilder tooltipString = new StringBuilder();
+            List<ColorRuneItem> list = ColorRuneItem.stringListToActualList(ColorRuneItem.CURRENT_COMBO_MAP.get(spell).toString());
+            for ( ColorRuneItem rune : list ) {
+                String color = rune.color + "0" + "\u00A7r";
+                tooltipString.append(color);
+            }
+            tooltip.add(Component.literal(String.valueOf(tooltipString)));
+        }
+
+        super.appendHoverText(stack, world, tooltip, flagIn);
     }
 }

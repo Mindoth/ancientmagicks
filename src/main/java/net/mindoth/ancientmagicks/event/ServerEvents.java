@@ -1,16 +1,16 @@
 package net.mindoth.ancientmagicks.event;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.capabilities.AncientMagicksCapabilities;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagic;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.network.*;
-import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
+import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.PacketSyncClientMagic;
+import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
+import net.mindoth.ancientmagicks.network.PacketSyncSpellCombos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -58,56 +58,4 @@ public class ServerEvents {
         Random seededRand = new Random(seed);
         AncientMagicks.createLists(seededRand);
     }
-
-    //public static final String COMBOFILEPATH = "am_spellrecipes.json";
-    //Overcomplicated file creating/reading system for spell combos...
-    /*private static void spellComboFileHandling(ServerStartingEvent event) {
-        Logger logger = AncientMagicks.getLogger();
-        Path savePath = event.getServer().getWorldPath(LevelResource.ROOT).normalize().toAbsolutePath();
-        String filepath = savePath + "/" + COMBOFILEPATH;
-
-        //Creating file
-        try {
-            File file = new File(filepath);
-            if ( !file.isFile() ) {
-                AncientMagicks.randomizeSpells();
-
-                FileOutputStream fos = new FileOutputStream(file);
-                PrintWriter pw = new PrintWriter(fos);
-
-                for ( Map.Entry<SpellItem, List<ColorRuneItem>> entry : AncientMagicks.COMBO_MAP.entrySet() ) {
-                    pw.print(ForgeRegistries.ITEMS.getKey(entry.getKey()) + "=" + entry.getValue() + ";" + "\n");
-                }
-
-                pw.flush();
-                pw.close();
-                fos.close();
-                logger.info("Successfully created spell combo recipes for Ancient Magicks.");
-            }
-        }
-        catch ( IOException exception ) {
-            logger.error("ERROR! CREATING SPELL COMBO RECIPES FOR ANCIENT MAGICKS.");
-        }
-
-        //Reading file
-        try {
-            File file = new File(filepath);
-            if ( file.isFile() ) {
-                FileInputStream fis = new FileInputStream(file);
-                String comboString = Files.readString(savePath.resolve(COMBOFILEPATH)).replaceAll("\n", "").replaceAll(".$", "");
-                ColorRuneItem.CURRENT_COMBO_TAG.putString("am_combostring", comboString);
-
-                ColorRuneItem.CURRENT_COMBO_MAP = ColorRuneItem.buildComboMap(ColorRuneItem.CURRENT_COMBO_TAG.getString("am_combostring"));
-                //Splitter.on(";").withKeyValueSeparator("=").split(ColorRuneItem.CURRENT_COMBO_TAG.getString("am_combostring"))
-
-                fis.close();
-                logger.info("Successfully read spell combo recipes for Ancient Magicks.");
-            }
-            else logger.error("ERROR! SPELL COMBO RECIPE FILE NOT FOUND.");
-        }
-        catch ( Exception exception ) {
-            exception.printStackTrace();
-            logger.error("ERROR! READING SPELL COMBO RECIPES FOR ANCIENT MAGICKS.");
-        }
-    }*/
 }

@@ -3,7 +3,7 @@
   "pattern": [
     "###",
     "# #",
-    "# #"
+    "   "
   ],
   "key": {
     "#": {
@@ -11,7 +11,7 @@
     }
   },
   "result": {
-    "item": "ancientmagicks:simple_robe_bottom",
+    "item": "ancientmagicks:robe_hood",
     "count": 1
   }
 }

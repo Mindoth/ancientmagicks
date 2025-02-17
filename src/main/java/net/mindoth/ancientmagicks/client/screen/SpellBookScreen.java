@@ -2,15 +2,12 @@ package net.mindoth.ancientmagicks.client.screen;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
-import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -20,12 +17,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
-import java.util.Objects;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class SpellBookScreen extends AncientMagicksScreen {
 
-    private final CompoundTag bookNbt;
     private final List<ItemStack> itemList;
     private final List<List<ItemStack>> pageList;
     private int spreadNumber;
@@ -42,9 +37,8 @@ public class SpellBookScreen extends AncientMagicksScreen {
     private final int maxColumns = 4;
     private final int squareSpacing = 26;
 
-    protected SpellBookScreen(CompoundTag tag, List<ItemStack> stackList, int spreadNumber) {
+    protected SpellBookScreen(List<ItemStack> stackList, int spreadNumber) {
         super(Component.literal(""));
-        this.bookNbt = tag;
         this.pageList = Lists.newArrayList();
         this.spreadNumber = spreadNumber;
         if ( stackList.isEmpty() ) this.itemList = List.of(ItemStack.EMPTY);
@@ -61,9 +55,9 @@ public class SpellBookScreen extends AncientMagicksScreen {
         }
     }
 
-    public static void open(CompoundTag tag, List<ItemStack> itemList, int spreadNumber) {
+    public static void open(List<ItemStack> itemList, int spreadNumber) {
         Minecraft MINECRAFT = Minecraft.getInstance();
-        if ( !(MINECRAFT.screen instanceof SpellBookScreen) ) MINECRAFT.setScreen(new SpellBookScreen(tag, itemList, spreadNumber));
+        if ( !(MINECRAFT.screen instanceof SpellBookScreen) ) MINECRAFT.setScreen(new SpellBookScreen(itemList, spreadNumber));
     }
 
     private boolean isFirstPage() {
@@ -82,7 +76,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
         int y = minecraft.getWindow().getGuiScaledHeight() / 2;
 
         //Slot Widgets
-        if ( !Objects.equals(this.itemList, List.of(ItemStack.EMPTY)) ) buildButtons(x, y);
+        buildButtons(x, y);
 
         //Page Arrows
         this.rightArrow = addRenderableWidget(Button.builder(Component.literal(""), this::handlePageRight)
@@ -124,21 +118,6 @@ public class SpellBookScreen extends AncientMagicksScreen {
         handleSlotButtonVisibility();
     }
 
-    private void buildSlotButton(int xPos, int yPos) {
-        Button button = addRenderableWidget(Button.builder(Component.literal(""), this::handleSlotButton)
-                .bounds(xPos - 1, yPos - 1, 18, 18)
-                .build());
-        this.slotList.add(button);
-    }
-
-    private void handleSlotButtonVisibility() {
-        for ( Button button : this.slotList ) {
-            int stackIndex = this.slotList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
-            if ( stackIndex >= this.itemList.size() && button.visible ) button.visible = false;
-            else if ( !button.visible ) button.visible = true;
-        }
-    }
-
     private void handlePageLeft(Button button) {
         if ( !isFirstPage() ) {
             this.spreadNumber--;
@@ -155,14 +134,29 @@ public class SpellBookScreen extends AncientMagicksScreen {
         }
     }
 
+    private void handleSlotButtonVisibility() {
+        for ( Button button : this.slotList ) {
+            int stackIndex = this.slotList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
+            if ( stackIndex >= this.itemList.size() && button.visible ) button.visible = false;
+            else if ( !button.visible ) button.visible = true;
+        }
+    }
+
+    private void buildSlotButton(int xPos, int yPos) {
+        Button button = addRenderableWidget(Button.builder(Component.literal(""), this::handleSlotButton)
+                .bounds(xPos - 1, yPos - 1, 18, 18)
+                .build());
+        this.slotList.add(button);
+    }
+
+    //TODO Click to see spell info
     private void handleSlotButton(Button button) {
         if ( !this.slotList.contains(button) ) return;
         int stackIndex = this.slotList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
         if ( stackIndex >= this.itemList.size() ) return;
         ItemStack stack = this.pageList.get(this.spreadNumber).get(this.slotList.indexOf(button));
-        ItemStack spell = getPossibleContainedSpell(stack);
-        if ( !(spell.getItem() instanceof SpellItem) ) return;
-        SpellScreen.open(this.bookNbt, spell, this.itemList, this.spreadNumber);
+        if ( !(stack.getItem() instanceof SpellItem) ) return;
+        SpellScreen.open(stack, this.itemList, this.spreadNumber);
     }
 
     @Override
@@ -190,7 +184,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
                 int column = 0;
                 for ( int i = 0; i < page.size(); i++ ) {
                     ItemStack stack = page.get(i);
-                    ItemStack spell = getPossibleContainedSpell(stack);
+                    //ItemStack spell = getPossibleContainedSpell(stack);
 
                     //Spot calc
                     if ( column == this.maxColumns ) {
@@ -208,12 +202,10 @@ public class SpellBookScreen extends AncientMagicksScreen {
                     drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
                             xPos - 3, yPos - 3, 0, 0, 22, 22, 22, 22, graphics);
 
-                    if ( spell.getItem() instanceof SpellItem ) {
-                        renderItemWithDecorations(graphics, spell, xPos, yPos);
-                        if ( this.slotList.get(i).isHovered() ) {
-                            graphics.fill(RenderType.guiOverlay(), xPos, yPos, xPos + 16, yPos + 16, Integer.MAX_VALUE);
-                            graphics.renderTooltip(this.font, stack, mouseX, mouseY);
-                        }
+                    renderItemWithDecorations(graphics, stack, xPos, yPos);
+                    if ( this.slotList.get(i).isHovered() ) {
+                        graphics.fill(RenderType.guiOverlay(), xPos, yPos, xPos + 16, yPos + 16, Integer.MAX_VALUE);
+                        graphics.renderTooltip(this.font, stack, mouseX, mouseY);
                     }
 
                     column++;
