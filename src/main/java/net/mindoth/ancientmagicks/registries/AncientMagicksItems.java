@@ -4,8 +4,8 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.*;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
-import net.mindoth.ancientmagicks.item.armor.MagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.*;
+import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
 import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowItem;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindItem;
@@ -140,6 +140,9 @@ public class AncientMagicksItems {
 
 
     //Magic Spells
+    public static final RegistryObject<Item> FORM_PROJECTILE_ITEM = ITEMS.register("form_projectile",
+            () -> new ProjectileFormItem(new Item.Properties()));
+
     public static final RegistryObject<Item> SPELL_SCROLL = ITEMS.register("spell_scroll",
             () -> new SpellStorageItem(new Item.Properties()));
 

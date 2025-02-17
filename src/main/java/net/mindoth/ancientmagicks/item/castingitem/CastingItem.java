@@ -136,6 +136,10 @@ public class CastingItem extends Item {
         return item instanceof StaffItem || (item instanceof SpecialCastingItem && SpecialCastingItem.getStoredSpell(castingItem) != null);
     }
 
+    public static boolean canOpenWheel(Player player) {
+        return !CastingItem.getHeldStaff(player).isEmpty();
+    }
+
     @Override
     public int getUseDuration(ItemStack pStack) {
         return 72000;

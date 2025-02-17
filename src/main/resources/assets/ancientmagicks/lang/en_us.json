@@ -32,6 +32,8 @@
   "item.ancientmagicks.red_rune": "Red Rune",
 
 
+  "item.ancientmagicks.form_projectile": "Projectile",
+
   "item.ancientmagicks.witch_arrow": "Witch Arrow",
   "tooltip.ancientmagicks.witch_arrow": "Launches a damaging magical arrow that flies towards enemies.",
   "item.ancientmagicks.fireball": "Fireball",
@@ -146,6 +148,8 @@
   "message.ancientmagicks.no_xp_to_learn_spell": "You don't have enough experience to learn that spell",
 
 
+  "tooltip.ancientmagicks.form": "\u00A75Form: \u00A7r",
+  "tooltip.ancientmagicks.spell": "\u00A7cSpell: \u00A7r",
   "tooltip.ancientmagicks.stats": "Stats: ",
   "tooltip.ancientmagicks.tier": "Spell Tier: ",
   "tooltip.ancientmagicks.tier_0": "Folk",

@@ -55,6 +55,14 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         return spellList;
     }
 
+    public static ItemStack getBookSlot(Player player) {
+        for ( int i = 0; i <= player.getInventory().getContainerSize(); i++ ) {
+            ItemStack slot = player.getInventory().getItem(i);
+            if ( slot.getItem() instanceof SpellBookItem ) return slot;
+        }
+        return ItemStack.EMPTY;
+    }
+
     public static @Nonnull ItemStack getHeldSpellBook(Player playerEntity) {
         ItemStack book = playerEntity.getMainHandItem().getItem() instanceof SpellBookItem ? playerEntity.getMainHandItem() : ItemStack.EMPTY;
         if ( book == ItemStack.EMPTY ) book = playerEntity.getOffhandItem().getItem() instanceof SpellBookItem ? playerEntity.getOffhandItem() : ItemStack.EMPTY;

@@ -29,17 +29,12 @@ public class AncientMagicksCapabilities {
 
     @SubscribeEvent
     public static void onPlayerCreatedAfterDeath(PlayerEvent.Clone event) {
-        //if ( event.getEntity().level().isClientSide ) return;
-        if ( /*event.isWasDeath() &&*/ event.getEntity() instanceof ServerPlayer serverPlayer ) {
+        if ( event.getEntity() instanceof ServerPlayer serverPlayer ) {
             event.getOriginal().reviveCaps();
             event.getOriginal().getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(oldStore -> {
                 event.getEntity().getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
                     if ( event.isWasDeath() ) MagickEvents.changeMana(serverPlayer, Integer.MIN_VALUE);
-                    /*CompoundTag tag = new CompoundTag();
-                    tag.putString(PlayerMagic.AM_SPELL, oldStore.getCurrentSpell());
-                    tag.putString(PlayerMagic.AM_KNOWN_SPELLS, oldStore.getKnownSpells());
-                    AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMagic(tag), serverPlayer);*/
                 });
             });
             event.getOriginal().invalidateCaps();

@@ -11,6 +11,8 @@ import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
+import net.mindoth.ancientmagicks.item.form.ProjectileEntity;
+import net.mindoth.ancientmagicks.item.form.ProjectileRenderer;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlRenderer;
 import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowRenderer;
 import net.mindoth.ancientmagicks.item.spell.blizzard.IcicleRenderer;
@@ -60,6 +62,7 @@ public class AncientMagicksClient {
     }
 
     private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(AncientMagicksEntities.SPELL_PROJECTILE.get(), ProjectileRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.WITCH_ARROW.get(), WitchArrowRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.FIREBALL.get(), FireballRenderer::new);
         event.registerEntityRenderer(AncientMagicksEntities.WATER_BOLT.get(), WaterBoltRenderer::new);
@@ -101,7 +104,7 @@ public class AncientMagicksClient {
                 }
             }
             else if ( mc.screen == null && key == spellSelector && keyAction == 1 ) {
-                if ( !CastingItem.getHeldStaff(player).isEmpty() ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());
+                if ( CastingItem.canOpenWheel(player) ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());
             }
         }
     }

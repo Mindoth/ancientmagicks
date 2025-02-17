@@ -1,13 +1,14 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.form.ProjectileEntity;
 import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowEntity;
+import net.mindoth.ancientmagicks.item.spell.blizzard.IcicleEntity;
 import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceEntity;
 import net.mindoth.ancientmagicks.item.spell.fireball.FireballEntity;
 import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltEntity;
 import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceEntity;
-import net.mindoth.ancientmagicks.item.spell.blizzard.IcicleEntity;
 import net.mindoth.ancientmagicks.item.spell.waterbolt.WaterBoltEntity;
 import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowEntity;
 import net.minecraft.world.entity.Entity;
@@ -19,6 +20,10 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class AncientMagicksEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, AncientMagicks.MOD_ID);
+
+    public static final RegistryObject<EntityType<ProjectileEntity>> SPELL_PROJECTILE
+            = registerEntity(EntityType.Builder.<ProjectileEntity>of(ProjectileEntity::new,
+            MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(ProjectileEntity::new), "spell_projectile");
 
     public static final RegistryObject<EntityType<WitchArrowEntity>> WITCH_ARROW
             = registerEntity(EntityType.Builder.<WitchArrowEntity>of(WitchArrowEntity::new,

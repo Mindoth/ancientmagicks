@@ -155,7 +155,6 @@ public class SpellBookScreen extends AncientMagicksScreen {
         int stackIndex = this.slotList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
         if ( stackIndex >= this.itemList.size() ) return;
         ItemStack stack = this.pageList.get(this.spreadNumber).get(this.slotList.indexOf(button));
-        if ( !(stack.getItem() instanceof SpellItem) ) return;
         SpellScreen.open(stack, this.itemList, this.spreadNumber);
     }
 
