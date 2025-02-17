@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.mixins;
 
-import net.mindoth.ancientmagicks.item.spell.greaterinvisibility.GreaterInvisibilityEffect;
+import net.mindoth.ancientmagicks.item.temp.greaterinvisibility.GreaterInvisibilityEffect;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;

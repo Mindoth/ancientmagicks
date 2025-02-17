@@ -1,20 +1,14 @@
 package net.mindoth.ancientmagicks.item.spell.blind;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.AbstractSpellRayCast;
-import net.minecraft.world.effect.MobEffectInstance;
+import net.mindoth.ancientmagicks.item.temp.EffectSpell;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 
-public class BlindItem extends AbstractSpellRayCast {
+public class BlindItem extends EffectSpell {
 
-    public BlindItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
-        super(pProperties, spellTier, manaCost, cooldown, spellType);
+    public BlindItem(Properties pProperties, int manaCost, int cooldown) {
+        super(pProperties, manaCost, cooldown);
     }
 
     @Override
@@ -28,13 +22,7 @@ public class BlindItem extends AbstractSpellRayCast {
     }
 
     @Override
-    protected int getRenderType() {
-        return 3;
-    }
-
-    @Override
-    protected void applyEffect(Level level, LivingEntity owner, Entity caster, Entity target) {
-        ((LivingEntity)target).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, getLife(), 0, false, isHarmful()));
-        if ( target instanceof Mob mob && mob.getTarget() != null ) mob.setTarget(null);
+    protected MobEffect getEffect() {
+        return MobEffects.BLINDNESS;
     }
 }

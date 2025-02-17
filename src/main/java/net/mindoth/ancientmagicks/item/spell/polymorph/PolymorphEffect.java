@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.polymorph;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -11,17 +10,12 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.logging.Level;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class PolymorphEffect extends MobEffect {

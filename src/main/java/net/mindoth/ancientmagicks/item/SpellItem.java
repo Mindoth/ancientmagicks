@@ -3,8 +3,7 @@ package net.mindoth.ancientmagicks.item;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
-import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
+import net.mindoth.ancientmagicks.item.temp.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
@@ -42,11 +41,8 @@ public class SpellItem extends Item {
         return false;
     }
 
-    private final SpellType spellType;
-
-    private final int spellTier;
-    public int getSpellTier() {
-        return this.spellTier;
+    public boolean doSpell(Level level, LivingEntity owner, Entity caster, Entity target) {
+        return false;
     }
 
     private final int manaCost;
@@ -59,16 +55,12 @@ public class SpellItem extends Item {
         return this.cooldown;
     }
 
-    public boolean isCraftable() {
-        return true;
-    }
-
     public boolean isChannel() {
         return false;
     }
 
     public boolean isHarmful() {
-        return this.spellType.getType() != SpellType.BUFF;
+        return true;
     }
 
     public ParticleColor.IntWrapper getParticleColor() {
@@ -77,11 +69,13 @@ public class SpellItem extends Item {
 
     public SpellItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
         super(pProperties);
+        this.manaCost = manaCost;
+        this.cooldown = cooldown;
         this.spellTier = spellTier;
-        if ( manaCost < 0 ) this.manaCost = isChannel() ? spellTier : spellTier * 2 * spellType.getMultiplier();
-        else this.manaCost = manaCost;
-        this.cooldown = cooldown * 20;
-        this.spellType = spellType;
+    }
+    private final int spellTier;
+    public int getSpellTier() {
+        return this.spellTier;
     }
 
     public enum SpellType {
@@ -100,6 +94,13 @@ public class SpellItem extends Item {
         SpellType getType() {
             return this;
         }
+    }
+
+    public SpellItem(Properties pProperties, int manaCost, int cooldown) {
+        super(pProperties);
+        this.manaCost = manaCost;
+        this.cooldown = cooldown;
+        this.spellTier = 0;
     }
 
     public enum ColorCode {

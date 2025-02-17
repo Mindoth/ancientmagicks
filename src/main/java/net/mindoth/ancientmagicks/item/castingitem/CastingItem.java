@@ -4,7 +4,7 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.event.MagickEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.item.spell.abstractspell.spellpearl.SpellPearlEntity;
+import net.mindoth.ancientmagicks.item.temp.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.nbt.CompoundTag;

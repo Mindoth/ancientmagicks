@@ -4,51 +4,13 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.*;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
-import net.mindoth.ancientmagicks.item.castingitem.*;
+import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
+import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
+import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
-import net.mindoth.ancientmagicks.item.spell.acidarrow.AcidArrowItem;
-import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityItem;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindItem;
-import net.mindoth.ancientmagicks.item.spell.blink.BlinkItem;
-import net.mindoth.ancientmagicks.item.spell.blizzard.BlizzardItem;
-import net.mindoth.ancientmagicks.item.spell.burnlance.BurnLanceItem;
-import net.mindoth.ancientmagicks.item.spell.callthunder.CallThunderItem;
-import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphItem;
-import net.mindoth.ancientmagicks.item.spell.controlweather.ControlWeatherItem;
-import net.mindoth.ancientmagicks.item.spell.createordestroywater.CreateOrDestroyWaterItem;
-import net.mindoth.ancientmagicks.item.spell.darkvision.DarkvisionItem;
-import net.mindoth.ancientmagicks.item.spell.dragonbreath.DragonBreathItem;
-import net.mindoth.ancientmagicks.item.spell.endlessbreath.EndlessBreathItem;
-import net.mindoth.ancientmagicks.item.spell.extinguish.ExtinguishItem;
-import net.mindoth.ancientmagicks.item.spell.featherfall.FeatherFallItem;
-import net.mindoth.ancientmagicks.item.spell.fireball.FireballItem;
-import net.mindoth.ancientmagicks.item.spell.firebolt.FireBoltItem;
-import net.mindoth.ancientmagicks.item.spell.firebreath.FireBreathItem;
-import net.mindoth.ancientmagicks.item.spell.fly.FlyItem;
-import net.mindoth.ancientmagicks.item.spell.freezelance.FreezeLanceItem;
-import net.mindoth.ancientmagicks.item.spell.frostarmor.FrostArmorItem;
-import net.mindoth.ancientmagicks.item.spell.greaterinvisibility.GreaterInvisibilityItem;
-import net.mindoth.ancientmagicks.item.spell.icewall.IceWallItem;
-import net.mindoth.ancientmagicks.item.spell.invisibility.InvisibilityItem;
-import net.mindoth.ancientmagicks.item.spell.lifetap.LifeTapItem;
-import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlItem;
-import net.mindoth.ancientmagicks.item.spell.numbpain.NumbPainItem;
-import net.mindoth.ancientmagicks.item.spell.perfectinvisibility.PerfectInvisibilityItem;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphItem;
 import net.mindoth.ancientmagicks.item.spell.sleep.SleepItem;
-import net.mindoth.ancientmagicks.item.spell.spook.SpookItem;
-import net.mindoth.ancientmagicks.item.spell.summonbees.SummonBeesItem;
-import net.mindoth.ancientmagicks.item.spell.summondeathknight.SummonDeathKnightItem;
-import net.mindoth.ancientmagicks.item.spell.summonskeletoncaster.SummonSkeletonCasterItem;
-import net.mindoth.ancientmagicks.item.spell.summonskeletonwarrior.SummonSkeletonWarriorItem;
-import net.mindoth.ancientmagicks.item.spell.summonzombie.SummonZombieItem;
-import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockItem;
-import net.mindoth.ancientmagicks.item.spell.telekineticgrab.TelekineticGrabItem;
-import net.mindoth.ancientmagicks.item.spell.verminbane.VerminBaneItem;
-import net.mindoth.ancientmagicks.item.spell.waterbolt.WaterBoltItem;
-import net.mindoth.ancientmagicks.item.spell.windburst.WindBurstItem;
-import net.mindoth.ancientmagicks.item.spell.witcharmor.WitchArmorItem;
-import net.mindoth.ancientmagicks.item.spell.witcharrow.WitchArrowItem;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
@@ -139,14 +101,25 @@ public class AncientMagicksItems {
 
 
 
-    //Magic Spells
-    public static final RegistryObject<Item> FORM_PROJECTILE_ITEM = ITEMS.register("form_projectile",
-            () -> new ProjectileFormItem(new Item.Properties()));
-
     public static final RegistryObject<Item> SPELL_SCROLL = ITEMS.register("spell_scroll",
             () -> new SpellStorageItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> FEATHER_FALL_ITEM = ITEMS.register("feather_fall",
+
+    //Forms
+    public static final RegistryObject<Item> FORM_PROJECTILE_ITEM = ITEMS.register("form_projectile",
+            () -> new ProjectileFormItem(new Item.Properties(), 1, 10));
+
+    //Spells
+    public static final RegistryObject<Item> POLYMORPH_ITEM = ITEMS.register("polymorph",
+            () -> new PolymorphItem(new Item.Properties(), 1, 20));
+
+    public static final RegistryObject<Item> SLEEP_ITEM = ITEMS.register("sleep",
+            () -> new SleepItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> BLIND_ITEM = ITEMS.register("blind",
+            () -> new BlindItem(new Item.Properties(), 1, 10));
+
+    /*public static final RegistryObject<Item> FEATHER_FALL_ITEM = ITEMS.register("feather_fall",
             () -> new FeatherFallItem(new Item.Properties(), 0, -1, 10, SpellItem.SpellType.BUFF));
 
     public static final RegistryObject<Item> TELEKINETIC_GRAB_ITEM = ITEMS.register("telekinetic_grab",
@@ -175,9 +148,6 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> WATER_BOLT_ITEM = ITEMS.register("water_bolt",
             () -> new WaterBoltItem(new Item.Properties(), 1, -1, 1, SpellItem.SpellType.ATTACK));
-
-    public static final RegistryObject<Item> BLIND_ITEM = ITEMS.register("blind",
-            () -> new BlindItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.ATTACK));
 
     public static final RegistryObject<Item> SLEEP_ITEM = ITEMS.register("sleep",
             () -> new SleepItem(new Item.Properties(), 1, -1, 10, SpellItem.SpellType.ATTACK));
@@ -273,5 +243,5 @@ public class AncientMagicksItems {
             () -> new PerfectInvisibilityItem(new Item.Properties(), 3, -1, 10, SpellItem.SpellType.BUFF));
 
     public static final RegistryObject<Item> CHAOTIC_POLYMORPH_ITEM = ITEMS.register("chaotic_polymorph",
-            () -> new ChaoticPolymorphItem(new Item.Properties(), 3, -1, 10, SpellItem.SpellType.ATTACK));
+            () -> new ChaoticPolymorphItem(new Item.Properties(), 3, -1, 10, SpellItem.SpellType.ATTACK));*/
 }
