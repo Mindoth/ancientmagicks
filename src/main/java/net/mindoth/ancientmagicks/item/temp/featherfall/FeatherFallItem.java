@@ -48,7 +48,7 @@ public class FeatherFallItem extends AbstractSpellRayCast {
         for ( Entity entity : list ) {
             if ( entity instanceof LivingEntity living ) {
                 living.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, getLife(), 0, false, false));
-                if ( living != caster ) addEnchantParticles(living, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, 1);
+                if ( living != caster ) addEnchantParticles(living, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8);
             }
         }
     }

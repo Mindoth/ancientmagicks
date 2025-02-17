@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.polymorph;
 
-import net.mindoth.ancientmagicks.item.temp.EffectSpell;
+import net.mindoth.ancientmagicks.item.spell.EffectSpell;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;

@@ -49,7 +49,7 @@ public class FreezeLanceEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public int defaultEnemyPierce() {
+    public int defaultPiercing() {
         return 1;
     }
 

@@ -37,7 +37,7 @@ public abstract class AbstractSpellRayCast extends SpellItem {
     }
 
     protected void audiovisualEffects(Level level, LivingEntity owner, Entity caster, Entity target) {
-        addEnchantParticles(target, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, getRenderType());
+        addEnchantParticles(target, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8);
         playSound(level, target.position());
     }
 

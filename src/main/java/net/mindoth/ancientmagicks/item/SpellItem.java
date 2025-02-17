@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.ancientmagicks.item.temp.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
@@ -32,6 +33,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -41,7 +43,27 @@ public class SpellItem extends Item {
         return false;
     }
 
-    public boolean doSpell(Level level, LivingEntity owner, Entity caster, Entity target) {
+    public static final String POWER = "power";
+    public static final String LIFE = "life";
+    public static final String AOE = "aoe";
+    public static final String GRAVITY = "gravity";
+
+    public static HashMap<String, Float> createStatsList() {
+        HashMap<String, Float> stats = new HashMap<>();
+        stats.merge(POWER, 1.0F, Float::sum);
+        stats.merge(LIFE, 160.0F, Float::sum);
+        stats.merge(AOE, 0.0F, Float::sum);
+        stats.merge(GRAVITY, 0.0F, Float::sum);
+        return stats;
+    }
+
+    public boolean castSpellWithModifiers(Level level, LivingEntity owner, Entity caster, Entity target, List<SpellModifierItem> modifiers) {
+        HashMap<String, Float> stats = createStatsList();
+        for ( SpellModifierItem item : modifiers ) item.addStatsToMap(stats);
+        return castSpell(level, owner, caster, target, stats);
+    }
+
+    public boolean castSpell(Level level, LivingEntity owner, Entity caster, Entity target, HashMap<String, Float> stats) {
         return false;
     }
 
@@ -213,7 +235,11 @@ public class SpellItem extends Item {
         return UseAnim.BOW;
     }
 
-    protected void addEnchantParticles(Entity target, int r, int g, int b, float size, int age, int renderType) {
+    protected int getRenderType() {
+        return 1;
+    }
+
+    protected void addEnchantParticles(Entity target, int r, int g, int b, float size, int age) {
         double var = 0.15D;
         double maxX = target.getBoundingBox().maxX + var;
         double minX = target.getBoundingBox().minX - var;
@@ -227,7 +253,7 @@ public class SpellItem extends Item {
             double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, renderType,
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
@@ -235,7 +261,7 @@ public class SpellItem extends Item {
             double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, renderType,
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
@@ -243,7 +269,7 @@ public class SpellItem extends Item {
             double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
             double randZ = minZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, renderType,
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
@@ -251,7 +277,7 @@ public class SpellItem extends Item {
             double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
             double randZ = maxZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, renderType,
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
     }

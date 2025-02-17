@@ -5,6 +5,7 @@ import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -15,6 +16,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +27,7 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -33,9 +36,12 @@ import net.minecraft.world.level.block.entity.TheEndGatewayBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 public abstract class AbstractSpellEntity extends Projectile {
@@ -48,61 +54,34 @@ public abstract class AbstractSpellEntity extends Projectile {
         super(entityType, pLevel);
         this.owner = owner;
         this.caster = caster;
-        this.spell = spell;
+        this.getEntityData().set(SPELL, ForgeRegistries.ITEMS.getKey(spell).toString());
     }
 
-    private final List<Integer> ignoredEntities = Lists.newArrayList();
     protected LivingEntity owner;
     protected Entity caster;
-    protected SpellItem spell;
+
+    private final HashMap<Integer, Integer> ignoredEntities = new HashMap<>();
+    private final HashMap<BlockPos, Integer> ignoredBlocks = new HashMap<>();
     protected int bounces = 0;
     public Entity target = null;
 
-    public int defaultPower() {
-        return 1;
-    }
-
-    public int defaultDie() {
-        return 1;
-    }
-
-    public float defaultSpeed() {
-        return 1.6F;
-    }
-
-    public int defaultLife() {
-        return 160;
-    }
-
-    public float defaultSize() {
-        return 0.2F;
-    }
-
-    public int defaultEnemyPierce() {
-        return 0;
-    }
-
-    public int defaultBlockBounce() {
-        return 0;
-    }
-
-    public boolean defaultHarmful() {
-        return true;
-    }
-
-    public boolean defaultHoming() {
-        return false;
-    }
-
-    public float defaultGravity() {
-        return 0.015F;
-    }
-
-    public void anonShootFromRotation(float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
-        float f = -Mth.sin(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
-        float f1 = -Mth.sin((pX + pZ) * ((float)Math.PI / 180F));
-        float f2 = Mth.cos(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
-        this.shoot((double)f, (double)f1, (double)f2, pVelocity, pInaccuracy);
+    private void timeIgnoredLists() {
+        if ( this.ignoredEntities != null && !this.ignoredEntities.isEmpty() ) {
+            for ( Map.Entry<Integer, Integer> entry : this.ignoredEntities.entrySet() ) {
+                if ( entry.getValue() + 20 < this.tickCount ) {
+                    this.ignoredEntities.remove(entry.getKey());
+                    break;
+                }
+            }
+        }
+        if ( this.ignoredBlocks != null && !this.ignoredBlocks.isEmpty() ) {
+            for ( Map.Entry<BlockPos, Integer> entry : this.ignoredBlocks.entrySet() ) {
+                if ( entry.getValue() + 20 < this.tickCount ) {
+                    this.ignoredBlocks.remove(entry.getKey());
+                    break;
+                }
+            }
+        }
     }
 
     @Override
@@ -113,6 +92,7 @@ public abstract class AbstractSpellEntity extends Projectile {
             doTickEffects();
             if ( this.tickCount > getLife() ) doExpirationEffects();
             if ( getHoming() ) doHoming();
+            timeIgnoredLists();
         }
         handleHitDetection();
         handleTravel();
@@ -151,12 +131,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         if ( result.getType() == HitResult.Type.ENTITY ) {
             Entity entity = ((EntityHitResult)result).getEntity();
             if ( this.ignoredEntities != null && !this.ignoredEntities.isEmpty() ) {
-                for ( int id : this.ignoredEntities ) {
-                    if ( entity.getId() == id ) {
-                        flag = true;
-                        break;
-                    }
-                }
+                if ( this.ignoredEntities.containsKey(entity.getId()) ) flag = true;
             }
         }
         if ( result.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, result) ) onHit(result);
@@ -189,12 +164,12 @@ public abstract class AbstractSpellEntity extends Projectile {
         if ( level().isClientSide ) doClientHitEffects();
         else {
             if ( result.getEntity() instanceof LivingEntity living ) {
-                if ( !this.ignoredEntities.contains(living.getId()) ) {
+                if ( !this.ignoredEntities.containsKey(living.getId()) ) {
                     doMobEffects(result);
                     playHitSound(result);
-                    this.ignoredEntities.add(living.getId());
+                    this.ignoredEntities.put(living.getId(), this.tickCount);
                 }
-                if ( this.ignoredEntities.size() > getEnemyPierce() ) doDeathEffects();
+                if ( this.ignoredEntities.size() > getPiercing() ) doDeathEffects();
             }
         }
     }
@@ -204,28 +179,33 @@ public abstract class AbstractSpellEntity extends Projectile {
         super.onHitBlock(result);
         if ( level().isClientSide ) doClientHitEffects();
         else {
-            doBlockEffects(result);
-            playHitSound(result);
             BlockState blockState = level().getBlockState(result.getBlockPos());
-            level().playSound(null, getX(), getY(), getZ(), blockState.getSoundType().getBreakSound(), SoundSource.PLAYERS, 0.3F, 2);
-            if ( this.bounces < getBlockBounce() ) {
-                this.bounces++;
-                Direction face = result.getDirection();
-                blockState.onProjectileHit(level(), blockState, result, this);
-                Vec3 motion = getDeltaMovement();
-                double motionX = motion.x();
-                double motionY = motion.y();
-                double motionZ = motion.z();
-                if ( face == Direction.EAST ) motionX = -motionX;
-                else if ( face == Direction.SOUTH ) motionZ = -motionZ;
-                else if ( face == Direction.WEST ) motionX = -motionX;
-                else if ( face == Direction.NORTH ) motionZ = -motionZ;
-                else if ( face == Direction.UP ) motionY = -motionY;
-                else if ( face == Direction.DOWN ) motionY = -motionY;
-                //This seems to work better with low velocity projectiles than "this.setDeltaMovement(motionX, motionY, motionZ)";
-                shoot(motionX, motionY, motionZ, getSpeed() * 0.5F, 0);
+            if ( !this.ignoredBlocks.containsKey(result.getBlockPos()) ) {
+                doBlockEffects(result);
+                playHitSound(result);
+                this.ignoredBlocks.put(result.getBlockPos(), this.tickCount);
             }
-            else doDeathEffects();
+            if ( this.ignoredBlocks.size() > getPiercing() ) {
+                level().playSound(null, getX(), getY(), getZ(), blockState.getSoundType().getBreakSound(), SoundSource.PLAYERS, 0.3F, 2);
+                if ( this.bounces < getBlockBounce() ) {
+                    this.bounces++;
+                    Direction face = result.getDirection();
+                    blockState.onProjectileHit(level(), blockState, result, this);
+                    Vec3 motion = getDeltaMovement();
+                    double motionX = motion.x();
+                    double motionY = motion.y();
+                    double motionZ = motion.z();
+                    if ( face == Direction.EAST ) motionX = -motionX;
+                    else if ( face == Direction.SOUTH ) motionZ = -motionZ;
+                    else if ( face == Direction.WEST ) motionX = -motionX;
+                    else if ( face == Direction.NORTH ) motionZ = -motionZ;
+                    else if ( face == Direction.UP ) motionY = -motionY;
+                    else if ( face == Direction.DOWN ) motionY = -motionY;
+                    //This seems to work better with low velocity projectiles than "this.setDeltaMovement(motionX, motionY, motionZ)";
+                    shoot(motionX, motionY, motionZ, getSpeed() * 0.5F, 0);
+                }
+                else doDeathEffects();
+            }
         }
     }
 
@@ -234,11 +214,11 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     protected boolean homingFilter(Entity owner, Entity target) {
-        return checkTeamForHit(target);
+        return checkTeamForHit(target) && !this.ignoredEntities.containsKey(target.getId());
     }
 
     private void doHoming() {
-        int range = 3;
+        int range = 5;
 
         if ( this.target == null || !this.target.isAlive() ) this.target = ShadowEvents.getNearestEntity(this, level(), range, this::homingFilter);
         if ( this.target != null ) {
@@ -250,10 +230,12 @@ public abstract class AbstractSpellEntity extends Projectile {
             if ( this.target instanceof EnderDragon || this.target instanceof EnderDragonPart ) targetPos = new Vec3(targetPos.x, this.target.getY(), targetPos.z);
             Vec3 lookVec = targetPos.subtract(position()).normalize();
             Vec3 spellMotion = new Vec3(mX, mY, mZ);
-            float arc = 0.2F;
-            if ( position().distanceTo(this.target.position()) < 2.0D ) arc = 1.0F;
+            /*float arc = 0.2F;
+            if ( position().distanceTo(this.target.position()) < 2.0D ) arc = 1.0F;*/
+            float arc = 1.0F;
             Vec3 lerpVec = new Vec3(Mth.lerp(arc, spellMotion.x, lookVec.x), Mth.lerp(arc, spellMotion.y, lookVec.y), Mth.lerp(arc, spellMotion.z, lookVec.z));
             setDeltaMovement(lerpVec);
+            if ( this.ignoredEntities.containsKey(this.target.getId()) ) this.target = null;
         }
     }
 
@@ -301,6 +283,13 @@ public abstract class AbstractSpellEntity extends Projectile {
         }
     }
 
+    public void anonShootFromRotation(float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
+        float f = -Mth.sin(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
+        float f1 = -Mth.sin((pX + pZ) * ((float)Math.PI / 180F));
+        float f2 = Mth.cos(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
+        this.shoot((double)f, (double)f1, (double)f2, pVelocity, pInaccuracy);
+    }
+
     protected void doClientHitEffects() {
     }
 
@@ -328,40 +317,96 @@ public abstract class AbstractSpellEntity extends Projectile {
         return new ParticleColor(this.entityData.get(RED), this.entityData.get(GREEN), this.entityData.get(BLUE));
     }
 
+    public float defaultSize() {
+        return 0.2F;
+    }
     public float getSize() {
         return this.entityData.get(SIZE);
     }
 
+    public SpellItem getSpell() {
+        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.entityData.get(SPELL)));
+        return item instanceof SpellItem spell ? spell : null;
+    }
+
+    public HashMap<String, Float> getStats() {
+        HashMap<String, Float> stats = SpellItem.createStatsList();
+        stats.put(SpellItem.POWER, (float)getPower());
+        stats.put(SpellItem.LIFE, (float)getLife());
+        stats.put(SpellItem.AOE, getAoe());
+        float gravity = this.isNoGravity() ? 0.0F : 1.0F;
+        stats.put(SpellItem.GRAVITY, gravity);
+        return stats;
+    }
+
+    public int defaultPower() {
+        return 1;
+    }
     public int getPower() {
         return this.entityData.get(POWER);
     }
 
+    public int defaultDie() {
+        return 1;
+    }
     public int getDie() {
         return this.entityData.get(DIE);
     }
 
+    public float defaultSpeed() {
+        return 1.6F;
+    }
     public float getSpeed() {
         return this.entityData.get(SPEED);
     }
 
+    public int defaultLife() {
+        return 160;
+    }
     public int getLife() {
         return this.entityData.get(LIFE);
     }
 
-    public int getEnemyPierce() {
-        return this.entityData.get(ENEMY_PIERCE);
+    public float defaultAoe() {
+        return 0.0F;
+    }
+    public float getAoe() {
+        return this.entityData.get(AOE);
     }
 
+    public int defaultPiercing() {
+        return 0;
+    }
+    public int getPiercing() {
+        return this.entityData.get(PIERCING);
+    }
+
+    public int defaultBlockBounce() {
+        return 0;
+    }
     public int getBlockBounce() {
         return this.entityData.get(BLOCK_BOUNCE);
     }
 
+    public boolean defaultHarmful() {
+        return true;
+    }
     public boolean isHarmful() {
         return this.entityData.get(IS_HARMFUL);
     }
 
+    public boolean defaultHoming() {
+        return false;
+    }
     public boolean getHoming() {
         return this.entityData.get(IS_HOMING);
+    }
+
+    /*public float defaultGravity() {
+        return 0.015F;
+    }*/
+    public float defaultGravity() {
+        return 0.03F;
     }
 
     public static final EntityDataAccessor<Integer> RED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
@@ -369,11 +414,13 @@ public abstract class AbstractSpellEntity extends Projectile {
     public static final EntityDataAccessor<Integer> BLUE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
 
+    public static final EntityDataAccessor<String> SPELL = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Integer> POWER = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> DIE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Integer> LIFE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> ENEMY_PIERCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Float> AOE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Integer> PIERCING = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> BLOCK_BOUNCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Boolean> IS_HARMFUL = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> IS_HOMING = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
@@ -384,11 +431,13 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.set(BLUE, colors.b);
         this.entityData.set(SIZE, this.defaultSize());
 
+        this.entityData.set(SPELL, "");
         this.entityData.set(POWER, this.defaultPower());
         this.entityData.set(DIE, this.defaultDie());
         this.entityData.set(SPEED, this.defaultSpeed());
         this.entityData.set(LIFE, this.defaultLife());
-        this.entityData.set(ENEMY_PIERCE, this.defaultEnemyPierce());
+        this.entityData.set(AOE, this.defaultAoe());
+        this.entityData.set(PIERCING, this.defaultPiercing());
         this.entityData.set(BLOCK_BOUNCE, this.defaultBlockBounce());
         this.entityData.set(IS_HARMFUL, this.defaultHarmful());
         this.entityData.set(IS_HOMING, this.defaultHoming());
@@ -402,11 +451,13 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.set(BLUE, compound.getInt("blue"));
         this.entityData.set(SIZE, compound.getFloat("size"));
 
+        this.entityData.set(SPELL, compound.getString("spell"));
         this.entityData.set(POWER, compound.getInt("power"));
         this.entityData.set(DIE, compound.getInt("die"));
         this.entityData.set(SPEED, compound.getFloat("speed"));
         this.entityData.set(LIFE, compound.getInt("life"));
-        this.entityData.set(ENEMY_PIERCE, compound.getInt("enemyPierce"));
+        this.entityData.set(AOE, compound.getFloat("aoe"));
+        this.entityData.set(PIERCING, compound.getInt("piercing"));
         this.entityData.set(BLOCK_BOUNCE, compound.getInt("blockBounce"));
         this.entityData.set(IS_HARMFUL, compound.getBoolean("isHarmful"));
         this.entityData.set(IS_HOMING, compound.getBoolean("isHoming"));
@@ -420,11 +471,13 @@ public abstract class AbstractSpellEntity extends Projectile {
         compound.putInt("blue", this.entityData.get(BLUE));
         compound.putFloat("size", this.entityData.get(SIZE));
 
+        compound.putString("spell", this.entityData.get(SPELL));
         compound.putInt("power", this.entityData.get(POWER));
         compound.putInt("die", this.entityData.get(DIE));
         compound.putFloat("speed", this.entityData.get(SPEED));
         compound.putInt("life", this.entityData.get(LIFE));
-        compound.putInt("enemyPierce", this.entityData.get(ENEMY_PIERCE));
+        compound.putFloat("aoe", this.entityData.get(AOE));
+        compound.putInt("piercing", this.entityData.get(PIERCING));
         compound.putInt("blockBounce", this.entityData.get(BLOCK_BOUNCE));
         compound.putBoolean("isHarmful", this.entityData.get(IS_HARMFUL));
         compound.putBoolean("isHoming", this.entityData.get(IS_HOMING));
@@ -437,11 +490,13 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.define(BLUE, 180);
         this.entityData.define(SIZE, 0.2F);
 
+        this.entityData.define(SPELL, "");
         this.entityData.define(POWER, 1);
         this.entityData.define(DIE, 1);
         this.entityData.define(SPEED, 1.6F);
         this.entityData.define(LIFE, 160);
-        this.entityData.define(ENEMY_PIERCE, 0);
+        this.entityData.define(AOE, 0.0F);
+        this.entityData.define(PIERCING, 0);
         this.entityData.define(BLOCK_BOUNCE, 0);
         this.entityData.define(IS_HARMFUL, true);
         this.entityData.define(IS_HOMING, false);

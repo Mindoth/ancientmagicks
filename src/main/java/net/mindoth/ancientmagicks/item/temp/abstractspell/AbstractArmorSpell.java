@@ -26,7 +26,7 @@ public class AbstractArmorSpell extends AbstractSpellRayCast {
 
     @Override
     protected void audiovisualEffects(Level level, LivingEntity owner, Entity caster, Entity target) {
-        addEnchantParticles(caster, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, getRenderType());
+        addEnchantParticles(caster, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8);
         playSound(level, caster.position());
     }
 }

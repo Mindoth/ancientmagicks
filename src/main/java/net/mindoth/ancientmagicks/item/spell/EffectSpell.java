@@ -1,11 +1,17 @@
-package net.mindoth.ancientmagicks.item.temp;
+package net.mindoth.ancientmagicks.item.spell;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.List;
 
 public class EffectSpell extends SpellItem {
 
@@ -13,12 +19,8 @@ public class EffectSpell extends SpellItem {
         super(pProperties, manaCost, cooldown);
     }
 
-    protected int getLife() {
-        return 600;
-    }
-
     protected boolean canApply(Level level, LivingEntity owner, Entity caster, Entity target) {
-        return filter(owner, target);
+        return target instanceof LivingEntity && filter(owner, target);
     }
 
     protected MobEffect getEffect() {
@@ -26,9 +28,12 @@ public class EffectSpell extends SpellItem {
     }
 
     @Override
-    public boolean doSpell(Level level, LivingEntity owner, Entity caster, Entity target) {
+    public boolean castSpell(Level level, LivingEntity owner, Entity caster, Entity target, HashMap<String, Float> stats) {
         if ( target instanceof LivingEntity living && canApply(level, owner, caster, target) ) {
-            living.addEffect(new MobEffectInstance(getEffect(), getLife(), 0, false, isHarmful()));
+            addEnchantParticles(target, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8);
+            int amp = Math.max(0, (Mth.floor(stats.get(SpellItem.POWER)) - 1) / 10);
+            living.addEffect(new MobEffectInstance(getEffect(), Mth.floor(stats.get(SpellItem.LIFE)), amp, false, isHarmful()));
+
             return true;
         }
         return false;

@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
+import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketOpenSpellBook;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
@@ -40,7 +41,7 @@ public class ParchmentItem extends Item {
         if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
             ItemStack stack = player.getItemInHand(handIn);
             if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_PAPER_SPELL) ) {
-                SpellValidator.castSpell(stack, serverPlayer, serverPlayer, 0);
+                SpellValidator.castSpell(stack, serverPlayer, serverPlayer);
             }
         }
         return result;
@@ -65,6 +66,12 @@ public class ParchmentItem extends Item {
             for ( Item item : runes ) {
                 if ( item instanceof SpellItem ) {
                     tooltip.add(Component.translatable("tooltip.ancientmagicks.spell")
+                            .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
+                }
+            }
+            for ( Item item : runes ) {
+                if ( item instanceof SpellModifierItem ) {
+                    tooltip.add(Component.translatable("tooltip.ancientmagicks.modifier")
                             .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
                 }
             }

@@ -79,12 +79,12 @@ public class SpellPearlEntity extends AbstractSpellEntity {
         }
         shoot(motionX, motionY, motionZ, this.getSpeed() * 0.5F, 0);
 
-        CastingItem.doSpell(player, this, null, this.spell, 0);
+        //CastingItem.doSpell(player, this, null, this.spell, 0);
     }
 
     @Override
     protected void doMobEffects(EntityHitResult result) {
         if ( !(this.owner instanceof Player player) ) return;
-        CastingItem.doSpell(player, this, null, this.spell, 0);
+        //CastingItem.doSpell(player, this, null, this.spell, 0);
     }
 }

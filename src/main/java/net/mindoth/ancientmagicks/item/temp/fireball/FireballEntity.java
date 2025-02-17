@@ -61,7 +61,7 @@ public class FireballEntity extends AbstractSpellEntity {
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
         if ( this.getPower() > 0 && target instanceof LivingEntity ) {
-            if ( this.entityData.get(ENEMY_PIERCE) <= 0 ) doSplashDamage(target);
+            if ( this.entityData.get(PIERCING) <= 0 ) doSplashDamage(target);
             else causeDamage(target);
         }
     }

@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
+import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class SpellValidator {
 
-    public static boolean castSpell(ItemStack spellScroll, LivingEntity owner, Entity caster, int useTime) {
+    public static boolean castSpell(ItemStack spellScroll, LivingEntity owner, Entity caster) {
         if ( !(spellScroll.getItem() instanceof ParchmentItem) || !spellScroll.hasTag() ) return false;
         CompoundTag tag = spellScroll.getTag();
         if ( !tag.contains(ParchmentItem.NBT_KEY_PAPER_SPELL) ) return false;
@@ -26,11 +27,13 @@ public class SpellValidator {
         }
         SpellFormItem form = null;
         SpellItem spell = null;
+        List<SpellModifierItem> modifiers = Lists.newArrayList();
         for ( Item item : runeList ) {
             if ( item instanceof SpellFormItem formItem ) form = formItem;
             if ( item instanceof SpellItem spellItem ) spell = spellItem;
+            if ( item instanceof SpellModifierItem modifierItem ) modifiers.add(modifierItem);
         }
-        if ( form != null && spell != null ) return form.castSpell(spell, owner, caster);
+        if ( form != null && spell != null ) return form.castSpell(spell, owner, caster, modifiers);
 
         return false;
     }

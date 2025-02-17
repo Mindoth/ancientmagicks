@@ -8,7 +8,9 @@ import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
+import net.mindoth.ancientmagicks.item.modifier.*;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindItem;
+import net.mindoth.ancientmagicks.item.spell.harm.HarmItem;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphItem;
 import net.mindoth.ancientmagicks.item.spell.sleep.SleepItem;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
@@ -106,18 +108,43 @@ public class AncientMagicksItems {
 
 
     //Forms
-    public static final RegistryObject<Item> FORM_PROJECTILE_ITEM = ITEMS.register("form_projectile",
+    public static final RegistryObject<Item> PROJECTILE_FORM_ITEM = ITEMS.register("projectile_form",
             () -> new ProjectileFormItem(new Item.Properties(), 1, 10));
 
     //Spells
+    public static final RegistryObject<Item> HARM_ITEM = ITEMS.register("harm",
+            () -> new HarmItem(new Item.Properties(), 1, 10));
+
     public static final RegistryObject<Item> POLYMORPH_ITEM = ITEMS.register("polymorph",
-            () -> new PolymorphItem(new Item.Properties(), 1, 20));
+            () -> new PolymorphItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> SLEEP_ITEM = ITEMS.register("sleep",
             () -> new SleepItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> BLIND_ITEM = ITEMS.register("blind",
             () -> new BlindItem(new Item.Properties(), 1, 10));
+
+    //Modifiers
+    public static final RegistryObject<Item> AMPLIFY_MODIFIER_ITEM = ITEMS.register("amplify_modifier",
+            () -> new AmplifyModifierItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> DAMPEN_MODIFIER_ITEM = ITEMS.register("dampen_modifier",
+            () -> new DampenModifierItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> PIERCING_MODIFIER_ITEM = ITEMS.register("piercing_modifier",
+            () -> new PiercingModifierItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> BOUNCING_MODIFIER_ITEM = ITEMS.register("bouncing_modifier",
+            () -> new BouncingModifierItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> HOMING_MODIFIER_ITEM = ITEMS.register("homing_modifier",
+            () -> new HomingModifierItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> GRAVITY_MODIFIER_ITEM = ITEMS.register("gravity_modifier",
+            () -> new GravityModifierItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> EXPAND_MODIFIER_ITEM = ITEMS.register("expand_modifier",
+            () -> new ExpandModifierItem(new Item.Properties(), 1, 10));
 
     /*public static final RegistryObject<Item> FEATHER_FALL_ITEM = ITEMS.register("feather_fall",
             () -> new FeatherFallItem(new Item.Properties(), 0, -1, 10, SpellItem.SpellType.BUFF));

@@ -32,7 +32,17 @@
   "item.ancientmagicks.red_rune": "Red Rune",
 
 
-  "item.ancientmagicks.form_projectile": "Projectile",
+  "item.ancientmagicks.projectile_form": "Projectile",
+
+  "item.ancientmagicks.harm": "Harm",
+
+  "item.ancientmagicks.amplify_modifier": "Amplify",
+  "item.ancientmagicks.dampen_modifier": "Dampen",
+  "item.ancientmagicks.piercing_modifier": "Piercing",
+  "item.ancientmagicks.bouncing_modifier": "Bouncing",
+  "item.ancientmagicks.homing_modifier": "Homing",
+  "item.ancientmagicks.gravity_modifier": "Gravity",
+  "item.ancientmagicks.expand_modifier": "Expand",
 
   "item.ancientmagicks.witch_arrow": "Witch Arrow",
   "tooltip.ancientmagicks.witch_arrow": "Launches a damaging magical arrow that flies towards enemies.",
@@ -150,6 +160,8 @@
 
   "tooltip.ancientmagicks.form": "\u00A75Form: \u00A7r",
   "tooltip.ancientmagicks.spell": "\u00A7cSpell: \u00A7r",
+  "tooltip.ancientmagicks.modifier": "\u00A79Modifier: \u00A7r",
+
   "tooltip.ancientmagicks.stats": "Stats: ",
   "tooltip.ancientmagicks.tier": "Spell Tier: ",
   "tooltip.ancientmagicks.tier_0": "Folk",
