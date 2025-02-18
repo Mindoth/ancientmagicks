@@ -218,7 +218,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     private void doHoming() {
-        int range = 5;
+        int range = 4;
 
         if ( this.target == null || !this.target.isAlive() ) this.target = ShadowEvents.getNearestEntity(this, level(), range, this::homingFilter);
         if ( this.target != null ) {

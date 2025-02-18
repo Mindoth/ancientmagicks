@@ -35,7 +35,7 @@ public class SpellCraftingRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() != Items.AIR ) {
-                boolean emptyPaper = !stack.hasTag() || !stack.getTag().contains(ParchmentItem.NBT_KEY_PAPER_SPELL);
+                boolean emptyPaper = !stack.hasTag();
                 if ( stack.getItem() instanceof ParchmentItem && emptyPaper ) paperList.add(stack);
                 else if ( stack.getItem() instanceof SpellFormItem ) formList.add(stack);
                 else if ( stack.getItem() instanceof SpellItem ) spellList.add(stack);
@@ -56,7 +56,7 @@ public class SpellCraftingRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() != Items.AIR ) {
-                boolean emptyPaper = !stack.hasTag() || !stack.getTag().contains(ParchmentItem.NBT_KEY_PAPER_SPELL);
+                boolean emptyPaper = !stack.hasTag();
                 if ( stack.getItem() instanceof ParchmentItem && emptyPaper ) paperList.add(stack);
                 else if ( stack.getItem() instanceof SpellFormItem ) formList.add(stack);
                 else if ( stack.getItem() instanceof SpellItem ) spellList.add(stack);
@@ -77,7 +77,7 @@ public class SpellCraftingRecipe extends CustomRecipe {
                 if ( i > 0 ) spellString.append(",");
                 spellString.append(ForgeRegistries.ITEMS.getKey(runeList.get(i).getItem()).toString());
             }
-            tag.putString(ParchmentItem.NBT_KEY_PAPER_SPELL, spellString.toString());
+            tag.putString(ParchmentItem.NBT_KEY_SPELL_STRING, spellString.toString());
             return stack;
         }
         return ItemStack.EMPTY;

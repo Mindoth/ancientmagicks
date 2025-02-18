@@ -1,12 +1,8 @@
 package net.mindoth.ancientmagicks.item;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketOpenSpellBook;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,18 +25,21 @@ import java.util.List;
 
 public class ParchmentItem extends Item {
 
-    public static final String NBT_KEY_PAPER_SPELL = "am_paper_spell";
+    public static final String NBT_KEY_SPELL_STRING = "am_spell_string";
+    public static final String NBT_KEY_SPELL_NAME = "am_spell_name";
+    public static final String NBT_KEY_PAPER_TIER = "am_paper_tier";
 
     public ParchmentItem(Properties pProperties) {
         super(pProperties);
     }
 
+    //Temp for testing
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
             ItemStack stack = player.getItemInHand(handIn);
-            if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_PAPER_SPELL) ) {
+            if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_SPELL_STRING) ) {
                 SpellValidator.castSpell(stack, serverPlayer, serverPlayer);
             }
         }
@@ -50,10 +49,10 @@ public class ParchmentItem extends Item {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_PAPER_SPELL) ) {
+        if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_SPELL_STRING) ) {
             CompoundTag tag = stack.getTag();
             List<Item> runes = Lists.newArrayList();
-            for ( String string : List.of(tag.getString(NBT_KEY_PAPER_SPELL).split(",")) ) {
+            for ( String string : List.of(tag.getString(NBT_KEY_SPELL_STRING).split(",")) ) {
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
                 runes.add(item);
             }

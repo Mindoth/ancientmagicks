@@ -18,8 +18,8 @@ public class SpellValidator {
     public static boolean castSpell(ItemStack spellScroll, LivingEntity owner, Entity caster) {
         if ( !(spellScroll.getItem() instanceof ParchmentItem) || !spellScroll.hasTag() ) return false;
         CompoundTag tag = spellScroll.getTag();
-        if ( !tag.contains(ParchmentItem.NBT_KEY_PAPER_SPELL) ) return false;
-        String stringList = tag.getString(ParchmentItem.NBT_KEY_PAPER_SPELL);
+        if ( !tag.contains(ParchmentItem.NBT_KEY_SPELL_STRING) ) return false;
+        String stringList = tag.getString(ParchmentItem.NBT_KEY_SPELL_STRING);
         List<Item> runeList = Lists.newArrayList();
         for ( String string : List.of(stringList.split(",")) ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));

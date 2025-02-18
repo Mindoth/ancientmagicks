@@ -92,6 +92,12 @@ public class AncientMagicksNetwork {
                 .encoder(PacketItemActivationAnimation::encode)
                 .consumerMainThread(PacketItemActivationAnimation::handle)
                 .add();
+
+        net.messageBuilder(PacketRemoveSpellFromBook.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketRemoveSpellFromBook::new)
+                .encoder(PacketRemoveSpellFromBook::encode)
+                .consumerMainThread(PacketRemoveSpellFromBook::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

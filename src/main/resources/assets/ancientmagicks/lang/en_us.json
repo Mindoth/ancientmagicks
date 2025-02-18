@@ -158,6 +158,7 @@
   "message.ancientmagicks.no_xp_to_learn_spell": "You don't have enough experience to learn that spell",
 
 
+  "tooltip.ancientmagicks.owner": "Owner: ",
   "tooltip.ancientmagicks.form": "\u00A75Form: \u00A7r",
   "tooltip.ancientmagicks.spell": "\u00A7cSpell: \u00A7r",
   "tooltip.ancientmagicks.modifier": "\u00A79Modifier: \u00A7r",

@@ -3,7 +3,6 @@ package net.mindoth.ancientmagicks.registries.recipe;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +13,7 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class SpellBookAddRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() != Items.AIR ) {
-                boolean paperHasSpell = stack.hasTag() && stack.getTag().contains(ParchmentItem.NBT_KEY_PAPER_SPELL);
+                boolean paperHasSpell = stack.hasTag() && stack.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING);
                 if ( stack.getItem() instanceof SpellBookItem ) bookList.add(stack);
                 else if ( stack.getItem() instanceof ParchmentItem && paperHasSpell ) paperList.add(stack);
                 else restList.add(stack);
@@ -48,7 +48,7 @@ public class SpellBookAddRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() != Items.AIR ) {
-                boolean paperHasSpell = stack.hasTag() && stack.getTag().contains(ParchmentItem.NBT_KEY_PAPER_SPELL);
+                boolean paperHasSpell = stack.hasTag() && stack.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING);
                 if ( stack.getItem() instanceof SpellBookItem ) bookList.add(stack);
                 else if ( stack.getItem() instanceof ParchmentItem && paperHasSpell ) paperList.add(stack);
                 else restList.add(stack);
@@ -56,15 +56,17 @@ public class SpellBookAddRecipe extends CustomRecipe {
         }
         if ( bookList.size() == 1 && paperList.size() == 1 && restList.isEmpty() ) {
             ItemStack book = bookList.get(0).copy();
+            ItemStack scroll = paperList.get(0);
             CompoundTag bookTag = book.getOrCreateTag();
-            CompoundTag paperTag = paperList.get(0).getTag();
-            String spellString = paperTag.getString(ParchmentItem.NBT_KEY_PAPER_SPELL);
-            if ( !bookTag.contains(SpellBookItem.NBT_KEY_SPELLS) ) bookTag.putString(SpellBookItem.NBT_KEY_SPELLS, spellString);
-            else {
-                String spellList = bookTag.getString(SpellBookItem.NBT_KEY_SPELLS) + ";" + spellString;
-                bookTag.remove(SpellBookItem.NBT_KEY_SPELLS);
-                bookTag.putString(SpellBookItem.NBT_KEY_SPELLS, spellList);
-            }
+
+            String spellString = scroll.getTag().getString(ParchmentItem.NBT_KEY_SPELL_STRING);
+            SpellBookItem.addSpellTagsToBook(bookTag, spellString, SpellBookItem.NBT_KEY_SPELLS);
+
+            String name = scroll.getHoverName().getString();
+            SpellBookItem.addSpellTagsToBook(bookTag, name, ParchmentItem.NBT_KEY_SPELL_NAME);
+
+            String item = ForgeRegistries.ITEMS.getKey(scroll.getItem()).toString();
+            SpellBookItem.addSpellTagsToBook(bookTag, item, ParchmentItem.NBT_KEY_PAPER_TIER);
             return book;
         }
         return ItemStack.EMPTY;

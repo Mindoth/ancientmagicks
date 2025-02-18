@@ -2,17 +2,23 @@ package net.mindoth.ancientmagicks.client.screen;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.SpellBookItem;
+import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.PacketRemoveSpellFromBook;
+import net.mindoth.ancientmagicks.network.PacketSendRuneData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;
 
@@ -21,6 +27,8 @@ import java.util.List;
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class SpellBookScreen extends AncientMagicksScreen {
 
+    private final ItemStack book;
+    private final CompoundTag bookTag;
     private final List<ItemStack> itemList;
     private final List<List<ItemStack>> pageList;
     private int spreadNumber;
@@ -34,30 +42,30 @@ public class SpellBookScreen extends AncientMagicksScreen {
     private final int leftArrowXOffset = -18 - this.arrowXOffset;
 
     private final int maxRows = 5;
-    private final int maxColumns = 4;
+    private final int maxColumns = 1;
     private final int squareSpacing = 26;
 
-    protected SpellBookScreen(List<ItemStack> stackList, int spreadNumber) {
+    protected SpellBookScreen(ItemStack book, int spreadNumber) {
         super(Component.literal(""));
+        this.book = book;
+        this.bookTag = this.book.getOrCreateTag();
         this.pageList = Lists.newArrayList();
         this.spreadNumber = spreadNumber;
-        if ( stackList.isEmpty() ) this.itemList = List.of(ItemStack.EMPTY);
-        else {
-            this.itemList = stackList;
-            List<ItemStack> page = Lists.newArrayList();
-            for ( ItemStack stack : this.itemList ) {
-                page.add(stack);
-                if ( page.size() == this.maxRows * this.maxColumns * 2 || this.itemList.get(this.itemList.size() - 1) == stack ) {
-                    this.pageList.add(page);
-                    page = Lists.newArrayList();
-                }
+        this.itemList = SpellBookItem.getScrollListFromBook(this.bookTag);
+        this.itemList.removeIf(ItemStack::isEmpty);
+        List<ItemStack> page = Lists.newArrayList();
+        for ( ItemStack stack : this.itemList ) {
+            page.add(stack);
+            if ( page.size() == this.maxRows * this.maxColumns * 2 || this.itemList.get(this.itemList.size() - 1) == stack ) {
+                this.pageList.add(page);
+                page = Lists.newArrayList();
             }
         }
     }
 
-    public static void open(List<ItemStack> itemList, int spreadNumber) {
+    public static void open(ItemStack stack, int spreadNumber) {
         Minecraft MINECRAFT = Minecraft.getInstance();
-        if ( !(MINECRAFT.screen instanceof SpellBookScreen) ) MINECRAFT.setScreen(new SpellBookScreen(itemList, spreadNumber));
+        if ( !(MINECRAFT.screen instanceof SpellBookScreen) ) MINECRAFT.setScreen(new SpellBookScreen(stack, spreadNumber));
     }
 
     private boolean isFirstPage() {
@@ -134,12 +142,15 @@ public class SpellBookScreen extends AncientMagicksScreen {
         }
     }
 
-    private void handleSlotButtonVisibility() {
-        for ( Button button : this.slotList ) {
-            int stackIndex = this.slotList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
-            if ( stackIndex >= this.itemList.size() && button.visible ) button.visible = false;
-            else if ( !button.visible ) button.visible = true;
-        }
+    private void handleSlotButton(Button button) {
+        if ( !this.slotList.contains(button) ) return;
+        int stackIndex = this.slotList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
+        if ( stackIndex >= this.itemList.size() ) return;
+        ItemStack stack = this.pageList.get(this.spreadNumber).get(this.slotList.indexOf(button));
+
+        AncientMagicksNetwork.sendToServer(new PacketRemoveSpellFromBook(this.book, this.itemList.indexOf(stack)));
+        Player player = minecraft.player;
+        player.closeContainer();
     }
 
     private void buildSlotButton(int xPos, int yPos) {
@@ -149,13 +160,12 @@ public class SpellBookScreen extends AncientMagicksScreen {
         this.slotList.add(button);
     }
 
-    //TODO Click to see spell info
-    private void handleSlotButton(Button button) {
-        if ( !this.slotList.contains(button) ) return;
-        int stackIndex = this.slotList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
-        if ( stackIndex >= this.itemList.size() ) return;
-        ItemStack stack = this.pageList.get(this.spreadNumber).get(this.slotList.indexOf(button));
-        SpellScreen.open(stack, this.itemList, this.spreadNumber);
+    private void handleSlotButtonVisibility() {
+        for ( Button button : this.slotList ) {
+            int stackIndex = this.slotList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
+            if ( stackIndex >= this.itemList.size() && button.visible ) button.visible = false;
+            else if ( !button.visible ) button.visible = true;
+        }
     }
 
     @Override
@@ -183,7 +193,6 @@ public class SpellBookScreen extends AncientMagicksScreen {
                 int column = 0;
                 for ( int i = 0; i < page.size(); i++ ) {
                     ItemStack stack = page.get(i);
-                    //ItemStack spell = getPossibleContainedSpell(stack);
 
                     //Spot calc
                     if ( column == this.maxColumns ) {
