@@ -25,16 +25,6 @@ public class AcidArrowEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public int defaultPower() {
-        return 6;
-    }
-
-    @Override
-    public int defaultDie() {
-        return 2;
-    }
-
-    @Override
     protected int getRenderType() {
         return 2;
     }

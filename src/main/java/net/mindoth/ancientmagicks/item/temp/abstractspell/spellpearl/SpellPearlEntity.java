@@ -32,13 +32,8 @@ public class SpellPearlEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public float defaultGravity() {
+    public float getGravity() {
         return 0.03F;
-    }
-
-    @Override
-    public float defaultSpeed() {
-        return 1.5F;
     }
 
     @Override

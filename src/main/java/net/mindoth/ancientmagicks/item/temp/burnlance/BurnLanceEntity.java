@@ -37,21 +37,6 @@ public class BurnLanceEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public int defaultPower() {
-        return 10;
-    }
-
-    @Override
-    public int defaultDie() {
-        return 2;
-    }
-
-    @Override
-    public int defaultPiercing() {
-        return 1;
-    }
-
-    @Override
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
         if ( !target.fireImmune() ) {

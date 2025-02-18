@@ -37,18 +37,8 @@ public class IcicleEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public float defaultGravity() {
+    public float getGravity() {
         return 0.05F;
-    }
-
-    @Override
-    public int defaultPower() {
-        return 3;
-    }
-
-    @Override
-    public int defaultDie() {
-        return 4;
     }
 
     @Override

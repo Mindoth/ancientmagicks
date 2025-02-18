@@ -25,36 +25,6 @@ public class WaterBoltEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public int defaultPower() {
-        return 2;
-    }
-
-    @Override
-    public int defaultDie() {
-        return 4;
-    }
-
-    @Override
-    public float defaultSpeed() {
-        return 0.8F;
-    }
-
-    @Override
-    public int defaultLife() {
-        return 100;
-    }
-
-    @Override
-    public int defaultPiercing() {
-        return 3;
-    }
-
-    @Override
-    public int defaultBlockBounce() {
-        return 3;
-    }
-
-    @Override
     protected int getRenderType() {
         return 2;
     }

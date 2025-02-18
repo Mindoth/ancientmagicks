@@ -61,7 +61,7 @@ public class DragonBreathItem extends AbstractSpellRayCast {
         List<Entity> doubleList = Stream.concat(targets.stream(), targets2.stream()).toList();
 
         for ( Entity target : doubleList ) {
-            if ( filter(owner, target) && hasLineOfSight(caster, target) ) {
+            if ( allyFilter(owner, target) && hasLineOfSight(caster, target) ) {
                 attackEntityWithoutKnockback(owner, caster, target, rollForPower(power, 6));
             }
         }

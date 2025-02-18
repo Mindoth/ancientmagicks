@@ -33,8 +33,10 @@
 
 
   "item.ancientmagicks.projectile_form": "Projectile",
+  "item.ancientmagicks.touch_form": "Touch",
 
   "item.ancientmagicks.harm": "Harm",
+  "item.ancientmagicks.break": "Break",
 
   "item.ancientmagicks.amplify_modifier": "Amplify",
   "item.ancientmagicks.dampen_modifier": "Dampen",

@@ -14,7 +14,7 @@ public class SpellFormItem extends Item {
         super(pProperties);
     }
 
-    public boolean castSpell(SpellItem spell, LivingEntity owner, Entity caster, List<SpellModifierItem> modifiers) {
+    public boolean formSpell(SpellItem spell, LivingEntity owner, Entity caster, List<SpellModifierItem> modifiers) {
         return false;
     }
 }

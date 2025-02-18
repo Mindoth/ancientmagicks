@@ -110,10 +110,10 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         }
     }
 
-    public static ItemStack getBookSlot(Player player) {
+    public static ItemStack getSpellBookSlot(Player player) {
         for ( int i = 0; i <= player.getInventory().getContainerSize(); i++ ) {
             ItemStack slot = player.getInventory().getItem(i);
-            if ( slot.getItem() instanceof SpellBookItem ) return slot;
+            if ( slot.getItem() instanceof SpellBookItem && slot.hasTag() && slot.getTag().contains(NBT_KEY_SPELLS) ) return slot;
         }
         return ItemStack.EMPTY;
     }

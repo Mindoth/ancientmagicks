@@ -55,7 +55,7 @@ public class BlizzardItem extends SpellItem {
 
     private void spawnIcicles(LivingEntity owner, Entity caster, Level level, Vec3 center, int useTime) {
         AbstractSpellEntity projectile = new IcicleEntity(level, owner, caster, this);
-        projectile.setAdditionalData(getParticleColor());
+        //projectile.setAdditionalData(getParticleColor());
         double newX = center.x;
         double newY = getHeight(level, center);
         double newZ = center.z;

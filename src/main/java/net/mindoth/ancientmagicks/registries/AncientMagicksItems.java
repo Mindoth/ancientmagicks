@@ -8,9 +8,11 @@ import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
+import net.mindoth.ancientmagicks.item.form.TouchFormItem;
 import net.mindoth.ancientmagicks.item.modifier.*;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindItem;
 import net.mindoth.ancientmagicks.item.spell.harm.HarmItem;
+import net.mindoth.ancientmagicks.item.spell.mine.BreakItem;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphItem;
 import net.mindoth.ancientmagicks.item.spell.sleep.SleepItem;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
@@ -95,12 +97,6 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> SPELL_PEARL = ITEMS.register("spell_pearl",
             () -> new SpecialCastingItem(new Item.Properties()));
 
-    /*public static final RegistryObject<Item> WOODEN_WAND = ITEMS.register("wooden_wand",
-            () -> new WandItem(new Item.Properties().durability(10)));
-
-    public static final RegistryObject<Item> GOLDEN_WAND = ITEMS.register("golden_wand",
-            () -> new WandItem(new Item.Properties().durability(25)));*/
-
 
 
     public static final RegistryObject<Item> SPELL_SCROLL = ITEMS.register("spell_scroll",
@@ -111,9 +107,15 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> PROJECTILE_FORM_ITEM = ITEMS.register("projectile_form",
             () -> new ProjectileFormItem(new Item.Properties(), 1, 10));
 
+    public static final RegistryObject<Item> TOUCH_FORM_ITEM = ITEMS.register("touch_form",
+            () -> new TouchFormItem(new Item.Properties(), 1, 10));
+
     //Spells
     public static final RegistryObject<Item> HARM_ITEM = ITEMS.register("harm",
             () -> new HarmItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> BREAK_ITEM = ITEMS.register("break",
+            () -> new BreakItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> POLYMORPH_ITEM = ITEMS.register("polymorph",
             () -> new PolymorphItem(new Item.Properties(), 1, 10));

@@ -33,7 +33,7 @@ public class SpellValidator {
             if ( item instanceof SpellItem spellItem ) spell = spellItem;
             if ( item instanceof SpellModifierItem modifierItem ) modifiers.add(modifierItem);
         }
-        if ( form != null && spell != null ) return form.castSpell(spell, owner, caster, modifiers);
+        if ( form != null && spell != null ) return form.formSpell(spell, owner, caster, modifiers);
 
         return false;
     }

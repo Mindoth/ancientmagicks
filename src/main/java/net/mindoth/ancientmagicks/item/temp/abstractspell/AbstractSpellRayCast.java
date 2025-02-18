@@ -28,7 +28,7 @@ public abstract class AbstractSpellRayCast extends SpellItem {
     }
 
     protected boolean canApply(Level level, LivingEntity owner, Entity caster, Entity target) {
-        return filter(owner, target);
+        return allyFilter(owner, target);
     }
 
     //Example result
@@ -51,9 +51,9 @@ public abstract class AbstractSpellRayCast extends SpellItem {
         Level level = caster.level();
 
         Entity target;
-        if ( caster == owner ) target = ShadowEvents.getPointedEntity(level, caster, getRange(), 0.25F, true, this::filter);
-        else target = ShadowEvents.getNearestEntity(caster, level, getSize(), this::filter);
-        if ( caster == owner && !isHarmful() && !filter(owner, target) ) target = owner;
+        if ( caster == owner ) target = ShadowEvents.getPointedEntity(level, caster, getRange(), 0.25F, true, this::allyFilter);
+        else target = ShadowEvents.getNearestEntity(caster, level, getSize(), this::allyFilter);
+        if ( caster == owner && !isHarmful() && !allyFilter(owner, target) ) target = owner;
 
         if ( canApply(level, owner, caster, target) ) state = true;
 

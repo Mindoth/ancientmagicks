@@ -18,7 +18,7 @@ public class ProjectileFormItem extends SpellFormItem {
     }
 
     @Override
-    public boolean castSpell(SpellItem spell, LivingEntity owner, Entity caster, List<SpellModifierItem> modifiers) {
+    public boolean formSpell(SpellItem spell, LivingEntity owner, Entity caster, List<SpellModifierItem> modifiers) {
         boolean state = false;
         Level level = caster.level();
         float down = caster instanceof Player ? -0.2F : 0.0F;

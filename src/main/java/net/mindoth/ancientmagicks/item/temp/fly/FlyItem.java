@@ -21,7 +21,7 @@ public class FlyItem extends AbstractSpellRayCast {
 
     @Override
     protected boolean canApply(Level level, LivingEntity owner, Entity caster, Entity target) {
-        return target instanceof Player && filter(owner, target);
+        return target instanceof Player && allyFilter(owner, target);
     }
 
     @Override

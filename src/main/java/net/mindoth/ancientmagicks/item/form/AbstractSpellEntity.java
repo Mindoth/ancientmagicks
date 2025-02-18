@@ -1,11 +1,9 @@
 package net.mindoth.ancientmagicks.item.form;
 
-import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -40,7 +38,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -106,12 +103,12 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.updateRotation();
         if ( !this.isNoGravity() ) {
             Vec3 vec34 = this.getDeltaMovement();
-            this.setDeltaMovement(vec34.x, vec34.y - (double) defaultGravity(), vec34.z);
+            this.setDeltaMovement(vec34.x, vec34.y - (double) getGravity(), vec34.z);
         }
     }
 
     public void handleHitDetection() {
-        HitResult result = getHitResult(position(), this, this::checkTeamForHit, getDeltaMovement(), level());
+        HitResult result = getHitResult(position(), this, this::allyFilter, getDeltaMovement(), level());
         boolean flag = false;
         if ( result.getType() == HitResult.Type.BLOCK ) {
             BlockPos blockpos = ((BlockHitResult)result).getBlockPos();
@@ -137,8 +134,8 @@ public abstract class AbstractSpellEntity extends Projectile {
         if ( result.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, result) ) onHit(result);
     }
 
-    //Similar to SpellItem filter() method. CHANGE BOTH WHEN EDITING!
-    protected boolean checkTeamForHit(Entity target) {
+    //Similar to SpellItem allyFilter() method. CHANGE BOTH WHEN EDITING!
+    protected boolean allyFilter(Entity target) {
         return target instanceof LivingEntity && !(target instanceof ArmorStand) && (this.owner != target || !isHarmful())
                 && (AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get()
                 || ((SpellItem.isAlly(this.owner, target) && !isHarmful()) || (!SpellItem.isAlly(this.owner, target) && isHarmful())));
@@ -214,7 +211,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     protected boolean homingFilter(Entity owner, Entity target) {
-        return checkTeamForHit(target) && !this.ignoredEntities.containsKey(target.getId());
+        return allyFilter(target) && !this.ignoredEntities.containsKey(target.getId());
     }
 
     private void doHoming() {
@@ -230,9 +227,8 @@ public abstract class AbstractSpellEntity extends Projectile {
             if ( this.target instanceof EnderDragon || this.target instanceof EnderDragonPart ) targetPos = new Vec3(targetPos.x, this.target.getY(), targetPos.z);
             Vec3 lookVec = targetPos.subtract(position()).normalize();
             Vec3 spellMotion = new Vec3(mX, mY, mZ);
-            /*float arc = 0.2F;
-            if ( position().distanceTo(this.target.position()) < 2.0D ) arc = 1.0F;*/
-            float arc = 1.0F;
+            float arc = 0.2F;
+            //if ( position().distanceTo(this.target.position()) < 2.0D ) arc = 1.0F;
             Vec3 lerpVec = new Vec3(Mth.lerp(arc, spellMotion.x, lookVec.x), Mth.lerp(arc, spellMotion.y, lookVec.y), Mth.lerp(arc, spellMotion.z, lookVec.z));
             setDeltaMovement(lerpVec);
             if ( this.ignoredEntities.containsKey(this.target.getId()) ) this.target = null;
@@ -317,9 +313,6 @@ public abstract class AbstractSpellEntity extends Projectile {
         return new ParticleColor(this.entityData.get(RED), this.entityData.get(GREEN), this.entityData.get(BLUE));
     }
 
-    public float defaultSize() {
-        return 0.2F;
-    }
     public float getSize() {
         return this.entityData.get(SIZE);
     }
@@ -339,73 +332,44 @@ public abstract class AbstractSpellEntity extends Projectile {
         return stats;
     }
 
-    public int defaultPower() {
-        return 1;
-    }
     public int getPower() {
         return this.entityData.get(POWER);
     }
 
-    public int defaultDie() {
-        return 1;
-    }
     public int getDie() {
         return this.entityData.get(DIE);
     }
 
-    public float defaultSpeed() {
-        return 1.6F;
-    }
     public float getSpeed() {
         return this.entityData.get(SPEED);
     }
 
-    public int defaultLife() {
-        return 160;
-    }
     public int getLife() {
         return this.entityData.get(LIFE);
     }
 
-    public float defaultAoe() {
-        return 0.0F;
-    }
     public float getAoe() {
         return this.entityData.get(AOE);
     }
 
-    public int defaultPiercing() {
-        return 0;
-    }
     public int getPiercing() {
         return this.entityData.get(PIERCING);
     }
 
-    public int defaultBlockBounce() {
-        return 0;
-    }
     public int getBlockBounce() {
         return this.entityData.get(BLOCK_BOUNCE);
     }
 
-    public boolean defaultHarmful() {
-        return true;
-    }
     public boolean isHarmful() {
         return this.entityData.get(IS_HARMFUL);
     }
 
-    public boolean defaultHoming() {
-        return false;
-    }
     public boolean getHoming() {
         return this.entityData.get(IS_HOMING);
     }
 
-    /*public float defaultGravity() {
-        return 0.015F;
-    }*/
-    public float defaultGravity() {
+    public float getGravity() {
+        //return 0.015F;
         return 0.03F;
     }
 
@@ -424,24 +388,6 @@ public abstract class AbstractSpellEntity extends Projectile {
     public static final EntityDataAccessor<Integer> BLOCK_BOUNCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Boolean> IS_HARMFUL = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> IS_HOMING = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
-
-    public void setAdditionalData(ParticleColor.IntWrapper colors) {
-        this.entityData.set(RED, colors.r);
-        this.entityData.set(GREEN, colors.g);
-        this.entityData.set(BLUE, colors.b);
-        this.entityData.set(SIZE, this.defaultSize());
-
-        this.entityData.set(SPELL, "");
-        this.entityData.set(POWER, this.defaultPower());
-        this.entityData.set(DIE, this.defaultDie());
-        this.entityData.set(SPEED, this.defaultSpeed());
-        this.entityData.set(LIFE, this.defaultLife());
-        this.entityData.set(AOE, this.defaultAoe());
-        this.entityData.set(PIERCING, this.defaultPiercing());
-        this.entityData.set(BLOCK_BOUNCE, this.defaultBlockBounce());
-        this.entityData.set(IS_HARMFUL, this.defaultHarmful());
-        this.entityData.set(IS_HOMING, this.defaultHoming());
-    }
 
     @Override
     public void load(CompoundTag compound) {
@@ -485,16 +431,16 @@ public abstract class AbstractSpellEntity extends Projectile {
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(RED, 255);
+        this.entityData.define(RED, 170);
         this.entityData.define(GREEN, 25);
-        this.entityData.define(BLUE, 180);
+        this.entityData.define(BLUE, 170);
         this.entityData.define(SIZE, 0.2F);
 
         this.entityData.define(SPELL, "");
         this.entityData.define(POWER, 1);
         this.entityData.define(DIE, 1);
-        this.entityData.define(SPEED, 1.6F);
-        this.entityData.define(LIFE, 160);
+        this.entityData.define(SPEED, 1.0F);
+        this.entityData.define(LIFE, 100);
         this.entityData.define(AOE, 0.0F);
         this.entityData.define(PIERCING, 0);
         this.entityData.define(BLOCK_BOUNCE, 0);

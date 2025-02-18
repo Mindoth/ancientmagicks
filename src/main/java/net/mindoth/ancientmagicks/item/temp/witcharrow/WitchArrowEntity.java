@@ -25,21 +25,6 @@ public class WitchArrowEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public int defaultPower() {
-        return 3;
-    }
-
-    @Override
-    public int defaultDie() {
-        return 4;
-    }
-
-    @Override
-    public boolean defaultHoming() {
-        return true;
-    }
-
-    @Override
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
         SpellItem.attackEntity(this.owner, target, this, calcDamage());

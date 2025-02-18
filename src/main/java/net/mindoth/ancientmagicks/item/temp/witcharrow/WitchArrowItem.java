@@ -18,8 +18,8 @@ public class WitchArrowItem extends AbstractSpellShoot {
         AbstractSpellEntity projectile = new WitchArrowEntity(level, owner, caster, this);
         float range = 64.0F;
         if ( owner == caster ) {
-            Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, true, this::filter);
-            if ( target != null && filter(owner, target) ) projectile.target = target;
+            Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.5F, true, this::allyFilter);
+            if ( target != null && allyFilter(owner, target) ) projectile.target = target;
         }
         return projectile;
     }

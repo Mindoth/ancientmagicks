@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PlayMessages;
 
@@ -31,27 +32,23 @@ public class SpellProjectileEntity extends AbstractSpellEntity {
         super(AncientMagicksEntities.SPELL_PROJECTILE.get(), level, owner, caster, spell);
     }
 
-    protected void doSpellOnTarget(Entity target) {
-        if ( getSpell() != null ) {
-            getSpell().castSpell(level(), this.owner, this.caster, target, getStats());
-        }
+    protected void doSpellOnTarget(HitResult result) {
+        if ( getSpell() != null ) getSpell().castSpell(level(), this.owner, this.caster, result, getStats());
     }
 
     @Override
     protected void doMobEffects(EntityHitResult result) {
-        Entity target = result.getEntity();
-        if ( getAoe() > 0.0F ) doAoeTarget();
-        else doSpellOnTarget(target);
+        doSpellOnTarget(result);
     }
 
     @Override
     protected void doBlockEffects(BlockHitResult result) {
-        if ( getAoe() > 0.0F ) doAoeTarget();
+        doSpellOnTarget(result);
     }
 
     private void doAoeTarget() {
         List<Entity> list = ShadowEvents.getEntitiesAround(this, getAoe(), getAoe(), getAoe());
-        for ( Entity entity : list ) doSpellOnTarget(entity);
+        for ( Entity entity : list ) doSpellOnTarget(new EntityHitResult(entity));
         addEnchantParticles(this, this.entityData.get(RED), this.entityData.get(GREEN), this.entityData.get(BLUE), 0.15F, 8);
     }
 

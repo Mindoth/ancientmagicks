@@ -34,11 +34,6 @@ public class FireBoltEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public int defaultDie() {
-        return 10;
-    }
-
-    @Override
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
         if ( !target.fireImmune() ) {

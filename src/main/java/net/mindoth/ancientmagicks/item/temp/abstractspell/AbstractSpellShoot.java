@@ -25,7 +25,7 @@ public abstract class AbstractSpellShoot extends SpellItem {
     }
 
     protected void addData(LivingEntity owner, Entity caster, AbstractSpellEntity projectile) {
-        projectile.setAdditionalData(getParticleColor());
+        //projectile.setAdditionalData(getParticleColor());
         int power = projectile.getEntityData().get(AbstractSpellEntity.POWER) + (int)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
         projectile.getEntityData().set(AbstractSpellEntity.POWER, power);
         projectile.setNoGravity(!hasGravity());

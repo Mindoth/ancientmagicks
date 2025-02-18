@@ -38,26 +38,6 @@ public class FireballEntity extends AbstractSpellEntity {
     }
 
     @Override
-    public int defaultPower() {
-        return 4;
-    }
-
-    @Override
-    public int defaultDie() {
-        return 6;
-    }
-
-    @Override
-    public float defaultSpeed() {
-        return 1.2F;
-    }
-
-    @Override
-    public float defaultSize() {
-        return 0.8F;
-    }
-
-    @Override
     protected void doMobEffects(EntityHitResult result) {
         Entity target = result.getEntity();
         if ( this.getPower() > 0 && target instanceof LivingEntity ) {
@@ -96,7 +76,7 @@ public class FireballEntity extends AbstractSpellEntity {
     private Entity hitTarget = null;
 
     private boolean isHit(Entity owner, Entity target) {
-        return target != this.hitTarget && checkTeamForHit(target);
+        return target != this.hitTarget && allyFilter(target);
     }
 
     private void doSplashEffects() {

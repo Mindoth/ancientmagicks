@@ -25,7 +25,7 @@ public class PacketSendRuneData {
             if ( context.getSender() != null ) {
                 ServerPlayer player = context.getSender();
                 player.stopUsingItem();
-                ItemStack book = SpellBookItem.getBookSlot(player);
+                ItemStack book = SpellBookItem.getSpellBookSlot(player);
                 AncientMagicksNetwork.sendToPlayer(new PacketReceiveRuneData(book), player);
             }
         });

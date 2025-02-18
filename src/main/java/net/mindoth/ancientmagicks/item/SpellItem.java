@@ -1,14 +1,19 @@
 package net.mindoth.ancientmagicks.item;
 
+import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
+import net.mindoth.ancientmagicks.item.spell.BlockTargetSpell;
+import net.mindoth.ancientmagicks.item.spell.EntityTargetSpell;
 import net.mindoth.ancientmagicks.item.temp.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -27,10 +32,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -57,13 +62,71 @@ public class SpellItem extends Item {
         return stats;
     }
 
-    public boolean castSpellWithModifiers(Level level, LivingEntity owner, Entity caster, Entity target, List<SpellModifierItem> modifiers) {
+    public static HashMap<String, Float> createSpellStats(List<SpellModifierItem> modifiers) {
         HashMap<String, Float> stats = createStatsList();
         for ( SpellModifierItem item : modifiers ) item.addStatsToMap(stats);
-        return castSpell(level, owner, caster, target, stats);
+        return stats;
     }
 
-    public boolean castSpell(Level level, LivingEntity owner, Entity caster, Entity target, HashMap<String, Float> stats) {
+    protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result) {
+        return true;
+    }
+
+    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
+        return canApply(level, owner, caster, result);
+    }
+
+    public boolean castSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
+        boolean state = false;
+        float range = 0.0F;
+        if ( stats.containsKey(SpellItem.AOE) && stats.get(SpellItem.AOE) > 0.0F ) range = stats.get(SpellItem.AOE);
+        if ( this instanceof EntityTargetSpell ) {
+            if ( range > 0.0F ) {
+                Vec3 start = new Vec3(result.getLocation().x + range, result.getLocation().y + range, result.getLocation().z + range);
+                Vec3 end = new Vec3(result.getLocation().x - range, result.getLocation().y - range, result.getLocation().z - range);
+                AABB box = new AABB(start, end);
+                List<Entity> entities = level.getEntitiesOfClass(Entity.class, box);
+                for ( Entity entity : entities ) {
+                    EntityHitResult entityHitResult = new EntityHitResult(entity);
+                    if ( canApply(level, owner, caster, entityHitResult) ) doSpell(level, owner, caster, entityHitResult, stats);
+                }
+                state = true;
+            }
+            else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats);
+        }
+        else if ( this instanceof BlockTargetSpell ) {
+            if ( range > 0.0F ) {
+                if ( result instanceof BlockHitResult || result instanceof EntityHitResult ) {
+                    List<BlockPos> blocks;
+                    if ( result instanceof EntityHitResult entityHitResult ) blocks = getBlockList(entityHitResult.getEntity().getOnPos(), (int)range);
+                    else blocks = getBlockList(((BlockHitResult)result).getBlockPos(), (int)range);
+                    for ( BlockPos position : blocks ) {
+                        BlockHitResult newResult = new BlockHitResult(position.getCenter(), Direction.UP, position, true);
+                        if ( canApply(level, owner, caster, result) ) doSpell(level, owner, caster, newResult, stats);
+                    }
+                    state = true;
+                }
+            }
+            else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats);
+        }
+        return state;
+    }
+
+    private static @NotNull List<BlockPos> getBlockList(BlockPos pos, int range) {
+        List<BlockPos> blocks = Lists.newArrayList();
+        blocks.add(pos);
+
+        for ( int xPos = pos.getX() - range; xPos <= pos.getX() + range; xPos++ )
+            for ( int yPos = pos.getY() - range; yPos <= pos.getY() + range; yPos++ )
+                for ( int zPos = pos.getZ() - range; zPos <= pos.getZ() + range; zPos++ ) {
+                    blocks.add(new BlockPos(xPos, yPos, zPos));
+                }
+
+        return blocks;
+    }
+
+    //TODO Remove this
+    public boolean castSpellOnEntity(Level level, LivingEntity owner, Entity caster, Entity target, HashMap<String, Float> stats) {
         return false;
     }
 
@@ -179,8 +242,8 @@ public class SpellItem extends Item {
         return ( entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof PrimedTnt || entity instanceof FallingBlockEntity );
     }
 
-    //Similar to AbstractSpellEntity filter() method. CHANGE BOTH WHEN EDITING!
-    public boolean filter(Entity owner, Entity target) {
+    //Similar to AbstractSpellEntity allyFilter() method. CHANGE BOTH WHEN EDITING!
+    public boolean allyFilter(Entity owner, Entity target) {
         return target instanceof LivingEntity && !(target instanceof ArmorStand) && (owner != target || !isHarmful())
                 && (AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get()
                 || ((SpellItem.isAlly(owner, target) && !isHarmful()) || (!SpellItem.isAlly(owner, target) && isHarmful())));
