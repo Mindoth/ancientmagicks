@@ -14,12 +14,12 @@ public class PolymorphItem extends EffectSpell {
     }
 
     @Override
-    protected boolean mobTypeFilter(Entity target) {
+    public boolean mobTypeFilter(Entity target) {
         return target instanceof Mob && !(target instanceof Sheep);
     }
 
     @Override
-    protected MobEffect getEffect() {
+    public MobEffect getEffect() {
         return AncientMagicksEffects.POLYMORPH.get();
     }
 }

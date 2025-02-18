@@ -28,10 +28,6 @@ public class EffectSpell extends EntityTargetSpell {
                 && allyFilter(owner, entityHitResult.getEntity()) && mobTypeFilter(entityHitResult.getEntity());
     }
 
-    protected boolean mobTypeFilter(Entity target) {
-        return true;
-    }
-
     @Override
     protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
         LivingEntity target = (LivingEntity)((EntityHitResult)result).getEntity();

@@ -11,7 +11,6 @@ import net.mindoth.ancientmagicks.item.temp.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
-import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -95,7 +94,7 @@ public class SpellItem extends Item {
                     if ( canApply(level, owner, caster, entityHitResult) ) doSpell(level, owner, caster, entityHitResult, stats);
                 }
                 state = true;
-                addAoeParticles(caster, box, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8);
+                aoeEntitySpellParticles(level, result, caster, center, range);
             }
             else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats);
         }
@@ -110,12 +109,7 @@ public class SpellItem extends Item {
                         if ( canApply(level, owner, caster, result) ) doSpell(level, owner, caster, newResult, stats);
                     }
                     state = true;
-                    for ( int i = -(int)range; i <= range; i++ ) {
-                        Vec3 start = new Vec3(Mth.ceil(center.x + range), Mth.ceil(center.y + range + i), Mth.ceil(center.z + range));
-                        Vec3 end = new Vec3(Mth.floor(center.x - range), Mth.floor(center.y - range + i), Mth.floor(center.z - range));
-                        AABB box = new AABB(start, end);
-                        addAoeParticles(caster, box, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8);
-                    }
+                    for ( int i = -(int)range; i <= range; i++ ) aoeBlockSpellParticles(caster, center, range, i);
                 }
             }
             else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats);
@@ -131,7 +125,6 @@ public class SpellItem extends Item {
                 for ( int zPos = pos.getZ() - range; zPos <= pos.getZ() + range; zPos++ ) {
                     blocks.add(new BlockPos(xPos, yPos, zPos));
                 }
-
         blocks.add(pos);
         return blocks;
     }
@@ -253,11 +246,14 @@ public class SpellItem extends Item {
         return ( entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof PrimedTnt || entity instanceof FallingBlockEntity );
     }
 
-    //Similar to AbstractSpellEntity allyFilter() method. CHANGE BOTH WHEN EDITING!
     public boolean allyFilter(Entity owner, Entity target) {
         return target instanceof LivingEntity && !(target instanceof ArmorStand) && (owner != target || !isHarmful())
                 && (AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get()
                 || ((SpellItem.isAlly(owner, target) && !isHarmful()) || (!SpellItem.isAlly(owner, target) && isHarmful())));
+    }
+
+    public boolean mobTypeFilter(Entity target) {
+        return true;
     }
 
     public static boolean isAlly(Entity owner, Entity target) {
@@ -313,14 +309,47 @@ public class SpellItem extends Item {
         return 1;
     }
 
-    protected void addAoeParticles(Entity caster, AABB box, int r, int g, int b, float size, int age) {
+    private void aoeEntitySpellParticles(Level level, HitResult result, Entity caster, Vec3 oldCenter, float range) {
+        BlockPos pos = new BlockPos(Mth.floor(oldCenter.x), Mth.floor(oldCenter.y), Mth.floor(oldCenter.z));
+        if ( result instanceof BlockHitResult blockHitResult ) pos = getPosOfFace(blockHitResult.getBlockPos(), blockHitResult.getDirection());
+        Vec3 center = oldCenter;
+        for ( int i = pos.getY(); i >= Mth.floor(oldCenter.y - range); i-- ) {
+            BlockPos tempPos = new BlockPos(pos.getX(), i, pos.getZ());
+            if ( level.getBlockState(tempPos).isSolid() ) break;
+            else center = new Vec3(oldCenter.x, i, oldCenter.z);
+        }
+        Vec3 particleStart = new Vec3(center.x + range, center.y + range, center.z + range);
+        Vec3 particleEnd = new Vec3(center.x - range, center.y - range, center.z - range);
+        AABB particleBox = new AABB(particleStart, particleEnd);
+        addAoeParticles(caster, particleBox, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, 0.15D);
+    }
+
+    private static BlockPos getPosOfFace(BlockPos blockPos, Direction face) {
+        return switch (face) {
+            case UP -> blockPos.above();
+            case EAST -> blockPos.east();
+            case WEST -> blockPos.west();
+            case SOUTH -> blockPos.south();
+            case NORTH -> blockPos.north();
+            case DOWN -> blockPos.below();
+        };
+    }
+
+    private void aoeBlockSpellParticles(Entity caster, Vec3 center, float range, int addition) {
+        Vec3 start = new Vec3(Mth.ceil(center.x + range), Mth.ceil(center.y + range + addition), Mth.ceil(center.z + range));
+        Vec3 end = new Vec3(Mth.floor(center.x - range), Mth.floor(center.y - range + addition), Mth.floor(center.z - range));
+        AABB particleBox = new AABB(start, end);
+        addAoeParticles(caster, particleBox, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, 0.0D);
+    }
+
+    protected void addAoeParticles(Entity caster, AABB box, int r, int g, int b, float size, int age, double lift) {
         Vec3 center = box.getCenter();
         double maxX = box.maxX;
         double minX = box.minX;
         double maxZ = box.maxZ;
         double minZ = box.minZ;
         double vecX = 0;
-        double vecY = 0;
+        double vecY = lift;
         double vecZ = 0;
         int amount = 4 * (int)box.getYsize();
         for ( int i = 0; i < amount; i++ ) {

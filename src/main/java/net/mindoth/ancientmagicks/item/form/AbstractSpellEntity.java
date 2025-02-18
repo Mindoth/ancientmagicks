@@ -2,7 +2,6 @@ package net.mindoth.ancientmagicks.item.form;
 
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
-import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -22,7 +21,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.Item;
@@ -134,11 +132,8 @@ public abstract class AbstractSpellEntity extends Projectile {
         if ( result.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, result) ) onHit(result);
     }
 
-    //Similar to SpellItem allyFilter() method. CHANGE BOTH WHEN EDITING!
     protected boolean allyFilter(Entity target) {
-        return target instanceof LivingEntity && !(target instanceof ArmorStand) && (this.owner != target || !isHarmful())
-                && (AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get()
-                || ((SpellItem.isAlly(this.owner, target) && !isHarmful()) || (!SpellItem.isAlly(this.owner, target) && isHarmful())));
+        return getSpell().allyFilter(this.owner, target) && getSpell().mobTypeFilter(target);
     }
 
     protected HitResult getHitResult(Vec3 pStartVec, Entity pProjectile, Predicate<Entity> pFilter, Vec3 pEndVecOffset, Level pLevel) {

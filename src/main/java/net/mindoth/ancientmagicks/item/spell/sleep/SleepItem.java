@@ -13,7 +13,7 @@ public class SleepItem extends EffectSpell {
     }
 
     @Override
-    protected boolean mobTypeFilter(Entity target) {
+    public boolean mobTypeFilter(Entity target) {
         return target instanceof Mob;
     }
 
