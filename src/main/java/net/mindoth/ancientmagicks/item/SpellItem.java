@@ -11,12 +11,14 @@ import net.mindoth.ancientmagicks.item.temp.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -79,11 +81,13 @@ public class SpellItem extends Item {
     public boolean castSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
         boolean state = false;
         float range = 0.0F;
+        Vec3 center = result.getLocation();
         if ( stats.containsKey(SpellItem.AOE) && stats.get(SpellItem.AOE) > 0.0F ) range = stats.get(SpellItem.AOE);
         if ( this instanceof EntityTargetSpell ) {
             if ( range > 0.0F ) {
-                Vec3 start = new Vec3(result.getLocation().x + range, result.getLocation().y + range, result.getLocation().z + range);
-                Vec3 end = new Vec3(result.getLocation().x - range, result.getLocation().y - range, result.getLocation().z - range);
+                range *= 2;
+                Vec3 start = new Vec3(center.x + range, center.y + range, center.z + range);
+                Vec3 end = new Vec3(center.x - range, center.y - range, center.z - range);
                 AABB box = new AABB(start, end);
                 List<Entity> entities = level.getEntitiesOfClass(Entity.class, box);
                 for ( Entity entity : entities ) {
@@ -91,6 +95,7 @@ public class SpellItem extends Item {
                     if ( canApply(level, owner, caster, entityHitResult) ) doSpell(level, owner, caster, entityHitResult, stats);
                 }
                 state = true;
+                addAoeParticles(caster, box, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8);
             }
             else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats);
         }
@@ -105,6 +110,12 @@ public class SpellItem extends Item {
                         if ( canApply(level, owner, caster, result) ) doSpell(level, owner, caster, newResult, stats);
                     }
                     state = true;
+                    for ( int i = -(int)range; i <= range; i++ ) {
+                        Vec3 start = new Vec3(Mth.ceil(center.x + range), Mth.ceil(center.y + range + i), Mth.ceil(center.z + range));
+                        Vec3 end = new Vec3(Mth.floor(center.x - range), Mth.floor(center.y - range + i), Mth.floor(center.z - range));
+                        AABB box = new AABB(start, end);
+                        addAoeParticles(caster, box, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8);
+                    }
                 }
             }
             else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats);
@@ -114,7 +125,6 @@ public class SpellItem extends Item {
 
     private static @NotNull List<BlockPos> getBlockList(BlockPos pos, int range) {
         List<BlockPos> blocks = Lists.newArrayList();
-        blocks.add(pos);
 
         for ( int xPos = pos.getX() - range; xPos <= pos.getX() + range; xPos++ )
             for ( int yPos = pos.getY() - range; yPos <= pos.getY() + range; yPos++ )
@@ -122,6 +132,7 @@ public class SpellItem extends Item {
                     blocks.add(new BlockPos(xPos, yPos, zPos));
                 }
 
+        blocks.add(pos);
         return blocks;
     }
 
@@ -300,6 +311,50 @@ public class SpellItem extends Item {
 
     protected int getRenderType() {
         return 1;
+    }
+
+    protected void addAoeParticles(Entity caster, AABB box, int r, int g, int b, float size, int age) {
+        Vec3 center = box.getCenter();
+        double maxX = box.maxX;
+        double minX = box.minX;
+        double maxZ = box.maxZ;
+        double minZ = box.minZ;
+        double vecX = 0;
+        double vecY = 0;
+        double vecZ = 0;
+        int amount = 4 * (int)box.getYsize();
+        for ( int i = 0; i < amount; i++ ) {
+            double randX = maxX;
+            double randY = center.y - 0.5D + new Random().nextDouble();
+            double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
+            Vec3 pos = new Vec3(randX, randY, randZ);
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), caster, true);
+        }
+        for ( int i = 0; i < amount; i++ ) {
+            double randX = minX;
+            double randY = center.y - 0.5D + new Random().nextDouble();
+            double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
+            Vec3 pos = new Vec3(randX, randY, randZ);
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), caster, true);
+        }
+        for ( int i = 0; i < amount; i++ ) {
+            double randX = minX + (maxX - minX) * new Random().nextDouble();
+            double randY = center.y - 0.5D + new Random().nextDouble();
+            double randZ = minZ;
+            Vec3 pos = new Vec3(randX, randY, randZ);
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), caster, true);
+        }
+        for ( int i = 0; i < amount; i++ ) {
+            double randX = minX + (maxX - minX) * new Random().nextDouble();
+            double randY = center.y - 0.5D + new Random().nextDouble();
+            double randZ = maxZ;
+            Vec3 pos = new Vec3(randX, randY, randZ);
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), caster, true);
+        }
     }
 
     protected void addEnchantParticles(Entity target, int r, int g, int b, float size, int age) {

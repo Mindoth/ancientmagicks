@@ -7,18 +7,18 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class ProjectileRenderer extends EntityRenderer<SpellProjectileEntity> {
+public class ProjectileRenderer extends EntityRenderer<ProjectileSpellEntity> {
 
     public ProjectileRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(SpellProjectileEntity entity) {
+    public ResourceLocation getTextureLocation(ProjectileSpellEntity entity) {
         return new ResourceLocation(AncientMagicks.MOD_ID, "textures/particle/clear.png");
     }
 
     @Override
-    public void render(SpellProjectileEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(ProjectileSpellEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
     }
 }

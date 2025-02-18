@@ -2,9 +2,8 @@ package net.mindoth.ancientmagicks.item.modifier;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.form.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.form.SpellProjectileEntity;
+import net.mindoth.ancientmagicks.item.form.ProjectileSpellEntity;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 
 public class AmplifyModifierItem extends SpellModifierItem {
@@ -14,7 +13,7 @@ public class AmplifyModifierItem extends SpellModifierItem {
     }
 
     @Override
-    public void addModifierToEntity(SpellProjectileEntity projectile, int count) {
+    public void addModifierToEntity(ProjectileSpellEntity projectile, int count) {
         if ( projectile != null ) {
             projectile.getEntityData().set(AbstractSpellEntity.POWER, count);
         }
