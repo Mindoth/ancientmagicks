@@ -26,6 +26,7 @@ import java.util.List;
 public class ParchmentItem extends Item {
 
     public static final String NBT_KEY_SPELL_STRING = "am_spell_string";
+    public static final String NBT_KEY_CODE_STRING = "am_code_string";
     public static final String NBT_KEY_SPELL_NAME = "am_spell_name";
     public static final String NBT_KEY_PAPER_TIER = "am_paper_tier";
 

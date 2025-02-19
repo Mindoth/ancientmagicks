@@ -2,10 +2,11 @@ package net.mindoth.ancientmagicks.client.screen;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketRemoveSpellFromBook;
-import net.mindoth.ancientmagicks.network.PacketSendRuneData;
+import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -17,11 +18,13 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
@@ -33,6 +36,8 @@ public class SpellBookScreen extends AncientMagicksScreen {
     private final List<List<ItemStack>> pageList;
     private int spreadNumber;
     private final List<Button> slotList = Lists.newArrayList();
+    private final HashMap<Button, ItemStack> runeMap = new HashMap<>();
+    private final HashMap<Button, Integer> indexMap = new HashMap<>();
 
     private final int arrowYOffset = 68;
     private final int arrowXOffset = 94;
@@ -73,7 +78,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
     }
 
     private boolean isLastPage() {
-        return this.spreadNumber == this.pageList.size() - 1;
+        return this.spreadNumber == this.pageList.size() - 1 || this.itemList.isEmpty();
     }
 
     @Override
@@ -142,15 +147,48 @@ public class SpellBookScreen extends AncientMagicksScreen {
         }
     }
 
+    private ItemStack getStackFromSlot(Button button) {
+        int stackIndex = this.slotList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
+        if ( stackIndex >= this.itemList.size() ) return ItemStack.EMPTY;
+        return this.pageList.get(this.spreadNumber).get(this.slotList.indexOf(button));
+    }
+
     private void handleSlotButton(Button button) {
         if ( !this.slotList.contains(button) ) return;
-        int stackIndex = this.slotList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
-        if ( stackIndex >= this.itemList.size() ) return;
-        ItemStack stack = this.pageList.get(this.spreadNumber).get(this.slotList.indexOf(button));
-
+        ItemStack stack = getStackFromSlot(button);
+        if ( stack.isEmpty() ) return;
         AncientMagicksNetwork.sendToServer(new PacketRemoveSpellFromBook(this.book, this.itemList.indexOf(stack)));
         Player player = minecraft.player;
         player.closeContainer();
+    }
+
+    private void handleRuneButton(Button button) {
+        ItemStack stack = this.runeMap.get(button);
+        int index = this.indexMap.get(button);
+
+        String code = stack.getTag().getString(ParchmentItem.NBT_KEY_CODE_STRING);
+        List<String> codeList = List.of(code.split(","));
+
+        Item rune = ForgeRegistries.ITEMS.getValue(new ResourceLocation(codeList.get(index)));
+        if ( rune == AncientMagicksItems.BLANK_RUNE.get() ) rune = AncientMagicksItems.BLUE_RUNE.get();
+        else if ( rune == AncientMagicksItems.BLUE_RUNE.get() ) rune = AncientMagicksItems.PURPLE_RUNE.get();
+        else if ( rune == AncientMagicksItems.PURPLE_RUNE.get() ) rune = AncientMagicksItems.YELLOW_RUNE.get();
+        else if ( rune == AncientMagicksItems.YELLOW_RUNE.get() ) rune = AncientMagicksItems.GREEN_RUNE.get();
+        else if ( rune == AncientMagicksItems.GREEN_RUNE.get() ) rune = AncientMagicksItems.BLACK_RUNE.get();
+        else if ( rune == AncientMagicksItems.BLACK_RUNE.get() ) rune = AncientMagicksItems.WHITE_RUNE.get();
+        else if ( rune == AncientMagicksItems.WHITE_RUNE.get() ) rune = AncientMagicksItems.BLUE_RUNE.get();
+        String runeString = ForgeRegistries.ITEMS.getKey(rune).toString();
+        List<String> newCodeList = Lists.newArrayList();
+        newCodeList.addAll(codeList);
+        newCodeList.set(index, runeString);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for ( int i = 0; i < newCodeList.size(); i++ ) {
+            if ( i > 0 ) stringBuilder.append(",");
+            stringBuilder.append(newCodeList.get(i));
+        }
+
+        System.out.println(stringBuilder.toString());
     }
 
     private void buildSlotButton(int xPos, int yPos) {
@@ -158,6 +196,19 @@ public class SpellBookScreen extends AncientMagicksScreen {
                 .bounds(xPos - 1, yPos - 1, 18, 18)
                 .build());
         this.slotList.add(button);
+
+        ItemStack stack = getStackFromSlot(button);
+        if ( stack.isEmpty() ) return;
+        String code = stack.getTag().getString(ParchmentItem.NBT_KEY_CODE_STRING);
+        List<String> codeList = List.of(code.split(","));
+
+        for ( int r = 0; r < codeList.size(); r++ ) {
+            Button runeButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleRuneButton)
+                    .bounds(xPos - 1 + this.squareSpacing * (r + 1), yPos - 1, 18, 18)
+                    .build());
+            this.runeMap.put(runeButton, stack);
+            this.indexMap.put(runeButton, r);
+        }
     }
 
     private void handleSlotButtonVisibility() {
@@ -214,6 +265,13 @@ public class SpellBookScreen extends AncientMagicksScreen {
                     if ( this.slotList.get(i).isHovered() ) {
                         graphics.fill(RenderType.guiOverlay(), xPos, yPos, xPos + 16, yPos + 16, Integer.MAX_VALUE);
                         graphics.renderTooltip(this.font, stack, mouseX, mouseY);
+                    }
+
+                    String code = stack.getTag().getString(ParchmentItem.NBT_KEY_CODE_STRING);
+                    List<String> codeList = List.of(code.split(","));
+                    for ( int r = 0; r < codeList.size(); r++ ) {
+                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(codeList.get(r)));
+                        if ( item != null ) renderItemWithDecorations(graphics, new ItemStack(item), xPos + this.squareSpacing * (r + 1), yPos);
                     }
 
                     column++;

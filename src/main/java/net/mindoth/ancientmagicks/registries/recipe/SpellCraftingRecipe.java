@@ -1,10 +1,12 @@
 package net.mindoth.ancientmagicks.registries.recipe;
 
 import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
+import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -67,17 +69,26 @@ public class SpellCraftingRecipe extends CustomRecipe {
         if ( paperList.size() == 1 && spellList.size() == 1 && formList.size() == 1 && restList.isEmpty() ) {
             ItemStack stack = paperList.get(0).copy();
             stack.setCount(1);
+            stack.setHoverName(paperList.get(0).getHoverName());
             CompoundTag tag = stack.getOrCreateTag();
-            StringBuilder spellString = new StringBuilder();
             List<ItemStack> runeList = Lists.newArrayList();
             runeList.addAll(formList);
             runeList.addAll(spellList);
             runeList.addAll(modifierList);
+
+            StringBuilder spellString = new StringBuilder();
             for ( int i = 0; i < runeList.size(); i++ ) {
                 if ( i > 0 ) spellString.append(",");
                 spellString.append(ForgeRegistries.ITEMS.getKey(runeList.get(i).getItem()).toString());
             }
             tag.putString(ParchmentItem.NBT_KEY_SPELL_STRING, spellString.toString());
+
+            StringBuilder spellCode = new StringBuilder();
+            for ( int i = 0; i < AncientMagicks.comboSizeCalc(); i++ ) {
+                if ( i > 0 ) spellCode.append(",");
+                spellCode.append(ForgeRegistries.ITEMS.getKey(AncientMagicksItems.BLANK_RUNE.get()).toString());
+            }
+            tag.putString(ParchmentItem.NBT_KEY_CODE_STRING, spellCode.toString());
             return stack;
         }
         return ItemStack.EMPTY;
@@ -87,20 +98,6 @@ public class SpellCraftingRecipe extends CustomRecipe {
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return pWidth * pHeight >= 2;
     }
-
-    /*@Override
-    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-    }
-
-    @Override
-    public boolean isSpecial() {
-        return false;
-    }*/
 
     @Override
     public RecipeSerializer<?> getSerializer() {

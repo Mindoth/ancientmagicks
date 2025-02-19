@@ -51,21 +51,6 @@ public class ArcaneDustCraftingRecipe extends CustomRecipe {
         return new ItemStack(AncientMagicksItems.ARCANE_DUST.get());
     }
 
-    /*@Override
-    public NonNullList<Ingredient> getIngredients() {
-        NonNullList<Ingredient> list = NonNullList.create();
-        AncientMagicks.ARCANE_DUST_LIST.forEach(item -> {
-            Ingredient ingredient = Ingredient.of(item);
-            list.add(ingredient);
-        });
-        return list;
-    }
-
-    @Override
-    public boolean isSpecial() {
-        return false;
-    }*/
-
     @Override
     public RecipeSerializer<?> getSerializer() {
         return AncientMagicksRecipes.ARCANE_DUST_CRAFTING_RECIPE.get();

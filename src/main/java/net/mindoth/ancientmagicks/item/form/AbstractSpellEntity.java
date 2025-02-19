@@ -249,9 +249,9 @@ public abstract class AbstractSpellEntity extends Projectile {
         for ( int j = -4; j < 0; j++ ) {
             if ( -this.tickCount < j ) {
                 //Main body
-                float particleSize = Math.min(this.entityData.get(SIZE), (this.entityData.get(SIZE) * 0.1F) * this.tickCount);
+                float particleSize = Math.min(getSize(), (getSize() * 0.1F) * this.tickCount);
                 for ( int i = 0; i < 2; i++ ) {
-                    float sphereSize = this.entityData.get(SIZE) / 4;
+                    float sphereSize = getSize() / 4;
                     float randX = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
                     float randY = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
                     float randZ = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
@@ -261,7 +261,7 @@ public abstract class AbstractSpellEntity extends Projectile {
                 //Trail twinkle
                 if ( j == -1 ) {
                     for ( int i = 0; i < 8; i++ ) {
-                        float sphereSize = this.entityData.get(SIZE) / 3;
+                        float sphereSize = getSize() / 3;
                         float randX = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
                         float randY = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
                         float randZ = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
@@ -309,7 +309,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     public float getSize() {
-        return this.entityData.get(SIZE);
+        return getPower() > 1 ? this.entityData.get(SIZE) + this.entityData.get(POWER) * 0.2F : this.entityData.get(SIZE);
     }
 
     public SpellItem getSpell() {

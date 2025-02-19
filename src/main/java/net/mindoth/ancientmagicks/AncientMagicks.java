@@ -257,11 +257,12 @@ public class AncientMagicks {
     //Check how many Color Runes should be in a Spell Code. The amount increases depending on how many Spells are registered.
     public static int comboSizeCalc() {
         //return (n * (n + 2) * (n + 1)) >= (6 * SPELL_LIST.size());
-        int returnValue = 0;
+        /*int returnValue = 0;
         if ( (56 * (56 + 2) * (56 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 3;
         else if ( (126 * (126 + 2) * (126 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 4;
         else if ( (252 * (252 + 2) * (252 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 5;
         else if ( (462 * (462 + 2) * (462 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 6;
-        return returnValue;
+        return returnValue;*/
+        return 3;
     }
 }

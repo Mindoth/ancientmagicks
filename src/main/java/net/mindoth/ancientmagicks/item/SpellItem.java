@@ -245,7 +245,7 @@ public class SpellItem extends Item {
 
     public boolean allyFilter(Entity owner, Entity target) {
         return target instanceof LivingEntity && !(target instanceof ArmorStand)
-                /*&& (owner != target || !isHarmful())*/
+                //&& (owner != target || !isHarmful())
                 && (AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get()
                 || ((SpellItem.isAlly(owner, target) && !isHarmful()) || (!SpellItem.isAlly(owner, target) && isHarmful())));
     }

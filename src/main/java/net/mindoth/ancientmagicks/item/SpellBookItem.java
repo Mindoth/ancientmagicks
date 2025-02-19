@@ -29,6 +29,7 @@ import java.util.List;
 public class SpellBookItem extends Item implements DyeableMagicItem {
 
     public static final String NBT_KEY_SPELLS = "am_book_spells";
+    public static final String NBT_KEY_CODES = "am_book_codes";
     public static final String NBT_KEY_OWNER_NAME = "am_book_owner_name";
     public static final String NBT_KEY_OWNER_UUID = "am_book_owner_uuid";
 
@@ -47,19 +48,6 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
-        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
-        if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
-            ItemStack stack = player.getItemInHand(handIn);
-            if ( stack.getItem() == AncientMagicksItems.SPELL_BOOK.get() && (CastingItem.getHeldStaff(player) == ItemStack.EMPTY || player.isCrouching()) ) {
-                handleSignature(serverPlayer, stack);
-                AncientMagicksNetwork.sendToPlayer(new PacketOpenSpellBook(stack), serverPlayer);
-            }
-        }
-        return result;
-    }
-
     private static @NotNull CompoundTag handleSignature(ServerPlayer serverPlayer, ItemStack stack) {
         CompoundTag tag = stack.getOrCreateTag();
         if ( !tag.contains(NBT_KEY_OWNER_UUID) ){
@@ -74,10 +62,25 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         return tag;
     }
 
-    public static ItemStack constructSpellScroll(String string, String name, Item item) {
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
+        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
+        if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
+            ItemStack stack = player.getItemInHand(handIn);
+            if ( stack.getItem() == AncientMagicksItems.SPELL_BOOK.get() && (CastingItem.getHeldStaff(player) == ItemStack.EMPTY || player.isCrouching()) ) {
+                handleSignature(serverPlayer, stack);
+                AncientMagicksNetwork.sendToPlayer(new PacketOpenSpellBook(stack), serverPlayer);
+            }
+        }
+        return result;
+    }
+
+    public static ItemStack constructSpellScroll(String string, String name, Item item, String code) {
         ItemStack stack = new ItemStack(item);
         stack.setHoverName(Component.literal(name));
-        stack.getOrCreateTag().putString(ParchmentItem.NBT_KEY_SPELL_STRING, string);
+        CompoundTag tag = stack.getOrCreateTag();
+        tag.putString(ParchmentItem.NBT_KEY_SPELL_STRING, string);
+        tag.putString(ParchmentItem.NBT_KEY_CODE_STRING, code);
         return stack;
     }
 
@@ -87,6 +90,9 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         String spell = tag.getString(NBT_KEY_SPELLS);
         List<String> stringList = List.of(spell.split(";"));
 
+        String code = tag.getString(NBT_KEY_CODES);
+        List<String> codeList = List.of(code.split(";"));
+
         String name = tag.getString(ParchmentItem.NBT_KEY_SPELL_NAME);
         List<String> nameList = List.of(name.split(";"));
 
@@ -94,7 +100,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         List<String> itemList = List.of(item.split(";"));
 
         for ( int i = 0; i < stringList.size(); i++ ) {
-            ItemStack stack = constructSpellScroll(stringList.get(i), nameList.get(i), ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemList.get(i))));
+            ItemStack stack = constructSpellScroll(stringList.get(i), nameList.get(i), ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemList.get(i))), codeList.get(i));
             scrollList.add(stack);
         }
 

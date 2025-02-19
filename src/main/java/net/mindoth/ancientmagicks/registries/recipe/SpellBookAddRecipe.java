@@ -62,6 +62,9 @@ public class SpellBookAddRecipe extends CustomRecipe {
             String spellString = scroll.getTag().getString(ParchmentItem.NBT_KEY_SPELL_STRING);
             SpellBookItem.addSpellTagsToBook(bookTag, spellString, SpellBookItem.NBT_KEY_SPELLS);
 
+            String code = scroll.getTag().getString(ParchmentItem.NBT_KEY_CODE_STRING);
+            SpellBookItem.addSpellTagsToBook(bookTag, code, SpellBookItem.NBT_KEY_CODES);
+
             String name = scroll.getHoverName().getString();
             SpellBookItem.addSpellTagsToBook(bookTag, name, ParchmentItem.NBT_KEY_SPELL_NAME);
 
@@ -76,18 +79,6 @@ public class SpellBookAddRecipe extends CustomRecipe {
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return true;
     }
-
-    /*@Override
-    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
-        return new ItemStack(AncientMagicksItems.SPELL_BOOK.get());
-    }
-
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-        NonNullList<Ingredient> list = NonNullList.create();
-        list.add(Ingredient.of(AncientMagicksItems.SPELL_BOOK.get()));
-        return list;
-    }*/
 
     @Override
     public boolean isSpecial() {
