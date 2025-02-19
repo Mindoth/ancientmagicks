@@ -6,6 +6,7 @@ import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketRemoveSpellFromBook;
+import net.mindoth.ancientmagicks.network.PacketUpdateBookData;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -31,7 +32,6 @@ import java.util.List;
 public class SpellBookScreen extends AncientMagicksScreen {
 
     private final ItemStack book;
-    private final CompoundTag bookTag;
     private final List<ItemStack> itemList;
     private final List<List<ItemStack>> pageList;
     private int spreadNumber;
@@ -53,10 +53,9 @@ public class SpellBookScreen extends AncientMagicksScreen {
     protected SpellBookScreen(ItemStack book, int spreadNumber) {
         super(Component.literal(""));
         this.book = book;
-        this.bookTag = this.book.getOrCreateTag();
         this.pageList = Lists.newArrayList();
         this.spreadNumber = spreadNumber;
-        this.itemList = SpellBookItem.getScrollListFromBook(this.bookTag);
+        this.itemList = SpellBookItem.getScrollListFromBook(this.book.getOrCreateTag());
         this.itemList.removeIf(ItemStack::isEmpty);
         List<ItemStack> page = Lists.newArrayList();
         for ( ItemStack stack : this.itemList ) {
@@ -188,7 +187,10 @@ public class SpellBookScreen extends AncientMagicksScreen {
             stringBuilder.append(newCodeList.get(i));
         }
 
-        System.out.println(stringBuilder.toString());
+        ItemStack newStack = stack.copy();
+        newStack.getTag().remove(ParchmentItem.NBT_KEY_CODE_STRING);
+        newStack.getTag().putString(ParchmentItem.NBT_KEY_CODE_STRING, stringBuilder.toString());
+        AncientMagicksNetwork.sendToServer(new PacketUpdateBookData(this.book, newStack.getTag(), this.spreadNumber));
     }
 
     private void buildSlotButton(int xPos, int yPos) {

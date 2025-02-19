@@ -1,9 +1,7 @@
 package net.mindoth.ancientmagicks.network;
 
-import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.mindoth.ancientmagicks.registries.recipe.SpellBookAddRecipe;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -55,6 +53,9 @@ public class PacketRemoveSpellFromBook {
                         if ( scroll != spells.get(this.slot) ) {
                             String spellString = scroll.getTag().getString(ParchmentItem.NBT_KEY_SPELL_STRING);
                             SpellBookItem.addSpellTagsToBook(bookTag, spellString, SpellBookItem.NBT_KEY_SPELLS);
+
+                            String code = scroll.getTag().getString(ParchmentItem.NBT_KEY_CODE_STRING);
+                            SpellBookItem.addSpellTagsToBook(bookTag, code, SpellBookItem.NBT_KEY_CODES);
 
                             String name = scroll.getHoverName().getString();
                             SpellBookItem.addSpellTagsToBook(bookTag, name, ParchmentItem.NBT_KEY_SPELL_NAME);

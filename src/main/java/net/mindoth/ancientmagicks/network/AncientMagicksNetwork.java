@@ -98,6 +98,12 @@ public class AncientMagicksNetwork {
                 .encoder(PacketRemoveSpellFromBook::encode)
                 .consumerMainThread(PacketRemoveSpellFromBook::handle)
                 .add();
+
+        net.messageBuilder(PacketUpdateBookData.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketUpdateBookData::new)
+                .encoder(PacketUpdateBookData::encode)
+                .consumerMainThread(PacketUpdateBookData::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

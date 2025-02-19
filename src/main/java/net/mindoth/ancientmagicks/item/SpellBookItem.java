@@ -69,7 +69,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
             ItemStack stack = player.getItemInHand(handIn);
             if ( stack.getItem() == AncientMagicksItems.SPELL_BOOK.get() && (CastingItem.getHeldStaff(player) == ItemStack.EMPTY || player.isCrouching()) ) {
                 handleSignature(serverPlayer, stack);
-                AncientMagicksNetwork.sendToPlayer(new PacketOpenSpellBook(stack), serverPlayer);
+                AncientMagicksNetwork.sendToPlayer(new PacketOpenSpellBook(stack, 0), serverPlayer);
             }
         }
         return result;
