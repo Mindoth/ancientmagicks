@@ -49,18 +49,28 @@ public class ParchmentItem extends Item {
         return result;
     }
 
+    public static List<ColorRuneItem> getScrollComboList(ItemStack stack) {
+        if ( !(stack.getItem() instanceof ParchmentItem) ) return null;
+        if ( !stack.hasTag() || !stack.getTag().contains(NBT_KEY_CODE_STRING) ) return null;
+        CompoundTag tag = stack.getTag();
+        List<String> codeList = List.of(tag.getString(NBT_KEY_CODE_STRING).split(","));
+        List<ColorRuneItem> runes = Lists.newArrayList();
+        for ( String string : codeList ) {
+            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
+            if ( item instanceof ColorRuneItem colorRuneItem ) runes.add(colorRuneItem);
+        }
+        if ( codeList.size() == AncientMagicks.comboSizeCalc() && codeList.size() == codeList.size() ) return runes;
+        else return null;
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_CODE_STRING) ) {
             CompoundTag tag = stack.getTag();
             List<String> codeString = List.of(tag.getString(NBT_KEY_CODE_STRING).split(","));
-            List<ColorRuneItem> runes = Lists.newArrayList();
-            for ( String string : codeString ) {
-                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-                if ( item instanceof ColorRuneItem colorRuneItem ) runes.add(colorRuneItem);
-            }
-            if ( runes.size() == AncientMagicks.comboSizeCalc() && runes.size() == codeString.size() ) {
+            List<ColorRuneItem> runes = getScrollComboList(stack);
+            if ( runes != null && runes.size() == AncientMagicks.comboSizeCalc() && runes.size() == codeString.size() ) {
                 StringBuilder stringBuilder = new StringBuilder();
                 for ( ColorRuneItem rune : runes ) {
                     String color = rune.color + "0" + "\u00A7r";

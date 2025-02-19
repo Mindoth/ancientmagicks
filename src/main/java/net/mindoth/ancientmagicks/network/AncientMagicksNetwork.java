@@ -104,6 +104,12 @@ public class AncientMagicksNetwork {
                 .encoder(PacketUpdateBookData::encode)
                 .consumerMainThread(PacketUpdateBookData::handle)
                 .add();
+
+        net.messageBuilder(PacketSwitchBookSlot.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketSwitchBookSlot::new)
+                .encoder(PacketSwitchBookSlot::encode)
+                .consumerMainThread(PacketSwitchBookSlot::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

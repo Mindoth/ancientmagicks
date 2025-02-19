@@ -46,10 +46,10 @@ public class StaffItem extends CastingItem implements Vanishable {
             ItemStack staff = player.getItemInHand(hand);
             if ( isValidCastingItem(staff) && !(player.isCrouching() && SpellBookItem.getHeldSpellBook(player) != ItemStack.EMPTY) ) {
                 ItemStack book = SpellBookItem.getSpellBookSlot(player);
-                if ( !book.isEmpty() ) {
+                if ( !book.isEmpty() && book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) ) {
                     CompoundTag tag = book.getTag();
                     List<ItemStack> spellList = SpellBookItem.getScrollListFromBook(tag);
-                    //SpellValidator.castSpell(spellList.get(0), player, player);
+                    SpellValidator.castSpell(spellList.get(tag.getInt(SpellBookItem.NBT_KEY_BOOK_SLOT)), player, player);
                 }
             }
         }

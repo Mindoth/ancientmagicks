@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item.castingitem;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.event.MagickEvents;
+import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -136,7 +137,7 @@ public class CastingItem extends Item {
     }
 
     public static boolean canOpenWheel(Player player) {
-        return !CastingItem.getHeldStaff(player).isEmpty();
+        return !CastingItem.getHeldStaff(player).isEmpty() && !SpellBookItem.getSpellBookSlot(player).isEmpty();
     }
 
     @Override

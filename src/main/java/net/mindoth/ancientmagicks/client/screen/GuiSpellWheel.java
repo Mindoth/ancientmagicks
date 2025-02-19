@@ -5,14 +5,12 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.capabilities.playermagic.ClientMagicData;
-import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagic;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.ParchmentItem;
+import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketSetSpell;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEnchantments;
+import net.mindoth.ancientmagicks.network.PacketSwitchBookSlot;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -20,11 +18,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -33,9 +29,7 @@ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
@@ -51,8 +45,8 @@ public class GuiSpellWheel extends AncientMagicksScreen {
     private final ItemStack book;
     private final List<ItemStack> ColorRunes;
     private final List<ColorRuneItem> comboList = Lists.newArrayList();
-    private SpellItem comboResult;
-    private HashMap<Integer, ItemStack> possibleResults;
+    private ItemStack comboResult;
+    //private HashMap<Integer, ItemStack> possibleResults;
     private final String hotbar;
 
     public GuiSpellWheel(ItemStack book) {
@@ -70,7 +64,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         else if ( size == 5 ) this.hotbar = "hotbar5.png";
         else if ( size == 6 ) this.hotbar = "hotbar6.png";
         else this.hotbar = "hotbar3.png";
-        this.possibleResults = new HashMap<>();
+        //this.possibleResults = new HashMap<>();
     }
 
     public static void open(ItemStack book) {
@@ -81,9 +75,9 @@ public class GuiSpellWheel extends AncientMagicksScreen {
     }
 
     @Override
-    public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         if ( this.selectedItem != -1 ) {
-            this.possibleResults = new HashMap<>();
+            //this.possibleResults = new HashMap<>();
             ItemStack clickedItem = this.ColorRunes.get(this.selectedItem);
             if ( clickedItem.getItem() instanceof ColorRuneItem ) {
                 if ( this.comboList.size() < AncientMagicks.comboSizeCalc() ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
@@ -92,25 +86,26 @@ public class GuiSpellWheel extends AncientMagicksScreen {
                     this.comboList.add((ColorRuneItem)clickedItem.getItem());
                 }
             }
-            if ( getComboResult(this.comboList) != null ) {
-                this.comboResult = getComboResult(this.comboList);
-                String spellString = String.valueOf(ForgeRegistries.ITEMS.getKey(this.comboResult));
-                CompoundTag tag = new CompoundTag();
-                tag.putString(PlayerMagic.AM_SPELL, spellString);
-                AncientMagicksNetwork.sendToServer(new PacketSetSpell(tag));
-                ClientMagicData.setCurrentSpell(spellString);
+            System.out.println(getSlotForSpell(this.comboList));
+            if ( getSlotForSpell(this.comboList) > -1 ) {
+                this.comboResult = SpellBookItem.getScrollListFromBook(this.book.getTag()).get(getSlotForSpell(this.comboList));
+                AncientMagicksNetwork.sendToServer(new PacketSwitchBookSlot(this.book, getSlotForSpell(this.comboList)));
             }
             else this.comboResult = null;
         }
         return true;
     }
 
-    private SpellItem getComboResult(List<ColorRuneItem> comboList) {
-        SpellItem spell = ColorRuneItem.checkForSpellCombo(comboList);
-        if ( spell != null && (ClientMagicData.isSpellKnown(spell) || minecraft.player.isCreative()) ) {
-            return spell;
+    private int getSlotForSpell(List<ColorRuneItem> comboList) {
+        int state = -1;
+        List<ItemStack> scrollList = SpellBookItem.getScrollListFromBook(this.book.getTag());
+        for ( int i = 0; i < scrollList.size(); i++ ) {
+            if ( AncientMagicks.listsMatch(comboList, ParchmentItem.getScrollComboList(scrollList.get(i))) ) {
+                state = i;
+                break;
+            }
         }
-        else return null;
+        return state;
     }
 
     @Override
@@ -225,10 +220,10 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         if ( this.comboResult != null ) {
             int posX = resultSlotX + 3;
             int posY = resultSlotY + 3;
-            ItemStack slot = new ItemStack(this.comboResult);
+            ItemStack stack = this.comboResult;
 
             //Spell name
-            String name = I18n.get(slot.getDescriptionId());
+            String name = I18n.get(stack.getDescriptionId());
             List<Component> componentList = Lists.newArrayList();
             int rowLimit = 100;
             if ( this.font.width(name) < rowLimit ) componentList.add(Component.literal(name));
@@ -250,7 +245,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
                     resultSlotX, resultSlotY, 0, 0, 22, 22, 22, 22, graphics);
 
             //Item and its decorations
-            renderItemWithDecorations(graphics, slot, posX, posY);
+            renderItemWithDecorations(graphics, stack, posX, posY);
         }
 
         ms.popPose();
@@ -277,7 +272,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
             renderItemWithDecorations(graphics, slot, posX, posY);
 
             //Possibility vision
-            Player player = minecraft.player;
+            /*Player player = minecraft.player;
             ItemStack head = player.getItemBySlot(EquipmentSlot.HEAD);
             if ( head.getEnchantmentLevel(AncientMagicksEnchantments.OPEN_MIND.get()) > 0 ) {
                 float dimItemRadius = (radiusIn + radiusOut) * 0.75F;
@@ -294,7 +289,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
                         renderItemWithDecorations(graphics, possibleResult, dimPosX, dimPosY);
                     }
                 }
-            }
+            }*/
         }
 
         //Hover tooltip
@@ -304,8 +299,9 @@ public class GuiSpellWheel extends AncientMagicksScreen {
 
             if ( hasMouseOver && mousedOverSlot != -1 ) {
                 if ( !this.ColorRunes.get(mousedOverSlot).isEmpty() && slot.equals(this.ColorRunes.get(mousedOverSlot)) ) {
-                    ItemStack tooltipItem = this.possibleResults.containsKey(mousedOverSlot) ? this.possibleResults.get(mousedOverSlot) : this.ColorRunes.get(mousedOverSlot);
-                    graphics.renderTooltip(this.font, tooltipItem, mouseX, mouseY);
+                    graphics.renderTooltip(this.font, this.ColorRunes.get(mousedOverSlot), mouseX, mouseY);
+                    //ItemStack tooltipItem = this.possibleResults.containsKey(mousedOverSlot) ? this.possibleResults.get(mousedOverSlot) : this.ColorRunes.get(mousedOverSlot);
+                    //graphics.renderTooltip(this.font, tooltipItem, mouseX, mouseY);
                 }
             }
 

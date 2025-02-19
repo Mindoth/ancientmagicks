@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketOpenSpellBook;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -20,7 +19,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,6 +30,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
     public static final String NBT_KEY_CODES = "am_book_codes";
     public static final String NBT_KEY_OWNER_NAME = "am_book_owner_name";
     public static final String NBT_KEY_OWNER_UUID = "am_book_owner_uuid";
+    public static final String NBT_KEY_BOOK_SLOT = "am_book_slot";
 
     public SpellBookItem(Properties pProperties) {
         super(pProperties);
@@ -48,8 +47,9 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
-    private static @NotNull CompoundTag handleSignature(ServerPlayer serverPlayer, ItemStack stack) {
+    public static void handleSignature(ServerPlayer serverPlayer, ItemStack stack) {
         CompoundTag tag = stack.getOrCreateTag();
+        if ( !tag.contains(NBT_KEY_BOOK_SLOT) ) tag.putInt(NBT_KEY_BOOK_SLOT, 0);
         if ( !tag.contains(NBT_KEY_OWNER_UUID) ){
             tag.putUUID(NBT_KEY_OWNER_UUID, serverPlayer.getUUID());
             tag.putString(NBT_KEY_OWNER_NAME, serverPlayer.getDisplayName().getString());
@@ -59,7 +59,6 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
                 tag.putString(NBT_KEY_OWNER_NAME, serverPlayer.getDisplayName().getString());
             }
         }
-        return tag;
     }
 
     @Override
@@ -67,7 +66,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
             ItemStack stack = player.getItemInHand(handIn);
-            if ( stack.getItem() == AncientMagicksItems.SPELL_BOOK.get() && (CastingItem.getHeldStaff(player) == ItemStack.EMPTY || player.isCrouching()) ) {
+            if ( CastingItem.getHeldStaff(player) == ItemStack.EMPTY || player.isCrouching() ) {
                 handleSignature(serverPlayer, stack);
                 AncientMagicksNetwork.sendToPlayer(new PacketOpenSpellBook(stack, 0), serverPlayer);
             }
@@ -146,7 +145,8 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
     public static ItemStack getSpellBookSlot(Player player) {
         for ( int i = 0; i <= player.getInventory().getContainerSize(); i++ ) {
             ItemStack slot = player.getInventory().getItem(i);
-            if ( slot.getItem() instanceof SpellBookItem && slot.hasTag() && slot.getTag().contains(NBT_KEY_SPELLS) ) return slot;
+            if ( slot.getItem() instanceof SpellBookItem && slot.hasTag() && slot.getTag().contains(NBT_KEY_SPELLS)
+                    && !slot.getTag().getString(NBT_KEY_SPELLS).isEmpty() ) return slot;
         }
         return ItemStack.EMPTY;
     }
