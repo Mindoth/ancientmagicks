@@ -22,6 +22,7 @@
   "item.ancientmagicks.golden_staff": "Golden Staff",
   "item.ancientmagicks.netherite_staff": "Netherite Staff",
 
+  "item.ancientmagicks.blank_rune": "Blank Rune",
   "item.ancientmagicks.blue_rune": "Blue Rune",
   "item.ancientmagicks.purple_rune": "Purple Rune",
   "item.ancientmagicks.yellow_rune": "Yellow Rune",
@@ -34,6 +35,7 @@
 
   "item.ancientmagicks.projectile_form": "Projectile",
   "item.ancientmagicks.touch_form": "Touch",
+  "item.ancientmagicks.self_form": "Self",
 
   "item.ancientmagicks.harm": "Harm",
   "item.ancientmagicks.break": "Break",
@@ -45,6 +47,7 @@
   "item.ancientmagicks.homing_modifier": "Homing",
   "item.ancientmagicks.gravity_modifier": "Gravity",
   "item.ancientmagicks.expand_modifier": "Expand",
+  "item.ancientmagicks.reach_modifier": "Reach",
 
   "item.ancientmagicks.witch_arrow": "Witch Arrow",
   "tooltip.ancientmagicks.witch_arrow": "Launches a damaging magical arrow that flies towards enemies.",

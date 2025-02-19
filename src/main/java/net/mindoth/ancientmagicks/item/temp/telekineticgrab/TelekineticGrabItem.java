@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.temp.telekineticgrab;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.item.temp.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -34,10 +33,6 @@ public class TelekineticGrabItem extends SpellItem {
 
         float range = 14.0F;
         float size = 0.4F;
-        if ( caster instanceof SpellPearlEntity) {
-            range = 0.0F;
-            size = 1.0F;
-        }
 
         Vec3 soundPos = center;
         Entity target;

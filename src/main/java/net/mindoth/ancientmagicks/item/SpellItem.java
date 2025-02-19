@@ -52,6 +52,7 @@ public class SpellItem extends Item {
     public static final String POWER = "power";
     public static final String LIFE = "life";
     public static final String AOE = "aoe";
+    public static final String REACH = "reach";
     public static final String GRAVITY = "gravity";
 
     public static HashMap<String, Float> createStatsList() {
@@ -59,6 +60,7 @@ public class SpellItem extends Item {
         stats.merge(POWER, 1.0F, Float::sum);
         stats.merge(LIFE, 160.0F, Float::sum);
         stats.merge(AOE, 0.0F, Float::sum);
+        stats.merge(REACH, 0.0F, Float::sum);
         stats.merge(GRAVITY, 0.0F, Float::sum);
         return stats;
     }
@@ -127,11 +129,6 @@ public class SpellItem extends Item {
                 }
         blocks.add(pos);
         return blocks;
-    }
-
-    //TODO Remove this
-    public boolean castSpellOnEntity(Level level, LivingEntity owner, Entity caster, Entity target, HashMap<String, Float> stats) {
-        return false;
     }
 
     private final int manaCost;
@@ -247,7 +244,8 @@ public class SpellItem extends Item {
     }
 
     public boolean allyFilter(Entity owner, Entity target) {
-        return target instanceof LivingEntity && !(target instanceof ArmorStand) && (owner != target || !isHarmful())
+        return target instanceof LivingEntity && !(target instanceof ArmorStand)
+                /*&& (owner != target || !isHarmful())*/
                 && (AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get()
                 || ((SpellItem.isAlly(owner, target) && !isHarmful()) || (!SpellItem.isAlly(owner, target) && isHarmful())));
     }

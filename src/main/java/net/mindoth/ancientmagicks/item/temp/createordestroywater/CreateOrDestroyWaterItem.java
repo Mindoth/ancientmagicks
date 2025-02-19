@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.temp.createordestroywater;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.item.temp.abstractspell.spellpearl.SpellPearlEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
@@ -31,7 +30,6 @@ public class CreateOrDestroyWaterItem extends SpellItem {
         Level level = caster.level();
 
         float range = 4.5F;
-        if ( caster instanceof SpellPearlEntity ) range = 0.0F;
 
         BlockPos pos = caster.getOnPos();
         SoundEvent sound = SoundEvents.BUCKET_EMPTY;

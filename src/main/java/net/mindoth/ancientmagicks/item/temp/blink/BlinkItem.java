@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.temp.blink;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.item.temp.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,7 +20,6 @@ public class BlinkItem extends SpellItem {
         Level level = caster.level();
 
         float range = 32.0F;
-        if ( caster instanceof SpellPearlEntity ) range = 0.0F;
 
         Vec3 pos;
 
@@ -36,7 +34,6 @@ public class BlinkItem extends SpellItem {
         EntityTeleportEvent.TeleportCommand event = net.minecraftforge.event.ForgeEventFactory.onEntityTeleportCommand(caster, pos.x, pos.y, pos.z);
         if ( !event.isCanceled() ) {
             if ( caster instanceof LivingEntity ) caster.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
-            else if ( caster instanceof SpellPearlEntity && owner != null && owner.level() == caster.level() ) owner.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
             state = true;
         }
 

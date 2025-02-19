@@ -4,7 +4,6 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.event.MagickEvents;
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.item.temp.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.nbt.CompoundTag;
@@ -30,7 +29,7 @@ public class CastingItem extends Item {
 
     public static void doSpell(LivingEntity owner, Entity caster, @Nullable ItemStack stack, SpellItem spell, int useTime) {
         Item castingItem = stack != null ? stack.getItem() : null;
-        Vec3 center = caster instanceof SpellPearlEntity ? caster.position() : caster.getEyePosition();
+        Vec3 center = caster.getEyePosition();
 
         //Check casting bonuses
         boolean hasAlacrity = caster instanceof LivingEntity living && living.hasEffect(AncientMagicksEffects.ALACRITY.get());

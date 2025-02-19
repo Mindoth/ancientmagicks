@@ -27,8 +27,8 @@ public class ProjectileFormItem extends SpellFormItem {
         if ( state ) {
             ProjectileSpellEntity projectile = new ProjectileSpellEntity(level, owner, caster, spell);
             projectile.setNoGravity(true);
+            HashMap<SpellModifierItem, Integer> map = new HashMap<>();
             if ( !modifiers.isEmpty() ) {
-                HashMap<SpellModifierItem, Integer> map = new HashMap<>();
                 for ( SpellModifierItem modifier : modifiers ) map.merge(modifier, 1, Integer::sum);
                 for ( Map.Entry<SpellModifierItem, Integer> entry : map.entrySet() ) entry.getKey().addModifierToEntity(projectile, entry.getValue());
             }

@@ -2,7 +2,6 @@ package net.mindoth.ancientmagicks.item.temp.icewall;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.item.temp.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -42,7 +41,6 @@ public class IceWallItem extends SpellItem {
         }
 
         float range = 3.5F;
-        if ( caster instanceof SpellPearlEntity) range = 0.0F;
         int height = 2;
         Block wallMaterial = Blocks.PACKED_ICE;
 

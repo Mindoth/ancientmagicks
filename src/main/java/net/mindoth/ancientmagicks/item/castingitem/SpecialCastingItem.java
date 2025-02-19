@@ -1,13 +1,9 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.item.temp.abstractspell.spellpearl.SpellPearlEntity;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +12,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -53,20 +48,8 @@ public class SpecialCastingItem extends CastingItem {
             SpellItem spell = SpecialCastingItem.getStoredSpell(stack) != null ? SpecialCastingItem.getStoredSpell(stack) : null;
             Item vessel = stack.getItem();
             if ( spell != null && !player.getCooldowns().isOnCooldown(vessel) ) {
-                if ( vessel == AncientMagicksItems.SPELL_PEARL.get() ) {
-                    level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                            SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
-                    Vec3 center = player.getEyePosition();
-                    SpellPearlEntity spellPearl = new SpellPearlEntity(level, player, player, spell);
-                    spellPearl.setPos(center.x, center.y - 0.2F, center.z);
-                    spellPearl.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, Math.max(0, spellPearl.getSpeed()), 1.0F);
-                    level.addFreshEntity(spellPearl);
-                    stack.shrink(1);
-                    player.getCooldowns().addCooldown(AncientMagicksItems.SPELL_PEARL.get(), 120);
-                    result = InteractionResultHolder.success(player.getItemInHand(hand));
-                }
                 //This needs to be double-layered if-statements so that the else statement below works properly
-                else if ( vessel instanceof WandItem ) {
+                if ( vessel instanceof WandItem ) {
                     if ( !player.getCooldowns().isOnCooldown(spell) ) player.startUsingItem(hand);
                 }
                 else player.startUsingItem(hand);

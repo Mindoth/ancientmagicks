@@ -2,8 +2,6 @@ package net.mindoth.ancientmagicks.item.form;
 
 import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
-import net.mindoth.ancientmagicks.item.spell.BlockTargetSpell;
-import net.mindoth.ancientmagicks.item.spell.EntityTargetSpell;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -26,21 +24,16 @@ public class TouchFormItem extends SpellFormItem {
 
     @Override
     public boolean formSpell(SpellItem spell, LivingEntity owner, Entity caster, List<SpellModifierItem> modifiers) {
-        boolean state = false;
         Level level = caster.level();
         HashMap<String, Float> stats = SpellItem.createSpellStats(modifiers);
-        float range = 4.5F;
+        float range = 4.5F + stats.get(SpellItem.REACH);
 
         HitResult hitResult;
         Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.0F, true, null);
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0.0F, false, true, true, false);
         if ( target == caster ) hitResult = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range);
         else hitResult = new EntityHitResult(target, point);
-        state = true;
-
-        if ( state ) spell.castSpell(level, owner, caster, hitResult, stats);
-
-        return state;
+        return spell.castSpell(level, owner, caster, hitResult, stats);
     }
 
     protected static BlockHitResult getCasterPOVHitResult(Level pLevel, Entity caster, ClipContext.Fluid pFluidMode, float range) {

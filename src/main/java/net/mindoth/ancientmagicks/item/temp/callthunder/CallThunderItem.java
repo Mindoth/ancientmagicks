@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.temp.callthunder;
 
 import net.mindoth.ancientmagicks.item.temp.abstractspell.AbstractSpellRayCast;
-import net.mindoth.ancientmagicks.item.temp.abstractspell.spellpearl.SpellPearlEntity;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
@@ -33,7 +32,6 @@ public class CallThunderItem extends AbstractSpellRayCast {
         Level level = caster.level();
         int power = 3 + (int)owner.getAttributeValue(AncientMagicksAttributes.SPELL_POWER.get());
         float range = getRange();
-        if ( caster instanceof SpellPearlEntity ) range = 0.0F;
         Vec3 point = ShadowEvents.getPoint(level, caster, range, 0, true, true, true, true);
         BlockPos blockPos = new BlockPos(Mth.floor(point.x), Mth.floor(point.y), Mth.floor(point.z));
         BlockState blockState = level.getBlockState(blockPos.below());

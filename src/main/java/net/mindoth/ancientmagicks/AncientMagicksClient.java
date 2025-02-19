@@ -12,15 +12,6 @@ import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.form.ProjectileRenderer;
-import net.mindoth.ancientmagicks.item.temp.abstractspell.spellpearl.SpellPearlRenderer;
-import net.mindoth.ancientmagicks.item.temp.acidarrow.AcidArrowRenderer;
-import net.mindoth.ancientmagicks.item.temp.blizzard.IcicleRenderer;
-import net.mindoth.ancientmagicks.item.temp.burnlance.BurnLanceRenderer;
-import net.mindoth.ancientmagicks.item.temp.fireball.FireballRenderer;
-import net.mindoth.ancientmagicks.item.temp.firebolt.FireBoltRenderer;
-import net.mindoth.ancientmagicks.item.temp.freezelance.FreezeLanceRenderer;
-import net.mindoth.ancientmagicks.item.temp.waterbolt.WaterBoltRenderer;
-import net.mindoth.ancientmagicks.item.temp.witcharrow.WitchArrowRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendRuneData;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
@@ -62,15 +53,6 @@ public class AncientMagicksClient {
 
     private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(AncientMagicksEntities.SPELL_PROJECTILE.get(), ProjectileRenderer::new);
-        event.registerEntityRenderer(AncientMagicksEntities.WITCH_ARROW.get(), WitchArrowRenderer::new);
-        event.registerEntityRenderer(AncientMagicksEntities.FIREBALL.get(), FireballRenderer::new);
-        event.registerEntityRenderer(AncientMagicksEntities.WATER_BOLT.get(), WaterBoltRenderer::new);
-        event.registerEntityRenderer(AncientMagicksEntities.SPELL_PEARL.get(), SpellPearlRenderer::new);
-        event.registerEntityRenderer(AncientMagicksEntities.ICICLE.get(), IcicleRenderer::new);
-        event.registerEntityRenderer(AncientMagicksEntities.FREEZE_LANCE.get(), FreezeLanceRenderer::new);
-        event.registerEntityRenderer(AncientMagicksEntities.BURN_LANCE.get(), BurnLanceRenderer::new);
-        event.registerEntityRenderer(AncientMagicksEntities.FIRE_BOLT.get(), FireBoltRenderer::new);
-        event.registerEntityRenderer(AncientMagicksEntities.ACID_ARROW.get(), AcidArrowRenderer::new);
     }
 
     public static final ModelLayerLocation SIMPLE_ROBE = new ModelLayerLocation(new ResourceLocation(AncientMagicks.MOD_ID, "main"), "simple_robe");

@@ -8,6 +8,7 @@ import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
+import net.mindoth.ancientmagicks.item.form.SelfFormItem;
 import net.mindoth.ancientmagicks.item.form.TouchFormItem;
 import net.mindoth.ancientmagicks.item.modifier.*;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindItem;
@@ -29,24 +30,6 @@ import java.util.UUID;
 
 public class AncientMagicksItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, AncientMagicks.MOD_ID);
-
-    public static final RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7b"));
-
-    public static final RegistryObject<Item> PURPLE_RUNE = ITEMS.register("purple_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7d"));
-
-    public static final RegistryObject<Item> YELLOW_RUNE = ITEMS.register("yellow_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7e"));
-
-    public static final RegistryObject<Item> GREEN_RUNE = ITEMS.register("green_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7a"));
-
-    public static final RegistryObject<Item> BLACK_RUNE = ITEMS.register("black_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A78"));
-
-    public static final RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7f"));
 
     public static final RegistryObject<Item> SPELL_BOOK = ITEMS.register("spell_book",
             () -> new SpellBookItem(new Item.Properties().stacksTo(1)));
@@ -103,12 +86,37 @@ public class AncientMagicksItems {
             () -> new SpellStorageItem(new Item.Properties()));
 
 
+    //Runes
+    public static final RegistryObject<Item> BLANK_RUNE = ITEMS.register("blank_rune",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7b"));
+
+    public static final RegistryObject<Item> PURPLE_RUNE = ITEMS.register("purple_rune",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7d"));
+
+    public static final RegistryObject<Item> YELLOW_RUNE = ITEMS.register("yellow_rune",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7e"));
+
+    public static final RegistryObject<Item> GREEN_RUNE = ITEMS.register("green_rune",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7a"));
+
+    public static final RegistryObject<Item> BLACK_RUNE = ITEMS.register("black_rune",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A78"));
+
+    public static final RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7f"));
+
     //Forms
     public static final RegistryObject<Item> PROJECTILE_FORM_ITEM = ITEMS.register("projectile_form",
             () -> new ProjectileFormItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> TOUCH_FORM_ITEM = ITEMS.register("touch_form",
             () -> new TouchFormItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> SELF_FORM_ITEM = ITEMS.register("self_form",
+            () -> new SelfFormItem(new Item.Properties(), 1, 10));
 
     //Spells
     public static final RegistryObject<Item> HARM_ITEM = ITEMS.register("harm",
@@ -147,6 +155,9 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> EXPAND_MODIFIER_ITEM = ITEMS.register("expand_modifier",
             () -> new ExpandModifierItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> REACH_MODIFIER_ITEM = ITEMS.register("reach_modifier",
+            () -> new ReachModifierItem(new Item.Properties(), 1, 10));
 
     /*public static final RegistryObject<Item> FEATHER_FALL_ITEM = ITEMS.register("feather_fall",
             () -> new FeatherFallItem(new Item.Properties(), 0, -1, 10, SpellItem.SpellType.BUFF));
