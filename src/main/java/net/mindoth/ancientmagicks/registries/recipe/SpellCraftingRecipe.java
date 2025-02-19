@@ -9,6 +9,7 @@ import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -69,7 +70,7 @@ public class SpellCraftingRecipe extends CustomRecipe {
         if ( paperList.size() == 1 && spellList.size() == 1 && formList.size() == 1 && restList.isEmpty() ) {
             ItemStack stack = paperList.get(0).copy();
             stack.setCount(1);
-            stack.setHoverName(paperList.get(0).getHoverName());
+            stack.setHoverName(Component.literal(paperList.get(0).getHoverName().getString()));
             CompoundTag tag = stack.getOrCreateTag();
             List<ItemStack> runeList = Lists.newArrayList();
             runeList.addAll(formList);

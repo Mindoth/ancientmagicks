@@ -1,35 +1,37 @@
 package net.mindoth.ancientmagicks.network;
 
-import net.minecraft.nbt.CompoundTag;
+import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class PacketUpdateBookData {
 
     public ItemStack book;
-    public CompoundTag spellData;
-    public int page;
+    public int size;
+    public List<ItemStack> scrollList = Lists.newArrayList();
 
-    public PacketUpdateBookData(ItemStack book, CompoundTag spellData, int page) {
+    public PacketUpdateBookData(ItemStack book, List<ItemStack> scrollList) {
         this.book = book;
-        this.spellData = spellData;
-        this.page = page;
+        this.size = scrollList.size();
+        this.scrollList = scrollList;
     }
 
     public PacketUpdateBookData(FriendlyByteBuf buf) {
         this.book = buf.readItem();
-        this.spellData = buf.readNbt();
-        this.page = buf.readInt();
+        int size = buf.readVarInt();
+        for ( int i = 0; i < size; i++ ) this.scrollList.add(buf.readItem());
     }
 
     public void encode(FriendlyByteBuf buf) {
         buf.writeItem(this.book);
-        buf.writeNbt(this.spellData);
-        buf.writeInt(this.page);
+        buf.writeVarInt(this.size);
+        for ( ItemStack stack : this.scrollList ) buf.writeItem(stack);
     }
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
@@ -39,10 +41,7 @@ public class PacketUpdateBookData {
                 ServerPlayer player = context.getSender();
                 if ( player.getInventory().contains(this.book) ) {
                     ItemStack book = player.getInventory().getItem(player.getInventory().findSlotMatchingItem(this.book));
-
-                    
-
-                    AncientMagicksNetwork.sendToPlayer(new PacketOpenSpellBook(book, this.page), player);
+                    book.setTag(SpellBookItem.constructBook(this.book, this.scrollList).getTag());
                 }
             }
         });

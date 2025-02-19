@@ -1,9 +1,11 @@
 package net.mindoth.ancientmagicks.item;
 
 import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -50,6 +52,23 @@ public class ParchmentItem extends Item {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
+        if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_CODE_STRING) ) {
+            CompoundTag tag = stack.getTag();
+            List<String> codeString = List.of(tag.getString(NBT_KEY_CODE_STRING).split(","));
+            List<ColorRuneItem> runes = Lists.newArrayList();
+            for ( String string : codeString ) {
+                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
+                if ( item instanceof ColorRuneItem colorRuneItem ) runes.add(colorRuneItem);
+            }
+            if ( runes.size() == AncientMagicks.comboSizeCalc() && runes.size() == codeString.size() ) {
+                StringBuilder stringBuilder = new StringBuilder();
+                for ( ColorRuneItem rune : runes ) {
+                    String color = rune.color + "0" + "\u00A7r";
+                    stringBuilder.append(color);
+                }
+                tooltip.add(Component.literal(stringBuilder.toString()));
+            }
+        }
         if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_SPELL_STRING) ) {
             CompoundTag tag = stack.getTag();
             List<Item> runes = Lists.newArrayList();

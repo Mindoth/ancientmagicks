@@ -107,6 +107,33 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         return scrollList;
     }
 
+    public static ItemStack constructBook(ItemStack ogBook, List<ItemStack> scrolls) {
+        ItemStack book = ogBook.copy();
+        if ( book.hasTag() ) {
+            if ( book.getTag().contains(NBT_KEY_SPELLS) ) book.getTag().remove(NBT_KEY_SPELLS);
+            if ( book.getTag().contains(NBT_KEY_CODES) ) book.getTag().remove(NBT_KEY_CODES);
+            if ( book.getTag().contains(ParchmentItem.NBT_KEY_SPELL_NAME) ) book.getTag().remove(ParchmentItem.NBT_KEY_SPELL_NAME);
+            if ( book.getTag().contains(ParchmentItem.NBT_KEY_PAPER_TIER) ) book.getTag().remove(ParchmentItem.NBT_KEY_PAPER_TIER);
+        }
+        for ( ItemStack scroll : scrolls ) addSpellToBook(book, scroll);
+        return book;
+    }
+
+    public static void addSpellToBook(ItemStack book, ItemStack scroll) {
+        CompoundTag bookTag = book.getOrCreateTag();
+        String spellString = scroll.getTag().getString(ParchmentItem.NBT_KEY_SPELL_STRING);
+        SpellBookItem.addSpellTagsToBook(bookTag, spellString, SpellBookItem.NBT_KEY_SPELLS);
+
+        String code = scroll.getTag().getString(ParchmentItem.NBT_KEY_CODE_STRING);
+        SpellBookItem.addSpellTagsToBook(bookTag, code, SpellBookItem.NBT_KEY_CODES);
+
+        String name = scroll.getHoverName().getString();
+        SpellBookItem.addSpellTagsToBook(bookTag, name, ParchmentItem.NBT_KEY_SPELL_NAME);
+
+        String item = ForgeRegistries.ITEMS.getKey(scroll.getItem()).toString();
+        SpellBookItem.addSpellTagsToBook(bookTag, item, ParchmentItem.NBT_KEY_PAPER_TIER);
+    }
+
     public static void addSpellTagsToBook(CompoundTag bookTag, String string, String key) {
         if ( !bookTag.contains(key) ) bookTag.putString(key, string);
         else {

@@ -57,19 +57,9 @@ public class SpellBookAddRecipe extends CustomRecipe {
         if ( bookList.size() == 1 && paperList.size() == 1 && restList.isEmpty() ) {
             ItemStack book = bookList.get(0).copy();
             ItemStack scroll = paperList.get(0);
-            CompoundTag bookTag = book.getOrCreateTag();
 
-            String spellString = scroll.getTag().getString(ParchmentItem.NBT_KEY_SPELL_STRING);
-            SpellBookItem.addSpellTagsToBook(bookTag, spellString, SpellBookItem.NBT_KEY_SPELLS);
+            SpellBookItem.addSpellToBook(book, scroll);
 
-            String code = scroll.getTag().getString(ParchmentItem.NBT_KEY_CODE_STRING);
-            SpellBookItem.addSpellTagsToBook(bookTag, code, SpellBookItem.NBT_KEY_CODES);
-
-            String name = scroll.getHoverName().getString();
-            SpellBookItem.addSpellTagsToBook(bookTag, name, ParchmentItem.NBT_KEY_SPELL_NAME);
-
-            String item = ForgeRegistries.ITEMS.getKey(scroll.getItem()).toString();
-            SpellBookItem.addSpellTagsToBook(bookTag, item, ParchmentItem.NBT_KEY_PAPER_TIER);
             return book;
         }
         return ItemStack.EMPTY;

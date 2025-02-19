@@ -1,16 +1,14 @@
 package net.mindoth.ancientmagicks.network;
 
-import net.mindoth.ancientmagicks.item.ParchmentItem;
+import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -18,20 +16,28 @@ import java.util.function.Supplier;
 public class PacketRemoveSpellFromBook {
 
     public ItemStack book;
+    public int size;
+    public List<ItemStack> scrollList = Lists.newArrayList();
     public int slot;
 
-    public PacketRemoveSpellFromBook(ItemStack book, int slot) {
+    public PacketRemoveSpellFromBook(ItemStack book, List<ItemStack> scrollList, int slot) {
         this.book = book;
+        this.size = scrollList.size();
+        this.scrollList = scrollList;
         this.slot = slot;
     }
 
     public PacketRemoveSpellFromBook(FriendlyByteBuf buf) {
         this.book = buf.readItem();
+        int size = buf.readVarInt();
+        for ( int i = 0; i < size; i++ ) this.scrollList.add(buf.readItem());
         this.slot = buf.readInt();
     }
 
     public void encode(FriendlyByteBuf buf) {
         buf.writeItem(this.book);
+        buf.writeVarInt(this.size);
+        for ( ItemStack stack : this.scrollList ) buf.writeItem(stack);
         buf.writeInt(this.slot);
     }
 
@@ -42,35 +48,15 @@ public class PacketRemoveSpellFromBook {
                 ServerPlayer player = context.getSender();
                 if ( player.getInventory().contains(this.book) ) {
                     ItemStack book = player.getInventory().getItem(player.getInventory().findSlotMatchingItem(this.book));
-                    CompoundTag bookTag = book.getTag();
-                    final List<ItemStack> spells = SpellBookItem.getScrollListFromBook(bookTag);
 
-                    bookTag.remove(SpellBookItem.NBT_KEY_SPELLS);
-                    bookTag.remove(ParchmentItem.NBT_KEY_SPELL_NAME);
-                    bookTag.remove(ParchmentItem.NBT_KEY_PAPER_TIER);
+                    Vec3 center = ShadowEvents.getEntityCenter(player);
+                    ItemEntity drop = new ItemEntity(player.level(), center.x, center.y, center.z, this.scrollList.get(this.slot));
+                    drop.setDeltaMovement(0, 0, 0);
+                    drop.setNoPickUpDelay();
+                    player.level().addFreshEntity(drop);
 
-                    for ( ItemStack scroll : spells ) {
-                        if ( scroll != spells.get(this.slot) ) {
-                            String spellString = scroll.getTag().getString(ParchmentItem.NBT_KEY_SPELL_STRING);
-                            SpellBookItem.addSpellTagsToBook(bookTag, spellString, SpellBookItem.NBT_KEY_SPELLS);
-
-                            String code = scroll.getTag().getString(ParchmentItem.NBT_KEY_CODE_STRING);
-                            SpellBookItem.addSpellTagsToBook(bookTag, code, SpellBookItem.NBT_KEY_CODES);
-
-                            String name = scroll.getHoverName().getString();
-                            SpellBookItem.addSpellTagsToBook(bookTag, name, ParchmentItem.NBT_KEY_SPELL_NAME);
-
-                            String item = ForgeRegistries.ITEMS.getKey(scroll.getItem()).toString();
-                            SpellBookItem.addSpellTagsToBook(bookTag, item, ParchmentItem.NBT_KEY_PAPER_TIER);
-                        }
-                        else {
-                            Vec3 center = ShadowEvents.getEntityCenter(player);
-                            ItemEntity drop = new ItemEntity(player.level(), center.x, center.y, center.z, scroll);
-                            drop.setDeltaMovement(0, 0, 0);
-                            drop.setNoPickUpDelay();
-                            player.level().addFreshEntity(drop);
-                        }
-                    }
+                    this.scrollList.remove(this.slot);
+                    book.setTag(SpellBookItem.constructBook(this.book, this.scrollList).getTag());
                 }
             }
         });
