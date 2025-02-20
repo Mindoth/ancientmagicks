@@ -75,7 +75,7 @@ public class ParchmentItem extends Item {
             if ( runes != null && runes.size() == AncientMagicks.comboSizeCalc() && runes.size() == codeString.size() ) {
                 StringBuilder stringBuilder = new StringBuilder();
                 for ( ColorRuneItem rune : runes ) {
-                    String color = rune.color + "0" + "\u00A7r";
+                    String color = rune.getColor() + "0" + "\u00A7r";
                     stringBuilder.append(color);
                 }
                 tooltip.add(Component.literal(stringBuilder.toString()));

@@ -41,7 +41,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_OWNER_NAME) ) {
             String name = stack.getTag().getString(NBT_KEY_OWNER_NAME);
-            tooltip.add(Component.translatable("tooltip.ancientmagicks.owner").withStyle(ChatFormatting.GRAY)
+            tooltip.add(Component.translatable("tooltip.ancientmagicks.book_owner").withStyle(ChatFormatting.GRAY)
                     .append(Component.literal(name).withStyle(ChatFormatting.GRAY)));
         }
         super.appendHoverText(stack, world, tooltip, flagIn);

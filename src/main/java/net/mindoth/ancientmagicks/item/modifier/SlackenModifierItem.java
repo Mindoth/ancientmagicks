@@ -15,12 +15,13 @@ public class SlackenModifierItem extends SpellModifierItem {
     @Override
     public void addModifierToEntity(ProjectileSpellEntity projectile, int count) {
         if ( projectile != null ) {
-            projectile.getEntityData().set(AbstractSpellEntity.SPEED, projectile.getEntityData().get(AbstractSpellEntity.SPEED) - count * 0.2F);
+            projectile.getEntityData().set(AbstractSpellEntity.SPEED, Math.max(0, projectile.getEntityData().get(AbstractSpellEntity.SPEED) - count * 0.2F));
         }
     }
 
     @Override
     public void addStatsToMap(HashMap<String, Float> stats) {
         stats.merge(SpellItem.SPEED, -0.2F, Float::sum);
+        stats.merge(SpellItem.SPEED, 0.0F, Float::max);
     }
 }

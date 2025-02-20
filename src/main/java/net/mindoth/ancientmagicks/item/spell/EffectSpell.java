@@ -31,8 +31,9 @@ public class EffectSpell extends EntityTargetSpell {
     protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
         LivingEntity target = (LivingEntity)((EntityHitResult)result).getEntity();
         addEnchantParticles(target, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8);
-        int amp = Math.max(0, (Mth.floor(stats.get(SpellItem.POWER)) - 1) / 10);
-        target.addEffect(new MobEffectInstance(getEffect(), Mth.floor(stats.get(SpellItem.LIFE)), amp, false, isHarmful()));
+        int amp = Math.max(0, (Mth.floor(stats.get(POWER)) - 1) / 10);
+        int life = Mth.floor(stats.get(LIFE) - 100) * 30 + 600;
+        target.addEffect(new MobEffectInstance(getEffect(), life, amp, false, isHarmful()));
         return true;
     }
 }

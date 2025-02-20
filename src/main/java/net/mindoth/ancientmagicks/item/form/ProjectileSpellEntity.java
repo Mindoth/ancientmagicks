@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.PlayMessages;
 
 public class ProjectileSpellEntity extends AbstractSpellEntity {
@@ -24,13 +25,17 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
         super(AncientMagicksEntities.SPELL_PROJECTILE.get(), level, owner, caster, spell);
     }
 
+    private void castMagick(HitResult result) {
+        getSpell().castSpell(level(), this.owner, this.caster, result, getStats());
+    }
+
     @Override
     protected void doMobEffects(EntityHitResult result) {
-        if ( getSpell() != null ) getSpell().castSpell(level(), this.owner, this.caster, new EntityHitResult(result.getEntity(), position()), getStats());
+        if ( getSpell() != null ) castMagick(new EntityHitResult(result.getEntity(), position()));
     }
 
     @Override
     protected void doBlockEffects(BlockHitResult result) {
-        if ( getSpell() != null ) getSpell().castSpell(level(), this.owner, this.caster, result, getStats());
+        if ( getSpell() != null ) castMagick(result);
     }
 }

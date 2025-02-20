@@ -15,12 +15,13 @@ public class DiminishModifierItem extends SpellModifierItem {
     @Override
     public void addModifierToEntity(ProjectileSpellEntity projectile, int count) {
         if ( projectile != null ) {
-            projectile.getEntityData().set(AbstractSpellEntity.LIFE, projectile.getEntityData().get(AbstractSpellEntity.LIFE) - count);
+            projectile.getEntityData().set(AbstractSpellEntity.LIFE, Math.max(0, projectile.getEntityData().get(AbstractSpellEntity.LIFE) - count * 20));
         }
     }
 
     @Override
     public void addStatsToMap(HashMap<String, Float> stats) {
         stats.merge(SpellItem.LIFE, -20.0F, Float::sum);
+        stats.merge(SpellItem.LIFE, 0.0F, Float::max);
     }
 }

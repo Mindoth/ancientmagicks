@@ -13,11 +13,18 @@ import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
 import net.mindoth.ancientmagicks.item.form.SelfFormItem;
 import net.mindoth.ancientmagicks.item.form.TouchFormItem;
 import net.mindoth.ancientmagicks.item.modifier.*;
-import net.mindoth.ancientmagicks.item.spell.blind.BlindItem;
-import net.mindoth.ancientmagicks.item.spell.harm.HarmItem;
-import net.mindoth.ancientmagicks.item.spell.mine.BreakItem;
-import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphItem;
-import net.mindoth.ancientmagicks.item.spell.sleep.SleepItem;
+import net.mindoth.ancientmagicks.item.spell.alacrity.AlacritySpellItem;
+import net.mindoth.ancientmagicks.item.spell.blind.BlindSpellItem;
+import net.mindoth.ancientmagicks.item.spell.callthunder.CallThunderItem;
+import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphItem;
+import net.mindoth.ancientmagicks.item.spell.createwater.CreateWaterSpell;
+import net.mindoth.ancientmagicks.item.spell.destroyliquids.DestroyLiquidsSpell;
+import net.mindoth.ancientmagicks.item.spell.fly.FlyItem;
+import net.mindoth.ancientmagicks.item.spell.harm.HarmSpellItem;
+import net.mindoth.ancientmagicks.item.spell.notbreak.BreakSpellItem;
+import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphSpellItem;
+import net.mindoth.ancientmagicks.item.spell.sleep.SleepSpellItem;
+import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockItem;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -104,29 +111,50 @@ public class AncientMagicksItems {
 
     //Forms
     public static final RegistryObject<Item> PROJECTILE_FORM_ITEM = ITEMS.register("projectile_form",
-            () -> new ProjectileFormItem(new Item.Properties(), 1, 10));
+            () -> new ProjectileFormItem(new Item.Properties(), 0, 0));
 
     public static final RegistryObject<Item> TOUCH_FORM_ITEM = ITEMS.register("touch_form",
-            () -> new TouchFormItem(new Item.Properties(), 1, 10));
+            () -> new TouchFormItem(new Item.Properties(), 0, 0));
 
     public static final RegistryObject<Item> SELF_FORM_ITEM = ITEMS.register("self_form",
-            () -> new SelfFormItem(new Item.Properties(), 1, 10));
+            () -> new SelfFormItem(new Item.Properties(), 0, 0));
 
     //Spells
-    public static final RegistryObject<Item> HARM_ITEM = ITEMS.register("harm",
-            () -> new HarmItem(new Item.Properties(), 1, 10));
+    public static final RegistryObject<Item> HARM_ITEM = ITEMS.register("harm_spell",
+            () -> new HarmSpellItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> BREAK_ITEM = ITEMS.register("break",
-            () -> new BreakItem(new Item.Properties(), 1, 10));
+    public static final RegistryObject<Item> BREAK_ITEM = ITEMS.register("break_spell",
+            () -> new BreakSpellItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> POLYMORPH_ITEM = ITEMS.register("polymorph",
-            () -> new PolymorphItem(new Item.Properties(), 1, 10));
+    public static final RegistryObject<Item> POLYMORPH_ITEM = ITEMS.register("polymorph_spell",
+            () -> new PolymorphSpellItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> SLEEP_ITEM = ITEMS.register("sleep",
-            () -> new SleepItem(new Item.Properties(), 1, 10));
+    public static final RegistryObject<Item> SLEEP_ITEM = ITEMS.register("sleep_spell",
+            () -> new SleepSpellItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> BLIND_ITEM = ITEMS.register("blind",
-            () -> new BlindItem(new Item.Properties(), 1, 10));
+    public static final RegistryObject<Item> BLIND_ITEM = ITEMS.register("blind_spell",
+            () -> new BlindSpellItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> ALACRITY_ITEM = ITEMS.register("alacrity_spell",
+            () -> new AlacritySpellItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> CALL_THUNDER_ITEM = ITEMS.register("call_thunder_spell",
+            () -> new CallThunderItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> CHAOTIC_POLYMORPH_ITEM = ITEMS.register("chaotic_polymorph_spell",
+            () -> new ChaoticPolymorphItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> TELEBLOCK_ITEM = ITEMS.register("teleblock_spell",
+            () -> new TeleblockItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> FLY_ITEM = ITEMS.register("fly_spell",
+            () -> new FlyItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> DESTROY_LIQUIDS_ITEM = ITEMS.register("destroy_liquids_spell",
+            () -> new DestroyLiquidsSpell(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> CREATE_WATER_ITEM = ITEMS.register("create_water_spell",
+            () -> new CreateWaterSpell(new Item.Properties(), 1, 10));
 
     //Modifiers
     public static final RegistryObject<Item> AMPLIFY_MODIFIER_ITEM = ITEMS.register("amplify_modifier",
@@ -166,7 +194,7 @@ public class AncientMagicksItems {
             () -> new SlackenModifierItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> EXTEND_MODIFIER_ITEM = ITEMS.register("extend_modifier",
-            () -> new ExpandModifierItem(new Item.Properties(), 1, 10));
+            () -> new ExtendModifierItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> DIMINISH_MODIFIER_ITEM = ITEMS.register("diminish_modifier",
             () -> new DiminishModifierItem(new Item.Properties(), 1, 10));

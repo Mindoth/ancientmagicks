@@ -1,8 +1,8 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.temp.alacrity.AlacrityEffect;
-import net.mindoth.ancientmagicks.item.temp.fly.FlightEffect;
+import net.mindoth.ancientmagicks.item.spell.alacrity.AlacrityEffect;
+import net.mindoth.ancientmagicks.item.spell.fly.FlightEffect;
 import net.mindoth.ancientmagicks.item.temp.frostarmor.FrostArmorEffect;
 import net.mindoth.ancientmagicks.item.temp.greaterinvisibility.GreaterInvisibilityEffect;
 import net.mindoth.ancientmagicks.item.temp.mindcontrol.MindControlEffect;
@@ -11,7 +11,7 @@ import net.mindoth.ancientmagicks.item.temp.perfectinvisibility.PerfectInvisibil
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphEffect;
 import net.mindoth.ancientmagicks.item.spell.sleep.SleepEffect;
 import net.mindoth.ancientmagicks.item.temp.spook.SpookEffect;
-import net.mindoth.ancientmagicks.item.temp.teleblock.TeleblockEffect;
+import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockEffect;
 import net.mindoth.ancientmagicks.item.temp.witcharmor.WitchArmorEffect;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;

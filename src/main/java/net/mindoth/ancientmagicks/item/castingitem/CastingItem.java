@@ -56,7 +56,7 @@ public class CastingItem extends Item {
         for ( Item item : ForgeRegistries.ITEMS.getValues() ) if ( item instanceof StaffItem ) addCastingCooldown(caster, item, cooldown);
         if ( caster instanceof LivingEntity living ) {
             if ( castingItem != null && castingItem.getItem() instanceof StaffItem ) addItemDamage(castingItem, 1, living);
-            if ( cooldown > 20 ) living.stopUsingItem();
+            if ( cooldown > 10 ) living.stopUsingItem();
         }
     }
 

@@ -87,8 +87,8 @@ public class SpellItem extends ComponentItem {
                 AABB box = new AABB(start, end);
                 List<Entity> entities = level.getEntitiesOfClass(Entity.class, box);
                 for ( Entity entity : entities ) {
-                    EntityHitResult entityHitResult = new EntityHitResult(entity);
-                    if ( canApply(level, owner, caster, entityHitResult) ) doSpell(level, owner, caster, entityHitResult, stats);
+                    EntityHitResult newResult = new EntityHitResult(entity);
+                    if ( canApply(level, owner, caster, newResult) ) doSpell(level, owner, caster, newResult, stats);
                 }
                 state = true;
                 aoeEntitySpellParticles(level, result, caster, center, range);
@@ -97,32 +97,35 @@ public class SpellItem extends ComponentItem {
         }
         else if ( this instanceof BlockTargetSpell ) {
             if ( range > 0.0F ) {
-                if ( result instanceof BlockHitResult || result instanceof EntityHitResult ) {
-                    List<BlockPos> blocks;
-                    if ( result instanceof EntityHitResult entityHitResult ) blocks = getBlockList(entityHitResult.getEntity().getOnPos(), (int)range);
-                    else blocks = getBlockList(((BlockHitResult)result).getBlockPos(), (int)range);
-                    for ( BlockPos position : blocks ) {
-                        BlockHitResult newResult = new BlockHitResult(position.getCenter(), Direction.UP, position, true);
-                        if ( canApply(level, owner, caster, result) ) doSpell(level, owner, caster, newResult, stats);
-                    }
-                    state = true;
-                    for ( int i = -(int)range; i <= range; i++ ) aoeBlockSpellParticles(caster, center, range, i);
+                List<BlockPos> blocks;
+                boolean isInside = false;
+                if ( result instanceof EntityHitResult entityHitResult ) blocks = getBlockList(entityHitResult.getEntity().getOnPos(), (int)range);
+                else {
+                    BlockHitResult blockHitResult = (BlockHitResult)result;
+                    blocks = getBlockList(blockHitResult.getBlockPos(), (int)range);
+                    isInside = blockHitResult.isInside();
                 }
+                for ( BlockPos position : blocks ) {
+                    BlockHitResult newResult = new BlockHitResult(position.getCenter(), Direction.UP, position, isInside);
+                    if ( canApply(level, owner, caster, newResult) ) doSpell(level, owner, caster, newResult, stats);
+                }
+                state = true;
+                for ( int i = -(int)range; i <= range; i++ ) aoeBlockSpellParticles(caster, center, range, i);
             }
             else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats);
         }
+        else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats);
         return state;
     }
 
     private static @NotNull List<BlockPos> getBlockList(BlockPos pos, int range) {
         List<BlockPos> blocks = Lists.newArrayList();
-
         for ( int xPos = pos.getX() - range; xPos <= pos.getX() + range; xPos++ )
             for ( int yPos = pos.getY() - range; yPos <= pos.getY() + range; yPos++ )
                 for ( int zPos = pos.getZ() - range; zPos <= pos.getZ() + range; zPos++ ) {
                     blocks.add(new BlockPos(xPos, yPos, zPos));
                 }
-        blocks.add(pos);
+        if ( !blocks.contains(pos) ) blocks.add(pos);
         return blocks;
     }
 

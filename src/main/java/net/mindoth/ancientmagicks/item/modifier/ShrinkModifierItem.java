@@ -15,12 +15,13 @@ public class ShrinkModifierItem extends SpellModifierItem {
     @Override
     public void addModifierToEntity(ProjectileSpellEntity projectile, int count) {
         if ( projectile != null ) {
-            projectile.getEntityData().set(AbstractSpellEntity.AOE, projectile.getEntityData().get(AbstractSpellEntity.AOE) - (float)count);
+            projectile.getEntityData().set(AbstractSpellEntity.AOE, Math.max(0, projectile.getEntityData().get(AbstractSpellEntity.AOE) - (float)count));
         }
     }
 
     @Override
     public void addStatsToMap(HashMap<String, Float> stats) {
         stats.merge(SpellItem.AOE, -1.0F, Float::sum);
+        stats.merge(SpellItem.AOE, 0.0F, Float::max);
     }
 }

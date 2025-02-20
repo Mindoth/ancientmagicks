@@ -61,9 +61,9 @@ public class StaffItem extends CastingItem implements Vanishable {
         if ( level.isClientSide ) return;
         if ( !(caster instanceof ServerPlayer player) ) return;
         if ( player.getCooldowns().isOnCooldown(staff.getItem()) ) return;
-        int useTime = getUseDuration(staff) - timeLeft;
+        //int useTime = getUseDuration(staff) - timeLeft;
         ItemStack book = SpellBookItem.getSpellBookSlot(player);
-        if ( book.isEmpty() || !book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) || useTime % 20 != 0 ) {
+        if ( book.isEmpty() || !book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) ) {
             whiffSpell(caster);
             return;
         }

@@ -322,9 +322,10 @@ public abstract class AbstractSpellEntity extends Projectile {
         HashMap<String, Float> stats = SpellItem.createStatsList();
         stats.put(SpellItem.POWER, (float)getPower());
         stats.put(SpellItem.LIFE, (float)getLife());
+        stats.put(SpellItem.SPEED, getSpeed());
         stats.put(SpellItem.AOE, getAoe());
-        float gravity = this.isNoGravity() ? 0.0F : 1.0F;
-        stats.put(SpellItem.GRAVITY, gravity);
+        stats.put(SpellItem.REACH, getReach());
+        stats.put(SpellItem.GRAVITY, this.isNoGravity() ? 0.0F : 1.0F);
         return stats;
     }
 
