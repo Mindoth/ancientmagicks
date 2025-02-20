@@ -309,7 +309,8 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     public float getSize() {
-        return getPower() > 1 ? this.entityData.get(SIZE) + this.entityData.get(POWER) * 0.2F : this.entityData.get(SIZE);
+        float size = getPower() > 1 ? this.entityData.get(SIZE) + this.entityData.get(POWER) * 0.1F : this.entityData.get(SIZE);
+        return Math.min(size, 2.0F);
     }
 
     public SpellItem getSpell() {

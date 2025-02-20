@@ -51,6 +51,7 @@ public class SpellItem extends Item {
 
     public static final String POWER = "power";
     public static final String LIFE = "life";
+    public static final String SPEED = "speed";
     public static final String AOE = "aoe";
     public static final String REACH = "reach";
     public static final String GRAVITY = "gravity";
@@ -58,7 +59,8 @@ public class SpellItem extends Item {
     public static HashMap<String, Float> createStatsList() {
         HashMap<String, Float> stats = new HashMap<>();
         stats.merge(POWER, 1.0F, Float::sum);
-        stats.merge(LIFE, 160.0F, Float::sum);
+        stats.merge(LIFE, 100.0F, Float::sum);
+        stats.merge(SPEED, 1.0F, Float::sum);
         stats.merge(AOE, 0.0F, Float::sum);
         stats.merge(REACH, 0.0F, Float::sum);
         stats.merge(GRAVITY, 0.0F, Float::sum);

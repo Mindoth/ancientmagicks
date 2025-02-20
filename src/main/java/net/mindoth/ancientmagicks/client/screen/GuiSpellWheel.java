@@ -86,7 +86,6 @@ public class GuiSpellWheel extends AncientMagicksScreen {
                     this.comboList.add((ColorRuneItem)clickedItem.getItem());
                 }
             }
-            System.out.println(getSlotForSpell(this.comboList));
             if ( getSlotForSpell(this.comboList) > -1 ) {
                 this.comboResult = SpellBookItem.getScrollListFromBook(this.book.getTag()).get(getSlotForSpell(this.comboList));
                 AncientMagicksNetwork.sendToServer(new PacketSwitchBookSlot(this.book, getSlotForSpell(this.comboList)));

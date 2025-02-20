@@ -141,10 +141,10 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> DAMPEN_MODIFIER_ITEM = ITEMS.register("dampen_modifier",
             () -> new DampenModifierItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> PIERCING_MODIFIER_ITEM = ITEMS.register("piercing_modifier",
+    public static final RegistryObject<Item> PIERCING_MODIFIER_ITEM = ITEMS.register("pierce_modifier",
             () -> new PiercingModifierItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> BOUNCING_MODIFIER_ITEM = ITEMS.register("bouncing_modifier",
+    public static final RegistryObject<Item> BOUNCING_MODIFIER_ITEM = ITEMS.register("bounce_modifier",
             () -> new BouncingModifierItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> HOMING_MODIFIER_ITEM = ITEMS.register("homing_modifier",
@@ -156,8 +156,26 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> EXPAND_MODIFIER_ITEM = ITEMS.register("expand_modifier",
             () -> new ExpandModifierItem(new Item.Properties(), 1, 10));
 
+    public static final RegistryObject<Item> SHRINK_MODIFIER_ITEM = ITEMS.register("shrink_modifier",
+            () -> new ShrinkModifierItem(new Item.Properties(), 1, 10));
+
     public static final RegistryObject<Item> REACH_MODIFIER_ITEM = ITEMS.register("reach_modifier",
             () -> new ReachModifierItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> CONTRACT_MODIFIER_ITEM = ITEMS.register("contract_modifier",
+            () -> new ContractModifierItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> QUICKEN_MODIFIER_ITEM = ITEMS.register("quicken_modifier",
+            () -> new QuickenModifierItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> SLACKEN_MODIFIER_ITEM = ITEMS.register("slacken_modifier",
+            () -> new SlackenModifierItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> EXTEND_MODIFIER_ITEM = ITEMS.register("extend_modifier",
+            () -> new ExpandModifierItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> DIMINISH_MODIFIER_ITEM = ITEMS.register("diminish_modifier",
+            () -> new DiminishModifierItem(new Item.Properties(), 1, 10));
 
     /*public static final RegistryObject<Item> FEATHER_FALL_ITEM = ITEMS.register("feather_fall",
             () -> new FeatherFallItem(new Item.Properties(), 0, -1, 10, SpellItem.SpellType.BUFF));

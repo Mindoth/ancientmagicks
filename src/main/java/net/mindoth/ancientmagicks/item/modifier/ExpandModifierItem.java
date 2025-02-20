@@ -15,7 +15,7 @@ public class ExpandModifierItem extends SpellModifierItem {
     @Override
     public void addModifierToEntity(ProjectileSpellEntity projectile, int count) {
         if ( projectile != null ) {
-            projectile.getEntityData().set(AbstractSpellEntity.AOE, (float)count);
+            projectile.getEntityData().set(AbstractSpellEntity.AOE, projectile.getEntityData().get(AbstractSpellEntity.AOE) + (float)count);
         }
     }
 

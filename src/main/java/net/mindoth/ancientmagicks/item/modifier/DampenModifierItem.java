@@ -15,7 +15,7 @@ public class DampenModifierItem extends SpellModifierItem {
     @Override
     public void addModifierToEntity(ProjectileSpellEntity projectile, int count) {
         if ( projectile != null ) {
-            projectile.getEntityData().set(AbstractSpellEntity.POWER, -count);
+            projectile.getEntityData().set(AbstractSpellEntity.POWER, projectile.getEntityData().get(AbstractSpellEntity.POWER) - count);
         }
     }
 
