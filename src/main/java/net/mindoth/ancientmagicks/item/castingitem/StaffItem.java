@@ -2,8 +2,13 @@ package net.mindoth.ancientmagicks.item.castingitem;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.event.MagickEvents;
+import net.mindoth.ancientmagicks.item.CastingValidator;
+import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -44,32 +49,40 @@ public class StaffItem extends CastingItem implements Vanishable {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(hand));
         if ( !level.isClientSide ) {
             ItemStack staff = player.getItemInHand(hand);
-            if ( isValidCastingItem(staff) && !(player.isCrouching() && SpellBookItem.getHeldSpellBook(player) != ItemStack.EMPTY)
-                    && !player.getCooldowns().isOnCooldown(staff.getItem()) ) {
-                ItemStack book = SpellBookItem.getSpellBookSlot(player);
-                if ( !book.isEmpty() && book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) ) player.startUsingItem(hand);
-                else whiffSpell(player, staff.getItem());
+            if ( !player.getCooldowns().isOnCooldown(staff.getItem()) ) {
+                if ( !(player.isCrouching() && SpellBookItem.getHeldSpellBook(player) != ItemStack.EMPTY) ) player.startUsingItem(hand);
             }
         }
         return result;
     }
 
     @Override
-    public void onUseTick(Level level, LivingEntity living, ItemStack staff, int timeLeft) {
+    public void onUseTick(Level level, LivingEntity caster, ItemStack staff, int timeLeft) {
         if ( level.isClientSide ) return;
-        if ( living instanceof Player player ) {
-            if ( isValidCastingItem(staff) && !(player.isCrouching() && SpellBookItem.getHeldSpellBook(player) != ItemStack.EMPTY)
-                    && !player.getCooldowns().isOnCooldown(staff.getItem()) ) {
-                ItemStack book = SpellBookItem.getSpellBookSlot(player);
-                if ( !book.isEmpty() && book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) ) {
-                    CompoundTag tag = book.getTag();
-                    List<ItemStack> spellList = SpellBookItem.getScrollListFromBook(tag);
-                    int slot = tag.getInt(SpellBookItem.NBT_KEY_BOOK_SLOT);
-                    if ( spellList.size() > slot ) doSpell(player, player, staff, spellList.get(slot), getUseDuration(staff) - timeLeft);
-                    else whiffSpell(player, staff.getItem());
-                }
-            }
+        if ( !(caster instanceof ServerPlayer player) ) return;
+        if ( player.getCooldowns().isOnCooldown(staff.getItem()) ) return;
+        int useTime = getUseDuration(staff) - timeLeft;
+        ItemStack book = SpellBookItem.getSpellBookSlot(player);
+        if ( book.isEmpty() || !book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) || useTime % 20 != 0 ) {
+            whiffSpell(caster);
+            return;
         }
+        CompoundTag tag = book.getTag();
+        List<ItemStack> spellList = SpellBookItem.getScrollListFromBook(tag);
+        int slot = tag.getInt(SpellBookItem.NBT_KEY_BOOK_SLOT);
+        if ( spellList.size() <= slot ) {
+            whiffSpell(caster);
+            return;
+        }
+        ItemStack scroll = spellList.get(slot);
+
+        player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
+            List<ComponentItem> componentList = CastingValidator.getComponentListFromScroll(scroll);
+            int manaCost = 0;
+            for ( ComponentItem item : componentList ) manaCost += item.getManaCost();
+            if ( magic.getCurrentMana() >= manaCost || player.isCreative() ) doSpell(player, player, staff, scroll);
+            else whiffSpell(caster);
+        });
     }
 
     @Override

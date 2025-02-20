@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,9 +26,7 @@ public class CastingItem extends Item {
         super(pProperties);
     }
 
-    public static void doSpell(LivingEntity owner, Entity caster, @Nullable ItemStack stack, ItemStack scroll, int useTime) {
-        Item castingItem = stack != null ? stack.getItem() : null;
-
+    public static void doSpell(LivingEntity owner, Entity caster, @Nullable ItemStack stack, ItemStack scroll) {
         //Check casting bonuses
         boolean hasAlacrity = caster instanceof LivingEntity living && living.hasEffect(AncientMagicksEffects.ALACRITY.get());
         float alacrityBonus = hasAlacrity ? 0.5F : 1.0F;
@@ -42,11 +41,11 @@ public class CastingItem extends Item {
                     manaCost += item.getManaCost();
                     coolDown += item.getCooldown();
                 }
-                if ( useTime % 20 == 0 && (magic.getCurrentMana() >= manaCost || serverPlayer.isCreative()) && CastingValidator.castSpell(scroll, owner, caster) ) {
+                if ( CastingValidator.castSpell(scroll, owner, caster) ) {
                     handleCooldownsAndStuff(caster, stack, (int)(coolDown * alacrityBonus));
                     if ( !serverPlayer.isCreative() ) MagickEvents.changeMana(caster, -manaCost);
                 }
-                else whiffSpell(caster, castingItem);
+                else whiffSpell(caster);
             });
         }
         //If caster is not a player do the spell anyway
@@ -54,11 +53,11 @@ public class CastingItem extends Item {
     }
 
     private static void handleCooldownsAndStuff(Entity caster, @Nullable ItemStack castingItem, int cooldown) {
-        if ( castingItem != null && castingItem.getItem() instanceof StaffItem staff ) {
-            addCastingCooldown(caster, staff, cooldown);
-            if ( caster instanceof LivingEntity living ) addItemDamage(castingItem, 1, living);
+        for ( Item item : ForgeRegistries.ITEMS.getValues() ) if ( item instanceof StaffItem ) addCastingCooldown(caster, item, cooldown);
+        if ( caster instanceof LivingEntity living ) {
+            if ( castingItem != null && castingItem.getItem() instanceof StaffItem ) addItemDamage(castingItem, 1, living);
+            if ( cooldown > 20 ) living.stopUsingItem();
         }
-        if ( caster instanceof LivingEntity living && cooldown > 20 ) living.stopUsingItem();
     }
 
     public static void addItemDamage(ItemStack castingItem, int amount, LivingEntity living) {
@@ -69,11 +68,11 @@ public class CastingItem extends Item {
         if ( entity instanceof Player player ) player.getCooldowns().addCooldown(item, cooldown);
     }
 
-    public static void whiffSpell(Entity caster, Item item) {
+    public static void whiffSpell(Entity caster) {
         SpellItem.playWhiffSound(caster);
         if ( caster instanceof LivingEntity living ) {
-            addCastingCooldown(living, item, 20);
             living.stopUsingItem();
+            for ( Item item : ForgeRegistries.ITEMS.getValues() ) if ( item instanceof StaffItem ) addCastingCooldown(caster, item, 20);
         }
     }
 
