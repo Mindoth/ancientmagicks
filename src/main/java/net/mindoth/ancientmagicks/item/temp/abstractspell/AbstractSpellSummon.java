@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.temp.abstractspell;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.item.temp.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;

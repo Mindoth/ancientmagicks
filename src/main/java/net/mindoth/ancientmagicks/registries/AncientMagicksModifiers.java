@@ -3,7 +3,6 @@ package net.mindoth.ancientmagicks.registries;
 import com.mojang.serialization.Codec;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.loot.AddItemModifier;
-import net.mindoth.ancientmagicks.loot.RandomizeSpellFunction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
@@ -23,7 +22,4 @@ public class AncientMagicksModifiers {
 
     public static final DeferredRegister<LootItemFunctionType> LOOT_FUNCTIONS =
             DeferredRegister.create(Registries.LOOT_FUNCTION_TYPE, AncientMagicks.MOD_ID);
-
-    public static final RegistryObject<LootItemFunctionType> RANDOMIZE_SPELL_FUNCTION =
-            LOOT_FUNCTIONS.register("randomize_spell", () -> new LootItemFunctionType(new RandomizeSpellFunction.Serializer()));
 }

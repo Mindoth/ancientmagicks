@@ -19,6 +19,7 @@ public class BreakItem extends BlockTargetSpell {
     @Override
     protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
         BlockPos pos = ((BlockHitResult)result).getBlockPos();
+        if ( level.getBlockState(pos).isAir() ) return false;
         level.destroyBlock(pos, true, caster);
         return true;
     }

@@ -19,6 +19,7 @@ public class AncientMagicksAttributes {
     public static final RegistryObject<Attribute> MP_REG = ATTRIBUTES.register("magick_regen",
             () -> (new MagicAttribute("attribute.ancientmagicks.magick_regen", 1.0D, 0.0D, Integer.MAX_VALUE).setSyncable(true)));
 
+    @Deprecated
     public static final RegistryObject<Attribute> SPELL_POWER = ATTRIBUTES.register("magick_power",
             () -> (new MagicAttribute("attribute.ancientmagicks.magick_power", 0.0D, Integer.MIN_VALUE, Integer.MAX_VALUE).setSyncable(true)));
 

@@ -2,15 +2,11 @@ package net.mindoth.ancientmagicks.event;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
-import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
-import net.mindoth.ancientmagicks.item.castingitem.WandItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
@@ -19,16 +15,12 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class MagickEvents {
@@ -58,27 +50,6 @@ public class MagickEvents {
             magic.setCurrentMana(newMana);
             AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMana(newMana), serverPlayer);
         });
-    }
-
-    @SubscribeEvent
-    public static void onStopChannellingSpell(final LivingEntityUseItemEvent.Stop event) {
-        if ( event.getEntity() instanceof Player player ) {
-            if ( !player.level().isClientSide ) {
-                ItemStack stack = event.getItem();
-                Item castingItem = stack.getItem();
-                if ( castingItem instanceof StaffItem || castingItem instanceof WandItem ) {
-                    player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(magic.getCurrentSpell()));
-                        if ( item instanceof SpellItem spell ) {
-                            boolean hasAlacrity = player.hasEffect(AncientMagicksEffects.ALACRITY.get());
-                            float alacrityBonus = hasAlacrity ? 0.5F : 1.0F;
-                            int spellCooldown = (int)(spell.getCooldown() * alacrityBonus);
-                            player.getCooldowns().addCooldown(spell, spellCooldown);
-                        }
-                    });
-                }
-            }
-        }
     }
 
     @SubscribeEvent

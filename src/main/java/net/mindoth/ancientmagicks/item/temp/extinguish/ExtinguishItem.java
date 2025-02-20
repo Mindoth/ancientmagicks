@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.temp.extinguish;
 
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;

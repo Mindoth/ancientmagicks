@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.spell;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;

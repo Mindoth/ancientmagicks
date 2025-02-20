@@ -13,7 +13,7 @@ public class AncientMagicksCommonConfig {
     public static final ForgeConfigSpec SPEC;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> SPELL_FREE_FOR_ALL;
-    public static final ForgeConfigSpec.ConfigValue<List<String>> DISABLED_SPELLS;
+    //public static final ForgeConfigSpec.ConfigValue<List<String>> DISABLED_SPELLS;
     public static final ForgeConfigSpec.ConfigValue<List<String>> DISABLED_POLYMOBS;
     public static final ForgeConfigSpec.ConfigValue<List<String>> DISABLED_ARCANE_DUST_RECIPE_ENTRIES;
 
@@ -23,8 +23,8 @@ public class AncientMagicksCommonConfig {
         SPELL_FREE_FOR_ALL = BUILDER.comment("true = All spells can target both friends and foes. false = Harmful spells will ignore friends and helpful spells will ignore foes.")
                 .define("spellFreeForAll", true);
 
-        DISABLED_SPELLS = BUILDER.comment("Add any spells you wish to disable here.")
-                .define("spellDisableList", Lists.newArrayList());
+        /*DISABLED_SPELLS = BUILDER.comment("Add any spells you wish to disable here.")
+                .define("spellDisableList", Lists.newArrayList());*/
 
         DISABLED_POLYMOBS = BUILDER.comment("Add any mobs you wish to not summon with Chaotic Polymorph here. Use * to ban all mobs from a mod, like: twilightforest:*.")
                 .define("polyDisableList", disabledPolymobs());

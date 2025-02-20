@@ -10,9 +10,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class AncientMagicksEnchantments {
-    public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, AncientMagicks.MOD_ID);
+
+    /*public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, AncientMagicks.MOD_ID);
 
     public static RegistryObject<Enchantment> OPEN_MIND = ENCHANTMENTS.register("open_mind",
-            () -> new OpenMindEnchantment(Enchantment.Rarity.RARE, EnchantmentCategory.ARMOR_HEAD, EquipmentSlot.HEAD));
-
+            () -> new OpenMindEnchantment(Enchantment.Rarity.RARE, EnchantmentCategory.ARMOR_HEAD, EquipmentSlot.HEAD));*/
 }

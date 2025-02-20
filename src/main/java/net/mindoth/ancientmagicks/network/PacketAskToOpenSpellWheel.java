@@ -8,12 +8,12 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PacketSendRuneData {
+public class PacketAskToOpenSpellWheel {
 
-    public PacketSendRuneData() {
+    public PacketAskToOpenSpellWheel() {
     }
 
-    public PacketSendRuneData(FriendlyByteBuf buf) {
+    public PacketAskToOpenSpellWheel(FriendlyByteBuf buf) {
     }
 
     public void encode(FriendlyByteBuf buf) {
@@ -26,7 +26,7 @@ public class PacketSendRuneData {
                 ServerPlayer player = context.getSender();
                 player.stopUsingItem();
                 ItemStack book = SpellBookItem.getSpellBookSlot(player);
-                AncientMagicksNetwork.sendToPlayer(new PacketReceiveRuneData(book), player);
+                AncientMagicksNetwork.sendToPlayer(new PacketOpenSpellWheel(book), player);
             }
         });
     }

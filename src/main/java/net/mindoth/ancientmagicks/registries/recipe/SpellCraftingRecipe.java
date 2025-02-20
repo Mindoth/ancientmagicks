@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks.registries.recipe;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;

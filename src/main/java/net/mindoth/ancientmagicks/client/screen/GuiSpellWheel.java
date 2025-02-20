@@ -271,6 +271,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
 
             renderItemWithDecorations(graphics, slot, posX, posY);
 
+            //TODO Probably could get this to work with the new book system. Not sure if I want to, though...
             //Possibility vision
             /*Player player = minecraft.player;
             ItemStack head = player.getItemBySlot(EquipmentSlot.HEAD);

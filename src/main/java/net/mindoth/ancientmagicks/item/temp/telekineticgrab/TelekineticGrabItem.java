@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.temp.telekineticgrab;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;

@@ -3,11 +3,11 @@ package net.mindoth.ancientmagicks.item.castingitem;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.mindoth.ancientmagicks.item.SpellValidator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -44,20 +44,32 @@ public class StaffItem extends CastingItem implements Vanishable {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(hand));
         if ( !level.isClientSide ) {
             ItemStack staff = player.getItemInHand(hand);
-            if ( isValidCastingItem(staff) && !(player.isCrouching() && SpellBookItem.getHeldSpellBook(player) != ItemStack.EMPTY) ) {
+            if ( isValidCastingItem(staff) && !(player.isCrouching() && SpellBookItem.getHeldSpellBook(player) != ItemStack.EMPTY)
+                    && !player.getCooldowns().isOnCooldown(staff.getItem()) ) {
+                ItemStack book = SpellBookItem.getSpellBookSlot(player);
+                if ( !book.isEmpty() && book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) ) player.startUsingItem(hand);
+                else whiffSpell(player, staff.getItem());
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void onUseTick(Level level, LivingEntity living, ItemStack staff, int timeLeft) {
+        if ( level.isClientSide ) return;
+        if ( living instanceof Player player ) {
+            if ( isValidCastingItem(staff) && !(player.isCrouching() && SpellBookItem.getHeldSpellBook(player) != ItemStack.EMPTY)
+                    && !player.getCooldowns().isOnCooldown(staff.getItem()) ) {
                 ItemStack book = SpellBookItem.getSpellBookSlot(player);
                 if ( !book.isEmpty() && book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) ) {
                     CompoundTag tag = book.getTag();
                     List<ItemStack> spellList = SpellBookItem.getScrollListFromBook(tag);
                     int slot = tag.getInt(SpellBookItem.NBT_KEY_BOOK_SLOT);
-                    if ( spellList.size() > slot ) {
-                        ItemStack spell = spellList.get(slot);
-                        SpellValidator.castSpell(spell, player, player);
-                    }
+                    if ( spellList.size() > slot ) doSpell(player, player, staff, spellList.get(slot), getUseDuration(staff) - timeLeft);
+                    else whiffSpell(player, staff.getItem());
                 }
             }
         }
-        return result;
     }
 
     @Override

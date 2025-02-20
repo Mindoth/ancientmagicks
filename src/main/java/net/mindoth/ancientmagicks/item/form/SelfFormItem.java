@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.form;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.world.entity.Entity;

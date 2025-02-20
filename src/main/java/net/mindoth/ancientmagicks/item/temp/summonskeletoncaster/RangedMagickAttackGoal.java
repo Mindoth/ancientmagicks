@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.item.temp.summonskeletoncaster;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.temp.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
@@ -137,7 +136,7 @@ public class RangedMagickAttackGoal<T extends net.minecraft.world.entity.Mob & R
                             Entity owner = ShadowEvents.getEntityByUUID(this.mob.level(), tag.getUUID(MindControlEffect.NBT_KEY_CONTROL));
                             if ( owner instanceof LivingEntity living ) controller = living;
                         }
-                        CastingItem.doSpell(controller, this.mob, stack, this.spell, i);
+                        //CastingItem.doSpell(controller, this.mob, stack, this.spell, i);
                         this.attackTime = this.attackIntervalMin;
                     }
                 }

@@ -7,15 +7,15 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PacketReceiveRuneData {
+public class PacketOpenSpellWheel {
 
     public ItemStack book;
 
-    public PacketReceiveRuneData(ItemStack book) {
+    public PacketOpenSpellWheel(ItemStack book) {
         this.book = book;
     }
 
-    public PacketReceiveRuneData(FriendlyByteBuf buf) {
+    public PacketOpenSpellWheel(FriendlyByteBuf buf) {
         this.book = buf.readItem();
     }
 

@@ -27,22 +27,16 @@ public class AncientMagicksNetwork {
 
         CHANNEL = net;
 
-        net.messageBuilder(PacketSetSpell.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(PacketSetSpell::new)
-                .encoder(PacketSetSpell::encode)
-                .consumerMainThread(PacketSetSpell::handle)
+        net.messageBuilder(PacketAskToOpenSpellWheel.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketAskToOpenSpellWheel::new)
+                .encoder(PacketAskToOpenSpellWheel::encode)
+                .consumerMainThread(PacketAskToOpenSpellWheel::handle)
                 .add();
 
-        net.messageBuilder(PacketSendRuneData.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(PacketSendRuneData::new)
-                .encoder(PacketSendRuneData::encode)
-                .consumerMainThread(PacketSendRuneData::handle)
-                .add();
-
-        net.messageBuilder(PacketReceiveRuneData.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketReceiveRuneData::new)
-                .encoder(PacketReceiveRuneData::encode)
-                .consumerMainThread(PacketReceiveRuneData::handle)
+        net.messageBuilder(PacketOpenSpellWheel.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(PacketOpenSpellWheel::new)
+                .encoder(PacketOpenSpellWheel::encode)
+                .consumerMainThread(PacketOpenSpellWheel::handle)
                 .add();
 
         net.messageBuilder(PacketOpenAncientTablet.class, id(), NetworkDirection.PLAY_TO_CLIENT)
@@ -63,34 +57,10 @@ public class AncientMagicksNetwork {
                 .consumerMainThread(PacketSendCustomParticles::handle)
                 .add();
 
-        net.messageBuilder(PacketSyncSpellCombos.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketSyncSpellCombos::new)
-                .encoder(PacketSyncSpellCombos::encode)
-                .consumerMainThread(PacketSyncSpellCombos::handle)
-                .add();
-
-        net.messageBuilder(PacketSyncClientMagic.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketSyncClientMagic::new)
-                .encoder(PacketSyncClientMagic::encode)
-                .consumerMainThread(PacketSyncClientMagic::handle)
-                .add();
-
         net.messageBuilder(PacketSyncClientMana.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(PacketSyncClientMana::new)
                 .encoder(PacketSyncClientMana::encode)
                 .consumerMainThread(PacketSyncClientMana::handle)
-                .add();
-
-        net.messageBuilder(PacketUpdateKnownSpells.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketUpdateKnownSpells::new)
-                .encoder(PacketUpdateKnownSpells::encode)
-                .consumerMainThread(PacketUpdateKnownSpells::handle)
-                .add();
-
-        net.messageBuilder(PacketItemActivationAnimation.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketItemActivationAnimation::new)
-                .encoder(PacketItemActivationAnimation::encode)
-                .consumerMainThread(PacketItemActivationAnimation::handle)
                 .add();
 
         net.messageBuilder(PacketRemoveSpellFromBook.class, id(), NetworkDirection.PLAY_TO_SERVER)

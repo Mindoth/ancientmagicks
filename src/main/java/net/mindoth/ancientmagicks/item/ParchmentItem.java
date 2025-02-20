@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
+import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -36,14 +36,16 @@ public class ParchmentItem extends Item {
         super(pProperties);
     }
 
-    //Temp for testing
+    //TODO Remove this as it's just temporarily for testing.
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
             ItemStack stack = player.getItemInHand(handIn);
             if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_SPELL_STRING) ) {
-                SpellValidator.castSpell(stack, serverPlayer, serverPlayer);
+                if ( CastingValidator.castSpell(stack, serverPlayer, serverPlayer) ) {
+                    if ( !player.isCreative() ) stack.shrink(1);
+                }
             }
         }
         return result;
@@ -93,7 +95,7 @@ public class ParchmentItem extends Item {
                 }
             }
             for ( Item item : runes ) {
-                if ( item instanceof SpellItem ) {
+                if ( item instanceof SpellItem) {
                     tooltip.add(Component.translatable("tooltip.ancientmagicks.spell")
                             .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
                 }

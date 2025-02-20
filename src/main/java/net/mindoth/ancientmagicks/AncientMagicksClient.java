@@ -3,7 +3,6 @@ package net.mindoth.ancientmagicks;
 import net.mindoth.ancientmagicks.client.model.SimpleRobeModel;
 import net.mindoth.ancientmagicks.client.screen.AncientMagicksScreen;
 import net.mindoth.ancientmagicks.client.screen.GuiSpellWheel;
-import net.mindoth.ancientmagicks.client.screen.HudCurrentSpell;
 import net.mindoth.ancientmagicks.client.screen.HudMana;
 import net.mindoth.ancientmagicks.config.AncientMagicksClientConfig;
 import net.mindoth.ancientmagicks.item.DyeableMagicItem;
@@ -13,7 +12,7 @@ import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.form.ProjectileRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketSendRuneData;
+import net.mindoth.ancientmagicks.network.PacketAskToOpenSpellWheel;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.ancientmagicks.registries.AncientMagicksKeyBinds;
 import net.minecraft.client.Minecraft;
@@ -85,7 +84,7 @@ public class AncientMagicksClient {
                 }
             }
             else if ( mc.screen == null && key == spellSelector && keyAction == 1 ) {
-                if ( CastingItem.canOpenWheel(player) ) AncientMagicksNetwork.sendToServer(new PacketSendRuneData());
+                if ( CastingItem.canOpenWheel(player) ) AncientMagicksNetwork.sendToServer(new PacketAskToOpenSpellWheel());
             }
         }
     }
@@ -100,7 +99,6 @@ public class AncientMagicksClient {
 
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
-            event.registerAboveAll("current_spell_hud", HudCurrentSpell.OVERLAY);
             event.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "mana_hud", HudMana.OVERLAY);
         }
     }

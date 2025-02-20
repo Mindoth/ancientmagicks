@@ -1,9 +1,6 @@
 package net.mindoth.ancientmagicks.client.screen;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.SpellItem;
-import net.mindoth.ancientmagicks.item.SpellStorageItem;
-import net.mindoth.ancientmagicks.item.castingitem.SpecialCastingItem;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -36,14 +33,6 @@ public class AncientMagicksScreen extends Screen {
     protected void renderItemWithDecorations(GuiGraphics graphics, ItemStack stack, int xPos, int yPos) {
         graphics.renderItem(stack, xPos, yPos);
         graphics.renderItemDecorations(this.font, stack, xPos, yPos);
-    }
-
-    protected ItemStack getPossibleContainedSpell(ItemStack stack) {
-        ItemStack spell;
-        SpellItem vesselSpell = SpecialCastingItem.getStoredSpell(stack);
-        if ( stack.getItem() instanceof SpellStorageItem && vesselSpell != null ) spell = new ItemStack(vesselSpell);
-        else spell = stack;
-        return spell;
     }
 
     public static @NotNull List<String> putTextToLines(String spellDesc, Font font, int rowLimit) {

@@ -1,20 +1,16 @@
-package net.mindoth.ancientmagicks.item;
+package net.mindoth.ancientmagicks.item.spell;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
+import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
-import net.mindoth.ancientmagicks.item.spell.BlockTargetSpell;
-import net.mindoth.ancientmagicks.item.spell.EntityTargetSpell;
 import net.mindoth.ancientmagicks.item.temp.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -29,22 +25,19 @@ import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class SpellItem extends Item {
+public class SpellItem extends ComponentItem {
 
+    @Deprecated
     public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
         return false;
     }
@@ -143,6 +136,7 @@ public class SpellItem extends Item {
         return this.cooldown;
     }
 
+    @Deprecated
     public boolean isChannel() {
         return false;
     }
@@ -155,17 +149,21 @@ public class SpellItem extends Item {
         return ColorCode.DARK_PURPLE.getParticleColor();
     }
 
+    @Deprecated
     public SpellItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
-        super(pProperties);
+        super(pProperties, manaCost, cooldown);
         this.manaCost = manaCost;
         this.cooldown = cooldown;
         this.spellTier = spellTier;
     }
+    @Deprecated
     private final int spellTier;
+    @Deprecated
     public int getSpellTier() {
         return this.spellTier;
     }
 
+    @Deprecated
     public enum SpellType {
         ATTACK(1),
         BUFF(2),
@@ -185,7 +183,7 @@ public class SpellItem extends Item {
     }
 
     public SpellItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties);
+        super(pProperties, manaCost, cooldown);
         this.manaCost = manaCost;
         this.cooldown = cooldown;
         this.spellTier = 0;
@@ -218,6 +216,7 @@ public class SpellItem extends Item {
         }
     }
 
+    @Deprecated
     public static int rollForPower(int power, int die) {
         int finalHit = 0;
         for ( int i = 0; i < power; i++ ) {
@@ -285,24 +284,6 @@ public class SpellItem extends Item {
         Vec3 vec3 = new Vec3(start.getX(), start.getEyeY(), start.getZ());
         Vec3 vec31 = new Vec3(target.getX(), target.getEyeY(), target.getZ());
         return start.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, start)).getType() == HitResult.Type.MISS;
-    }
-
-    @Override
-    public void onUseTick(Level level, LivingEntity living, ItemStack tablet, int timeLeft) {
-        if ( level.isClientSide ) return;
-        if ( living instanceof Player player && tablet.getItem() instanceof SpellItem spellItem) {
-            CastingItem.doSpell(player, player, tablet, spellItem, getUseDuration(tablet) - timeLeft);
-        }
-    }
-
-    @Override
-    public int getUseDuration(ItemStack pStack) {
-        return 72000;
-    }
-
-    @Override
-    public UseAnim getUseAnimation(ItemStack pStack) {
-        return UseAnim.BOW;
     }
 
     protected int getRenderType() {
@@ -485,22 +466,5 @@ public class SpellItem extends Item {
     public static void playXpSound(Level level, Vec3 center) {
         level.playSound(null, center.x, center.y, center.z,
                 SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.25F, (new Random().nextFloat() - new Random().nextFloat()) * 0.35F + 0.9F);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        SpellItem spell = this;
-        if ( ColorRuneItem.CURRENT_COMBO_MAP.containsKey(spell) && Minecraft.getInstance().player != null ) {
-            StringBuilder tooltipString = new StringBuilder();
-            List<ColorRuneItem> list = ColorRuneItem.stringListToActualList(ColorRuneItem.CURRENT_COMBO_MAP.get(spell).toString());
-            for ( ColorRuneItem rune : list ) {
-                String color = rune.color + "0" + "\u00A7r";
-                tooltipString.append(color);
-            }
-            tooltip.add(Component.literal(String.valueOf(tooltipString)));
-        }
-
-        super.appendHoverText(stack, world, tooltip, flagIn);
     }
 }

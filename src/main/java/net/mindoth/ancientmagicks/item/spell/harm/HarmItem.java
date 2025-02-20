@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.spell.harm;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.item.spell.EntityTargetSpell;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

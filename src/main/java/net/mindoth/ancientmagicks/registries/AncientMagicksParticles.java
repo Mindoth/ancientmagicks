@@ -22,7 +22,7 @@ public class AncientMagicksParticles {
     public static final RegistryObject<ParticleType<ColoredDynamicTypeData>> EMBER_TYPE = PARTICLES.register(EmberParticleProvider.NAME, EmberParticleType::new);
 
     @SubscribeEvent
-    public static void registerFactories(RegisterParticleProvidersEvent evt) {
+    public static void registerFactories(RegisterParticleProvidersEvent event) {
         Minecraft.getInstance().particleEngine.register(EMBER_TYPE.get(), EmberParticleProvider::new);
     }
 }

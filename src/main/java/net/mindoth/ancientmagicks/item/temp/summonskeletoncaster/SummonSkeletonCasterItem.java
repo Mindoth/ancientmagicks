@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.item.temp.summonskeletoncaster;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
 import net.mindoth.ancientmagicks.item.temp.abstractspell.AbstractSpellSummon;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.world.entity.EntityType;

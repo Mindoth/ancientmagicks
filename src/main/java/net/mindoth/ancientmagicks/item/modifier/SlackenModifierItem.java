@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.modifier;
 
-import net.mindoth.ancientmagicks.item.SpellItem;
+import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.item.form.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.form.ProjectileSpellEntity;
 

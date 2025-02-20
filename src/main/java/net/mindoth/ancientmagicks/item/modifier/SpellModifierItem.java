@@ -1,14 +1,15 @@
 package net.mindoth.ancientmagicks.item.modifier;
 
+import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.form.ProjectileSpellEntity;
 import net.minecraft.world.item.Item;
 
 import java.util.HashMap;
 
-public class SpellModifierItem extends Item {
+public class SpellModifierItem extends ComponentItem {
 
     public SpellModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties);
+        super(pProperties, manaCost, cooldown);
     }
 
     public void addModifierToEntity(ProjectileSpellEntity projectile, int count) {
