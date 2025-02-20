@@ -222,7 +222,8 @@ public class GuiSpellWheel extends AncientMagicksScreen {
             ItemStack stack = this.comboResult;
 
             //Spell name
-            String name = I18n.get(stack.getDescriptionId());
+            //String name = I18n.get(stack.getDescriptionId());
+            String name = stack.getHoverName().getString();
             List<Component> componentList = Lists.newArrayList();
             int rowLimit = 100;
             if ( this.font.width(name) < rowLimit ) componentList.add(Component.literal(name));
