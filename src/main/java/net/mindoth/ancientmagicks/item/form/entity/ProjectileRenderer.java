@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.form;
+package net.mindoth.ancientmagicks.item.form.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.mindoth.ancientmagicks.AncientMagicks;

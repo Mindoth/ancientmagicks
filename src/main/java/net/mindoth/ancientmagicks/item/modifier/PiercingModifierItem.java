@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.modifier;
 
-import net.mindoth.ancientmagicks.item.form.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.form.ProjectileSpellEntity;
+import net.mindoth.ancientmagicks.item.form.entity.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.item.form.entity.ProjectileSpellEntity;
 
 public class PiercingModifierItem extends SpellModifierItem {
 

@@ -23,7 +23,7 @@ public class SelfFormItem extends SpellFormItem {
         Level level = caster.level();
         HashMap<String, Float> stats = SpellItem.createSpellStats(modifiers);
 
-        HitResult hitResult = new EntityHitResult(caster, ShadowEvents.getEntityCenter(caster));
+        HitResult hitResult = new EntityHitResult(caster, caster.position());
         return spell.castSpell(level, owner, caster, hitResult, stats);
     }
 }

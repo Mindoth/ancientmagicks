@@ -10,7 +10,7 @@ import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
-import net.mindoth.ancientmagicks.item.form.ProjectileRenderer;
+import net.mindoth.ancientmagicks.item.form.entity.ProjectileRenderer;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketAskToOpenSpellWheel;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;

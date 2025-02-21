@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.form;
+package net.mindoth.ancientmagicks.item.form.entity;
 
 import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;

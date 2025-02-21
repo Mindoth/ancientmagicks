@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.temp.abstractspell;
 
 import net.mindoth.ancientmagicks.item.spell.SpellItem;
-import net.mindoth.ancientmagicks.item.form.AbstractSpellEntity;
+import net.mindoth.ancientmagicks.item.form.entity.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

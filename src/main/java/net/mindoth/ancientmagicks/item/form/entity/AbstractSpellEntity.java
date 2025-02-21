@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.form;
+package net.mindoth.ancientmagicks.item.form.entity;
 
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
@@ -210,7 +210,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     private void doHoming() {
-        int range = (int)getReach() * 2;
+        int range = (int)getReach();
 
         if ( this.target == null || !this.target.isAlive() ) this.target = ShadowEvents.getNearestEntity(this, level(), range, this::homingFilter);
         if ( this.target != null ) {
@@ -438,7 +438,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.define(SPEED, 1.0F);
         this.entityData.define(LIFE, 100);
         this.entityData.define(AOE, 0.0F);
-        this.entityData.define(REACH, 1.0F);
+        this.entityData.define(REACH, 4.0F);
         this.entityData.define(PIERCING, 0);
         this.entityData.define(BLOCK_BOUNCE, 0);
         this.entityData.define(IS_HARMFUL, true);

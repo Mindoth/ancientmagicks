@@ -1,8 +1,7 @@
 package net.mindoth.ancientmagicks.item.modifier;
 
 import net.mindoth.ancientmagicks.item.ComponentItem;
-import net.mindoth.ancientmagicks.item.form.ProjectileSpellEntity;
-import net.minecraft.world.item.Item;
+import net.mindoth.ancientmagicks.item.form.entity.ProjectileSpellEntity;
 
 import java.util.HashMap;
 

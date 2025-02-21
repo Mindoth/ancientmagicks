@@ -55,7 +55,7 @@ public class SpellItem extends ComponentItem {
         stats.merge(LIFE, 100.0F, Float::sum);
         stats.merge(SPEED, 1.0F, Float::sum);
         stats.merge(AOE, 0.0F, Float::sum);
-        stats.merge(REACH, 0.0F, Float::sum);
+        stats.merge(REACH, 4.0F, Float::sum);
         stats.merge(GRAVITY, 0.0F, Float::sum);
         return stats;
     }
@@ -91,7 +91,7 @@ public class SpellItem extends ComponentItem {
                     if ( canApply(level, owner, caster, newResult) ) doSpell(level, owner, caster, newResult, stats);
                 }
                 state = true;
-                aoeEntitySpellParticles(level, result, caster, center, range);
+                aoeEntitySpellParticles(level, result, center, range);
             }
             else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats);
         }
@@ -110,7 +110,7 @@ public class SpellItem extends ComponentItem {
                     if ( canApply(level, owner, caster, newResult) ) doSpell(level, owner, caster, newResult, stats);
                 }
                 state = true;
-                for ( int i = -(int)range; i <= range; i++ ) aoeBlockSpellParticles(caster, center, range, i);
+                for ( int i = -(int)range; i <= range; i++ ) aoeBlockSpellParticles(level, center, range, i);
             }
             else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats);
         }
@@ -293,7 +293,7 @@ public class SpellItem extends ComponentItem {
         return 1;
     }
 
-    private void aoeEntitySpellParticles(Level level, HitResult result, Entity caster, Vec3 oldCenter, float range) {
+    private void aoeEntitySpellParticles(Level level, HitResult result, Vec3 oldCenter, float range) {
         BlockPos pos = new BlockPos(Mth.floor(oldCenter.x), Mth.floor(oldCenter.y), Mth.floor(oldCenter.z));
         if ( result instanceof BlockHitResult blockHitResult ) pos = getPosOfFace(blockHitResult.getBlockPos(), blockHitResult.getDirection());
         Vec3 center = oldCenter;
@@ -305,7 +305,7 @@ public class SpellItem extends ComponentItem {
         Vec3 particleStart = new Vec3(center.x + range, center.y + range, center.z + range);
         Vec3 particleEnd = new Vec3(center.x - range, center.y - range, center.z - range);
         AABB particleBox = new AABB(particleStart, particleEnd);
-        addAoeParticles(caster, particleBox, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, 0.15D);
+        addAoeParticles(level, particleBox, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, 0.15D);
     }
 
     private static BlockPos getPosOfFace(BlockPos blockPos, Direction face) {
@@ -319,14 +319,14 @@ public class SpellItem extends ComponentItem {
         };
     }
 
-    private void aoeBlockSpellParticles(Entity caster, Vec3 center, float range, int addition) {
+    private void aoeBlockSpellParticles(Level level, Vec3 center, float range, int addition) {
         Vec3 start = new Vec3(Mth.ceil(center.x + range), Mth.ceil(center.y + range + addition), Mth.ceil(center.z + range));
         Vec3 end = new Vec3(Mth.floor(center.x - range), Mth.floor(center.y - range + addition), Mth.floor(center.z - range));
         AABB particleBox = new AABB(start, end);
-        addAoeParticles(caster, particleBox, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, 0.0D);
+        addAoeParticles(level, particleBox, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, 0.0D);
     }
 
-    protected void addAoeParticles(Entity caster, AABB box, int r, int g, int b, float size, int age, double lift) {
+    protected void addAoeParticles(Level level, AABB box, int r, int g, int b, float size, int age, double lift) {
         Vec3 center = box.getCenter();
         double maxX = box.maxX;
         double minX = box.minX;
@@ -341,32 +341,32 @@ public class SpellItem extends ComponentItem {
             double randY = center.y - 0.5D + new Random().nextDouble();
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
-                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), caster, true);
+            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
         }
         for ( int i = 0; i < amount; i++ ) {
             double randX = minX;
             double randY = center.y - 0.5D + new Random().nextDouble();
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
-                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), caster, true);
+            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
         }
         for ( int i = 0; i < amount; i++ ) {
             double randX = minX + (maxX - minX) * new Random().nextDouble();
             double randY = center.y - 0.5D + new Random().nextDouble();
             double randZ = minZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
-                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), caster, true);
+            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
         }
         for ( int i = 0; i < amount; i++ ) {
             double randX = minX + (maxX - minX) * new Random().nextDouble();
             double randY = center.y - 0.5D + new Random().nextDouble();
             double randZ = maxZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
-                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), caster, true);
+            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
         }
     }
 

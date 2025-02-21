@@ -27,8 +27,10 @@ public class CreateWaterSpell extends BlockTargetSpell {
         BlockPos pos;
         if ( result instanceof BlockHitResult blockHitResult ) pos = blockHitResult.getBlockPos();
         else pos = new BlockPos(Mth.floor(result.getLocation().x), Mth.floor(result.getLocation().y), Mth.floor(result.getLocation().z));
-        if ( result instanceof BlockHitResult blockHitResult ) state = createWater(level, getPosOfFace(pos, blockHitResult.getDirection()));
-        else state = createWater(level, getPosOfFace(pos, Direction.UP));
+        if ( result instanceof BlockHitResult blockHitResult ) {
+            if ( level.getBlockState(blockHitResult.getBlockPos()).canBeReplaced(Fluids.WATER) ) state = createWater(level, pos);
+            else state = createWater(level, getPosOfFace(pos, blockHitResult.getDirection()));
+        }
         return state;
     }
 

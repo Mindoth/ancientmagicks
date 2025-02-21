@@ -1,9 +1,15 @@
 package net.mindoth.ancientmagicks.network;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
@@ -87,15 +93,38 @@ public class AncientMagicksNetwork {
     }
 
     public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {
-        CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), message);
+        if ( player != null ) CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), message);
     }
 
     public static <MSG> void sendToPlayersTrackingEntity(MSG message, Entity entity) {
-        sendToPlayersTrackingEntity(message, entity, false);
+        if ( entity != null ) sendToPlayersTrackingEntity(message, entity, false);
     }
 
     public static <MSG> void sendToPlayersTrackingEntity(MSG message, Entity entity, boolean sendToSource) {
-        CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), message);
-        if ( sendToSource && entity instanceof ServerPlayer serverPlayer ) sendToPlayer(message, serverPlayer);
+        if ( entity != null ) {
+            CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), message);
+            if ( sendToSource && entity instanceof ServerPlayer serverPlayer ) sendToPlayer(message, serverPlayer);
+        }
+    }
+
+    public static <MSG> void sendToNearby(MSG message, Level world, Entity caster) {
+        sendToNearby(message, world, caster.blockPosition());
+    }
+
+    public static <MSG> void sendToNearby(MSG message, Level level, Vec3 center) {
+        if ( level instanceof ServerLevel serverLevel ) {
+            BlockPos pos = new BlockPos(Mth.floor(center.x), Mth.floor(center.y), Mth.floor(center.z));
+            serverLevel.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).stream()
+                    .filter(p -> p.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64 * 64)
+                    .forEach(p -> sendToPlayer(message, p));
+        }
+    }
+
+    public static <MSG> void sendToNearby(MSG message, Level level, BlockPos pos) {
+        if ( level instanceof ServerLevel serverLevel ) {
+            serverLevel.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).stream()
+                    .filter(p -> p.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64 * 64)
+                    .forEach(p -> sendToPlayer(message, p));
+        }
     }
 }

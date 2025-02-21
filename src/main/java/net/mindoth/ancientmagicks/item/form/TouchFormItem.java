@@ -26,13 +26,12 @@ public class TouchFormItem extends SpellFormItem {
     public boolean formSpell(SpellItem spell, LivingEntity owner, Entity caster, List<SpellModifierItem> modifiers) {
         Level level = caster.level();
         HashMap<String, Float> stats = SpellItem.createSpellStats(modifiers);
-        float range = 4.5F + stats.get(SpellItem.REACH);
+        float range = stats.get(SpellItem.REACH);
 
         HitResult hitResult;
         Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.0F, true, null);
-        Vec3 point = ShadowEvents.getPoint(level, caster, range, 0.0F, false, true, true, false);
         if ( target == caster ) hitResult = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range);
-        else hitResult = new EntityHitResult(target, point);
+        else hitResult = new EntityHitResult(target, ShadowEvents.getPoint(level, caster, range, 0.0F, false, true, true, false));
         return spell.castSpell(level, owner, caster, hitResult, stats);
     }
 

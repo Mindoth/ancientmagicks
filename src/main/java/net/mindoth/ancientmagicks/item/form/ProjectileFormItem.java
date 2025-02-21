@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.form;
 
+import net.mindoth.ancientmagicks.item.form.entity.ProjectileSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.minecraft.world.entity.Entity;
@@ -32,7 +33,7 @@ public class ProjectileFormItem extends SpellFormItem {
                 for ( SpellModifierItem modifier : modifiers ) map.merge(modifier, 1, Integer::sum);
                 for ( Map.Entry<SpellModifierItem, Integer> entry : map.entrySet() ) entry.getKey().addModifierToEntity(projectile, entry.getValue());
             }
-            projectile.setPos(caster.getEyePosition().add(0, down, 0).add(caster.getForward()));
+            projectile.setPos(caster.getEyePosition().add(0, down, 0));
             projectile.anonShootFromRotation(caster.getXRot(), caster.getYRot(), 0, Math.max(0, projectile.getSpeed()), 0.0F);
             level.addFreshEntity(projectile);
         }

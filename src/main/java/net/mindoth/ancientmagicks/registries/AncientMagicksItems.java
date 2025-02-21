@@ -25,6 +25,7 @@ import net.mindoth.ancientmagicks.item.spell.notbreak.BreakSpellItem;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphSpellItem;
 import net.mindoth.ancientmagicks.item.spell.sleep.SleepSpellItem;
 import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockItem;
+import net.mindoth.ancientmagicks.item.spell.teleport.TeleportSpell;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -120,41 +121,44 @@ public class AncientMagicksItems {
             () -> new SelfFormItem(new Item.Properties(), 0, 0));
 
     //Spells
-    public static final RegistryObject<Item> HARM_ITEM = ITEMS.register("harm_spell",
+    public static final RegistryObject<Item> HARM_SPELL_ITEM = ITEMS.register("harm_spell",
             () -> new HarmSpellItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> BREAK_ITEM = ITEMS.register("break_spell",
+    public static final RegistryObject<Item> BREAK_SPELL_ITEM = ITEMS.register("break_spell",
             () -> new BreakSpellItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> POLYMORPH_ITEM = ITEMS.register("polymorph_spell",
+    public static final RegistryObject<Item> POLYMORPH_SPELL_ITEM = ITEMS.register("polymorph_spell",
             () -> new PolymorphSpellItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> SLEEP_ITEM = ITEMS.register("sleep_spell",
+    public static final RegistryObject<Item> SLEEP_SPELL_ITEM = ITEMS.register("sleep_spell",
             () -> new SleepSpellItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> BLIND_ITEM = ITEMS.register("blind_spell",
+    public static final RegistryObject<Item> BLIND_SPELL_ITEM = ITEMS.register("blind_spell",
             () -> new BlindSpellItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> ALACRITY_ITEM = ITEMS.register("alacrity_spell",
+    public static final RegistryObject<Item> ALACRITY_SPELL_ITEM = ITEMS.register("alacrity_spell",
             () -> new AlacritySpellItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> CALL_THUNDER_ITEM = ITEMS.register("call_thunder_spell",
+    public static final RegistryObject<Item> CALL_THUNDER_SPELL_ITEM = ITEMS.register("call_thunder_spell",
             () -> new CallThunderItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> CHAOTIC_POLYMORPH_ITEM = ITEMS.register("chaotic_polymorph_spell",
+    public static final RegistryObject<Item> CHAOTIC_POLYMORPH_SPELL_ITEM = ITEMS.register("chaotic_polymorph_spell",
             () -> new ChaoticPolymorphItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> TELEBLOCK_ITEM = ITEMS.register("teleblock_spell",
+    public static final RegistryObject<Item> TELEBLOCK_SPELL_ITEM = ITEMS.register("teleblock_spell",
             () -> new TeleblockItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> FLY_ITEM = ITEMS.register("fly_spell",
+    public static final RegistryObject<Item> FLY_SPELL_ITEM = ITEMS.register("fly_spell",
             () -> new FlyItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> DESTROY_LIQUIDS_ITEM = ITEMS.register("destroy_liquids_spell",
+    public static final RegistryObject<Item> DESTROY_LIQUIDS_SPELL_ITEM = ITEMS.register("destroy_liquids_spell",
             () -> new DestroyLiquidsSpell(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> CREATE_WATER_ITEM = ITEMS.register("create_water_spell",
+    public static final RegistryObject<Item> CREATE_WATER_SPELL_ITEM = ITEMS.register("create_water_spell",
             () -> new CreateWaterSpell(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> TELEPORT_SPELL_ITEM = ITEMS.register("teleport_spell",
+            () -> new TeleportSpell(new Item.Properties(), 1, 10));
 
     //Modifiers
     public static final RegistryObject<Item> AMPLIFY_MODIFIER_ITEM = ITEMS.register("amplify_modifier",
