@@ -1,16 +1,30 @@
 package net.mindoth.ancientmagicks.item.spell.notbreak;
 
+import com.mojang.authlib.GameProfile;
 import net.mindoth.ancientmagicks.item.spell.BlockTargetSpell;
+import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class BreakSpellItem extends BlockTargetSpell {
+
+    private static final GameProfile FAKE_PROFILE = new GameProfile(UUID.fromString("fdc17a6f-5d46-484e-9343-820f43c7b101"), "am_fake_player_profile");
 
     public BreakSpellItem(Properties pProperties, int manaCost, int cooldown) {
         super(pProperties, manaCost, cooldown);
@@ -20,7 +34,21 @@ public class BreakSpellItem extends BlockTargetSpell {
     protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
         BlockPos pos = ((BlockHitResult)result).getBlockPos();
         if ( level.getBlockState(pos).isAir() ) return false;
-        level.destroyBlock(pos, true, caster);
+        if ( !(level instanceof ServerLevel serverLevel) ) return false;
+        FakePlayer player = FakePlayerFactory.get(serverLevel, FAKE_PROFILE);
+        int power = Mth.floor(stats.get(SpellItem.POWER));
+        player.setItemSlot(EquipmentSlot.MAINHAND, getToolFromStrength(power));
+        BlockState blockState = level.getBlockState(pos);
+        if ( !blockState.getBlock().canHarvestBlock(blockState, level, pos, player) || blockState.getBlock().defaultDestroyTime() < 0 ) return false;
+        level.destroyBlock(pos, true);
         return true;
+    }
+
+    private ItemStack getToolFromStrength(int power) {
+        if ( power < 2 ) return ItemStack.EMPTY;
+        else if ( power == 2 ) return new ItemStack(Items.WOODEN_PICKAXE);
+        else if ( power == 3 ) return new ItemStack(Items.STONE_PICKAXE);
+        else if ( power == 4 ) return new ItemStack(Items.IRON_PICKAXE);
+        else return new ItemStack(Items.DIAMOND_PICKAXE);
     }
 }
