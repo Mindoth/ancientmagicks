@@ -165,7 +165,7 @@ public abstract class AbstractSpellEntity extends Projectile {
                     playHitSound(result);
                     this.ignoredEntities.put(living.getId(), this.tickCount);
                 }
-                if ( this.ignoredEntities.size() > getPiercing() ) doDeathEffects();
+                if ( this.ignoredEntities.size() > getEntityPierce() ) doDeathEffects();
             }
         }
     }
@@ -181,7 +181,7 @@ public abstract class AbstractSpellEntity extends Projectile {
                 playHitSound(result);
                 this.ignoredBlocks.put(result.getBlockPos(), this.tickCount);
             }
-            if ( this.ignoredBlocks.size() > getPiercing() ) {
+            if ( this.ignoredBlocks.size() > getBlockPierce() ) {
                 level().playSound(null, getX(), getY(), getZ(), blockState.getSoundType().getBreakSound(), SoundSource.PLAYERS, 0.3F, 2);
                 if ( this.bounces < getBlockBounce() ) {
                     this.bounces++;
@@ -211,7 +211,6 @@ public abstract class AbstractSpellEntity extends Projectile {
 
     private void doHoming() {
         int range = (int)getReach();
-
         if ( this.target == null || !this.target.isAlive() ) this.target = ShadowEvents.getNearestEntity(this, level(), range, this::homingFilter);
         if ( this.target != null ) {
             if ( !isNoGravity() ) setNoGravity(true);
@@ -309,7 +308,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     public float getSize() {
-        float size = getPower() > 1 ? this.entityData.get(SIZE) + this.entityData.get(POWER) * 0.1F : this.entityData.get(SIZE);
+        float size = getAoe() > 1 ? this.entityData.get(SIZE) + this.entityData.get(AOE) * 0.1F : this.entityData.get(SIZE);
         return Math.min(size, 2.0F);
     }
 
@@ -349,8 +348,12 @@ public abstract class AbstractSpellEntity extends Projectile {
         return this.entityData.get(REACH);
     }
 
-    public int getPiercing() {
-        return this.entityData.get(PIERCING);
+    public int getEntityPierce() {
+        return this.entityData.get(ENTITY_PIERCE);
+    }
+
+    public int getBlockPierce() {
+        return this.entityData.get(BLOCK_PIERCE);
     }
 
     public int getBlockBounce() {
@@ -381,7 +384,8 @@ public abstract class AbstractSpellEntity extends Projectile {
     public static final EntityDataAccessor<Integer> LIFE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Float> AOE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Float> REACH = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Integer> PIERCING = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> ENTITY_PIERCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> BLOCK_PIERCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> BLOCK_BOUNCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Boolean> IS_HARMFUL = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> IS_HOMING = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
@@ -400,10 +404,11 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.set(LIFE, compound.getInt("life"));
         this.entityData.set(AOE, compound.getFloat("aoe"));
         this.entityData.set(REACH, compound.getFloat("reach"));
-        this.entityData.set(PIERCING, compound.getInt("piercing"));
-        this.entityData.set(BLOCK_BOUNCE, compound.getInt("blockBounce"));
-        this.entityData.set(IS_HARMFUL, compound.getBoolean("isHarmful"));
-        this.entityData.set(IS_HOMING, compound.getBoolean("isHoming"));
+        this.entityData.set(ENTITY_PIERCE, compound.getInt("entity_pierce"));
+        this.entityData.set(BLOCK_PIERCE, compound.getInt("block_pierce"));
+        this.entityData.set(BLOCK_BOUNCE, compound.getInt("block_bounce"));
+        this.entityData.set(IS_HARMFUL, compound.getBoolean("is_harmful"));
+        this.entityData.set(IS_HOMING, compound.getBoolean("is_homing"));
     }
 
     @Override
@@ -420,10 +425,11 @@ public abstract class AbstractSpellEntity extends Projectile {
         compound.putInt("life", this.entityData.get(LIFE));
         compound.putFloat("aoe", this.entityData.get(AOE));
         compound.putFloat("reach", this.entityData.get(REACH));
-        compound.putInt("piercing", this.entityData.get(PIERCING));
-        compound.putInt("blockBounce", this.entityData.get(BLOCK_BOUNCE));
-        compound.putBoolean("isHarmful", this.entityData.get(IS_HARMFUL));
-        compound.putBoolean("isHoming", this.entityData.get(IS_HOMING));
+        compound.putInt("entity_pierce", this.entityData.get(ENTITY_PIERCE));
+        compound.putInt("block_pierce", this.entityData.get(BLOCK_PIERCE));
+        compound.putInt("block_bounce", this.entityData.get(BLOCK_BOUNCE));
+        compound.putBoolean("is_harmful", this.entityData.get(IS_HARMFUL));
+        compound.putBoolean("is_homing", this.entityData.get(IS_HOMING));
     }
 
     @Override
@@ -439,7 +445,8 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.define(LIFE, 100);
         this.entityData.define(AOE, 0.0F);
         this.entityData.define(REACH, 4.0F);
-        this.entityData.define(PIERCING, 0);
+        this.entityData.define(ENTITY_PIERCE, 0);
+        this.entityData.define(BLOCK_PIERCE, 0);
         this.entityData.define(BLOCK_BOUNCE, 0);
         this.entityData.define(IS_HARMFUL, true);
         this.entityData.define(IS_HOMING, false);

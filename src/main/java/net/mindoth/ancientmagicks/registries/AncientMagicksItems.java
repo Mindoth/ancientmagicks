@@ -175,8 +175,11 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> DAMPEN_MODIFIER_ITEM = ITEMS.register("dampen_modifier",
             () -> new DampenModifierItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> PIERCING_MODIFIER_ITEM = ITEMS.register("pierce_modifier",
-            () -> new PiercingModifierItem(new Item.Properties(), 1, 10));
+    public static final RegistryObject<Item> ENTITY_PIERCE_MODIFIER_ITEM = ITEMS.register("entity_pierce_modifier",
+            () -> new EntityPierceModifierItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> BLOCK_PIERCE_MODIFIER_ITEM = ITEMS.register("block_pierce_modifier",
+            () -> new BlockPierceModifierItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> BOUNCING_MODIFIER_ITEM = ITEMS.register("bounce_modifier",
             () -> new BouncingModifierItem(new Item.Properties(), 1, 10));

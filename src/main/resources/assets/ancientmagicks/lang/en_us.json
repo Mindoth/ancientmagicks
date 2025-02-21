@@ -55,7 +55,8 @@
 
   "item.ancientmagicks.amplify_modifier": "Amplify",
   "item.ancientmagicks.dampen_modifier": "Dampen",
-  "item.ancientmagicks.pierce_modifier": "Pierce",
+  "item.ancientmagicks.entity_pierce_modifier": "Entity Pierce",
+  "item.ancientmagicks.block_pierce_modifier": "Block Pierce",
   "item.ancientmagicks.bounce_modifier": "Bounce",
   "item.ancientmagicks.homing_modifier": "Homing",
   "item.ancientmagicks.gravity_modifier": "Gravity",
