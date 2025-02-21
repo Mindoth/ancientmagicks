@@ -17,14 +17,14 @@ public class EffectSpell extends EntityTargetSpell {
         super(pProperties, manaCost, cooldown);
     }
 
-    protected MobEffect getEffect() {
-        return null;
-    }
-
     @Override
     protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result) {
         return result instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof LivingEntity
                 && allyFilter(owner, entityHitResult.getEntity()) && mobTypeFilter(entityHitResult.getEntity());
+    }
+
+    protected MobEffect getEffect() {
+        return null;
     }
 
     @Override

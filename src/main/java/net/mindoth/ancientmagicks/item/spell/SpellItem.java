@@ -5,7 +5,7 @@ import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
-import net.mindoth.ancientmagicks.item.temp.mindcontrol.MindControlEffect;
+import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlEffect;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
@@ -23,9 +23,6 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
@@ -37,9 +34,55 @@ import java.util.Random;
 
 public class SpellItem extends ComponentItem {
 
-    @Deprecated
-    public boolean castMagic(LivingEntity owner, Entity caster, Vec3 center, int useTime) {
-        return false;
+    private final int manaCost;
+    public int getManaCost() {
+        return this.manaCost;
+    }
+
+    private final int cooldown;
+    public int getCooldown() {
+        return this.cooldown;
+    }
+
+    public boolean isHarmful() {
+        return true;
+    }
+
+    public SpellItem(Properties pProperties, int manaCost, int cooldown) {
+        super(pProperties, manaCost, cooldown);
+        this.manaCost = manaCost;
+        this.cooldown = cooldown;
+    }
+
+    public ParticleColor.IntWrapper getParticleColor() {
+        return ColorCode.DARK_PURPLE.getParticleColor();
+    }
+
+    public enum ColorCode {
+        DARK_RED(new ParticleColor.IntWrapper(170, 25, 25)),
+        RED(new ParticleColor.IntWrapper(255, 85, 85)),
+        GOLD(new ParticleColor.IntWrapper(255, 170, 25)),
+        YELLOW(new ParticleColor.IntWrapper(255, 255, 85)),
+        DARK_GREEN(new ParticleColor.IntWrapper(25, 170, 25)),
+        GREEN(new ParticleColor.IntWrapper(85, 225, 85)),
+        AQUA(new ParticleColor.IntWrapper(85, 255, 255)),
+        DARK_AQUA(new ParticleColor.IntWrapper(25, 170, 170)),
+        DARK_BLUE(new ParticleColor.IntWrapper(25, 25, 170)),
+        BLUE(new ParticleColor.IntWrapper(85, 85, 255)),
+        LIGHT_PURPLE(new ParticleColor.IntWrapper(255, 85, 255)),
+        DARK_PURPLE(new ParticleColor.IntWrapper(170, 25, 170)),
+        WHITE(new ParticleColor.IntWrapper(255, 255, 255)),
+        GRAY(new ParticleColor.IntWrapper(170, 170, 170)),
+        DARK_GRAY(new ParticleColor.IntWrapper(85, 85, 85)),
+        BLACK(new ParticleColor.IntWrapper(0, 0, 0));
+
+        private ParticleColor.IntWrapper color;
+        ColorCode(ParticleColor.IntWrapper color) {
+            this.color = color;
+        }
+        public ParticleColor.IntWrapper getParticleColor() {
+            return this.color;
+        }
     }
 
     public static final String POWER = "power";
@@ -66,12 +109,12 @@ public class SpellItem extends ComponentItem {
         return stats;
     }
 
-    protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result) {
-        return true;
-    }
-
     protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
         return canApply(level, owner, caster, result);
+    }
+
+    protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result) {
+        return true;
     }
 
     public boolean castSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
@@ -127,107 +170,6 @@ public class SpellItem extends ComponentItem {
                 }
         if ( !blocks.contains(pos) ) blocks.add(pos);
         return blocks;
-    }
-
-    private final int manaCost;
-    public int getManaCost() {
-        return this.manaCost;
-    }
-
-    private final int cooldown;
-    public int getCooldown() {
-        return this.cooldown;
-    }
-
-    @Deprecated
-    public boolean isChannel() {
-        return false;
-    }
-
-    public boolean isHarmful() {
-        return true;
-    }
-
-    public ParticleColor.IntWrapper getParticleColor() {
-        return ColorCode.DARK_PURPLE.getParticleColor();
-    }
-
-    @Deprecated
-    public SpellItem(Properties pProperties, int spellTier, int manaCost, int cooldown, SpellType spellType) {
-        super(pProperties, manaCost, cooldown);
-        this.manaCost = manaCost;
-        this.cooldown = cooldown;
-        this.spellTier = spellTier;
-    }
-    @Deprecated
-    private final int spellTier;
-    @Deprecated
-    public int getSpellTier() {
-        return this.spellTier;
-    }
-
-    @Deprecated
-    public enum SpellType {
-        ATTACK(1),
-        BUFF(2),
-        SUMMON(2),
-        SPECIAL(1);
-
-        private int multiplier;
-        SpellType(int i) {
-            this.multiplier = i;
-        }
-        int getMultiplier() {
-            return this.multiplier;
-        }
-        SpellType getType() {
-            return this;
-        }
-    }
-
-    public SpellItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
-        this.manaCost = manaCost;
-        this.cooldown = cooldown;
-        this.spellTier = 0;
-    }
-
-    public enum ColorCode {
-        DARK_RED(new ParticleColor.IntWrapper(170, 25, 25)),
-        RED(new ParticleColor.IntWrapper(255, 85, 85)),
-        GOLD(new ParticleColor.IntWrapper(255, 170, 25)),
-        YELLOW(new ParticleColor.IntWrapper(255, 255, 85)),
-        DARK_GREEN(new ParticleColor.IntWrapper(25, 170, 25)),
-        GREEN(new ParticleColor.IntWrapper(85, 225, 85)),
-        AQUA(new ParticleColor.IntWrapper(85, 255, 255)),
-        DARK_AQUA(new ParticleColor.IntWrapper(25, 170, 170)),
-        DARK_BLUE(new ParticleColor.IntWrapper(25, 25, 170)),
-        BLUE(new ParticleColor.IntWrapper(85, 85, 255)),
-        LIGHT_PURPLE(new ParticleColor.IntWrapper(255, 85, 255)),
-        DARK_PURPLE(new ParticleColor.IntWrapper(170, 25, 170)),
-        WHITE(new ParticleColor.IntWrapper(255, 255, 255)),
-        GRAY(new ParticleColor.IntWrapper(170, 170, 170)),
-        DARK_GRAY(new ParticleColor.IntWrapper(85, 85, 85)),
-        BLACK(new ParticleColor.IntWrapper(0, 0, 0));
-
-        private ParticleColor.IntWrapper color;
-        ColorCode(ParticleColor.IntWrapper color) {
-            this.color = color;
-        }
-        public ParticleColor.IntWrapper getParticleColor() {
-            return this.color;
-        }
-    }
-
-    @Deprecated
-    public static int rollForPower(int power, int die) {
-        int finalHit = 0;
-        for ( int i = 0; i < power; i++ ) {
-            Random rand = new Random();
-            int roll = (rand.nextInt(die) + 1);
-            finalHit += roll;
-        }
-        return finalHit;
     }
 
     public static void attackEntity(LivingEntity owner, Entity target, Entity source, float amount) {

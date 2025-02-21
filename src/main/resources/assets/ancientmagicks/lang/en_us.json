@@ -50,6 +50,8 @@
   "item.ancientmagicks.destroy_liquids_spell": "Destroy Liquids",
   "item.ancientmagicks.create_water_spell": "Create Water",
   "item.ancientmagicks.teleport_spell": "Teleport",
+  "item.ancientmagicks.mind_control_spell": "Mind Control",
+  "item.ancientmagicks.spook_spell": "Spook",
 
   "item.ancientmagicks.amplify_modifier": "Amplify",
   "item.ancientmagicks.dampen_modifier": "Dampen",

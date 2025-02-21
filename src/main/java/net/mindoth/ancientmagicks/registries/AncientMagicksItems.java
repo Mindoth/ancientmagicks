@@ -15,17 +15,19 @@ import net.mindoth.ancientmagicks.item.form.TouchFormItem;
 import net.mindoth.ancientmagicks.item.modifier.*;
 import net.mindoth.ancientmagicks.item.spell.alacrity.AlacritySpellItem;
 import net.mindoth.ancientmagicks.item.spell.blind.BlindSpellItem;
-import net.mindoth.ancientmagicks.item.spell.callthunder.CallThunderItem;
-import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphItem;
-import net.mindoth.ancientmagicks.item.spell.createwater.CreateWaterSpell;
-import net.mindoth.ancientmagicks.item.spell.destroyliquids.DestroyLiquidsSpell;
-import net.mindoth.ancientmagicks.item.spell.fly.FlyItem;
+import net.mindoth.ancientmagicks.item.spell.callthunder.CallThunderSpellItem;
+import net.mindoth.ancientmagicks.item.spell.chaoticpolymorph.ChaoticPolymorphSpellItem;
+import net.mindoth.ancientmagicks.item.spell.createwater.CreateWaterSpellItem;
+import net.mindoth.ancientmagicks.item.spell.destroyliquids.DestroyLiquidsSpellItem;
+import net.mindoth.ancientmagicks.item.spell.fly.FlySpellItem;
 import net.mindoth.ancientmagicks.item.spell.harm.HarmSpellItem;
+import net.mindoth.ancientmagicks.item.spell.mindcontrol.MindControlSpellItem;
 import net.mindoth.ancientmagicks.item.spell.notbreak.BreakSpellItem;
 import net.mindoth.ancientmagicks.item.spell.polymorph.PolymorphSpellItem;
 import net.mindoth.ancientmagicks.item.spell.sleep.SleepSpellItem;
-import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockItem;
-import net.mindoth.ancientmagicks.item.spell.teleport.TeleportSpell;
+import net.mindoth.ancientmagicks.item.spell.spook.SpookSpellItem;
+import net.mindoth.ancientmagicks.item.spell.teleblock.TeleblockSpellItem;
+import net.mindoth.ancientmagicks.item.spell.teleport.TeleportSpellItem;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -140,25 +142,31 @@ public class AncientMagicksItems {
             () -> new AlacritySpellItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> CALL_THUNDER_SPELL_ITEM = ITEMS.register("call_thunder_spell",
-            () -> new CallThunderItem(new Item.Properties(), 1, 10));
+            () -> new CallThunderSpellItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> CHAOTIC_POLYMORPH_SPELL_ITEM = ITEMS.register("chaotic_polymorph_spell",
-            () -> new ChaoticPolymorphItem(new Item.Properties(), 1, 10));
+            () -> new ChaoticPolymorphSpellItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> TELEBLOCK_SPELL_ITEM = ITEMS.register("teleblock_spell",
-            () -> new TeleblockItem(new Item.Properties(), 1, 10));
+            () -> new TeleblockSpellItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> FLY_SPELL_ITEM = ITEMS.register("fly_spell",
-            () -> new FlyItem(new Item.Properties(), 1, 10));
+            () -> new FlySpellItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> DESTROY_LIQUIDS_SPELL_ITEM = ITEMS.register("destroy_liquids_spell",
-            () -> new DestroyLiquidsSpell(new Item.Properties(), 1, 10));
+            () -> new DestroyLiquidsSpellItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> CREATE_WATER_SPELL_ITEM = ITEMS.register("create_water_spell",
-            () -> new CreateWaterSpell(new Item.Properties(), 1, 10));
+            () -> new CreateWaterSpellItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> TELEPORT_SPELL_ITEM = ITEMS.register("teleport_spell",
-            () -> new TeleportSpell(new Item.Properties(), 1, 10));
+            () -> new TeleportSpellItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> MIND_CONTROL_SPELL_ITEM = ITEMS.register("mind_control_spell",
+            () -> new MindControlSpellItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> SPOOK_SPELL_ITEM = ITEMS.register("spook_spell",
+            () -> new SpookSpellItem(new Item.Properties(), 1, 10));
 
     //Modifiers
     public static final RegistryObject<Item> AMPLIFY_MODIFIER_ITEM = ITEMS.register("amplify_modifier",
