@@ -108,31 +108,6 @@ public class GuiSpellWheel extends AncientMagicksScreen {
     }
 
     @Override
-    public void tick() {
-        if ( this.totalTime != this.OPEN_ANIMATION_LENGTH ) this.extraTick++;
-        Player player = minecraft.player;
-        if ( !CastingItem.canOpenWheel(player)) player.closeContainer();
-    }
-
-    @SubscribeEvent
-    public static void overlayEvent(RenderGuiOverlayEvent.Pre event) {
-        if ( Minecraft.getInstance().screen instanceof GuiSpellWheel ) {
-            if ( event.getOverlay() == VanillaGuiOverlay.HOTBAR.type() || event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type() ) event.setCanceled(true);
-        }
-    }
-
-    @Override
-    public boolean keyPressed(int key, int scanCode, int modifiers) {
-        int adjustedKey = key - 48;
-        if ( adjustedKey >= 0 && adjustedKey < 10 ) {
-            this.selectedItem = adjustedKey == 0 ? 10 : adjustedKey;
-            mouseClicked(0,0,0);
-            return true;
-        }
-        return super.keyPressed(key, scanCode, modifiers);
-    }
-
-    @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         super.render(graphics, mouseX, mouseY, partialTicks);
         PoseStack ms = graphics.pose();
@@ -337,6 +312,31 @@ public class GuiSpellWheel extends AncientMagicksScreen {
             buffer.vertex(pos2InX, pos2InY, z).color(r, g, b, a).endVertex();
             buffer.vertex(pos2OutX, pos2OutY, z).color(r, g, b, a).endVertex();
         }
+    }
+
+    @Override
+    public void tick() {
+        if ( this.totalTime != this.OPEN_ANIMATION_LENGTH ) this.extraTick++;
+        Player player = minecraft.player;
+        if ( !CastingItem.canOpenWheel(player)) player.closeContainer();
+    }
+
+    @SubscribeEvent
+    public static void overlayEvent(RenderGuiOverlayEvent.Pre event) {
+        if ( Minecraft.getInstance().screen instanceof GuiSpellWheel ) {
+            if ( event.getOverlay() == VanillaGuiOverlay.HOTBAR.type() || event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type() ) event.setCanceled(true);
+        }
+    }
+
+    @Override
+    public boolean keyPressed(int key, int scanCode, int modifiers) {
+        int adjustedKey = key - 48;
+        if ( adjustedKey >= 0 && adjustedKey < 10 ) {
+            this.selectedItem = adjustedKey == 0 ? 10 : adjustedKey;
+            mouseClicked(0,0,0);
+            return true;
+        }
+        return super.keyPressed(key, scanCode, modifiers);
     }
 
     @SubscribeEvent

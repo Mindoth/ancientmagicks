@@ -14,7 +14,7 @@ public class AncientMagicksEntities {
 
     public static final RegistryObject<EntityType<ProjectileSpellEntity>> SPELL_PROJECTILE
             = registerEntity(EntityType.Builder.<ProjectileSpellEntity>of(ProjectileSpellEntity::new,
-            MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(ProjectileSpellEntity::new), "spell_projectile");
+            MobCategory.MISC).sized(0.5F, 0.5F), "spell_projectile");
 
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntity(EntityType.Builder<T> builder, String entityName) {

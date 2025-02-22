@@ -185,7 +185,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
         else if ( rune == AncientMagicksItems.YELLOW_RUNE.get() ) rune = AncientMagicksItems.GREEN_RUNE.get();
         else if ( rune == AncientMagicksItems.GREEN_RUNE.get() ) rune = AncientMagicksItems.BLACK_RUNE.get();
         else if ( rune == AncientMagicksItems.BLACK_RUNE.get() ) rune = AncientMagicksItems.WHITE_RUNE.get();
-        else if ( rune == AncientMagicksItems.WHITE_RUNE.get() ) rune = AncientMagicksItems.BLUE_RUNE.get();
+        else rune = AncientMagicksItems.BLANK_RUNE.get();
 
         final int index = this.itemList.indexOf(getStackFromSlot(button));
         this.itemList.set(index, new ItemStack(rune));

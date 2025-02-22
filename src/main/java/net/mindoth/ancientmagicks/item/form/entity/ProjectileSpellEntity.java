@@ -13,10 +13,6 @@ import net.minecraftforge.network.PlayMessages;
 
 public class ProjectileSpellEntity extends AbstractSpellEntity {
 
-    public ProjectileSpellEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
-        this(AncientMagicksEntities.SPELL_PROJECTILE.get(), level);
-    }
-
     public ProjectileSpellEntity(EntityType<ProjectileSpellEntity> entityType, Level level) {
         super(entityType, level);
     }

@@ -23,6 +23,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 public class SpellBookItem extends Item implements DyeableMagicItem {
 
@@ -31,6 +32,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
     public static final String NBT_KEY_OWNER_NAME = "am_book_owner_name";
     public static final String NBT_KEY_OWNER_UUID = "am_book_owner_uuid";
     public static final String NBT_KEY_BOOK_SLOT = "am_book_slot";
+    public static final String NBT_KEY_NULL_NAME = "am_spell_has_null_name";
 
     public SpellBookItem(Properties pProperties) {
         super(pProperties);
@@ -76,7 +78,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
 
     public static ItemStack constructSpellScroll(String string, String name, Item item, String code) {
         ItemStack stack = new ItemStack(item);
-        stack.setHoverName(Component.literal(name));
+        if ( !Objects.equals(name, NBT_KEY_NULL_NAME) ) stack.setHoverName(Component.literal(name));
         CompoundTag tag = stack.getOrCreateTag();
         tag.putString(ParchmentItem.NBT_KEY_SPELL_STRING, string);
         tag.putString(ParchmentItem.NBT_KEY_CODE_STRING, code);
@@ -126,7 +128,9 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         String code = scroll.getTag().getString(ParchmentItem.NBT_KEY_CODE_STRING);
         SpellBookItem.addSpellTagsToBook(bookTag, code, SpellBookItem.NBT_KEY_CODES);
 
-        String name = scroll.getHoverName().getString();
+        String name;
+        if ( scroll.hasCustomHoverName() ) name = scroll.getHoverName().getString();
+        else name = NBT_KEY_NULL_NAME;
         SpellBookItem.addSpellTagsToBook(bookTag, name, ParchmentItem.NBT_KEY_SPELL_NAME);
 
         String item = ForgeRegistries.ITEMS.getKey(scroll.getItem()).toString();
