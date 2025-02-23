@@ -9,10 +9,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -21,7 +17,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -34,21 +29,6 @@ public class ParchmentItem extends Item {
 
     public ParchmentItem(Properties pProperties) {
         super(pProperties);
-    }
-
-    //TODO Remove this as it's just temporarily for testing.
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
-        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
-        if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
-            ItemStack stack = player.getItemInHand(handIn);
-            if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_SPELL_STRING) ) {
-                if ( CastingValidator.castSpell(stack, serverPlayer, serverPlayer) ) {
-                    if ( !player.isCreative() ) stack.shrink(1);
-                }
-            }
-        }
-        return result;
     }
 
     public static List<ColorRuneItem> getScrollComboList(ItemStack stack) {
@@ -89,13 +69,13 @@ public class ParchmentItem extends Item {
                 runes.add(item);
             }
             for ( Item item : runes ) {
-                if ( item instanceof SpellFormItem) {
+                if ( item instanceof SpellFormItem ) {
                     tooltip.add(Component.translatable("tooltip.ancientmagicks.form")
                             .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
                 }
             }
             for ( Item item : runes ) {
-                if ( item instanceof SpellItem) {
+                if ( item instanceof SpellItem ) {
                     tooltip.add(Component.translatable("tooltip.ancientmagicks.spell")
                             .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
                 }

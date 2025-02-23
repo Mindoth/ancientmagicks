@@ -14,7 +14,7 @@ public class SpellFormItem extends ComponentItem {
         super(pProperties, manaCost, cooldown);
     }
 
-    public boolean formSpell(SpellItem spell, LivingEntity owner, Entity caster, List<SpellModifierItem> modifiers) {
+    public boolean formSpell(LivingEntity owner, Entity caster, List<List<ComponentItem>> spellRecipe) {
         return false;
     }
 }

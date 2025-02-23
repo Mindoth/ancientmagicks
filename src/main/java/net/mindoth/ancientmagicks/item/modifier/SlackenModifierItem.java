@@ -13,10 +13,8 @@ public class SlackenModifierItem extends SpellModifierItem {
     }
 
     @Override
-    public void addModifierToEntity(ProjectileSpellEntity projectile, int count) {
-        if ( projectile != null ) {
-            projectile.getEntityData().set(AbstractSpellEntity.SPEED, Math.max(0, projectile.getEntityData().get(AbstractSpellEntity.SPEED) - count * 0.2F));
-        }
+    public void addModifierOnEntityCreation(AbstractSpellEntity projectile, int count) {
+        projectile.getEntityData().set(AbstractSpellEntity.SPEED, Math.max(0, projectile.getEntityData().get(AbstractSpellEntity.SPEED) - count * 0.2F));
     }
 
     @Override

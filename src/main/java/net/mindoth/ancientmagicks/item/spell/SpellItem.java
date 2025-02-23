@@ -34,6 +34,12 @@ import java.util.Random;
 
 public class SpellItem extends ComponentItem {
 
+    public SpellItem(Properties pProperties, int manaCost, int cooldown) {
+        super(pProperties, manaCost, cooldown);
+        this.manaCost = manaCost;
+        this.cooldown = cooldown;
+    }
+
     private final int manaCost;
     public int getManaCost() {
         return this.manaCost;
@@ -46,12 +52,6 @@ public class SpellItem extends ComponentItem {
 
     public boolean isHarmful() {
         return true;
-    }
-
-    public SpellItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
-        this.manaCost = manaCost;
-        this.cooldown = cooldown;
     }
 
     public ParticleColor.IntWrapper getParticleColor() {

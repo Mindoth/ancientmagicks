@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.form.entity;
 
+import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.minecraft.world.entity.Entity;
@@ -11,14 +12,16 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.PlayMessages;
 
+import java.util.List;
+
 public class ProjectileSpellEntity extends AbstractSpellEntity {
 
     public ProjectileSpellEntity(EntityType<ProjectileSpellEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public ProjectileSpellEntity(Level level, LivingEntity owner, Entity caster, SpellItem spell) {
-        super(AncientMagicksEntities.SPELL_PROJECTILE.get(), level, owner, caster, spell);
+    public ProjectileSpellEntity(Level level, LivingEntity owner, Entity caster, SpellItem spell, List<List<ComponentItem>> spellRecipe) {
+        super(AncientMagicksEntities.SPELL_PROJECTILE.get(), level, owner, caster, spell, spellRecipe);
     }
 
     private void castMagick(HitResult result) {

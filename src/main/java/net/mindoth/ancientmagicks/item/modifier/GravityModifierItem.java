@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.modifier;
 
+import net.mindoth.ancientmagicks.item.form.entity.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.item.form.entity.ProjectileSpellEntity;
 
@@ -12,10 +13,8 @@ public class GravityModifierItem extends SpellModifierItem {
     }
 
     @Override
-    public void addModifierToEntity(ProjectileSpellEntity projectile, int count) {
-        if ( projectile != null ) {
-            if ( projectile.isNoGravity() ) projectile.setNoGravity(false);
-        }
+    public void addModifierOnEntityCreation(AbstractSpellEntity projectile, int count) {
+        if ( projectile.isNoGravity() ) projectile.setNoGravity(false);
     }
 
     @Override

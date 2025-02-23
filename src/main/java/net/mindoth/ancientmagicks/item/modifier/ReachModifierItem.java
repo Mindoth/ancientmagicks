@@ -13,10 +13,8 @@ public class ReachModifierItem extends SpellModifierItem {
     }
 
     @Override
-    public void addModifierToEntity(ProjectileSpellEntity projectile, int count) {
-        if ( projectile != null ) {
-            projectile.getEntityData().set(AbstractSpellEntity.REACH, projectile.getEntityData().get(AbstractSpellEntity.REACH) + (float)count);
-        }
+    public void addModifierOnEntityCreation(AbstractSpellEntity projectile, int count) {
+        projectile.getEntityData().set(AbstractSpellEntity.REACH, projectile.getEntityData().get(AbstractSpellEntity.REACH) + (float)count);
     }
 
     @Override

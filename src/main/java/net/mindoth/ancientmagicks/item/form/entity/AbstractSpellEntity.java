@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item.form.entity;
 
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
+import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -36,6 +37,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -45,12 +47,13 @@ public abstract class AbstractSpellEntity extends Projectile {
         super(entityType, level);
     }
 
-    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, SpellItem spell) {
+    //TODO: Carry rest of spellStack to the next possible spell. Only needed if triggercasting is a thing.
+    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, SpellItem spell, List<List<ComponentItem>> spellStack) {
         super(entityType, pLevel);
         this.owner = owner;
         this.caster = caster;
-        this.getEntityData().set(SPELL, ForgeRegistries.ITEMS.getKey(spell).toString());
 
+        this.getEntityData().set(SPELL, ForgeRegistries.ITEMS.getKey(spell).toString());
         if ( spell.isHarmful() ) this.ignoredEntities.put(caster.getId(), (int)getReach() * 20);
         else this.ignoredEntities.put(caster.getId(), this.tickCount);
     }
@@ -360,10 +363,6 @@ public abstract class AbstractSpellEntity extends Projectile {
         return this.entityData.get(BLOCK_BOUNCE);
     }
 
-    public boolean isHarmful() {
-        return this.entityData.get(IS_HARMFUL);
-    }
-
     public boolean getHoming() {
         return this.entityData.get(IS_HOMING);
     }
@@ -387,7 +386,6 @@ public abstract class AbstractSpellEntity extends Projectile {
     public static final EntityDataAccessor<Integer> ENTITY_PIERCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> BLOCK_PIERCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> BLOCK_BOUNCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Boolean> IS_HARMFUL = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> IS_HOMING = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
 
     @Override
@@ -407,7 +405,6 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.set(ENTITY_PIERCE, compound.getInt("entity_pierce"));
         this.entityData.set(BLOCK_PIERCE, compound.getInt("block_pierce"));
         this.entityData.set(BLOCK_BOUNCE, compound.getInt("block_bounce"));
-        this.entityData.set(IS_HARMFUL, compound.getBoolean("is_harmful"));
         this.entityData.set(IS_HOMING, compound.getBoolean("is_homing"));
     }
 
@@ -428,7 +425,6 @@ public abstract class AbstractSpellEntity extends Projectile {
         compound.putInt("entity_pierce", this.entityData.get(ENTITY_PIERCE));
         compound.putInt("block_pierce", this.entityData.get(BLOCK_PIERCE));
         compound.putInt("block_bounce", this.entityData.get(BLOCK_BOUNCE));
-        compound.putBoolean("is_harmful", this.entityData.get(IS_HARMFUL));
         compound.putBoolean("is_homing", this.entityData.get(IS_HOMING));
     }
 
@@ -448,7 +444,6 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.define(ENTITY_PIERCE, 0);
         this.entityData.define(BLOCK_PIERCE, 0);
         this.entityData.define(BLOCK_BOUNCE, 0);
-        this.entityData.define(IS_HARMFUL, true);
         this.entityData.define(IS_HOMING, false);
     }
 
