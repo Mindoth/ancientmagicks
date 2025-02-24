@@ -14,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -37,6 +38,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 public abstract class AbstractSpellEntity extends Projectile {
@@ -61,12 +63,15 @@ public abstract class AbstractSpellEntity extends Projectile {
     protected int bounces = 0;
 
     private void timeIgnoredLists() {
-        int timeout = 20;
+        int timeout = 10;
         if ( this.ignoredEntities != null && !this.ignoredEntities.isEmpty() ) {
             for ( Map.Entry<Integer, Integer> entry : this.ignoredEntities.entrySet() ) {
+                int id = entry.getKey();
                 if ( entry.getValue() + timeout < this.tickCount ) {
-                    this.ignoredEntities.remove(entry.getKey());
-                    break;
+                    if ( getEntityById(id) == null || (getEntityById(id) != null && !getEntityById(id).getBoundingBox().intersects(this.getBoundingBox()) ) ) {
+                        this.ignoredEntities.remove(id);
+                        break;
+                    }
                 }
             }
         }
@@ -78,6 +83,12 @@ public abstract class AbstractSpellEntity extends Projectile {
                 }
             }
         }
+    }
+
+    private Entity getEntityById(int id) {
+        if ( !(level() instanceof ServerLevel serverLevel) ) return null;
+        for ( Entity entity : serverLevel.getAllEntities() ) if ( entity != null && entity.getId() == id ) return entity;
+        return null;
     }
 
     @Override
@@ -126,9 +137,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         }
         if ( result.getType() == HitResult.Type.ENTITY ) {
             Entity entity = ((EntityHitResult)result).getEntity();
-            if ( this.ignoredEntities != null && !this.ignoredEntities.isEmpty() ) {
-                if ( this.ignoredEntities.containsKey(entity.getId()) ) flag = true;
-            }
+            if ( this.ignoredEntities != null && !this.ignoredEntities.isEmpty() && this.ignoredEntities.containsKey(entity.getId()) ) flag = true;
         }
         if ( result.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, result) ) onHit(result);
     }
@@ -195,7 +204,7 @@ public abstract class AbstractSpellEntity extends Projectile {
                     else if ( face == Direction.UP ) motionY = -motionY;
                     else if ( face == Direction.DOWN ) motionY = -motionY;
                     //This seems to work better with low velocity projectiles than "this.setDeltaMovement(motionX, motionY, motionZ)";
-                    shoot(motionX, motionY, motionZ, getSpeed() * 0.5F, 0);
+                    shoot(motionX, motionY, motionZ, getSpeed() * 0.75F, 0);
                 }
                 else doDeathEffects();
             }
@@ -211,17 +220,15 @@ public abstract class AbstractSpellEntity extends Projectile {
         if ( this.target == null || !this.target.isAlive() ) this.target = ShadowEvents.getNearestEntity(this, level(), range, this::homingFilter);
         if ( this.target != null ) {
             if ( !isNoGravity() ) setNoGravity(true);
-            double mX = getDeltaMovement().x();
-            double mY = getDeltaMovement().y();
-            double mZ = getDeltaMovement().z();
             Vec3 targetPos = ShadowEvents.getEntityCenter(this.target);
             if ( this.target instanceof EnderDragon || this.target instanceof EnderDragonPart ) targetPos = new Vec3(targetPos.x, this.target.getY(), targetPos.z);
             Vec3 lookVec = targetPos.subtract(position()).normalize();
-            Vec3 spellMotion = new Vec3(mX, mY, mZ);
+            Vec3 spellMotion = new Vec3(getDeltaMovement().x(), getDeltaMovement().y(), getDeltaMovement().z());
             float arc = 0.1F;
             if ( position().distanceTo(this.target.position()) < 2.0D ) arc = 1.0F;
             Vec3 lerpVec = new Vec3(Mth.lerp(arc, spellMotion.x, lookVec.x), Mth.lerp(arc, spellMotion.y, lookVec.y), Mth.lerp(arc, spellMotion.z, lookVec.z));
-            setDeltaMovement(lerpVec);
+            //setDeltaMovement(lerpVec);
+            shoot(lerpVec.x, lerpVec.y, lerpVec.z, getSpeed() * 0.75F, 0);
             if ( this.ignoredEntities.containsKey(this.target.getId()) ) this.target = null;
         }
     }

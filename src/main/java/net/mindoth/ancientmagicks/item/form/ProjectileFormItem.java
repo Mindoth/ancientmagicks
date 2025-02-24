@@ -35,7 +35,7 @@ public class ProjectileFormItem extends SpellFormItem {
         ProjectileSpellEntity projectile = new ProjectileSpellEntity(level, owner, caster);
         projectile.getEntityData().set(AbstractSpellEntity.SPELL, ForgeRegistries.ITEMS.getKey(spellItem).toString());
         projectile.getEntityData().set(AbstractSpellEntity.SPELLSTACK, CastingValidator.getStringFromSpellStack(spellStack));
-        if ( spellItem.isHarmful() ) projectile.ignoredEntities.put(caster.getId(), (int)projectile.getReach() * 20);
+        if ( spellItem.isHarmful() ) projectile.ignoredEntities.put(caster.getId(), (int)projectile.getReach() * 40);
         else projectile.ignoredEntities.put(caster.getId(), projectile.tickCount);
         projectile.setNoGravity(true);
 
