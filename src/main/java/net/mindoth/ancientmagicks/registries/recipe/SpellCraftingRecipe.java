@@ -40,13 +40,15 @@ public class SpellCraftingRecipe extends CustomRecipe {
                 else restList.add(stack);
             }
         }
-        List<ComponentItem> componentList = Lists.newArrayList();
-        for ( ItemStack stack : componentStackList ) if ( stack.getItem() instanceof ComponentItem component ) componentList.add(component);
+        if ( paperList.size() == 1 && restList.isEmpty() ) {
+            List<ComponentItem> componentList = Lists.newArrayList();
+            for ( ItemStack stack : componentStackList ) if ( stack.getItem() instanceof ComponentItem component ) componentList.add(component);
+            List<List<ComponentItem>> spellStack = CastingValidator.getSpellStackFromComponentList(componentList, CastingValidator.getChainLength(paperList.get(0).getItem()));
+            boolean noExtras = CastingValidator.getComponentListFromSpellStack(spellStack).size() == componentStackList.size();
 
-        List<List<ComponentItem>> spellStack = CastingValidator.getSpellStackFromComponentList(componentList, 0);
-        List<ComponentItem> list = CastingValidator.getComponentListFromSpellStack(spellStack);
-
-        return paperList.size() == 1 && CastingValidator.isSpellValid(componentList) && componentList.equals(list) && restList.isEmpty();
+            return CastingValidator.isValidSpellStack(spellStack) && noExtras;
+        }
+        else return false;
     }
 
     @Override
@@ -62,29 +64,28 @@ public class SpellCraftingRecipe extends CustomRecipe {
                 else restList.add(stack);
             }
         }
-        List<ComponentItem> componentList = Lists.newArrayList();
-        for ( ItemStack stack : componentStackList ) if ( stack.getItem() instanceof ComponentItem component ) componentList.add(component);
-        if ( paperList.size() == 1 && CastingValidator.isSpellValid(componentList) && restList.isEmpty() ) {
-            ItemStack stack = paperList.get(0).copy();
-            stack.setCount(1);
-            if ( stack.hasCustomHoverName() ) stack.setHoverName(Component.literal(paperList.get(0).getHoverName().getString()));
-            CompoundTag tag = stack.getOrCreateTag();
-            List<List<ComponentItem>> spellStack = CastingValidator.getSpellStackFromComponentList(componentList, 0);
-            List<ComponentItem> list = CastingValidator.getComponentListFromSpellStack(spellStack);
-            StringBuilder spellString = new StringBuilder();
-            for ( int i = 0; i < list.size(); i++ ) {
-                if ( i > 0 ) spellString.append(",");
-                spellString.append(ForgeRegistries.ITEMS.getKey(list.get(i)).toString());
-            }
-            tag.putString(ParchmentItem.NBT_KEY_SPELL_STRING, spellString.toString());
+        if ( paperList.size() == 1 && restList.isEmpty() ) {
+            List<ComponentItem> componentList = Lists.newArrayList();
+            for ( ItemStack stack : componentStackList ) if ( stack.getItem() instanceof ComponentItem component ) componentList.add(component);
+            List<List<ComponentItem>> spellStack = CastingValidator.getSpellStackFromComponentList(componentList, CastingValidator.getChainLength(paperList.get(0).getItem()));
+            boolean noExtras = CastingValidator.getComponentListFromSpellStack(spellStack).size() == componentStackList.size();
 
-            StringBuilder spellCode = new StringBuilder();
-            for ( int i = 0; i < AncientMagicks.comboSizeCalc(); i++ ) {
-                if ( i > 0 ) spellCode.append(",");
-                spellCode.append(ForgeRegistries.ITEMS.getKey(AncientMagicksItems.BLANK_RUNE.get()).toString());
+            if ( CastingValidator.isValidSpellStack(spellStack) && noExtras ) {
+                ItemStack stack = paperList.get(0).copy();
+                stack.setCount(1);
+                if ( stack.hasCustomHoverName() ) stack.setHoverName(Component.literal(paperList.get(0).getHoverName().getString()));
+                CompoundTag tag = stack.getOrCreateTag();
+
+                tag.putString(ParchmentItem.NBT_KEY_SPELL_STRING, CastingValidator.getStringFromComponentList(CastingValidator.getComponentListFromSpellStack(spellStack)));
+
+                StringBuilder spellCode = new StringBuilder();
+                for ( int i = 0; i < AncientMagicks.comboSizeCalc(); i++ ) {
+                    if ( i > 0 ) spellCode.append(",");
+                    spellCode.append(ForgeRegistries.ITEMS.getKey(AncientMagicksItems.BLANK_RUNE.get()).toString());
+                }
+                tag.putString(ParchmentItem.NBT_KEY_CODE_STRING, spellCode.toString());
+                return stack;
             }
-            tag.putString(ParchmentItem.NBT_KEY_CODE_STRING, spellCode.toString());
-            return stack;
         }
         return ItemStack.EMPTY;
     }

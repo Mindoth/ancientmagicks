@@ -28,7 +28,6 @@ public class TeleportSpellItem extends SpellItem {
         }
         else pos = result.getLocation();
 
-        //TODO maybe try teleportToWithTicket?
         EntityTeleportEvent.TeleportCommand event = net.minecraftforge.event.ForgeEventFactory.onEntityTeleportCommand(caster, pos.x, pos.y, pos.z);
         if ( !event.isCanceled() ) {
             if ( caster instanceof LivingEntity ) caster.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());

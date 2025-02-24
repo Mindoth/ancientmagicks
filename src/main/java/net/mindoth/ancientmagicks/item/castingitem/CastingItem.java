@@ -41,7 +41,7 @@ public class CastingItem extends Item {
                     manaCost += item.getManaCost();
                     coolDown += item.getCooldown();
                 }
-                if ( CastingValidator.calculateSpellRecipes(scroll, owner, caster, 0) ) {
+                if ( CastingValidator.calculateSpellRecipes(scroll, owner, caster, CastingValidator.getChainLength(scroll.getItem())) ) {
                     handleCooldownsAndStuff(caster, stack, (int)(coolDown * alacrityBonus));
                     if ( !serverPlayer.isCreative() ) MagickEvents.changeMana(caster, -manaCost);
                 }

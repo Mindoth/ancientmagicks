@@ -2,7 +2,6 @@ package net.mindoth.ancientmagicks.item.form.entity;
 
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
-import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -37,7 +36,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -48,23 +46,19 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     //TODO: Carry rest of spellStack to the next possible spell. Only needed if triggercasting is a thing.
-    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, SpellItem spell, List<List<ComponentItem>> spellStack) {
+    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster) {
         super(entityType, pLevel);
         this.owner = owner;
         this.caster = caster;
-
-        this.getEntityData().set(SPELL, ForgeRegistries.ITEMS.getKey(spell).toString());
-        if ( spell.isHarmful() ) this.ignoredEntities.put(caster.getId(), (int)getReach() * 20);
-        else this.ignoredEntities.put(caster.getId(), this.tickCount);
     }
 
     protected LivingEntity owner;
     protected Entity caster;
 
-    private final HashMap<Integer, Integer> ignoredEntities = new HashMap<>();
-    private final HashMap<BlockPos, Integer> ignoredBlocks = new HashMap<>();
-    protected int bounces = 0;
+    public final HashMap<Integer, Integer> ignoredEntities = new HashMap<>();
+    public final HashMap<BlockPos, Integer> ignoredBlocks = new HashMap<>();
     public Entity target = null;
+    protected int bounces = 0;
 
     private void timeIgnoredLists() {
         int timeout = 20;
@@ -320,6 +314,10 @@ public abstract class AbstractSpellEntity extends Projectile {
         return item instanceof SpellItem spell ? spell : null;
     }
 
+    public String getSpellStack() {
+        return this.entityData.get(SPELLSTACK);
+    }
+
     public HashMap<String, Float> getStats() {
         HashMap<String, Float> stats = SpellItem.createStatsList();
         stats.put(SpellItem.POWER, (float)getPower());
@@ -378,6 +376,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     public static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
 
     public static final EntityDataAccessor<String> SPELL = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.STRING);
+    public static final EntityDataAccessor<String> SPELLSTACK = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Integer> POWER = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Integer> LIFE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
@@ -397,6 +396,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.set(SIZE, compound.getFloat("size"));
 
         this.entityData.set(SPELL, compound.getString("spell"));
+        this.entityData.set(SPELLSTACK, compound.getString("spellstack"));
         this.entityData.set(POWER, compound.getInt("power"));
         this.entityData.set(SPEED, compound.getFloat("speed"));
         this.entityData.set(LIFE, compound.getInt("life"));
@@ -417,6 +417,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         compound.putFloat("size", this.entityData.get(SIZE));
 
         compound.putString("spell", this.entityData.get(SPELL));
+        compound.putString("spellstack", this.entityData.get(SPELLSTACK));
         compound.putInt("power", this.entityData.get(POWER));
         compound.putFloat("speed", this.entityData.get(SPEED));
         compound.putInt("life", this.entityData.get(LIFE));
@@ -436,6 +437,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.define(SIZE, 0.2F);
 
         this.entityData.define(SPELL, "");
+        this.entityData.define(SPELLSTACK, "");
         this.entityData.define(POWER, 1);
         this.entityData.define(SPEED, 1.0F);
         this.entityData.define(LIFE, 100);

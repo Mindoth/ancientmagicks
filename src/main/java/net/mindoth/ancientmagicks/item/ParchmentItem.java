@@ -63,26 +63,22 @@ public class ParchmentItem extends Item {
         }
         if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_SPELL_STRING) ) {
             CompoundTag tag = stack.getTag();
-            List<Item> runes = Lists.newArrayList();
+            List<Item> componentList = Lists.newArrayList();
             for ( String string : List.of(tag.getString(NBT_KEY_SPELL_STRING).split(",")) ) {
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-                runes.add(item);
+                componentList.add(item);
             }
-            for ( Item item : runes ) {
+            for ( Item item : componentList ) {
                 if ( item instanceof SpellFormItem ) {
                     tooltip.add(Component.translatable("tooltip.ancientmagicks.form")
                             .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
                 }
-            }
-            for ( Item item : runes ) {
-                if ( item instanceof SpellItem ) {
-                    tooltip.add(Component.translatable("tooltip.ancientmagicks.spell")
+                else if ( item instanceof SpellModifierItem ) {
+                    tooltip.add(Component.translatable("tooltip.ancientmagicks.modifier")
                             .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
                 }
-            }
-            for ( Item item : runes ) {
-                if ( item instanceof SpellModifierItem ) {
-                    tooltip.add(Component.translatable("tooltip.ancientmagicks.modifier")
+                else if ( item instanceof SpellItem ) {
+                    tooltip.add(Component.translatable("tooltip.ancientmagicks.spell")
                             .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
                 }
             }
