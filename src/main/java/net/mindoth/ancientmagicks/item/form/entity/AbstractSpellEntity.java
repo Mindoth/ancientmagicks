@@ -78,8 +78,10 @@ public abstract class AbstractSpellEntity extends Projectile {
         if ( this.ignoredBlocks != null && !this.ignoredBlocks.isEmpty() ) {
             for ( Map.Entry<BlockPos, Integer> entry : this.ignoredBlocks.entrySet() ) {
                 if ( entry.getValue() + timeout < this.tickCount ) {
-                    this.ignoredBlocks.remove(entry.getKey());
-                    break;
+                    if ( entry.getKey() != this.blockPosition() ) {
+                        this.ignoredBlocks.remove(entry.getKey());
+                        break;
+                    }
                 }
             }
         }

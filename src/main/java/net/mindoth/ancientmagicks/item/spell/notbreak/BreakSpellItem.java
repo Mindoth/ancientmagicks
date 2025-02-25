@@ -1,27 +1,39 @@
 package net.mindoth.ancientmagicks.item.spell.notbreak;
 
+import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
+import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.spell.BlockTargetSpell;
 import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
+@Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
 public class BreakSpellItem extends BlockTargetSpell {
 
     private static final GameProfile FAKE_PROFILE = new GameProfile(UUID.fromString("fdc17a6f-5d46-484e-9343-820f43c7b101"), "am_fake_player_profile");
@@ -39,8 +51,17 @@ public class BreakSpellItem extends BlockTargetSpell {
         int power = Mth.floor(stats.get(SpellItem.POWER));
         player.setItemSlot(EquipmentSlot.MAINHAND, getToolFromStrength(power));
         BlockState blockState = level.getBlockState(pos);
-        if ( !blockState.getBlock().canHarvestBlock(blockState, level, pos, player) || blockState.getBlock().defaultDestroyTime() < 0 ) return false;
-        level.destroyBlock(pos, true);
+        Block block = blockState.getBlock();
+        if ( !block.canHarvestBlock(blockState, level, pos, player) || block.defaultDestroyTime() < 0 || blockState.isAir() ) return false;
+        /*for ( BlockToBreak blockToBreak : BLOCKS_TO_BREAK_QUEUE ) {
+            if ( blockToBreak.pos == pos && blockToBreak.caster == player ) return false;
+        }
+        BLOCKS_TO_BREAK_QUEUE.add(new BlockToBreak(pos, player));*/
+        //level.destroyBlock(pos, true);
+        List<ItemStack> list = Block.getDrops(blockState, serverLevel, pos, level.getBlockEntity(pos), player, player.getItemBySlot(EquipmentSlot.MAINHAND));
+        level.removeBlock(pos, false);
+        if ( !list.isEmpty() ) for ( ItemStack stack : list ) level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack));
+        level.playSound(null, pos, blockState.getSoundType().getBreakSound(), SoundSource.PLAYERS, 0.3F, 1);
         return true;
     }
 
@@ -51,4 +72,30 @@ public class BreakSpellItem extends BlockTargetSpell {
         else if ( power == 4 ) return new ItemStack(Items.IRON_PICKAXE);
         else return new ItemStack(Items.DIAMOND_PICKAXE);
     }
+
+    /*private static final class BlockToBreak {
+
+        private final BlockPos pos;
+        private final FakePlayer caster;
+
+        public BlockToBreak(final BlockPos pos, final FakePlayer caster) {
+            this.pos = pos;
+            this.caster = caster;
+        }
+    }
+
+    private static final LinkedList<BlockToBreak> BLOCKS_TO_BREAK_QUEUE = new LinkedList<>();
+
+    @SubscribeEvent
+    public static void onBreakTick(final TickEvent.ServerTickEvent event) {
+        if ( BLOCKS_TO_BREAK_QUEUE.isEmpty() ) return;
+        final BlockToBreak blockToBreak = BLOCKS_TO_BREAK_QUEUE.removeFirst();
+        final FakePlayer player = blockToBreak.caster;
+        final BlockPos pos = blockToBreak.pos;
+        final Level level = player.level();
+        final BlockState blockState = level.getBlockState(pos);
+        if ( blockState.getBlock().canHarvestBlock(blockState, level, pos, player) && blockState.getBlock().defaultDestroyTime() < 0 || blockState.isAir() ) return;
+        level.destroyBlock(pos, true);
+        System.out.println(BLOCKS_TO_BREAK_QUEUE.size());
+    }*/
 }
