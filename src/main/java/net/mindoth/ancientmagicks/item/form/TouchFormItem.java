@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.form;
 
 import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.item.CastingValidator;
 import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.ancientmagicks.item.spell.SpellItem;
@@ -34,7 +35,7 @@ public class TouchFormItem extends SpellFormItem {
         List<SpellModifierItem> modifiers = Lists.newArrayList();
         for ( ComponentItem item : componentList ) if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
         HashMap<String, Float> stats = SpellItem.createSpellStats(modifiers);
-        float range = stats.get(SpellItem.REACH);
+        float range = stats.get(REACH);
 
         for ( ComponentItem item : componentList ) {
             if ( item instanceof SpellItem spell ) {
@@ -42,7 +43,10 @@ public class TouchFormItem extends SpellFormItem {
                 Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.0F, true, null);
                 if ( target == caster ) hitResult = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range);
                 else hitResult = new EntityHitResult(target, ShadowEvents.getPoint(level, caster, range, 0.0F, false, true, true, false));
-                return spell.castSpell(level, owner, caster, hitResult, stats);
+                if ( spell.castSpell(level, owner, caster, hitResult, stats) ) {
+                    //CastingValidator.castSpell(owner, caster, spellStack);
+                    return true;
+                }
             }
         }
         return false;

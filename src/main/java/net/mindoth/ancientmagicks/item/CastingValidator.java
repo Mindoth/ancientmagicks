@@ -19,13 +19,14 @@ public class CastingValidator {
         if ( !(scroll.getItem() instanceof ParchmentItem) || !scroll.hasTag() ) return false;
         if ( !scroll.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING) ) return false;
         List<ComponentItem> componentList = getComponentListFromScroll(scroll);
-        List<List<ComponentItem>> recipeList = getSpellStackFromComponentList(componentList, chainLength);
+        List<List<ComponentItem>> spellStack = getSpellStackFromComponentList(componentList, chainLength);
 
-        if ( !recipeList.isEmpty() ) return castSpell(owner, caster, recipeList);
+        if ( !spellStack.isEmpty() ) return castSpell(owner, caster, spellStack);
         else return false;
     }
 
     public static boolean castSpell(LivingEntity owner, Entity caster, List<List<ComponentItem>> spellStack) {
+        if ( spellStack.isEmpty() ) return false;
         SpellFormItem form = null;
         for ( ComponentItem item : spellStack.get(0) ) {
             if ( item instanceof SpellFormItem formItem ) {

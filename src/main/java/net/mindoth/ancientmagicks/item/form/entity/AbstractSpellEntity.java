@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item.form.entity;
 
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
+import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -38,7 +39,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Predicate;
 
 public abstract class AbstractSpellEntity extends Projectile {
@@ -227,7 +227,6 @@ public abstract class AbstractSpellEntity extends Projectile {
             float arc = 0.1F;
             if ( position().distanceTo(this.target.position()) < 2.0D ) arc = 1.0F;
             Vec3 lerpVec = new Vec3(Mth.lerp(arc, spellMotion.x, lookVec.x), Mth.lerp(arc, spellMotion.y, lookVec.y), Mth.lerp(arc, spellMotion.z, lookVec.z));
-            //setDeltaMovement(lerpVec);
             shoot(lerpVec.x, lerpVec.y, lerpVec.z, getSpeed() * 0.75F, 0);
             if ( this.ignoredEntities.containsKey(this.target.getId()) ) this.target = null;
         }
@@ -326,13 +325,13 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     public HashMap<String, Float> getStats() {
-        HashMap<String, Float> stats = SpellItem.createStatsList();
-        stats.put(SpellItem.POWER, (float)getPower());
-        stats.put(SpellItem.LIFE, (float)getLife());
-        stats.put(SpellItem.SPEED, getSpeed());
-        stats.put(SpellItem.AOE, getAoe());
-        stats.put(SpellItem.REACH, getReach());
-        stats.put(SpellItem.GRAVITY, this.isNoGravity() ? 0.0F : 1.0F);
+        HashMap<String, Float> stats = ComponentItem.createDefaultStats();
+        stats.put(ComponentItem.POWER, (float)getPower());
+        stats.put(ComponentItem.LIFE, (float)getLife());
+        stats.put(ComponentItem.SPEED, getSpeed());
+        stats.put(ComponentItem.AOE, getAoe());
+        stats.put(ComponentItem.REACH, getReach());
+        stats.put(ComponentItem.GRAVITY, this.isNoGravity() ? 0.0F : 1.0F);
         return stats;
     }
 

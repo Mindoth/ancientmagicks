@@ -1,8 +1,6 @@
 package net.mindoth.ancientmagicks.item.modifier;
 
-import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.item.form.entity.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.form.entity.ProjectileSpellEntity;
 
 import java.util.HashMap;
 
@@ -19,7 +17,7 @@ public class DampenModifierItem extends SpellModifierItem {
 
     @Override
     public void addStatsToMap(HashMap<String, Float> stats) {
-        stats.merge(SpellItem.POWER, -1.0F, Float::sum);
-        stats.merge(SpellItem.POWER, 0.0F, Float::max);
+        stats.merge(POWER, -1.0F, Float::sum);
+        stats.merge(POWER, 0.0F, Float::max);
     }
 }

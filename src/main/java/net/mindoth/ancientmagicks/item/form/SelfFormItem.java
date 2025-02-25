@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.form;
 
 import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.item.CastingValidator;
 import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
@@ -34,7 +35,10 @@ public class SelfFormItem extends SpellFormItem {
         for ( ComponentItem item : componentList ) {
             if ( item instanceof SpellItem spell ) {
                 HitResult hitResult = new EntityHitResult(caster, caster.position());
-                return spell.castSpell(level, owner, caster, hitResult, stats);
+                if ( spell.castSpell(level, owner, caster, hitResult, stats) ) {
+                    //CastingValidator.castSpell(owner, caster, spellStack);
+                    return true;
+                }
             }
         }
         return false;

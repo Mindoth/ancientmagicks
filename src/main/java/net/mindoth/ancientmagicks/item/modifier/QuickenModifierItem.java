@@ -1,8 +1,6 @@
 package net.mindoth.ancientmagicks.item.modifier;
 
-import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.item.form.entity.AbstractSpellEntity;
-import net.mindoth.ancientmagicks.item.form.entity.ProjectileSpellEntity;
 
 import java.util.HashMap;
 
@@ -19,6 +17,6 @@ public class QuickenModifierItem extends SpellModifierItem {
 
     @Override
     public void addStatsToMap(HashMap<String, Float> stats) {
-        stats.merge(SpellItem.SPEED, 0.2F, Float::sum);
+        stats.merge(SPEED, 0.2F, Float::sum);
     }
 }
