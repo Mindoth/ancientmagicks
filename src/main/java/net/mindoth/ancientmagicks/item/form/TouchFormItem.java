@@ -1,10 +1,9 @@
 package net.mindoth.ancientmagicks.item.form;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.CastingValidator;
 import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.effect.EffectItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
-import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -26,29 +25,40 @@ public class TouchFormItem extends SpellFormItem {
     }
 
     @Override
-    public boolean formSpell(LivingEntity owner, Entity caster, List<List<ComponentItem>> spellStack) {
+    public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack) {
         Level level = caster.level();
-        List<ComponentItem> componentList = Lists.newArrayList();
-        componentList.addAll(spellStack.get(0));
-        spellStack.remove(0);
+
+        List<ComponentItem> newList = Lists.newArrayList();
+        List<SpellModifierItem> formModifiers = Lists.newArrayList();
+        boolean form = false;
+        for ( ComponentItem item : spellStack ) {
+            if ( !form ) {
+                if ( item instanceof SpellFormItem ) form = true;
+                if ( item instanceof SpellModifierItem modifier ) formModifiers.add(modifier);
+            }
+            else newList.add(item);
+        }
+        HashMap<String, Float> formStats = EffectItem.createSpellStats(formModifiers);
+        float range = formStats.get(REACH);
+        float aoe = formStats.get(AOE);
 
         List<SpellModifierItem> modifiers = Lists.newArrayList();
-        for ( ComponentItem item : componentList ) if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
-        HashMap<String, Float> stats = SpellItem.createSpellStats(modifiers);
-        float range = stats.get(REACH);
-
-        for ( ComponentItem item : componentList ) {
-            if ( item instanceof SpellItem spell ) {
+        HashMap<String, Float> stats = EffectItem.createDefaultStats();
+        List<Boolean> boolist = Lists.newArrayList();
+        for ( ComponentItem item : newList ) {
+            if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
+            if ( item instanceof EffectItem effect ) {
                 HitResult hitResult;
                 Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.0F, true, null);
                 if ( target == caster ) hitResult = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range);
                 else hitResult = new EntityHitResult(target, ShadowEvents.getPoint(level, caster, range, 0.0F, false, true, true, false));
-                if ( spell.castSpell(level, owner, caster, hitResult, stats) ) {
-                    //CastingValidator.castSpell(owner, caster, spellStack);
-                    return true;
-                }
+                for ( SpellModifierItem modifier : modifiers ) modifier.addStatsToMap(stats);
+                boolist.add(effect.castSpell(level, owner, caster, hitResult, stats, aoe));
+                modifiers = Lists.newArrayList();
+                stats = EffectItem.createDefaultStats();
             }
         }
+        for ( boolean bool : boolist ) if ( bool ) return true;
         return false;
     }
 

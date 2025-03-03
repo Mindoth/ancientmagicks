@@ -2,9 +2,9 @@ package net.mindoth.ancientmagicks.item;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.item.effect.EffectItem;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
-import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -77,7 +77,7 @@ public class ParchmentItem extends Item {
                     tooltip.add(Component.translatable("tooltip.ancientmagicks.modifier")
                             .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
                 }
-                else if ( item instanceof SpellItem ) {
+                else if ( item instanceof EffectItem) {
                     tooltip.add(Component.translatable("tooltip.ancientmagicks.spell")
                             .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
                 }

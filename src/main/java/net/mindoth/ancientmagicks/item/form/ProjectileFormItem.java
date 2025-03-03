@@ -6,12 +6,10 @@ import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.form.entity.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.form.entity.ProjectileSpellEntity;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
-import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,33 +22,30 @@ public class ProjectileFormItem extends SpellFormItem {
     }
 
     @Override
-    public boolean formSpell(LivingEntity owner, Entity caster, List<List<ComponentItem>> spellStack) {
+    public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack) {
         Level level = caster.level();
-        List<ComponentItem> componentList = Lists.newArrayList();
-        componentList.addAll(spellStack.get(0));
-        spellStack.remove(0);
 
-        SpellItem spellItem = null;
-        for ( ComponentItem item : componentList ) if ( item instanceof SpellItem spell ) spellItem = spell;
         ProjectileSpellEntity projectile = new ProjectileSpellEntity(level, owner, caster);
-        projectile.getEntityData().set(AbstractSpellEntity.SPELL, ForgeRegistries.ITEMS.getKey(spellItem).toString());
-        projectile.getEntityData().set(AbstractSpellEntity.SPELLSTACK, CastingValidator.getStringFromSpellStack(spellStack));
-        if ( spellItem.isHarmful() ) projectile.ignoredEntities.put(caster.getId(), (int)projectile.getReach() * 40);
-        else projectile.ignoredEntities.put(caster.getId(), projectile.tickCount);
+        projectile.ignoredEntities.put(caster.getId(), projectile.tickCount);
         projectile.setNoGravity(true);
 
+        List<ComponentItem> newList = Lists.newArrayList();
+        boolean form = false;
         HashMap<SpellModifierItem, Integer> map = new HashMap<>();
-        for ( ComponentItem item : componentList ) if ( item instanceof SpellModifierItem modifier ) map.merge(modifier, 1, Integer::sum);
-        for ( Map.Entry<SpellModifierItem, Integer> entry : map.entrySet() ) entry.getKey().addModifierOnEntityCreation(projectile, entry.getValue());
+        for ( ComponentItem item : spellStack ) {
+            if ( item instanceof SpellFormItem ) form = true;
+            if ( !form ) {
+                if ( item instanceof SpellModifierItem modifier ) map.merge(modifier, 1, Integer::sum);
+            }
+            else newList.add(item);
+        }
+        for ( Map.Entry<SpellModifierItem, Integer> entry : map.entrySet() ) entry.getKey().addEntityModifier(projectile, entry.getValue());
+        projectile.getEntityData().set(AbstractSpellEntity.SPELLSTACK, CastingValidator.getStringFromSpellStack(newList));
 
-        float speed = projectile.getSpeed();
         if ( caster instanceof Player ) projectile.setPos(caster.getEyePosition().add(0, -0.2F, 0));
         else if ( caster instanceof LivingEntity ) projectile.setPos(caster.getEyePosition());
-        else {
-            speed *= -1;
-            projectile.setPos(caster.position());
-        }
-        projectile.anonShootFromRotation(caster.getXRot(), caster.getYRot(), 0, speed, 0.0F);
+        else projectile.setPos(caster.position());
+        projectile.anonShootFromRotation(caster.getXRot(), caster.getYRot(), 0, projectile.getSpeed(), 0.0F);
         level.addFreshEntity(projectile);
         return true;
     }

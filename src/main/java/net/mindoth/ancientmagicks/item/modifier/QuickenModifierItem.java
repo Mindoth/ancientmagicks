@@ -11,7 +11,7 @@ public class QuickenModifierItem extends SpellModifierItem {
     }
 
     @Override
-    public void addModifierOnEntityCreation(AbstractSpellEntity projectile, int count) {
+    public void addEntityModifier(AbstractSpellEntity projectile, int count) {
         projectile.getEntityData().set(AbstractSpellEntity.SPEED, projectile.getEntityData().get(AbstractSpellEntity.SPEED) + count * 0.2F);
     }
 

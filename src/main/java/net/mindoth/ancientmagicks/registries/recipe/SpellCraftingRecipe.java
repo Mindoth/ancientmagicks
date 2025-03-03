@@ -43,10 +43,7 @@ public class SpellCraftingRecipe extends CustomRecipe {
         if ( paperList.size() == 1 && restList.isEmpty() ) {
             List<ComponentItem> componentList = Lists.newArrayList();
             for ( ItemStack stack : componentStackList ) if ( stack.getItem() instanceof ComponentItem component ) componentList.add(component);
-            List<List<ComponentItem>> spellStack = CastingValidator.getSpellStackFromComponentList(componentList, CastingValidator.getChainLength(paperList.get(0).getItem()));
-            boolean noExtras = CastingValidator.getComponentListFromSpellStack(spellStack).size() == componentStackList.size();
-
-            return CastingValidator.isValidSpellStack(spellStack) && noExtras;
+            return CastingValidator.isValidSpell(componentList);
         }
         else return false;
     }
@@ -67,16 +64,13 @@ public class SpellCraftingRecipe extends CustomRecipe {
         if ( paperList.size() == 1 && restList.isEmpty() ) {
             List<ComponentItem> componentList = Lists.newArrayList();
             for ( ItemStack stack : componentStackList ) if ( stack.getItem() instanceof ComponentItem component ) componentList.add(component);
-            List<List<ComponentItem>> spellStack = CastingValidator.getSpellStackFromComponentList(componentList, CastingValidator.getChainLength(paperList.get(0).getItem()));
-            boolean noExtras = CastingValidator.getComponentListFromSpellStack(spellStack).size() == componentStackList.size();
-
-            if ( CastingValidator.isValidSpellStack(spellStack) && noExtras ) {
+            if ( CastingValidator.isValidSpell(componentList) ) {
                 ItemStack stack = paperList.get(0).copy();
                 stack.setCount(1);
                 if ( stack.hasCustomHoverName() ) stack.setHoverName(Component.literal(paperList.get(0).getHoverName().getString()));
                 CompoundTag tag = stack.getOrCreateTag();
 
-                tag.putString(ParchmentItem.NBT_KEY_SPELL_STRING, CastingValidator.getStringFromComponentList(CastingValidator.getComponentListFromSpellStack(spellStack)));
+                tag.putString(ParchmentItem.NBT_KEY_SPELL_STRING, CastingValidator.getStringFromSpellStack(componentList));
 
                 StringBuilder spellCode = new StringBuilder();
                 for ( int i = 0; i < AncientMagicks.comboSizeCalc(); i++ ) {

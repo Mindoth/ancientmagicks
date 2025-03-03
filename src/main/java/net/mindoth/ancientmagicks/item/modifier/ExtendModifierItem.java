@@ -11,12 +11,12 @@ public class ExtendModifierItem extends SpellModifierItem {
     }
 
     @Override
-    public void addModifierOnEntityCreation(AbstractSpellEntity projectile, int count) {
+    public void addEntityModifier(AbstractSpellEntity projectile, int count) {
         projectile.getEntityData().set(AbstractSpellEntity.LIFE, projectile.getEntityData().get(AbstractSpellEntity.LIFE) + count * 20);
     }
 
     @Override
     public void addStatsToMap(HashMap<String, Float> stats) {
-        stats.merge(LIFE, 20.0F, Float::sum);
+        stats.merge(LIFE, 1.0F, Float::sum);
     }
 }

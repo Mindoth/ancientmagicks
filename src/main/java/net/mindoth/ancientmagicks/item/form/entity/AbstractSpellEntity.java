@@ -2,8 +2,9 @@ package net.mindoth.ancientmagicks.item.form.entity;
 
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
+import net.mindoth.ancientmagicks.item.CastingValidator;
 import net.mindoth.ancientmagicks.item.ComponentItem;
-import net.mindoth.ancientmagicks.item.spell.SpellItem;
+import net.mindoth.ancientmagicks.item.effect.EffectItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -14,7 +15,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -25,7 +25,6 @@ import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -34,10 +33,10 @@ import net.minecraft.world.level.block.entity.TheEndGatewayBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -120,7 +119,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     public void handleHitDetection() {
-        HitResult result = getHitResult(position(), this, this::allyFilter, getDeltaMovement(), level());
+        HitResult result = getHitResult(position(), this, this::hitFilter, getDeltaMovement(), level());
         boolean flag = false;
         if ( result.getType() == HitResult.Type.BLOCK ) {
             BlockPos blockpos = ((BlockHitResult)result).getBlockPos();
@@ -144,8 +143,8 @@ public abstract class AbstractSpellEntity extends Projectile {
         if ( result.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, result) ) onHit(result);
     }
 
-    protected boolean allyFilter(Entity target) {
-        return getSpell().allyFilter(this.owner, target) && getSpell().mobTypeFilter(target);
+    protected boolean hitFilter(Entity target) {
+        return EffectItem.allyFilter(this.owner, target, isHarmful());
     }
 
     protected HitResult getHitResult(Vec3 pStartVec, Entity pProjectile, Predicate<Entity> pFilter, Vec3 pEndVecOffset, Level pLevel) {
@@ -214,7 +213,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     protected boolean homingFilter(Entity owner, Entity target) {
-        return allyFilter(target) && !this.ignoredEntities.containsKey(target.getId());
+        return hitFilter(target) && !this.ignoredEntities.containsKey(target.getId());
     }
 
     private void doHoming() {
@@ -317,24 +316,8 @@ public abstract class AbstractSpellEntity extends Projectile {
         return Math.min(size, 2.0F);
     }
 
-    public SpellItem getSpell() {
-        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.entityData.get(SPELL)));
-        return item instanceof SpellItem spell ? spell : null;
-    }
-
-    public String getSpellStack() {
-        return this.entityData.get(SPELLSTACK);
-    }
-
-    public HashMap<String, Float> getStats() {
-        HashMap<String, Float> stats = ComponentItem.createDefaultStats();
-        stats.put(ComponentItem.POWER, (float)getPower());
-        stats.put(ComponentItem.LIFE, (float)getLife());
-        stats.put(ComponentItem.SPEED, getSpeed());
-        stats.put(ComponentItem.AOE, getAoe());
-        stats.put(ComponentItem.REACH, getReach());
-        stats.put(ComponentItem.GRAVITY, this.isNoGravity() ? 0.0F : 1.0F);
-        return stats;
+    public List<ComponentItem> getSpellStack() {
+        return CastingValidator.getSpellStackFromString(this.entityData.get(SPELLSTACK));
     }
 
     public int getPower() {
@@ -378,12 +361,16 @@ public abstract class AbstractSpellEntity extends Projectile {
         return 0.03F;
     }
 
+    public boolean isHarmful() {
+        for ( ComponentItem item : getSpellStack() ) if ( item instanceof EffectItem effect && effect.isHarmful() ) return true;
+        return false;
+    }
+
     public static final EntityDataAccessor<Integer> RED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> GREEN = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> BLUE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
 
-    public static final EntityDataAccessor<String> SPELL = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<String> SPELLSTACK = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Integer> POWER = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
@@ -403,17 +390,16 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.set(BLUE, compound.getInt("blue"));
         this.entityData.set(SIZE, compound.getFloat("size"));
 
-        this.entityData.set(SPELL, compound.getString("spell"));
         this.entityData.set(SPELLSTACK, compound.getString("spellstack"));
-        this.entityData.set(POWER, compound.getInt("power"));
-        this.entityData.set(SPEED, compound.getFloat("speed"));
-        this.entityData.set(LIFE, compound.getInt("life"));
-        this.entityData.set(AOE, compound.getFloat("aoe"));
-        this.entityData.set(REACH, compound.getFloat("reach"));
-        this.entityData.set(ENTITY_PIERCE, compound.getInt("entity_pierce"));
-        this.entityData.set(BLOCK_PIERCE, compound.getInt("block_pierce"));
-        this.entityData.set(BLOCK_BOUNCE, compound.getInt("block_bounce"));
-        this.entityData.set(IS_HOMING, compound.getBoolean("is_homing"));
+        this.entityData.set(POWER, compound.getInt(ComponentItem.POWER));
+        this.entityData.set(SPEED, compound.getFloat(ComponentItem.SPEED));
+        this.entityData.set(LIFE, compound.getInt(ComponentItem.LIFE));
+        this.entityData.set(AOE, compound.getFloat(ComponentItem.AOE));
+        this.entityData.set(REACH, compound.getFloat(ComponentItem.REACH));
+        this.entityData.set(ENTITY_PIERCE, compound.getInt(ComponentItem.ENTITY_PIERCE));
+        this.entityData.set(BLOCK_PIERCE, compound.getInt(ComponentItem.BLOCK_PIERCE));
+        this.entityData.set(BLOCK_BOUNCE, compound.getInt(ComponentItem.BLOCK_BOUNCE));
+        this.entityData.set(IS_HOMING, compound.getBoolean(ComponentItem.IS_HOMING));
     }
 
     @Override
@@ -424,17 +410,16 @@ public abstract class AbstractSpellEntity extends Projectile {
         compound.putInt("blue", this.entityData.get(BLUE));
         compound.putFloat("size", this.entityData.get(SIZE));
 
-        compound.putString("spell", this.entityData.get(SPELL));
         compound.putString("spellstack", this.entityData.get(SPELLSTACK));
-        compound.putInt("power", this.entityData.get(POWER));
-        compound.putFloat("speed", this.entityData.get(SPEED));
-        compound.putInt("life", this.entityData.get(LIFE));
-        compound.putFloat("aoe", this.entityData.get(AOE));
-        compound.putFloat("reach", this.entityData.get(REACH));
-        compound.putInt("entity_pierce", this.entityData.get(ENTITY_PIERCE));
-        compound.putInt("block_pierce", this.entityData.get(BLOCK_PIERCE));
-        compound.putInt("block_bounce", this.entityData.get(BLOCK_BOUNCE));
-        compound.putBoolean("is_homing", this.entityData.get(IS_HOMING));
+        compound.putInt(ComponentItem.POWER, this.entityData.get(POWER));
+        compound.putFloat(ComponentItem.SPEED, this.entityData.get(SPEED));
+        compound.putInt(ComponentItem.LIFE, this.entityData.get(LIFE));
+        compound.putFloat(ComponentItem.AOE, this.entityData.get(AOE));
+        compound.putFloat(ComponentItem.REACH, this.entityData.get(REACH));
+        compound.putInt(ComponentItem.ENTITY_PIERCE, this.entityData.get(ENTITY_PIERCE));
+        compound.putInt(ComponentItem.BLOCK_PIERCE, this.entityData.get(BLOCK_PIERCE));
+        compound.putInt(ComponentItem.BLOCK_BOUNCE, this.entityData.get(BLOCK_BOUNCE));
+        compound.putBoolean(ComponentItem.IS_HOMING, this.entityData.get(IS_HOMING));
     }
 
     @Override
@@ -444,7 +429,6 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.define(BLUE, 170);
         this.entityData.define(SIZE, 0.2F);
 
-        this.entityData.define(SPELL, "");
         this.entityData.define(SPELLSTACK, "");
         this.entityData.define(POWER, 1);
         this.entityData.define(SPEED, 1.0F);

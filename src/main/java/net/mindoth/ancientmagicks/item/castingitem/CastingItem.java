@@ -5,7 +5,7 @@ import net.mindoth.ancientmagicks.event.MagickEvents;
 import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.CastingValidator;
-import net.mindoth.ancientmagicks.item.spell.SpellItem;
+import net.mindoth.ancientmagicks.item.effect.EffectItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -34,14 +34,14 @@ public class CastingItem extends Item {
         //Handling for players
         if ( caster instanceof ServerPlayer serverPlayer ) {
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-                List<ComponentItem> componentList = CastingValidator.getComponentListFromScroll(scroll);
+                List<ComponentItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
                 int manaCost = 0;
                 int coolDown = 0;
                 for ( ComponentItem item : componentList ) {
                     manaCost += item.getManaCost();
                     coolDown += item.getCooldown();
                 }
-                if ( CastingValidator.calculateSpellRecipes(scroll, owner, caster, CastingValidator.getChainLength(scroll.getItem())) ) {
+                if ( CastingValidator.calculateSpellRecipes(scroll, owner, caster) ) {
                     handleCooldownsAndStuff(caster, stack, (int)(coolDown * alacrityBonus));
                     if ( !serverPlayer.isCreative() ) MagickEvents.changeMana(caster, -manaCost);
                 }
@@ -49,7 +49,7 @@ public class CastingItem extends Item {
             });
         }
         //If caster is not a player do the spell anyway
-        else CastingValidator.calculateSpellRecipes(scroll, owner, caster, 0);
+        else CastingValidator.calculateSpellRecipes(scroll, owner, caster);
     }
 
     private static void handleCooldownsAndStuff(Entity caster, @Nullable ItemStack castingItem, int cooldown) {
@@ -69,7 +69,7 @@ public class CastingItem extends Item {
     }
 
     public static void whiffSpell(Entity caster) {
-        SpellItem.playWhiffSound(caster);
+        EffectItem.playWhiffSound(caster);
         if ( caster instanceof LivingEntity living ) {
             living.stopUsingItem();
             for ( Item item : ForgeRegistries.ITEMS.getValues() ) if ( item instanceof StaffItem ) addCastingCooldown(caster, item, 20);

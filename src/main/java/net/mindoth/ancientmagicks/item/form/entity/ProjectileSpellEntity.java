@@ -1,6 +1,9 @@
 package net.mindoth.ancientmagicks.item.form.entity;
 
-import net.mindoth.ancientmagicks.item.CastingValidator;
+import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.effect.EffectItem;
+import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -10,7 +13,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.List;
 
 public class ProjectileSpellEntity extends AbstractSpellEntity {
 
@@ -23,22 +27,26 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
     }
 
     private void castMagick(HitResult result) {
-        getSpell().castSpell(level(), this.owner, this.caster, result, getStats());
-        if ( !Objects.equals(getSpellStack(), "") ) continueSpell(result);
+        List<SpellModifierItem> modifiers = Lists.newArrayList();
+        HashMap<String, Float> stats = EffectItem.createDefaultStats();
+        for ( ComponentItem item : getSpellStack() ) {
+            if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
+            if ( item instanceof EffectItem effect ) {
+                for ( SpellModifierItem modifier : modifiers ) modifier.addStatsToMap(stats);
+                effect.castSpell(level(), this.owner, this.caster, result, stats, getAoe());
+                modifiers = Lists.newArrayList();
+                stats = EffectItem.createDefaultStats();
+            }
+        }
     }
 
     @Override
     protected void doMobEffects(EntityHitResult result) {
-        if ( getSpell() != null ) castMagick(new EntityHitResult(result.getEntity(), position()));
+        castMagick(new EntityHitResult(result.getEntity(), position()));
     }
 
     @Override
     protected void doBlockEffects(BlockHitResult result) {
-        if ( getSpell() != null ) castMagick(result);
-    }
-
-    private void continueSpell(HitResult result) {
-        this.setRot(getYRot() * -1, getXRot() * -1);
-        CastingValidator.castSpell(this.owner, this, CastingValidator.getSpellStackFromString(getSpellStack()));
+        castMagick(result);
     }
 }
