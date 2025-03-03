@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.modifier;
 
 import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.form.entity.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.form.entity.ProjectileSpellEntity;
 
 import java.util.HashMap;
@@ -11,7 +12,7 @@ public class SpellModifierItem extends ComponentItem {
         super(pProperties, manaCost, cooldown);
     }
 
-    public void addModifierToEntity(ProjectileSpellEntity projectile, int count) {
+    public void addModifierOnEntityCreation(AbstractSpellEntity projectile, int count) {
     }
 
     public void addStatsToMap(HashMap<String, Float> stats) {

@@ -34,6 +34,12 @@ import java.util.Random;
 
 public class SpellItem extends ComponentItem {
 
+    public SpellItem(Properties pProperties, int manaCost, int cooldown) {
+        super(pProperties, manaCost, cooldown);
+        this.manaCost = manaCost;
+        this.cooldown = cooldown;
+    }
+
     private final int manaCost;
     public int getManaCost() {
         return this.manaCost;
@@ -46,12 +52,6 @@ public class SpellItem extends ComponentItem {
 
     public boolean isHarmful() {
         return true;
-    }
-
-    public SpellItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
-        this.manaCost = manaCost;
-        this.cooldown = cooldown;
     }
 
     public ParticleColor.IntWrapper getParticleColor() {
@@ -85,30 +85,6 @@ public class SpellItem extends ComponentItem {
         }
     }
 
-    public static final String POWER = "power";
-    public static final String LIFE = "life";
-    public static final String SPEED = "speed";
-    public static final String AOE = "aoe";
-    public static final String REACH = "reach";
-    public static final String GRAVITY = "gravity";
-
-    public static HashMap<String, Float> createStatsList() {
-        HashMap<String, Float> stats = new HashMap<>();
-        stats.merge(POWER, 1.0F, Float::sum);
-        stats.merge(LIFE, 100.0F, Float::sum);
-        stats.merge(SPEED, 1.0F, Float::sum);
-        stats.merge(AOE, 0.0F, Float::sum);
-        stats.merge(REACH, 4.0F, Float::sum);
-        stats.merge(GRAVITY, 0.0F, Float::sum);
-        return stats;
-    }
-
-    public static HashMap<String, Float> createSpellStats(List<SpellModifierItem> modifiers) {
-        HashMap<String, Float> stats = createStatsList();
-        for ( SpellModifierItem item : modifiers ) item.addStatsToMap(stats);
-        return stats;
-    }
-
     protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
         return canApply(level, owner, caster, result);
     }
@@ -121,7 +97,7 @@ public class SpellItem extends ComponentItem {
         boolean state = false;
         float range = 0.0F;
         Vec3 center = result.getLocation();
-        if ( stats.containsKey(SpellItem.AOE) && stats.get(SpellItem.AOE) > 0.0F ) range = stats.get(SpellItem.AOE);
+        if ( stats.containsKey(AOE) && stats.get(AOE) > 0.0F ) range = stats.get(AOE);
         if ( this instanceof EntityTargetSpell ) {
             if ( range > 0.0F ) {
                 range *= 2;

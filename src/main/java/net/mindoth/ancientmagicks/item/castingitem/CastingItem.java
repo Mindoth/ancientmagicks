@@ -41,7 +41,7 @@ public class CastingItem extends Item {
                     manaCost += item.getManaCost();
                     coolDown += item.getCooldown();
                 }
-                if ( CastingValidator.castSpell(scroll, owner, caster) ) {
+                if ( CastingValidator.calculateSpellRecipes(scroll, owner, caster, CastingValidator.getChainLength(scroll.getItem())) ) {
                     handleCooldownsAndStuff(caster, stack, (int)(coolDown * alacrityBonus));
                     if ( !serverPlayer.isCreative() ) MagickEvents.changeMana(caster, -manaCost);
                 }
@@ -49,7 +49,7 @@ public class CastingItem extends Item {
             });
         }
         //If caster is not a player do the spell anyway
-        else CastingValidator.castSpell(scroll, owner, caster);
+        else CastingValidator.calculateSpellRecipes(scroll, owner, caster, 0);
     }
 
     private static void handleCooldownsAndStuff(Entity caster, @Nullable ItemStack castingItem, int cooldown) {

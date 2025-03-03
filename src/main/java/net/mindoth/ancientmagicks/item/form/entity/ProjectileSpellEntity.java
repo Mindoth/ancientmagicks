@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.form.entity;
 
-import net.mindoth.ancientmagicks.item.spell.SpellItem;
+import net.mindoth.ancientmagicks.item.CastingValidator;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -9,7 +9,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.network.PlayMessages;
+
+import java.util.Objects;
 
 public class ProjectileSpellEntity extends AbstractSpellEntity {
 
@@ -17,12 +18,13 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
         super(entityType, level);
     }
 
-    public ProjectileSpellEntity(Level level, LivingEntity owner, Entity caster, SpellItem spell) {
-        super(AncientMagicksEntities.SPELL_PROJECTILE.get(), level, owner, caster, spell);
+    public ProjectileSpellEntity(Level level, LivingEntity owner, Entity caster) {
+        super(AncientMagicksEntities.SPELL_PROJECTILE.get(), level, owner, caster);
     }
 
     private void castMagick(HitResult result) {
         getSpell().castSpell(level(), this.owner, this.caster, result, getStats());
+        if ( !Objects.equals(getSpellStack(), "") ) continueSpell(result);
     }
 
     @Override
@@ -33,5 +35,10 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
     @Override
     protected void doBlockEffects(BlockHitResult result) {
         if ( getSpell() != null ) castMagick(result);
+    }
+
+    private void continueSpell(HitResult result) {
+        this.setRot(getYRot() * -1, getXRot() * -1);
+        CastingValidator.castSpell(this.owner, this, CastingValidator.getSpellStackFromString(getSpellStack()));
     }
 }

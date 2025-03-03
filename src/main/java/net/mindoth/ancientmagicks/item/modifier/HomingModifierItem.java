@@ -10,9 +10,7 @@ public class HomingModifierItem extends SpellModifierItem {
     }
 
     @Override
-    public void addModifierToEntity(ProjectileSpellEntity projectile, int count) {
-        if ( projectile != null ) {
-            projectile.getEntityData().set(AbstractSpellEntity.IS_HOMING, true);
-        }
+    public void addModifierOnEntityCreation(AbstractSpellEntity projectile, int count) {
+        projectile.getEntityData().set(AbstractSpellEntity.IS_HOMING, true);
     }
 }

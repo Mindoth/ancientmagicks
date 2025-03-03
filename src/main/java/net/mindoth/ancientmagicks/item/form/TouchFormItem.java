@@ -1,7 +1,10 @@
 package net.mindoth.ancientmagicks.item.form;
 
-import net.mindoth.ancientmagicks.item.spell.SpellItem;
+import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.item.CastingValidator;
+import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
+import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -23,16 +26,30 @@ public class TouchFormItem extends SpellFormItem {
     }
 
     @Override
-    public boolean formSpell(SpellItem spell, LivingEntity owner, Entity caster, List<SpellModifierItem> modifiers) {
+    public boolean formSpell(LivingEntity owner, Entity caster, List<List<ComponentItem>> spellStack) {
         Level level = caster.level();
-        HashMap<String, Float> stats = SpellItem.createSpellStats(modifiers);
-        float range = stats.get(SpellItem.REACH);
+        List<ComponentItem> componentList = Lists.newArrayList();
+        componentList.addAll(spellStack.get(0));
+        spellStack.remove(0);
 
-        HitResult hitResult;
-        Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.0F, true, null);
-        if ( target == caster ) hitResult = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range);
-        else hitResult = new EntityHitResult(target, ShadowEvents.getPoint(level, caster, range, 0.0F, false, true, true, false));
-        return spell.castSpell(level, owner, caster, hitResult, stats);
+        List<SpellModifierItem> modifiers = Lists.newArrayList();
+        for ( ComponentItem item : componentList ) if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
+        HashMap<String, Float> stats = SpellItem.createSpellStats(modifiers);
+        float range = stats.get(REACH);
+
+        for ( ComponentItem item : componentList ) {
+            if ( item instanceof SpellItem spell ) {
+                HitResult hitResult;
+                Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.0F, true, null);
+                if ( target == caster ) hitResult = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range);
+                else hitResult = new EntityHitResult(target, ShadowEvents.getPoint(level, caster, range, 0.0F, false, true, true, false));
+                if ( spell.castSpell(level, owner, caster, hitResult, stats) ) {
+                    //CastingValidator.castSpell(owner, caster, spellStack);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     protected static BlockHitResult getCasterPOVHitResult(Level pLevel, Entity caster, ClipContext.Fluid pFluidMode, float range) {

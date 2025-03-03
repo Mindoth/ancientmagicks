@@ -10,9 +10,7 @@ public class BouncingModifierItem extends SpellModifierItem {
     }
 
     @Override
-    public void addModifierToEntity(ProjectileSpellEntity projectile, int count) {
-        if ( projectile != null ) {
-            projectile.getEntityData().set(AbstractSpellEntity.BLOCK_BOUNCE, Integer.MAX_VALUE);
-        }
+    public void addModifierOnEntityCreation(AbstractSpellEntity projectile, int count) {
+        projectile.getEntityData().set(AbstractSpellEntity.BLOCK_BOUNCE, Integer.MAX_VALUE);
     }
 }

@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item.form.entity;
 
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
+import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -14,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -45,42 +47,50 @@ public abstract class AbstractSpellEntity extends Projectile {
         super(entityType, level);
     }
 
-    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster, SpellItem spell) {
+    //TODO: Carry rest of spellStack to the next possible spell. Only needed if triggercasting is a thing.
+    public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster) {
         super(entityType, pLevel);
         this.owner = owner;
         this.caster = caster;
-        this.getEntityData().set(SPELL, ForgeRegistries.ITEMS.getKey(spell).toString());
-
-        if ( spell.isHarmful() ) this.ignoredEntities.put(caster.getId(), (int)getReach() * 20);
-        else this.ignoredEntities.put(caster.getId(), this.tickCount);
     }
 
     protected LivingEntity owner;
     protected Entity caster;
 
-    private final HashMap<Integer, Integer> ignoredEntities = new HashMap<>();
-    private final HashMap<BlockPos, Integer> ignoredBlocks = new HashMap<>();
-    protected int bounces = 0;
+    public final HashMap<Integer, Integer> ignoredEntities = new HashMap<>();
+    public final HashMap<BlockPos, Integer> ignoredBlocks = new HashMap<>();
     public Entity target = null;
+    protected int bounces = 0;
 
     private void timeIgnoredLists() {
-        int timeout = 20;
+        int timeout = 10;
         if ( this.ignoredEntities != null && !this.ignoredEntities.isEmpty() ) {
             for ( Map.Entry<Integer, Integer> entry : this.ignoredEntities.entrySet() ) {
+                int id = entry.getKey();
                 if ( entry.getValue() + timeout < this.tickCount ) {
-                    this.ignoredEntities.remove(entry.getKey());
-                    break;
+                    if ( getEntityById(id) == null || (getEntityById(id) != null && !getEntityById(id).getBoundingBox().intersects(this.getBoundingBox()) ) ) {
+                        this.ignoredEntities.remove(id);
+                        break;
+                    }
                 }
             }
         }
         if ( this.ignoredBlocks != null && !this.ignoredBlocks.isEmpty() ) {
             for ( Map.Entry<BlockPos, Integer> entry : this.ignoredBlocks.entrySet() ) {
                 if ( entry.getValue() + timeout < this.tickCount ) {
-                    this.ignoredBlocks.remove(entry.getKey());
-                    break;
+                    if ( entry.getKey() != this.blockPosition() ) {
+                        this.ignoredBlocks.remove(entry.getKey());
+                        break;
+                    }
                 }
             }
         }
+    }
+
+    private Entity getEntityById(int id) {
+        if ( !(level() instanceof ServerLevel serverLevel) ) return null;
+        for ( Entity entity : serverLevel.getAllEntities() ) if ( entity != null && entity.getId() == id ) return entity;
+        return null;
     }
 
     @Override
@@ -129,9 +139,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         }
         if ( result.getType() == HitResult.Type.ENTITY ) {
             Entity entity = ((EntityHitResult)result).getEntity();
-            if ( this.ignoredEntities != null && !this.ignoredEntities.isEmpty() ) {
-                if ( this.ignoredEntities.containsKey(entity.getId()) ) flag = true;
-            }
+            if ( this.ignoredEntities != null && !this.ignoredEntities.isEmpty() && this.ignoredEntities.containsKey(entity.getId()) ) flag = true;
         }
         if ( result.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, result) ) onHit(result);
     }
@@ -198,7 +206,7 @@ public abstract class AbstractSpellEntity extends Projectile {
                     else if ( face == Direction.UP ) motionY = -motionY;
                     else if ( face == Direction.DOWN ) motionY = -motionY;
                     //This seems to work better with low velocity projectiles than "this.setDeltaMovement(motionX, motionY, motionZ)";
-                    shoot(motionX, motionY, motionZ, getSpeed() * 0.5F, 0);
+                    shoot(motionX, motionY, motionZ, getSpeed() * 0.75F, 0);
                 }
                 else doDeathEffects();
             }
@@ -214,17 +222,14 @@ public abstract class AbstractSpellEntity extends Projectile {
         if ( this.target == null || !this.target.isAlive() ) this.target = ShadowEvents.getNearestEntity(this, level(), range, this::homingFilter);
         if ( this.target != null ) {
             if ( !isNoGravity() ) setNoGravity(true);
-            double mX = getDeltaMovement().x();
-            double mY = getDeltaMovement().y();
-            double mZ = getDeltaMovement().z();
             Vec3 targetPos = ShadowEvents.getEntityCenter(this.target);
             if ( this.target instanceof EnderDragon || this.target instanceof EnderDragonPart ) targetPos = new Vec3(targetPos.x, this.target.getY(), targetPos.z);
             Vec3 lookVec = targetPos.subtract(position()).normalize();
-            Vec3 spellMotion = new Vec3(mX, mY, mZ);
+            Vec3 spellMotion = new Vec3(getDeltaMovement().x(), getDeltaMovement().y(), getDeltaMovement().z());
             float arc = 0.1F;
             if ( position().distanceTo(this.target.position()) < 2.0D ) arc = 1.0F;
             Vec3 lerpVec = new Vec3(Mth.lerp(arc, spellMotion.x, lookVec.x), Mth.lerp(arc, spellMotion.y, lookVec.y), Mth.lerp(arc, spellMotion.z, lookVec.z));
-            setDeltaMovement(lerpVec);
+            shoot(lerpVec.x, lerpVec.y, lerpVec.z, getSpeed() * 0.75F, 0);
             if ( this.ignoredEntities.containsKey(this.target.getId()) ) this.target = null;
         }
     }
@@ -317,14 +322,18 @@ public abstract class AbstractSpellEntity extends Projectile {
         return item instanceof SpellItem spell ? spell : null;
     }
 
+    public String getSpellStack() {
+        return this.entityData.get(SPELLSTACK);
+    }
+
     public HashMap<String, Float> getStats() {
-        HashMap<String, Float> stats = SpellItem.createStatsList();
-        stats.put(SpellItem.POWER, (float)getPower());
-        stats.put(SpellItem.LIFE, (float)getLife());
-        stats.put(SpellItem.SPEED, getSpeed());
-        stats.put(SpellItem.AOE, getAoe());
-        stats.put(SpellItem.REACH, getReach());
-        stats.put(SpellItem.GRAVITY, this.isNoGravity() ? 0.0F : 1.0F);
+        HashMap<String, Float> stats = ComponentItem.createDefaultStats();
+        stats.put(ComponentItem.POWER, (float)getPower());
+        stats.put(ComponentItem.LIFE, (float)getLife());
+        stats.put(ComponentItem.SPEED, getSpeed());
+        stats.put(ComponentItem.AOE, getAoe());
+        stats.put(ComponentItem.REACH, getReach());
+        stats.put(ComponentItem.GRAVITY, this.isNoGravity() ? 0.0F : 1.0F);
         return stats;
     }
 
@@ -360,10 +369,6 @@ public abstract class AbstractSpellEntity extends Projectile {
         return this.entityData.get(BLOCK_BOUNCE);
     }
 
-    public boolean isHarmful() {
-        return this.entityData.get(IS_HARMFUL);
-    }
-
     public boolean getHoming() {
         return this.entityData.get(IS_HOMING);
     }
@@ -379,6 +384,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     public static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
 
     public static final EntityDataAccessor<String> SPELL = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.STRING);
+    public static final EntityDataAccessor<String> SPELLSTACK = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Integer> POWER = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Integer> LIFE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
@@ -387,7 +393,6 @@ public abstract class AbstractSpellEntity extends Projectile {
     public static final EntityDataAccessor<Integer> ENTITY_PIERCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> BLOCK_PIERCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> BLOCK_BOUNCE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Boolean> IS_HARMFUL = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> IS_HOMING = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.BOOLEAN);
 
     @Override
@@ -399,6 +404,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.set(SIZE, compound.getFloat("size"));
 
         this.entityData.set(SPELL, compound.getString("spell"));
+        this.entityData.set(SPELLSTACK, compound.getString("spellstack"));
         this.entityData.set(POWER, compound.getInt("power"));
         this.entityData.set(SPEED, compound.getFloat("speed"));
         this.entityData.set(LIFE, compound.getInt("life"));
@@ -407,7 +413,6 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.set(ENTITY_PIERCE, compound.getInt("entity_pierce"));
         this.entityData.set(BLOCK_PIERCE, compound.getInt("block_pierce"));
         this.entityData.set(BLOCK_BOUNCE, compound.getInt("block_bounce"));
-        this.entityData.set(IS_HARMFUL, compound.getBoolean("is_harmful"));
         this.entityData.set(IS_HOMING, compound.getBoolean("is_homing"));
     }
 
@@ -420,6 +425,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         compound.putFloat("size", this.entityData.get(SIZE));
 
         compound.putString("spell", this.entityData.get(SPELL));
+        compound.putString("spellstack", this.entityData.get(SPELLSTACK));
         compound.putInt("power", this.entityData.get(POWER));
         compound.putFloat("speed", this.entityData.get(SPEED));
         compound.putInt("life", this.entityData.get(LIFE));
@@ -428,7 +434,6 @@ public abstract class AbstractSpellEntity extends Projectile {
         compound.putInt("entity_pierce", this.entityData.get(ENTITY_PIERCE));
         compound.putInt("block_pierce", this.entityData.get(BLOCK_PIERCE));
         compound.putInt("block_bounce", this.entityData.get(BLOCK_BOUNCE));
-        compound.putBoolean("is_harmful", this.entityData.get(IS_HARMFUL));
         compound.putBoolean("is_homing", this.entityData.get(IS_HOMING));
     }
 
@@ -440,6 +445,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.define(SIZE, 0.2F);
 
         this.entityData.define(SPELL, "");
+        this.entityData.define(SPELLSTACK, "");
         this.entityData.define(POWER, 1);
         this.entityData.define(SPEED, 1.0F);
         this.entityData.define(LIFE, 100);
@@ -448,7 +454,6 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.define(ENTITY_PIERCE, 0);
         this.entityData.define(BLOCK_PIERCE, 0);
         this.entityData.define(BLOCK_BOUNCE, 0);
-        this.entityData.define(IS_HARMFUL, true);
         this.entityData.define(IS_HOMING, false);
     }
 

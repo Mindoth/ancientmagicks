@@ -1,5 +1,8 @@
 package net.mindoth.ancientmagicks.item.form;
 
+import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.item.CastingValidator;
+import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.spell.SpellItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -19,11 +22,25 @@ public class SelfFormItem extends SpellFormItem {
     }
 
     @Override
-    public boolean formSpell(SpellItem spell, LivingEntity owner, Entity caster, List<SpellModifierItem> modifiers) {
+    public boolean formSpell(LivingEntity owner, Entity caster, List<List<ComponentItem>> spellStack) {
         Level level = caster.level();
+        List<ComponentItem> componentList = Lists.newArrayList();
+        componentList.addAll(spellStack.get(0));
+        spellStack.remove(0);
+
+        List<SpellModifierItem> modifiers = Lists.newArrayList();
+        for ( ComponentItem item : componentList ) if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
         HashMap<String, Float> stats = SpellItem.createSpellStats(modifiers);
 
-        HitResult hitResult = new EntityHitResult(caster, caster.position());
-        return spell.castSpell(level, owner, caster, hitResult, stats);
+        for ( ComponentItem item : componentList ) {
+            if ( item instanceof SpellItem spell ) {
+                HitResult hitResult = new EntityHitResult(caster, caster.position());
+                if ( spell.castSpell(level, owner, caster, hitResult, stats) ) {
+                    //CastingValidator.castSpell(owner, caster, spellStack);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
