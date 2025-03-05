@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.item.form;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.ComponentItem;
-import net.mindoth.ancientmagicks.item.effect.EffectItem;
+import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,20 +33,20 @@ public class SelfFormItem extends SpellFormItem {
             }
             else newList.add(item);
         }
-        HashMap<String, Float> formStats = EffectItem.createSpellStats(formModifiers);
+        HashMap<String, Float> formStats = SpellEffectItem.createSpellStats(formModifiers);
         float aoe = formStats.get(AOE);
 
         List<SpellModifierItem> modifiers = Lists.newArrayList();
-        HashMap<String, Float> stats = EffectItem.createDefaultStats();
+        HashMap<String, Float> stats = SpellEffectItem.createDefaultStats();
         List<Boolean> boolist = Lists.newArrayList();
         for ( ComponentItem item : newList ) {
             if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
-            if ( item instanceof EffectItem effect ) {
+            if ( item instanceof SpellEffectItem effect ) {
                 HitResult hitResult = new EntityHitResult(caster, caster.position());
                 for ( SpellModifierItem modifier : modifiers ) modifier.addStatsToMap(stats);
                 boolist.add(effect.castSpell(level, owner, caster, hitResult, stats, aoe));
                 modifiers = Lists.newArrayList();
-                stats = EffectItem.createDefaultStats();
+                stats = SpellEffectItem.createDefaultStats();
             }
         }
         for ( boolean bool : boolist ) if ( bool ) return true;

@@ -6,7 +6,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
-public class EntityTargetEffect extends EffectItem {
+public class EntityTargetEffect extends SpellEffectItem {
 
     public EntityTargetEffect(Properties pProperties, int manaCost, int cooldown) {
         super(pProperties, manaCost, cooldown);

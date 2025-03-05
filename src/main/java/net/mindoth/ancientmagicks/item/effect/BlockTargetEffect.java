@@ -6,7 +6,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
-public class BlockTargetEffect extends EffectItem {
+public class BlockTargetEffect extends SpellEffectItem {
 
     public BlockTargetEffect(Properties pProperties, int manaCost, int cooldown) {
         super(pProperties, manaCost, cooldown);

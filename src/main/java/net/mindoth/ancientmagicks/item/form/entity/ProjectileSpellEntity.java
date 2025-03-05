@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.item.form.entity;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.ComponentItem;
-import net.mindoth.ancientmagicks.item.effect.EffectItem;
+import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.minecraft.world.entity.Entity;
@@ -28,14 +28,14 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
 
     private void castMagick(HitResult result) {
         List<SpellModifierItem> modifiers = Lists.newArrayList();
-        HashMap<String, Float> stats = EffectItem.createDefaultStats();
+        HashMap<String, Float> stats = SpellEffectItem.createDefaultStats();
         for ( ComponentItem item : getSpellStack() ) {
             if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
-            if ( item instanceof EffectItem effect ) {
+            if ( item instanceof SpellEffectItem effect ) {
                 for ( SpellModifierItem modifier : modifiers ) modifier.addStatsToMap(stats);
                 effect.castSpell(level(), this.owner, this.caster, result, stats, getAoe());
                 modifiers = Lists.newArrayList();
-                stats = EffectItem.createDefaultStats();
+                stats = SpellEffectItem.createDefaultStats();
             }
         }
     }

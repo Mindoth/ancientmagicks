@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.effect.callthunder;
 
-import net.mindoth.ancientmagicks.item.effect.EffectItem;
+import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -19,7 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.HashMap;
 import java.util.List;
 
-public class CallThunderEffectItem extends EffectItem {
+public class CallThunderEffectItem extends SpellEffectItem {
 
     public CallThunderEffectItem(Properties pProperties, int manaCost, int cooldown) {
         super(pProperties, manaCost, cooldown);
@@ -49,7 +49,7 @@ public class CallThunderEffectItem extends EffectItem {
 
     private boolean callThunder(Level level, Entity caster, HitResult result, HashMap<String, Float> stats) {
         boolean state = false;
-        int power = 5 + Mth.floor(stats.get(EffectItem.POWER));
+        int power = 5 + Mth.floor(stats.get(SpellEffectItem.POWER));
         Vec3 point = result.getLocation();
         BlockPos blockPos = new BlockPos(Mth.floor(point.x), Mth.floor(point.y), Mth.floor(point.z));
         BlockState blockState = level.getBlockState(blockPos.below());

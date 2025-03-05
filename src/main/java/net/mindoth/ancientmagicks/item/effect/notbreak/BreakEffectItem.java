@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks.item.effect.notbreak;
 import com.mojang.authlib.GameProfile;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.effect.BlockTargetEffect;
-import net.mindoth.ancientmagicks.item.effect.EffectItem;
+import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -42,7 +42,7 @@ public class BreakEffectItem extends BlockTargetEffect {
         if ( level.getBlockState(pos).isAir() ) return false;
         if ( !(level instanceof ServerLevel serverLevel) ) return false;
         FakePlayer player = FakePlayerFactory.get(serverLevel, FAKE_PROFILE);
-        int power = Mth.floor(stats.get(EffectItem.POWER));
+        int power = Mth.floor(stats.get(SpellEffectItem.POWER));
         player.setItemSlot(EquipmentSlot.MAINHAND, getToolFromStrength(power));
         BlockState blockState = level.getBlockState(pos);
         Block block = blockState.getBlock();

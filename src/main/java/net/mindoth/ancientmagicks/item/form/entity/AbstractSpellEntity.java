@@ -4,7 +4,7 @@ import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.CastingValidator;
 import net.mindoth.ancientmagicks.item.ComponentItem;
-import net.mindoth.ancientmagicks.item.effect.EffectItem;
+import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -144,7 +144,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     protected boolean hitFilter(Entity target) {
-        return EffectItem.allyFilter(this.owner, target, isHarmful());
+        return SpellEffectItem.allyFilter(this.owner, target, isHarmful());
     }
 
     protected HitResult getHitResult(Vec3 pStartVec, Entity pProjectile, Predicate<Entity> pFilter, Vec3 pEndVecOffset, Level pLevel) {
@@ -362,7 +362,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     public boolean isHarmful() {
-        for ( ComponentItem item : getSpellStack() ) if ( item instanceof EffectItem effect && effect.isHarmful() ) return true;
+        for ( ComponentItem item : getSpellStack() ) if ( item instanceof SpellEffectItem effect && effect.isHarmful() ) return true;
         return false;
     }
 

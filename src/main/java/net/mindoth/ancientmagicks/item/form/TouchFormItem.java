@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.item.form;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.ComponentItem;
-import net.mindoth.ancientmagicks.item.effect.EffectItem;
+import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.util.Mth;
@@ -38,16 +38,16 @@ public class TouchFormItem extends SpellFormItem {
             }
             else newList.add(item);
         }
-        HashMap<String, Float> formStats = EffectItem.createSpellStats(formModifiers);
+        HashMap<String, Float> formStats = SpellEffectItem.createSpellStats(formModifiers);
         float range = formStats.get(REACH);
         float aoe = formStats.get(AOE);
 
         List<SpellModifierItem> modifiers = Lists.newArrayList();
-        HashMap<String, Float> stats = EffectItem.createDefaultStats();
+        HashMap<String, Float> stats = SpellEffectItem.createDefaultStats();
         List<Boolean> boolist = Lists.newArrayList();
         for ( ComponentItem item : newList ) {
             if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
-            if ( item instanceof EffectItem effect ) {
+            if ( item instanceof SpellEffectItem effect ) {
                 HitResult hitResult;
                 Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.0F, true, null);
                 if ( target == caster ) hitResult = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range);
@@ -55,7 +55,7 @@ public class TouchFormItem extends SpellFormItem {
                 for ( SpellModifierItem modifier : modifiers ) modifier.addStatsToMap(stats);
                 boolist.add(effect.castSpell(level, owner, caster, hitResult, stats, aoe));
                 modifiers = Lists.newArrayList();
-                stats = EffectItem.createDefaultStats();
+                stats = SpellEffectItem.createDefaultStats();
             }
         }
         for ( boolean bool : boolist ) if ( bool ) return true;

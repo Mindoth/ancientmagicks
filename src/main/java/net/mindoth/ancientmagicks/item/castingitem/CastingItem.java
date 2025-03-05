@@ -5,7 +5,7 @@ import net.mindoth.ancientmagicks.event.MagickEvents;
 import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.CastingValidator;
-import net.mindoth.ancientmagicks.item.effect.EffectItem;
+import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -69,7 +69,7 @@ public class CastingItem extends Item {
     }
 
     public static void whiffSpell(Entity caster) {
-        EffectItem.playWhiffSound(caster);
+        SpellEffectItem.playWhiffSound(caster);
         if ( caster instanceof LivingEntity living ) {
             living.stopUsingItem();
             for ( Item item : ForgeRegistries.ITEMS.getValues() ) if ( item instanceof StaffItem ) addCastingCooldown(caster, item, 20);

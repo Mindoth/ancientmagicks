@@ -31,9 +31,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class EffectItem extends ComponentItem {
+public class SpellEffectItem extends ComponentItem {
 
-    public EffectItem(Properties pProperties, int manaCost, int cooldown) {
+    public SpellEffectItem(Properties pProperties, int manaCost, int cooldown) {
         super(pProperties, manaCost, cooldown);
         this.manaCost = manaCost;
         this.cooldown = cooldown;
@@ -166,7 +166,7 @@ public class EffectItem extends ComponentItem {
         return target instanceof LivingEntity && !(target instanceof ArmorStand)
                 //&& (owner != target || !isHarmful)
                 && (AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get()
-                || ((EffectItem.isAlly(owner, target) && !isHarmful) || (!EffectItem.isAlly(owner, target) && isHarmful)));
+                || ((SpellEffectItem.isAlly(owner, target) && !isHarmful) || (!SpellEffectItem.isAlly(owner, target) && isHarmful)));
     }
 
     public boolean mobTypeFilter(Entity target) {

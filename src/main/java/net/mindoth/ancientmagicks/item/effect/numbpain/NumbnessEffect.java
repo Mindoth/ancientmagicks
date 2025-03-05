@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.effect.numbpain;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.effect.EffectItem;
+import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageType;
@@ -58,14 +58,14 @@ public class NumbnessEffect extends MobEffect {
             CompoundTag playerData = player.getPersistentData();
             CompoundTag tag = playerData.getCompound(Player.PERSISTED_NBT_TAG);
             final float damageAmount = tag.getFloat(NBT_KEY);
-            if ( damageAmount >= player.getMaxHealth() ) EffectItem.attackEntity(player, player, player, damageAmount);
+            if ( damageAmount >= player.getMaxHealth() ) SpellEffectItem.attackEntity(player, player, player, damageAmount);
             tag.putFloat(NBT_KEY, 0);
             playerData.put(Player.PERSISTED_NBT_TAG, tag);
         }
         else if ( living instanceof Mob mob ) {
             CompoundTag tag = mob.getPersistentData();
             final float damageAmount = tag.getFloat(NBT_KEY);
-            if ( damageAmount >= mob.getMaxHealth() ) EffectItem.attackEntity(mob, mob, mob, damageAmount);
+            if ( damageAmount >= mob.getMaxHealth() ) SpellEffectItem.attackEntity(mob, mob, mob, damageAmount);
             tag.putFloat(NBT_KEY, 0);
         }
     }

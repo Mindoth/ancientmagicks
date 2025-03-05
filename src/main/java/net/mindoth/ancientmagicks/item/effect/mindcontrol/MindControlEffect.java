@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.effect.mindcontrol;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.effect.EffectItem;
+import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.nbt.CompoundTag;
@@ -45,8 +45,8 @@ public class MindControlEffect extends MobEffect {
         possibleTargets.remove(cMob);
         possibleTargets.removeIf(e -> e instanceof ArmorStand);
         possibleTargets.removeIf(e -> !(e instanceof LivingEntity));
-        possibleTargets.removeIf(e -> EffectItem.isAlly(cMobOwner, e));
-        possibleTargets.removeIf(e -> e instanceof Mob mob && EffectItem.isMinionsOwner(cMobOwner, mob) && cMobOwner.getLastHurtMob() != mob);
+        possibleTargets.removeIf(e -> SpellEffectItem.isAlly(cMobOwner, e));
+        possibleTargets.removeIf(e -> e instanceof Mob mob && SpellEffectItem.isMinionsOwner(cMobOwner, mob) && cMobOwner.getLastHurtMob() != mob);
 
         LivingEntity newTarget = null;
 
@@ -61,8 +61,8 @@ public class MindControlEffect extends MobEffect {
 
     private static boolean isTargetable(LivingEntity cMobOwner, LivingEntity target) {
         if ( cMobOwner == null ) return false;
-        if ( EffectItem.isAlly(cMobOwner, target.getLastHurtByMob()) ) return true;
-        else if ( EffectItem.isAlly(cMobOwner, target) ) return cMobOwner.getLastHurtMob() == target || cMobOwner.getLastHurtByMob() == target;
+        if ( SpellEffectItem.isAlly(cMobOwner, target.getLastHurtByMob()) ) return true;
+        else if ( SpellEffectItem.isAlly(cMobOwner, target) ) return cMobOwner.getLastHurtMob() == target || cMobOwner.getLastHurtByMob() == target;
         else return cMobOwner.getLastHurtMob() == target || cMobOwner.getLastHurtByMob() == target || (target instanceof Mob mob && mob.getTarget() == cMobOwner);
     }
 
@@ -94,7 +94,7 @@ public class MindControlEffect extends MobEffect {
             CompoundTag tag = mob.getPersistentData();
             if ( !tag.hasUUID(NBT_KEY_CONTROL) ) return;
             Entity entity = ShadowEvents.getEntityByUUID(event.getEntity().level(), tag.getUUID(NBT_KEY_CONTROL));
-            if ( entity instanceof LivingEntity cMobOwner && EffectItem.isAlly(cMobOwner, event.getOriginalTarget()) ) {
+            if ( entity instanceof LivingEntity cMobOwner && SpellEffectItem.isAlly(cMobOwner, event.getOriginalTarget()) ) {
                 handleTargeting(mob.level(), mob, event.getOriginalTarget());
                 event.setCanceled(true);
             }

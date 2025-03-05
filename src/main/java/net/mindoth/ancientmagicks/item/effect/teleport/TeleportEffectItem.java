@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.effect.teleport;
 
-import net.mindoth.ancientmagicks.item.effect.EffectItem;
+import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -11,7 +11,7 @@ import net.minecraftforge.event.entity.EntityTeleportEvent;
 
 import java.util.HashMap;
 
-public class TeleportEffectItem extends EffectItem {
+public class TeleportEffectItem extends SpellEffectItem {
 
     public TeleportEffectItem(Properties pProperties, int manaCost, int cooldown) {
         super(pProperties, manaCost, cooldown);
