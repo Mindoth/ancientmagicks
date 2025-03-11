@@ -25,7 +25,7 @@ public class WitchArmorEffect extends AbstractArmorEffect {
         super(pCategory, pColor);
     }
 
-    @Override
+    /*@Override
     public void addAttributeModifiers(LivingEntity living, AttributeMap map, int amp) {
         super.addAttributeModifiers(living, map, amp);
         List<MobEffectInstance> list = living.getActiveEffects().stream()
@@ -52,5 +52,5 @@ public class WitchArmorEffect extends AbstractArmorEffect {
                 else if ( magic.getCurrentMana() < damageAmount ) serverPlayer.removeEffect(AncientMagicksEffects.WITCH_ARMOR.get());
             });
         }
-    }
+    }*/
 }

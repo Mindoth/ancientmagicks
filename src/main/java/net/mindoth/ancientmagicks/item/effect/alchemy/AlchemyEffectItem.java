@@ -1,6 +1,8 @@
 package net.mindoth.ancientmagicks.item.effect.alchemy;
 
+import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.effect.EntityTargetEffect;
+import net.mindoth.ancientmagicks.item.effect.PotionEffectItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +27,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
-public class AlchemyEffectItem extends EntityTargetEffect {
+public class AlchemyEffectItem extends PotionEffectItem {
 
     public AlchemyEffectItem(Properties pProperties, int manaCost, int cooldown) {
         super(pProperties, manaCost, cooldown);
@@ -37,19 +39,13 @@ public class AlchemyEffectItem extends EntityTargetEffect {
     }
 
     @Override
-    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats, String data) {
-        LivingEntity target = (LivingEntity)((EntityHitResult)result).getEntity();
-        addEnchantParticles(target, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8);
-        int amp = Mth.floor(Math.max(0, (stats.get(POWER) - 1) / 4));
-        int life = 600 * Mth.floor(stats.get(LIFE));
+    protected List<MobEffect> getEffects(String data) {
+        List<MobEffect> effects = Lists.newArrayList();
         for ( String string : List.of(data.split(" ")) ) {
             MobEffect effect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(string));
-            if ( effect != null ) {
-                if ( effect.isInstantenous() ) life = 1;
-                target.addEffect(new MobEffectInstance(effect, life, amp, false, !effect.isBeneficial()));
-            }
+            if ( effect != null ) effects.add(effect);
         }
-        return true;
+        return effects;
     }
 
     @Override

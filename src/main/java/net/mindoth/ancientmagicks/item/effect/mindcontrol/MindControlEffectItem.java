@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.effect.mindcontrol;
 
+import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.effect.PotionEffectItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
@@ -14,6 +15,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class MindControlEffectItem extends PotionEffectItem {
 
@@ -37,8 +39,10 @@ public class MindControlEffectItem extends PotionEffectItem {
     }
 
     @Override
-    protected MobEffect getEffect() {
-        return AncientMagicksEffects.MIND_CONTROL.get();
+    protected List<MobEffect> getEffects(String data) {
+        List<MobEffect> effects = Lists.newArrayList();
+        effects.add(AncientMagicksEffects.MIND_CONTROL.get());
+        return effects;
     }
 
     @Override
@@ -48,9 +52,11 @@ public class MindControlEffectItem extends PotionEffectItem {
         int amp = Math.max(0, (Mth.floor(stats.get(POWER)) - 1) / 10);
         int life = Mth.floor(stats.get(LIFE) - 100) * 30 + 600;
         mob.getPersistentData().putUUID(MindControlEffect.NBT_KEY_CONTROL, owner.getUUID());
-        mob.addEffect(new MobEffectInstance(getEffect(), life, amp, false, isHarmful()));
-        //if ( mob instanceof PathfinderMob pthMob ) mob.goalSelector.addGoal(0, new MeleeAttackGoal(pthMob, 1.0F, true));
-        mob.setTarget(MindControlEffect.findMindControlTarget(mob, owner, mob.level()));
+        for ( MobEffect effect : getEffects(data) ) {
+            mob.addEffect(new MobEffectInstance(effect, life, amp, false, isHarmful()));
+            //if ( mob instanceof PathfinderMob pthMob ) mob.goalSelector.addGoal(0, new MeleeAttackGoal(pthMob, 1.0F, true));
+            mob.setTarget(MindControlEffect.findMindControlTarget(mob, owner, mob.level()));
+        }
         return true;
     }
 }

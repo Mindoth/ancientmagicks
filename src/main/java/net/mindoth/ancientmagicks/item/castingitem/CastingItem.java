@@ -27,10 +27,6 @@ public class CastingItem extends Item {
     }
 
     public static void doSpell(LivingEntity owner, Entity caster, @Nullable ItemStack stack, ItemStack scroll) {
-        //Check casting bonuses
-        boolean hasAlacrity = caster instanceof LivingEntity living && living.hasEffect(AncientMagicksEffects.ALACRITY.get());
-        float alacrityBonus = hasAlacrity ? 0.5F : 1.0F;
-
         //Handling for players
         if ( caster instanceof ServerPlayer serverPlayer ) {
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
@@ -42,7 +38,7 @@ public class CastingItem extends Item {
                     coolDown += item.getCooldown();
                 }
                 if ( CastingValidator.calculateSpellRecipes(scroll, owner, caster) ) {
-                    handleCooldownsAndStuff(caster, stack, (int)(coolDown * alacrityBonus));
+                    handleCooldownsAndStuff(caster, stack, coolDown);
                     if ( !serverPlayer.isCreative() ) MagickEvents.changeMana(caster, -manaCost);
                 }
                 else whiffSpell(caster);

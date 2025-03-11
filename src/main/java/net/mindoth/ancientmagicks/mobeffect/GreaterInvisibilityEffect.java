@@ -30,7 +30,7 @@ public class GreaterInvisibilityEffect extends MobEffect {
         super(pCategory, pColor);
     }
 
-    public static final AttributeModifier DECREASED_NAME_TAG_DISTANCE = new AttributeModifier(UUID.fromString("3a531960-6840-410e-a694-a006b8e8548a"),
+    /*public static final AttributeModifier DECREASED_NAME_TAG_DISTANCE = new AttributeModifier(UUID.fromString("3a531960-6840-410e-a694-a006b8e8548a"),
             "Greater Invisibility Invisible Equipment", 0.0D, AttributeModifier.Operation.ADDITION);
 
     @Override
@@ -73,5 +73,5 @@ public class GreaterInvisibilityEffect extends MobEffect {
         LivingEntity living = event.getEntity();
         AttributeInstance nameTagDistance = living.getAttribute(ForgeMod.NAMETAG_DISTANCE.get());
         if ( nameTagDistance != null && nameTagDistance.hasModifier(DECREASED_NAME_TAG_DISTANCE) ) event.setCanceled(true);
-    }
+    }*/
 }

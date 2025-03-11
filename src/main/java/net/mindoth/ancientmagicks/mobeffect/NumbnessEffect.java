@@ -26,7 +26,7 @@ public class NumbnessEffect extends MobEffect {
         super(pCategory, pColor);
     }
 
-    public static final String NBT_KEY = "am_numbness_damage";
+    /*public static final String NBT_KEY = "am_numbness_damage";
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void numbnessStoreDamage(final LivingDamageEvent event) {
@@ -90,5 +90,5 @@ public class NumbnessEffect extends MobEffect {
             if ( event.getEntity().hasEffect(AncientMagicksEffects.NUMBNESS.get()) ) event.setResult(Event.Result.DENY);
             else event.setResult(Event.Result.DEFAULT);
         }
-    }
+    }*/
 }

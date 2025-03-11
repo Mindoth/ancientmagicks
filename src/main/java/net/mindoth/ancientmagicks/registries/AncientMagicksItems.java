@@ -10,26 +10,18 @@ import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.effect.alchemy.AlchemyEffectItem;
-import net.mindoth.ancientmagicks.item.effect.heal.HealEffectItem;
-import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
-import net.mindoth.ancientmagicks.item.form.SelfFormItem;
-import net.mindoth.ancientmagicks.item.form.TouchFormItem;
-import net.mindoth.ancientmagicks.item.modifier.*;
-import net.mindoth.ancientmagicks.item.effect.alacrity.AlacrityEffectItem;
-import net.mindoth.ancientmagicks.item.effect.blind.BlindEffectItem;
 import net.mindoth.ancientmagicks.item.effect.callthunder.CallThunderEffectItem;
 import net.mindoth.ancientmagicks.item.effect.chaoticpolymorph.ChaoticPolymorphEffectItem;
 import net.mindoth.ancientmagicks.item.effect.createwater.CreateWaterEffectItem;
 import net.mindoth.ancientmagicks.item.effect.destroyliquids.DestroyLiquidsEffectItem;
-import net.mindoth.ancientmagicks.item.effect.fly.FlyEffectItem;
-import net.mindoth.ancientmagicks.item.effect.harm.HarmEffectItem;
 import net.mindoth.ancientmagicks.item.effect.mindcontrol.MindControlEffectItem;
 import net.mindoth.ancientmagicks.item.effect.notbreak.BreakEffectItem;
 import net.mindoth.ancientmagicks.item.effect.polymorph.PolymorphEffectItem;
-import net.mindoth.ancientmagicks.item.effect.sleep.SleepEffectItem;
-import net.mindoth.ancientmagicks.item.effect.spook.SpookEffectItem;
-import net.mindoth.ancientmagicks.item.effect.teleblock.TeleblockEffectItem;
 import net.mindoth.ancientmagicks.item.effect.teleport.TeleportEffectItem;
+import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
+import net.mindoth.ancientmagicks.item.form.SelfFormItem;
+import net.mindoth.ancientmagicks.item.form.TouchFormItem;
+import net.mindoth.ancientmagicks.item.modifier.*;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -125,38 +117,11 @@ public class AncientMagicksItems {
             () -> new SelfFormItem(new Item.Properties(), 0, 0));
 
     //Effects
-    public static final RegistryObject<Item> HARM_EFFECT_ITEM = ITEMS.register("harm_effect",
-            () -> new HarmEffectItem(new Item.Properties(), 1, 10));
-
-    public static final RegistryObject<Item> HEAL_EFFECT_ITEM = ITEMS.register("heal_effect",
-            () -> new HealEffectItem(new Item.Properties(), 1, 10));
-
     public static final RegistryObject<Item> BREAK_EFFECT_ITEM = ITEMS.register("break_effect",
             () -> new BreakEffectItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> POLYMORPH_EFFECT_ITEM = ITEMS.register("polymorph_effect",
-            () -> new PolymorphEffectItem(new Item.Properties(), 1, 10));
-
-    public static final RegistryObject<Item> SLEEP_EFFECT_ITEM = ITEMS.register("sleep_effect",
-            () -> new SleepEffectItem(new Item.Properties(), 1, 10));
-
-    public static final RegistryObject<Item> BLIND_EFFECT_ITEM = ITEMS.register("blind_effect",
-            () -> new BlindEffectItem(new Item.Properties(), 1, 10));
-
-    public static final RegistryObject<Item> ALACRITY_EFFECT_ITEM = ITEMS.register("alacrity_effect",
-            () -> new AlacrityEffectItem(new Item.Properties(), 1, 10));
-
     public static final RegistryObject<Item> CALL_THUNDER_EFFECT_ITEM = ITEMS.register("call_thunder_effect",
             () -> new CallThunderEffectItem(new Item.Properties(), 1, 10));
-
-    public static final RegistryObject<Item> CHAOTIC_POLYMORPH_EFFECT_ITEM = ITEMS.register("chaotic_polymorph_effect",
-            () -> new ChaoticPolymorphEffectItem(new Item.Properties(), 1, 10));
-
-    public static final RegistryObject<Item> TELEBLOCK_EFFECT_ITEM = ITEMS.register("teleblock_effect",
-            () -> new TeleblockEffectItem(new Item.Properties(), 1, 10));
-
-    public static final RegistryObject<Item> FLY_EFFECT_ITEM = ITEMS.register("fly_effect",
-            () -> new FlyEffectItem(new Item.Properties(), 1, 10));
 
     public static final RegistryObject<Item> DESTROY_LIQUIDS_EFFECT_ITEM = ITEMS.register("destroy_liquids_effect",
             () -> new DestroyLiquidsEffectItem(new Item.Properties(), 1, 10));
@@ -170,11 +135,14 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> MIND_CONTROL_EFFECT_ITEM = ITEMS.register("mind_control_effect",
             () -> new MindControlEffectItem(new Item.Properties(), 1, 10));
 
-    public static final RegistryObject<Item> SPOOK_EFFECT_ITEM = ITEMS.register("spook_effect",
-            () -> new SpookEffectItem(new Item.Properties(), 1, 10));
-
     public static final RegistryObject<Item> ALCHEMY_EFFECT_ITEM = ITEMS.register("alchemy_effect",
             () -> new AlchemyEffectItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> POLYMORPH_EFFECT_ITEM = ITEMS.register("polymorph_effect",
+            () -> new PolymorphEffectItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> CHAOTIC_POLYMORPH_EFFECT_ITEM = ITEMS.register("chaotic_polymorph_effect",
+            () -> new ChaoticPolymorphEffectItem(new Item.Properties(), 1, 10));
 
     //Modifiers
     public static final RegistryObject<Item> AMPLIFY_MODIFIER_ITEM = ITEMS.register("amplify_modifier",

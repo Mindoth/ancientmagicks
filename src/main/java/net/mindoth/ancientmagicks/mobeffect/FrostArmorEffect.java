@@ -21,7 +21,7 @@ public class FrostArmorEffect extends AbstractArmorEffect {
         super(pCategory, pColor);
     }
 
-    @Override
+    /*@Override
     public void addAttributeModifiers(LivingEntity living, AttributeMap map, int amp) {
         super.addAttributeModifiers(living, map, amp);
         List<MobEffectInstance> list = living.getActiveEffects().stream()
@@ -37,5 +37,5 @@ public class FrostArmorEffect extends AbstractArmorEffect {
                 source.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1, false, false));
             }
         }
-    }
+    }*/
 }

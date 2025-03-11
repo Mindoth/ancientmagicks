@@ -23,7 +23,7 @@ public class PerfectInvisibilityEffect extends MobEffect {
         super(pCategory, pColor);
     }
 
-    @Override
+    /*@Override
     public void addAttributeModifiers(LivingEntity living, AttributeMap map, int amp) {
         super.addAttributeModifiers(living, map, amp);
 
@@ -56,5 +56,5 @@ public class PerfectInvisibilityEffect extends MobEffect {
         if ( event.getEntity().level().isClientSide ) return;
         if ( event.getNewTarget() == null ) return;
         if ( event.getNewTarget().hasEffect(AncientMagicksEffects.PERFECT_INVISIBILITY.get()) ) event.setCanceled(true);
-    }
+    }*/
 }

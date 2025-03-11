@@ -29,12 +29,12 @@ public class EntityMixin {
         if ( entity instanceof LivingEntity living && living.hasEffect(AncientMagicksEffects.FALL_CONTROL.get()) ) callback.setReturnValue(true);
     }
 
-    @Inject(method = "canSpawnSprintParticle", at = @At("HEAD"), cancellable = true)
+    /*@Inject(method = "canSpawnSprintParticle", at = @At("HEAD"), cancellable = true)
     public void hideSprintParticles(CallbackInfoReturnable<Boolean> callback) {
         Entity entity = (Entity)(Object)this;
         if ( entity instanceof LivingEntity living ) {
             AttributeInstance nameTagDistance = living.getAttribute(ForgeMod.NAMETAG_DISTANCE.get());
             if ( nameTagDistance != null && nameTagDistance.hasModifier(GreaterInvisibilityEffect.DECREASED_NAME_TAG_DISTANCE) ) callback.setReturnValue(false);
         }
-    }
+    }*/
 }
