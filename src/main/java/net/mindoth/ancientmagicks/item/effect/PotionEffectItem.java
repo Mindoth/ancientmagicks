@@ -10,6 +10,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class PotionEffectItem extends EntityTargetEffect {
 
@@ -28,7 +29,7 @@ public class PotionEffectItem extends EntityTargetEffect {
     }
 
     @Override
-    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
+    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats, String data) {
         LivingEntity target = (LivingEntity)((EntityHitResult)result).getEntity();
         addEnchantParticles(target, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8);
         int amp = Mth.floor(Math.max(0, (stats.get(POWER) - 1) / 4));

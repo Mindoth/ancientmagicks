@@ -64,7 +64,7 @@ public class MagickEvents {
     @SubscribeEvent
     public static void onLivingFallSpook(final LivingFallEvent event) {
         LivingEntity living = event.getEntity();
-        if ( living.hasEffect(AncientMagicksEffects.SPOOK.get()) ) {
+        if ( living.hasEffect(AncientMagicksEffects.FALL_CONTROL.get()) ) {
             if ( calculateFallDamage(living, event.getDistance(), event.getDamageMultiplier()) < living.getHealth() ) {
                 event.setCanceled(true);
             }

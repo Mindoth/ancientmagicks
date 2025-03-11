@@ -37,7 +37,7 @@ public class BreakEffectItem extends BlockTargetEffect {
     }
 
     @Override
-    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
+    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats, String data) {
         BlockPos pos = ((BlockHitResult)result).getBlockPos();
         if ( level.getBlockState(pos).isAir() ) return false;
         if ( !(level instanceof ServerLevel serverLevel) ) return false;

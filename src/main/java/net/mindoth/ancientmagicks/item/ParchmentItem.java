@@ -19,10 +19,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 public class ParchmentItem extends Item {
 
     public static final String NBT_KEY_SPELL_STRING = "am_spell_string";
+    public static final String NBT_KEY_DATA_STRING = "am_encoding_string";
     public static final String NBT_KEY_CODE_STRING = "am_code_string";
     public static final String NBT_KEY_SPELL_NAME = "am_spell_name";
     public static final String NBT_KEY_PAPER_TIER = "am_paper_tier";
@@ -68,19 +70,25 @@ public class ParchmentItem extends Item {
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
                 componentList.add(item);
             }
-            for ( Item item : componentList ) {
-                if ( item instanceof SpellFormItem ) {
-                    tooltip.add(Component.translatable("tooltip.ancientmagicks.form")
-                            .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
+            List<String> dataList = List.of(tag.getString(NBT_KEY_DATA_STRING).split(","));
+            for ( int i = 0; i < componentList.size(); i++ ) {
+                Item item = componentList.get(i);
+                String key = "";
+                if ( item instanceof SpellFormItem ) key = "tooltip.ancientmagicks.form";
+                if ( item instanceof SpellModifierItem ) key = "tooltip.ancientmagicks.modifier";
+                if ( item instanceof SpellEffectItem ) key = "tooltip.ancientmagicks.effect";
+
+                if ( item instanceof ComponentItem component && component.isEncodeable() ) {
+                    if ( Objects.equals(dataList.get(i), ComponentItem.NBT_KEY_EMPTY) ) {
+                        tooltip.add(Component.translatable(key)
+                                .append(Component.translatable(item.getDescriptionId()))
+                                .append(Component.literal(": "))
+                                .append(Component.translatable("tooltip.ancientmagicks.empty"))
+                                .withStyle(ChatFormatting.GRAY));
+                    }
+                    else component.decodeTooltipData(tooltip, dataList.get(i), key, item);
                 }
-                else if ( item instanceof SpellModifierItem ) {
-                    tooltip.add(Component.translatable("tooltip.ancientmagicks.modifier")
-                            .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
-                }
-                else if ( item instanceof SpellEffectItem) {
-                    tooltip.add(Component.translatable("tooltip.ancientmagicks.spell")
-                            .append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
-                }
+                else tooltip.add(Component.translatable(key).append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
             }
         }
         super.appendHoverText(stack, world, tooltip, flagIn);

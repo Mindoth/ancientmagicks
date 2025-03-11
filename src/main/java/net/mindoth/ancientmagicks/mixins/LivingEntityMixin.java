@@ -17,7 +17,7 @@ public class LivingEntityMixin {
     @ModifyVariable(method = "checkFallDamage", at = @At("STORE"), ordinal = 0)
     protected int preventFallingParticles(int i) {
         LivingEntity living = (LivingEntity)(Object)this;
-        if ( living.hasEffect(AncientMagicksEffects.SPOOK.get()) ) return 0;
+        if ( living.hasEffect(AncientMagicksEffects.FALL_CONTROL.get()) ) return 0;
         else return i;
     }
 

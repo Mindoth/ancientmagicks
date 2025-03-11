@@ -12,7 +12,7 @@ public class SpellFormItem extends ComponentItem {
         super(pProperties, manaCost, cooldown);
     }
 
-    public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack) {
+    public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack, List<String> data) {
         return false;
     }
 }

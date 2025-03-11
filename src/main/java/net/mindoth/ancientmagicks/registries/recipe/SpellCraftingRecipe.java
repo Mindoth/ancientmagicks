@@ -63,7 +63,15 @@ public class SpellCraftingRecipe extends CustomRecipe {
         }
         if ( paperList.size() == 1 && restList.isEmpty() ) {
             List<ComponentItem> componentList = Lists.newArrayList();
-            for ( ItemStack stack : componentStackList ) if ( stack.getItem() instanceof ComponentItem component ) componentList.add(component);
+            StringBuilder effectData = new StringBuilder();
+            for ( int i = 0; i < componentStackList.size(); i++ ) {
+                ItemStack stack = componentStackList.get(i);
+                if ( stack.getItem() instanceof ComponentItem component ) {
+                    componentList.add(component);
+                    if ( i > 0 ) effectData.append(",");
+                    effectData.append(component.encodeComponentData(stack));
+                }
+            }
             if ( CastingValidator.isValidSpell(componentList) ) {
                 ItemStack stack = paperList.get(0).copy();
                 stack.setCount(1);
@@ -71,6 +79,7 @@ public class SpellCraftingRecipe extends CustomRecipe {
                 CompoundTag tag = stack.getOrCreateTag();
 
                 tag.putString(ParchmentItem.NBT_KEY_SPELL_STRING, CastingValidator.getStringFromSpellStack(componentList));
+                tag.putString(ParchmentItem.NBT_KEY_DATA_STRING, effectData.toString());
 
                 StringBuilder spellCode = new StringBuilder();
                 for ( int i = 0; i < AncientMagicks.comboSizeCalc(); i++ ) {

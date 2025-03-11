@@ -51,7 +51,7 @@ public class ChaoticPolymorphEffectItem extends EntityTargetEffect {
     }
 
     @Override
-    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
+    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats, String data) {
         boolean state = false;
         if ( level instanceof ServerLevel serverLevel ) {
             EntityHitResult entityHitResult = (EntityHitResult)result;

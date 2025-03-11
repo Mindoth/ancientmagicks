@@ -9,6 +9,7 @@ import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
+import net.mindoth.ancientmagicks.item.effect.alchemy.AlchemyEffectItem;
 import net.mindoth.ancientmagicks.item.effect.heal.HealEffectItem;
 import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
 import net.mindoth.ancientmagicks.item.form.SelfFormItem;
@@ -171,6 +172,9 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> SPOOK_EFFECT_ITEM = ITEMS.register("spook_effect",
             () -> new SpookEffectItem(new Item.Properties(), 1, 10));
+
+    public static final RegistryObject<Item> ALCHEMY_EFFECT_ITEM = ITEMS.register("alchemy_effect",
+            () -> new AlchemyEffectItem(new Item.Properties(), 1, 10));
 
     //Modifiers
     public static final RegistryObject<Item> AMPLIFY_MODIFIER_ITEM = ITEMS.register("amplify_modifier",

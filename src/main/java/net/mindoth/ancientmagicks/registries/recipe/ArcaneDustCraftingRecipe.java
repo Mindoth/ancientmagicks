@@ -26,18 +26,14 @@ public class ArcaneDustCraftingRecipe extends CustomRecipe {
     @Override
     public boolean matches(CraftingContainer container, Level level) {
         List<Item> itemList = Lists.newArrayList();
-        for ( int i = 0; i < container.getContainerSize(); i++ ) {
-            itemList.add(container.getItem(i).getItem());
-        }
+        for ( int i = 0; i < container.getContainerSize(); i++ ) itemList.add(container.getItem(i).getItem());
         return itemList.equals(AncientMagicks.ARCANE_DUST_LIST);
     }
 
     @Override
     public ItemStack assemble(CraftingContainer container, RegistryAccess regAcc) {
         List<Item> itemList = Lists.newArrayList();
-        for ( int i = 0; i < container.getContainerSize(); i++ ) {
-            itemList.add(container.getItem(i).getItem());
-        }
+        for ( int i = 0; i < container.getContainerSize(); i++ ) itemList.add(container.getItem(i).getItem());
         return itemList.equals(AncientMagicks.ARCANE_DUST_LIST) ? getResultItem(regAcc) : ItemStack.EMPTY;
     }
 

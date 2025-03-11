@@ -1,7 +1,6 @@
-package net.mindoth.ancientmagicks.item.effect.perfectinvisibility;
+package net.mindoth.ancientmagicks.mobeffect;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.effect.greaterinvisibility.GreaterInvisibilityEffect;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;

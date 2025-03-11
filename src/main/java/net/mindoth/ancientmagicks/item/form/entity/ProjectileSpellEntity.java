@@ -29,11 +29,12 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
     private void castMagick(HitResult result) {
         List<SpellModifierItem> modifiers = Lists.newArrayList();
         HashMap<String, Float> stats = SpellEffectItem.createDefaultStats();
-        for ( ComponentItem item : getSpellStack() ) {
+        for ( int i = 0; i < getSpellStack().size(); i++ ) {
+            ComponentItem item = getSpellStack().get(i);
             if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
             if ( item instanceof SpellEffectItem effect ) {
                 for ( SpellModifierItem modifier : modifiers ) modifier.addStatsToMap(stats);
-                effect.castSpell(level(), this.owner, this.caster, result, stats, getAoe());
+                effect.castSpell(level(), this.owner, this.caster, result, getAoe(), stats, getData().get(i));
                 modifiers = Lists.newArrayList();
                 stats = SpellEffectItem.createDefaultStats();
             }

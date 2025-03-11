@@ -84,7 +84,7 @@ public class SpellEffectItem extends ComponentItem {
         }
     }
 
-    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
+    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats, String data) {
         return canApply(level, owner, caster, result);
     }
 
@@ -92,7 +92,7 @@ public class SpellEffectItem extends ComponentItem {
         return true;
     }
 
-    public boolean castSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats, float aoe) {
+    public boolean castSpell(Level level, LivingEntity owner, Entity caster, HitResult result, float aoe, HashMap<String, Float> stats, String data) {
         boolean state = false;
         Vec3 center = result.getLocation();
         if ( this instanceof EntityTargetEffect ) {
@@ -104,12 +104,12 @@ public class SpellEffectItem extends ComponentItem {
                 List<Entity> entities = level.getEntitiesOfClass(Entity.class, box);
                 for ( Entity entity : entities ) {
                     EntityHitResult newResult = new EntityHitResult(entity);
-                    if ( canApply(level, owner, caster, newResult) ) doSpell(level, owner, caster, newResult, stats);
+                    if ( canApply(level, owner, caster, newResult) ) doSpell(level, owner, caster, newResult, stats, data);
                 }
                 state = true;
                 aoeEntitySpellParticles(level, result, center, aoe);
             }
-            else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats);
+            else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats, data);
         }
         else if ( this instanceof BlockTargetEffect) {
             if ( aoe > 0.0F ) {
@@ -123,14 +123,14 @@ public class SpellEffectItem extends ComponentItem {
                 }
                 for ( BlockPos position : blocks ) {
                     BlockHitResult newResult = new BlockHitResult(position.getCenter(), Direction.UP, position, isInside);
-                    if ( canApply(level, owner, caster, newResult) ) doSpell(level, owner, caster, newResult, stats);
+                    if ( canApply(level, owner, caster, newResult) ) doSpell(level, owner, caster, newResult, stats, data);
                 }
                 state = true;
                 for ( int i = -(int)aoe; i <= aoe; i++ ) aoeBlockSpellParticles(level, center, aoe, i);
             }
-            else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats);
+            else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats, data);
         }
-        else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats);
+        else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats, data);
         return state;
     }
 

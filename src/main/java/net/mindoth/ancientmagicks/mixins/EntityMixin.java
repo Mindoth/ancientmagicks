@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.mixins;
 
-import net.mindoth.ancientmagicks.item.effect.greaterinvisibility.GreaterInvisibilityEffect;
+import net.mindoth.ancientmagicks.mobeffect.GreaterInvisibilityEffect;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -20,13 +20,13 @@ public class EntityMixin {
     @Inject(method = "walkingStepSound", at = @At("HEAD"), cancellable = true)
     public void silenceFootsteps(BlockPos pPos, BlockState pState, CallbackInfo callback) {
         Entity entity = (Entity)(Object)this;
-        if ( entity instanceof LivingEntity living && living.hasEffect(AncientMagicksEffects.SPOOK.get()) ) callback.cancel();
+        if ( entity instanceof LivingEntity living && living.hasEffect(AncientMagicksEffects.FALL_CONTROL.get()) ) callback.cancel();
     }
 
     @Inject(method = "dampensVibrations", at = @At("HEAD"), cancellable = true)
     public void hideVibrations(CallbackInfoReturnable<Boolean> callback) {
         Entity entity = (Entity)(Object)this;
-        if ( entity instanceof LivingEntity living && living.hasEffect(AncientMagicksEffects.SPOOK.get()) ) callback.setReturnValue(true);
+        if ( entity instanceof LivingEntity living && living.hasEffect(AncientMagicksEffects.FALL_CONTROL.get()) ) callback.setReturnValue(true);
     }
 
     @Inject(method = "canSpawnSprintParticle", at = @At("HEAD"), cancellable = true)

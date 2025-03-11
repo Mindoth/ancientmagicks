@@ -1,11 +1,10 @@
-package net.mindoth.ancientmagicks.item.effect.spook;
+package net.mindoth.ancientmagicks.mobeffect;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 
-public class SpookEffect extends MobEffect {
-
-    public SpookEffect(MobEffectCategory pCategory, int pColor) {
+public class AlacrityEffect extends MobEffect {
+    public AlacrityEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
     }
 

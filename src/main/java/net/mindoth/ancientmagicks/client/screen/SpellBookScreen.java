@@ -263,8 +263,10 @@ public class SpellBookScreen extends AncientMagicksScreen {
                     int xPos = isRightPage ? x + 20 + (column * this.squareSpacing) : x - 114 + (column * this.squareSpacing);
                     int yPos = y - 74 + (row * this.squareSpacing);
 
-                    drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
-                            xPos - 3, yPos - 3, 0, 0, 22, 22, 22, 22, graphics);
+                    if ( stack.getItem() instanceof ParchmentItem ) {
+                        drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
+                                xPos - 3, yPos - 3, 0, 0, 22, 22, 22, 22, graphics);
+                    }
 
                     renderItemWithDecorations(graphics, stack, xPos, yPos);
                     if ( this.buttonList.get(i).isHovered() ) {

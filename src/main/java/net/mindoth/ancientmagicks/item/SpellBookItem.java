@@ -28,6 +28,7 @@ import java.util.Objects;
 public class SpellBookItem extends Item implements DyeableMagicItem {
 
     public static final String NBT_KEY_SPELLS = "am_book_spells";
+    public static final String NBT_KEY_DATA = "am_data";
     public static final String NBT_KEY_CODES = "am_book_codes";
     public static final String NBT_KEY_OWNER_NAME = "am_book_owner_name";
     public static final String NBT_KEY_OWNER_UUID = "am_book_owner_uuid";
@@ -76,11 +77,12 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         return result;
     }
 
-    public static ItemStack constructSpellScroll(String string, String name, Item item, String code) {
+    public static ItemStack constructSpellScroll(String string, String data, String name, Item item, String code) {
         ItemStack stack = new ItemStack(item);
         if ( !Objects.equals(name, NBT_KEY_NULL_NAME) ) stack.setHoverName(Component.literal(name));
         CompoundTag tag = stack.getOrCreateTag();
         tag.putString(ParchmentItem.NBT_KEY_SPELL_STRING, string);
+        tag.putString(ParchmentItem.NBT_KEY_DATA_STRING, data);
         tag.putString(ParchmentItem.NBT_KEY_CODE_STRING, code);
         return stack;
     }
@@ -90,6 +92,9 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
 
         String spell = tag.getString(NBT_KEY_SPELLS);
         List<String> stringList = List.of(spell.split(";"));
+
+        String data = tag.getString(NBT_KEY_DATA);
+        List<String> dataList = List.of(data.split(";"));
 
         String code = tag.getString(NBT_KEY_CODES);
         List<String> codeList = List.of(code.split(";"));
@@ -101,7 +106,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         List<String> itemList = List.of(item.split(";"));
 
         for ( int i = 0; i < stringList.size(); i++ ) {
-            ItemStack stack = constructSpellScroll(stringList.get(i), nameList.get(i), ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemList.get(i))), codeList.get(i));
+            ItemStack stack = constructSpellScroll(stringList.get(i), dataList.get(i), nameList.get(i), ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemList.get(i))), codeList.get(i));
             scrollList.add(stack);
         }
 
@@ -112,6 +117,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         ItemStack book = ogBook.copy();
         if ( book.hasTag() ) {
             if ( book.getTag().contains(NBT_KEY_SPELLS) ) book.getTag().remove(NBT_KEY_SPELLS);
+            if ( book.getTag().contains(NBT_KEY_DATA) ) book.getTag().remove(NBT_KEY_DATA);
             if ( book.getTag().contains(NBT_KEY_CODES) ) book.getTag().remove(NBT_KEY_CODES);
             if ( book.getTag().contains(ParchmentItem.NBT_KEY_SPELL_NAME) ) book.getTag().remove(ParchmentItem.NBT_KEY_SPELL_NAME);
             if ( book.getTag().contains(ParchmentItem.NBT_KEY_PAPER_TIER) ) book.getTag().remove(ParchmentItem.NBT_KEY_PAPER_TIER);
@@ -122,19 +128,23 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
 
     public static void addSpellToBook(ItemStack book, ItemStack scroll) {
         CompoundTag bookTag = book.getOrCreateTag();
+
         String spellString = scroll.getTag().getString(ParchmentItem.NBT_KEY_SPELL_STRING);
-        SpellBookItem.addSpellTagsToBook(bookTag, spellString, SpellBookItem.NBT_KEY_SPELLS);
+        addSpellTagsToBook(bookTag, spellString, NBT_KEY_SPELLS);
+
+        String dataString = scroll.getTag().getString(ParchmentItem.NBT_KEY_DATA_STRING);
+        addSpellTagsToBook(bookTag, dataString, NBT_KEY_DATA);
 
         String code = scroll.getTag().getString(ParchmentItem.NBT_KEY_CODE_STRING);
-        SpellBookItem.addSpellTagsToBook(bookTag, code, SpellBookItem.NBT_KEY_CODES);
+        addSpellTagsToBook(bookTag, code, NBT_KEY_CODES);
 
         String name;
         if ( scroll.hasCustomHoverName() ) name = scroll.getHoverName().getString();
         else name = NBT_KEY_NULL_NAME;
-        SpellBookItem.addSpellTagsToBook(bookTag, name, ParchmentItem.NBT_KEY_SPELL_NAME);
+        addSpellTagsToBook(bookTag, name, ParchmentItem.NBT_KEY_SPELL_NAME);
 
         String item = ForgeRegistries.ITEMS.getKey(scroll.getItem()).toString();
-        SpellBookItem.addSpellTagsToBook(bookTag, item, ParchmentItem.NBT_KEY_PAPER_TIER);
+        addSpellTagsToBook(bookTag, item, ParchmentItem.NBT_KEY_PAPER_TIER);
     }
 
     public static void addSpellTagsToBook(CompoundTag bookTag, String string, String key) {

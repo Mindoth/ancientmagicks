@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.effect.fly;
+package net.mindoth.ancientmagicks.mobeffect;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;

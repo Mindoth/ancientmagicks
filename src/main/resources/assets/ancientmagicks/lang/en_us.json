@@ -53,6 +53,7 @@
   "item.ancientmagicks.teleport_effect": "Teleport",
   "item.ancientmagicks.mind_control_effect": "Mind Control",
   "item.ancientmagicks.spook_effect": "Spook",
+  "item.ancientmagicks.alchemy_effect": "Alchemy",
 
   "item.ancientmagicks.amplify_modifier": "Amplify",
   "item.ancientmagicks.dampen_modifier": "Dampen",
@@ -71,24 +72,54 @@
   "item.ancientmagicks.diminish_modifier": "Diminish",
 
 
+  "effect.ancientmagicks.flight": "Flight",
+  "item.minecraft.potion.effect.flight_potion": "Flight Potion",
+  "item.minecraft.splash_potion.effect.flight_potion": "Splash Potion of Flight",
+  "item.minecraft.lingering_potion.effect.flight_potion": "Lingering Potion of Flight",
+
+  "effect.ancientmagicks.fall_control": "Fall Control",
+  "item.minecraft.potion.effect.fall_control_potion": "Fall Control Potion",
+  "item.minecraft.splash_potion.effect.fall_control_potion": "Splash Potion of Fall Control",
+  "item.minecraft.lingering_potion.effect.fall_control_potion": "Lingering Potion of Fall Control",
+
+  "effect.ancientmagicks.mind_control": "Mind Control",
+  "item.minecraft.potion.effect.mind_control_potion": "Mind Control Potion",
+  "item.minecraft.splash_potion.effect.mind_control_potion": "Splash Potion of Mind Control",
+  "item.minecraft.lingering_potion.effect.mind_control_potion": "Lingering Potion of Mind Control",
+
+  "effect.ancientmagicks.sleep": "Sleepy",
+  "item.minecraft.potion.effect.sleep_potion": "Sleep Potion",
+  "item.minecraft.splash_potion.effect.sleep_potion": "Splash Potion of Sleep",
+  "item.minecraft.lingering_potion.effect.sleep_potion": "Lingering Potion of Sleep",
+
+  "effect.ancientmagicks.polymorph": "Polymorphed",
+  "item.minecraft.potion.effect.polymorph_potion": "Polymorph Potion",
+  "item.minecraft.splash_potion.effect.polymorph_potion": "Splash Potion of Polymorph",
+  "item.minecraft.lingering_potion.effect.polymorph_potion": "Lingering Potion of Polymorph",
+
+  "effect.ancientmagicks.teleblock": "Teleblocked",
+  "item.minecraft.potion.effect.teleblock_potion": "Teleblock Potion",
+  "item.minecraft.splash_potion.effect.teleblock_potion": "Splash Potion of Teleblock",
+  "item.minecraft.lingering_potion.effect.teleblock_potion": "Lingering Potion of Teleblock",
+
+  "effect.ancientmagicks.alacrity": "Alacrity",
+  "item.minecraft.potion.effect.alacrity_potion": "Alacrity Potion",
+  "item.minecraft.splash_potion.effect.alacrity_potion": "Splash Potion of Alacrity",
+  "item.minecraft.lingering_potion.effect.alacrity_potion": "Lingering Potion of Alacrity",
+
   "effect.ancientmagicks.frost_armor": "Frost Armor",
   "effect.ancientmagicks.witch_armor": "Witch Armor",
-  "effect.ancientmagicks.sleep": "Magickal Sleep",
-  "effect.ancientmagicks.polymorph": "Polymorphed",
-  "effect.ancientmagicks.teleblock": "Teleblocked",
+  "effect.ancientmagicks.numbness": "Numbness",
   "effect.ancientmagicks.greater_invisibility": "Greater Invisibility",
   "effect.ancientmagicks.perfect_invisibility": "Perfect Invisibility",
-  "effect.ancientmagicks.flight": "Flight",
-  "effect.ancientmagicks.numbness": "Numbness",
-  "effect.ancientmagicks.alacrity": "Alacrity",
-  "effect.ancientmagicks.spook": "Spook",
 
   "enchantment.ancientmagicks.open_mind": "Open Mind",
 
 
+  "tooltip.ancientmagicks.empty": "Empty",
   "tooltip.ancientmagicks.book_owner": "Owner: ",
   "tooltip.ancientmagicks.form": "\u00A75Form: \u00A7r",
-  "tooltip.ancientmagicks.spell": "\u00A7cSpell: \u00A7r",
+  "tooltip.ancientmagicks.effect": "\u00A7cEffect: \u00A7r",
   "tooltip.ancientmagicks.modifier": "\u00A79Modifier: \u00A7r",
 
   "attribute.ancientmagicks.magick_max": "\u00A79Maximum Mana\u00A7r",

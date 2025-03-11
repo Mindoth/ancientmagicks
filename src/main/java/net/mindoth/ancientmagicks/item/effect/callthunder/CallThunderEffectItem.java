@@ -26,7 +26,7 @@ public class CallThunderEffectItem extends SpellEffectItem {
     }
 
     @Override
-    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
+    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats, String data) {
         boolean state = false;
         float range = stats.get(AOE);
         Vec3 center = result.getLocation();

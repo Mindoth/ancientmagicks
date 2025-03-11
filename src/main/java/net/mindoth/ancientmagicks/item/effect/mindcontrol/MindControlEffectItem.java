@@ -42,7 +42,7 @@ public class MindControlEffectItem extends PotionEffectItem {
     }
 
     @Override
-    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
+    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats, String data) {
         Mob mob = (Mob)((EntityHitResult)result).getEntity();
         addEnchantParticles(mob, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8);
         int amp = Math.max(0, (Mth.floor(stats.get(POWER)) - 1) / 10);

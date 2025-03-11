@@ -18,11 +18,12 @@ public class CastingValidator {
         if ( !(scroll.getItem() instanceof ParchmentItem) || !scroll.hasTag() ) return false;
         if ( !scroll.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING) ) return false;
         List<ComponentItem> spellStack = getSpellStackFromScroll(scroll);
-        if ( !spellStack.isEmpty() && isValidSpell(spellStack) ) return castSpell(owner, caster, spellStack);
+        List<String> data = getDataListFromScroll(scroll);
+        if ( !spellStack.isEmpty() && isValidSpell(spellStack) ) return castSpell(owner, caster, spellStack, data);
         else return false;
     }
 
-    public static boolean castSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack) {
+    public static boolean castSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack, List<String> data) {
         if ( spellStack.isEmpty() ) return false;
         SpellFormItem form = null;
         for ( ComponentItem item : spellStack ) {
@@ -31,7 +32,7 @@ public class CastingValidator {
                 break;
             }
         }
-        if ( form != null ) return form.formSpell(owner, caster, spellStack);
+        if ( form != null ) return form.formSpell(owner, caster, spellStack, data);
         else return false;
     }
 
@@ -73,5 +74,19 @@ public class CastingValidator {
             if ( item instanceof ComponentItem component ) componentList.add(component);
         }
         return componentList;
+    }
+
+    public static List<String> getDataListFromScroll(ItemStack scroll) {
+        String stringList = scroll.getTag().getString(ParchmentItem.NBT_KEY_DATA_STRING);
+        return List.of(stringList.split(","));
+    }
+
+    public static String getDataStringFromList(List<String> stringList) {
+        StringBuilder effectData = new StringBuilder();
+        for ( int i = 0; i < stringList.size(); i++ ) {
+            if ( i > 0 ) effectData.append(",");
+            effectData.append(stringList.get(i));
+        }
+        return effectData.toString();
     }
 }

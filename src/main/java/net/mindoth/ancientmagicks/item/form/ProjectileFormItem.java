@@ -22,7 +22,7 @@ public class ProjectileFormItem extends SpellFormItem {
     }
 
     @Override
-    public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack) {
+    public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack, List<String> data) {
         Level level = caster.level();
 
         ProjectileSpellEntity projectile = new ProjectileSpellEntity(level, owner, caster);
@@ -30,17 +30,23 @@ public class ProjectileFormItem extends SpellFormItem {
         projectile.setNoGravity(true);
 
         List<ComponentItem> newList = Lists.newArrayList();
+        List<String> newData = Lists.newArrayList();
         boolean form = false;
         HashMap<SpellModifierItem, Integer> map = new HashMap<>();
-        for ( ComponentItem item : spellStack ) {
-            if ( item instanceof SpellFormItem ) form = true;
+        for ( int i = 0; i < spellStack.size(); i++ ) {
+            ComponentItem item = spellStack.get(i);
             if ( !form ) {
+                if ( item instanceof SpellFormItem ) form = true;
                 if ( item instanceof SpellModifierItem modifier ) map.merge(modifier, 1, Integer::sum);
             }
-            else newList.add(item);
+            else {
+                newList.add(item);
+                newData.add(data.get(i));
+            }
         }
         for ( Map.Entry<SpellModifierItem, Integer> entry : map.entrySet() ) entry.getKey().addEntityModifier(projectile, entry.getValue());
         projectile.getEntityData().set(AbstractSpellEntity.SPELLSTACK, CastingValidator.getStringFromSpellStack(newList));
+        projectile.getEntityData().set(AbstractSpellEntity.DATA, CastingValidator.getDataStringFromList(newData));
 
         if ( caster instanceof Player ) projectile.setPos(caster.getEyePosition().add(0, -0.2F, 0));
         else if ( caster instanceof LivingEntity ) projectile.setPos(caster.getEyePosition());

@@ -320,6 +320,10 @@ public abstract class AbstractSpellEntity extends Projectile {
         return CastingValidator.getSpellStackFromString(this.entityData.get(SPELLSTACK));
     }
 
+    public List<String> getData() {
+        return List.of(this.entityData.get(DATA).split(","));
+    }
+
     public int getPower() {
         return this.entityData.get(POWER);
     }
@@ -372,6 +376,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     public static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
 
     public static final EntityDataAccessor<String> SPELLSTACK = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.STRING);
+    public static final EntityDataAccessor<String> DATA = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Integer> POWER = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Integer> LIFE = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);
@@ -391,6 +396,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.set(SIZE, compound.getFloat("size"));
 
         this.entityData.set(SPELLSTACK, compound.getString("spellstack"));
+        this.entityData.set(DATA, compound.getString("data"));
         this.entityData.set(POWER, compound.getInt(ComponentItem.POWER));
         this.entityData.set(SPEED, compound.getFloat(ComponentItem.SPEED));
         this.entityData.set(LIFE, compound.getInt(ComponentItem.LIFE));
@@ -411,6 +417,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         compound.putFloat("size", this.entityData.get(SIZE));
 
         compound.putString("spellstack", this.entityData.get(SPELLSTACK));
+        compound.putString("data", this.entityData.get(DATA));
         compound.putInt(ComponentItem.POWER, this.entityData.get(POWER));
         compound.putFloat(ComponentItem.SPEED, this.entityData.get(SPEED));
         compound.putInt(ComponentItem.LIFE, this.entityData.get(LIFE));
@@ -430,6 +437,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.define(SIZE, 0.2F);
 
         this.entityData.define(SPELLSTACK, "");
+        this.entityData.define(DATA, "");
         this.entityData.define(POWER, 1);
         this.entityData.define(SPEED, 1.0F);
         this.entityData.define(LIFE, 100);

@@ -21,7 +21,7 @@ public class DestroyLiquidsEffectItem extends BlockTargetEffect {
     }
 
     @Override
-    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats) {
+    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats, String data) {
         boolean state = false;
         BlockPos pos;
         if ( result instanceof BlockHitResult blockHitResult ) pos = blockHitResult.getBlockPos();

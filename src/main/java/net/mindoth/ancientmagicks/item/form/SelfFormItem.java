@@ -20,18 +20,23 @@ public class SelfFormItem extends SpellFormItem {
     }
 
     @Override
-    public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack) {
+    public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack, List<String> data) {
         Level level = caster.level();
 
         List<ComponentItem> newList = Lists.newArrayList();
+        List<String> newData = Lists.newArrayList();
         List<SpellModifierItem> formModifiers = Lists.newArrayList();
         boolean form = false;
-        for ( ComponentItem item : spellStack ) {
+        for ( int i = 0; i < spellStack.size(); i++ ) {
+            ComponentItem item = spellStack.get(i);
             if ( !form ) {
                 if ( item instanceof SpellFormItem ) form = true;
                 if ( item instanceof SpellModifierItem modifier ) formModifiers.add(modifier);
             }
-            else newList.add(item);
+            else {
+                newList.add(item);
+                newData.add(data.get(i));
+            }
         }
         HashMap<String, Float> formStats = SpellEffectItem.createSpellStats(formModifiers);
         float aoe = formStats.get(AOE);
@@ -39,12 +44,13 @@ public class SelfFormItem extends SpellFormItem {
         List<SpellModifierItem> modifiers = Lists.newArrayList();
         HashMap<String, Float> stats = SpellEffectItem.createDefaultStats();
         List<Boolean> boolist = Lists.newArrayList();
-        for ( ComponentItem item : newList ) {
+        for ( int i = 0; i < newList.size(); i++ ) {
+            ComponentItem item = newList.get(i);
             if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
             if ( item instanceof SpellEffectItem effect ) {
                 HitResult hitResult = new EntityHitResult(caster, caster.position());
                 for ( SpellModifierItem modifier : modifiers ) modifier.addStatsToMap(stats);
-                boolist.add(effect.castSpell(level, owner, caster, hitResult, stats, aoe));
+                boolist.add(effect.castSpell(level, owner, caster, hitResult, aoe, stats, newData.get(i)));
                 modifiers = Lists.newArrayList();
                 stats = SpellEffectItem.createDefaultStats();
             }
