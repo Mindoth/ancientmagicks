@@ -27,14 +27,14 @@ public class AncientMagicksEffects {
 
     //JUST Effects
     public static final RegistryObject<MindControlEffect> MIND_CONTROL = EFFECTS.register("mind_control", () -> new MindControlEffect(MobEffectCategory.HARMFUL, 0));
+    public static final RegistryObject<PolymorphEffect> POLYMORPH = EFFECTS.register("polymorph", () -> new PolymorphEffect(MobEffectCategory.HARMFUL, 16733695));
+    public static final RegistryObject<ChaoticPolymorphEffect> CHAOTIC_POLYMORPH = EFFECTS.register("chaotic_polymorph", () -> new ChaoticPolymorphEffect(MobEffectCategory.HARMFUL, 16733695));
 
     //Potions
     public static final RegistryObject<FlightEffect> FLIGHT = EFFECTS.register("flight", () -> new FlightEffect(MobEffectCategory.BENEFICIAL, 16733695));
     public static final RegistryObject<FallControlEffect> FALL_CONTROL = EFFECTS.register("fall_control", () -> new FallControlEffect(MobEffectCategory.BENEFICIAL, 0));
     public static final RegistryObject<SleepEffect> SLEEP = EFFECTS.register("sleep", () -> new SleepEffect(MobEffectCategory.HARMFUL, 0));
     public static final RegistryObject<TeleblockEffect> TELEBLOCK = EFFECTS.register("teleblock", () -> new TeleblockEffect(MobEffectCategory.HARMFUL, 16733695));
-    public static final RegistryObject<PolymorphEffect> POLYMORPH = EFFECTS.register("polymorph", () -> new PolymorphEffect(MobEffectCategory.HARMFUL, 16733695));
-    public static final RegistryObject<ChaoticPolymorphEffect> CHAOTIC_POLYMORPH = EFFECTS.register("chaotic_polymorph", () -> new ChaoticPolymorphEffect(MobEffectCategory.HARMFUL, 16733695));
 
     //Unused
     /*public static final RegistryObject<MobEffect> FROST_ARMOR = EFFECTS.register("frost_armor", () -> new FrostArmorEffect(MobEffectCategory.BENEFICIAL, 5636095)

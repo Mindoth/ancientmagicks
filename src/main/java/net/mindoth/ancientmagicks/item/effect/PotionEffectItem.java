@@ -36,10 +36,13 @@ public class PotionEffectItem extends EntityTargetEffect {
     protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats, String data) {
         LivingEntity target = (LivingEntity)((EntityHitResult)result).getEntity();
         addEnchantParticles(target, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8);
-        int amp = Mth.floor(Math.max(0, (stats.get(POWER) - 1) / 4));
+        int amp = Mth.floor(Math.max(0, (stats.get(POWER) - 1)));
         int life = 600 * Mth.floor(stats.get(LIFE));
         for ( MobEffect effect : getEffects(data) ) {
-            if ( effect.isInstantenous() ) life = 1;
+            if ( effect.isInstantenous() ) {
+                life = 1;
+                amp = Mth.floor(Math.max(0, (stats.get(POWER) - 1) / 4));
+            }
             target.addEffect(new MobEffectInstance(effect, life, amp, false, !effect.isBeneficial()));
         }
         return true;

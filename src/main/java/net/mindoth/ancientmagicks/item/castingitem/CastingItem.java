@@ -38,7 +38,7 @@ public class CastingItem extends Item {
                     coolDown += item.getCooldown();
                 }
                 if ( CastingValidator.calculateSpellRecipes(scroll, owner, caster) ) {
-                    handleCooldownsAndStuff(caster, stack, coolDown);
+                    handleCooldownsAndStuff(caster, stack, Math.max(1, 10 + coolDown));
                     if ( !serverPlayer.isCreative() ) MagickEvents.changeMana(caster, -manaCost);
                 }
                 else whiffSpell(caster);
@@ -52,7 +52,7 @@ public class CastingItem extends Item {
         for ( Item item : ForgeRegistries.ITEMS.getValues() ) if ( item instanceof StaffItem ) addCastingCooldown(caster, item, cooldown);
         if ( caster instanceof LivingEntity living ) {
             if ( castingItem != null && castingItem.getItem() instanceof StaffItem ) addItemDamage(castingItem, 1, living);
-            if ( cooldown > 10 ) living.stopUsingItem();
+            if ( cooldown > 5 ) living.stopUsingItem();
         }
     }
 

@@ -11,6 +11,16 @@ public class ShrinkModifierItem extends SpellModifierItem {
     }
 
     @Override
+    public boolean usableWithForms() {
+        return true;
+    }
+
+    @Override
+    public boolean usableWithEffects() {
+        return false;
+    }
+
+    @Override
     public void addEntityModifier(AbstractSpellEntity projectile, int count) {
         projectile.getEntityData().set(AbstractSpellEntity.AOE, Math.max(0, projectile.getEntityData().get(AbstractSpellEntity.AOE) - (float)count));
     }

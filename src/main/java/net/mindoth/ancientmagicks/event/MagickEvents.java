@@ -52,14 +52,14 @@ public class MagickEvents {
         });
     }
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public static void hideWithInvisibilitySpells(final LivingEvent.LivingVisibilityEvent event) {
         if ( event.getEntity().level().isClientSide ) return;
         LivingEntity living = event.getEntity();
         if ( living.hasEffect(AncientMagicksEffects.GREATER_INVISIBILITY.get()) || living.hasEffect(AncientMagicksEffects.PERFECT_INVISIBILITY.get()) ) {
             event.modifyVisibility(0);
         }
-    }
+    }*/
 
     @SubscribeEvent
     public static void onLivingFallSpook(final LivingFallEvent event) {

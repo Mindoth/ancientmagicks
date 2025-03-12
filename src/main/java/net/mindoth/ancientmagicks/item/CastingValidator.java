@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
+import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,11 +39,17 @@ public class CastingValidator {
 
     public static boolean isValidSpell(List<ComponentItem> spellStack) {
         SpellFormItem form = null;
+        List<SpellModifierItem> modifiers = Lists.newArrayList();
         for ( ComponentItem item : spellStack ) {
             if ( item instanceof SpellEffectItem && form == null ) return false;
+            if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
             if ( item instanceof SpellFormItem formItem ) {
                 if ( form == null ) form = formItem;
                 else return false;
+            }
+            if ( item instanceof SpellFormItem || item instanceof SpellEffectItem ) {
+                for ( SpellModifierItem modifier : modifiers ) if ( !SpellModifierItem.canAddModifier(modifier, item) ) return false;
+                modifiers = Lists.newArrayList();
             }
         }
         return form != null && spellStack.get(spellStack.size() - 1) instanceof SpellEffectItem;

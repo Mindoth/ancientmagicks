@@ -8,9 +8,15 @@ import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.mindoth.ancientmagicks.registries.recipe.AncientMagicksRecipes;
+import net.mindoth.ancientmagicks.registries.recipe.BetterBrewingRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.brewing.BrewingRecipe;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -70,8 +76,19 @@ public class AncientMagicks {
     public static List<Item> ITEM_LIST = Lists.newArrayList();
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        AncientMagicksNetwork.init();
-        ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
+        event.enqueueWork(() -> {
+            AncientMagicksNetwork.init();
+            ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
+
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.ELYTRA, AncientMagicksPotions.FLIGHT_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(AncientMagicksPotions.FLIGHT_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_FLIGHT_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.FEATHER, AncientMagicksPotions.FALL_CONTROL_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(AncientMagicksPotions.FALL_CONTROL_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_FALL_CONTROL_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.POTATO, AncientMagicksPotions.SLEEP_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(AncientMagicksPotions.SLEEP_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_SLEEP_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.ENDER_PEARL, AncientMagicksPotions.TELEBLOCK_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(AncientMagicksPotions.TELEBLOCK_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_TELEBLOCK_POTION.get()));
+        });
     }
 
     public static void createLists(Random seededRand) {

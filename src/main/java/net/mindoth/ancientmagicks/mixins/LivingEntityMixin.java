@@ -21,13 +21,13 @@ public class LivingEntityMixin {
         else return i;
     }
 
-    @Inject(method = "updateInvisibilityStatus", at = @At(value = "TAIL"))
+    /*@Inject(method = "updateInvisibilityStatus", at = @At(value = "TAIL"))
     public void updateInvisibilityStatus(CallbackInfo callback) {
         LivingEntity living = (LivingEntity)(Object) this;
         if ( living.hasEffect(AncientMagicksEffects.GREATER_INVISIBILITY.get()) || living.hasEffect(AncientMagicksEffects.PERFECT_INVISIBILITY.get()) ) {
             living.setInvisible(true);
         }
-    }
+    }*/
 
     @Inject(method = "checkBedExists", at = @At(value = "HEAD"), cancellable = true)
     public void allowSleepWithPotionEffect(CallbackInfoReturnable<Boolean> callback) {

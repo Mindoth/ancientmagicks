@@ -13,12 +13,24 @@ public class AncientMagicksPotions {
     public static final RegistryObject<Potion> FLIGHT_POTION = POTIONS.register("flight_potion",
             () -> new Potion(new MobEffectInstance(AncientMagicksEffects.FLIGHT.get(), 600, 0)));
 
+    public static final RegistryObject<Potion> LONG_FLIGHT_POTION = POTIONS.register("long_flight_potion",
+            () -> new Potion(new MobEffectInstance(AncientMagicksEffects.FLIGHT.get(), 1200, 0)));
+
     public static final RegistryObject<Potion> FALL_CONTROL_POTION = POTIONS.register("fall_control_potion",
             () -> new Potion(new MobEffectInstance(AncientMagicksEffects.FALL_CONTROL.get(), 1800, 0)));
+
+    public static final RegistryObject<Potion> LONG_FALL_CONTROL_POTION = POTIONS.register("long_fall_control_potion",
+            () -> new Potion(new MobEffectInstance(AncientMagicksEffects.FALL_CONTROL.get(), 4800, 0)));
 
     public static final RegistryObject<Potion> SLEEP_POTION = POTIONS.register("sleep_potion",
             () -> new Potion(new MobEffectInstance(AncientMagicksEffects.SLEEP.get(), 600, 0)));
 
+    public static final RegistryObject<Potion> LONG_SLEEP_POTION = POTIONS.register("long_sleep_potion",
+            () -> new Potion(new MobEffectInstance(AncientMagicksEffects.SLEEP.get(), 1200, 0)));
+
     public static final RegistryObject<Potion> TELEBLOCK_POTION = POTIONS.register("teleblock_potion",
             () -> new Potion(new MobEffectInstance(AncientMagicksEffects.TELEBLOCK.get(), 600, 0)));
+
+    public static final RegistryObject<Potion> LONG_TELEBLOCK_POTION = POTIONS.register("long_teleblock_potion",
+            () -> new Potion(new MobEffectInstance(AncientMagicksEffects.TELEBLOCK.get(), 1200, 0)));
 }
