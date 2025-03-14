@@ -13,7 +13,7 @@ public class EntityTargetEffect extends SpellEffectItem {
     }
 
     @Override
-    protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result) {
-        return result instanceof EntityHitResult entityHitResult && allyFilter(owner, entityHitResult.getEntity(), isHarmful());
+    protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result, String data) {
+        return result instanceof EntityHitResult entityHitResult && allyFilter(owner, entityHitResult.getEntity(), isHarmful(data));
     }
 }

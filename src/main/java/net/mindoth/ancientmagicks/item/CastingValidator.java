@@ -88,7 +88,7 @@ public class CastingValidator {
         return List.of(stringList.split(","));
     }
 
-    public static String getDataStringFromList(List<String> stringList) {
+    public static String getStringFromDataList(List<String> stringList) {
         StringBuilder effectData = new StringBuilder();
         for ( int i = 0; i < stringList.size(); i++ ) {
             if ( i > 0 ) effectData.append(",");

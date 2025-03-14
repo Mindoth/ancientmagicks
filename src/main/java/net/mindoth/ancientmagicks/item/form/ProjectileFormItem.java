@@ -46,7 +46,7 @@ public class ProjectileFormItem extends SpellFormItem {
         }
         for ( Map.Entry<SpellModifierItem, Integer> entry : map.entrySet() ) entry.getKey().addEntityModifier(projectile, entry.getValue());
         projectile.getEntityData().set(AbstractSpellEntity.SPELLSTACK, CastingValidator.getStringFromSpellStack(newList));
-        projectile.getEntityData().set(AbstractSpellEntity.DATA, CastingValidator.getDataStringFromList(newData));
+        projectile.getEntityData().set(AbstractSpellEntity.DATA, CastingValidator.getStringFromDataList(newData));
 
         if ( caster instanceof Player ) projectile.setPos(caster.getEyePosition().add(0, -0.2F, 0));
         else if ( caster instanceof LivingEntity ) projectile.setPos(caster.getEyePosition());

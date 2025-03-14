@@ -20,9 +20,9 @@ public class ChaoticPolymorphEffectItem extends PotionEffectItem {
     }
 
     @Override
-    protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result) {
+    protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result, String data) {
         return result instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof Mob
-                && allyFilter(owner, entityHitResult.getEntity(), isHarmful()) && mobTypeFilter(entityHitResult.getEntity());
+                && allyFilter(owner, entityHitResult.getEntity(), isHarmful(data)) && mobTypeFilter(entityHitResult.getEntity());
     }
 
     @Override

@@ -46,7 +46,6 @@ public abstract class AbstractSpellEntity extends Projectile {
         super(entityType, level);
     }
 
-    //TODO: Carry rest of spellStack to the next possible spell. Only needed if triggercasting is a thing.
     public AbstractSpellEntity(EntityType<? extends AbstractSpellEntity> entityType, Level pLevel, LivingEntity owner, Entity caster) {
         super(entityType, pLevel);
         this.owner = owner;
@@ -366,7 +365,10 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     public boolean isHarmful() {
-        for ( ComponentItem item : getSpellStack() ) if ( item instanceof SpellEffectItem effect && effect.isHarmful() ) return true;
+        for ( int i = 0; i < getSpellStack().size(); i++ ) {
+            ComponentItem item = getSpellStack().get(i);
+            if ( item instanceof SpellEffectItem effect && effect.isHarmful(getData().get(i)) ) return true;
+        }
         return false;
     }
 

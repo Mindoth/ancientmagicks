@@ -13,7 +13,7 @@ public class BlockTargetEffect extends SpellEffectItem {
     }
 
     @Override
-    protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result) {
+    protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result, String data) {
         return result instanceof BlockHitResult;
     }
 }

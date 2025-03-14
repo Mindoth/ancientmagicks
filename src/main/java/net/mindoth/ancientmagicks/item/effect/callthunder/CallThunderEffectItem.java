@@ -39,11 +39,11 @@ public class CallThunderEffectItem extends SpellEffectItem {
             if ( result instanceof EntityHitResult entityHitResult ) entities.remove(entityHitResult.getEntity());
             for ( Entity entity : entities ) {
                 EntityHitResult entityHitResult = new EntityHitResult(entity);
-                if ( canApply(level, owner, caster, entityHitResult) ) callThunder(level, caster, entityHitResult, stats);
+                if ( canApply(level, owner, caster, entityHitResult, data) ) callThunder(level, caster, entityHitResult, stats);
             }
             state = true;
         }
-        else if ( canApply(level, owner, caster, result) ) state = callThunder(level, caster, result, stats);
+        else if ( canApply(level, owner, caster, result, data) ) state = callThunder(level, caster, result, stats);
         return state;
     }
 

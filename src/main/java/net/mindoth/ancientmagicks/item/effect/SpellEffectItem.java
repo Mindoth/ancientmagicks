@@ -26,6 +26,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +50,7 @@ public class SpellEffectItem extends ComponentItem {
         return this.cooldown;
     }
 
-    public boolean isHarmful() {
+    public boolean isHarmful(@Nullable String data) {
         return true;
     }
 
@@ -85,10 +86,10 @@ public class SpellEffectItem extends ComponentItem {
     }
 
     protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats, String data) {
-        return canApply(level, owner, caster, result);
+        return canApply(level, owner, caster, result, data);
     }
 
-    protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result) {
+    protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result, String data) {
         return true;
     }
 
@@ -104,12 +105,12 @@ public class SpellEffectItem extends ComponentItem {
                 List<Entity> entities = level.getEntitiesOfClass(Entity.class, box);
                 for ( Entity entity : entities ) {
                     EntityHitResult newResult = new EntityHitResult(entity);
-                    if ( canApply(level, owner, caster, newResult) ) doSpell(level, owner, caster, newResult, stats, data);
+                    if ( canApply(level, owner, caster, newResult, data) ) doSpell(level, owner, caster, newResult, stats, data);
                 }
                 state = true;
                 aoeEntitySpellParticles(level, result, center, aoe);
             }
-            else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats, data);
+            else if ( canApply(level, owner, caster, result, data) ) state = doSpell(level, owner, caster, result, stats, data);
         }
         else if ( this instanceof BlockTargetEffect) {
             if ( aoe > 0.0F ) {
@@ -123,14 +124,14 @@ public class SpellEffectItem extends ComponentItem {
                 }
                 for ( BlockPos position : blocks ) {
                     BlockHitResult newResult = new BlockHitResult(position.getCenter(), Direction.UP, position, isInside);
-                    if ( canApply(level, owner, caster, newResult) ) doSpell(level, owner, caster, newResult, stats, data);
+                    if ( canApply(level, owner, caster, newResult, data) ) doSpell(level, owner, caster, newResult, stats, data);
                 }
                 state = true;
                 for ( int i = -(int)aoe; i <= aoe; i++ ) aoeBlockSpellParticles(level, center, aoe, i);
             }
-            else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats, data);
+            else if ( canApply(level, owner, caster, result, data) ) state = doSpell(level, owner, caster, result, stats, data);
         }
-        else if ( canApply(level, owner, caster, result) ) state = doSpell(level, owner, caster, result, stats, data);
+        else if ( canApply(level, owner, caster, result, data) ) state = doSpell(level, owner, caster, result, stats, data);
         return state;
     }
 

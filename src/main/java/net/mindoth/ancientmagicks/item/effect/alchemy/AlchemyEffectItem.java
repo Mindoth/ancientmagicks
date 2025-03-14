@@ -39,6 +39,13 @@ public class AlchemyEffectItem extends PotionEffectItem {
     }
 
     @Override
+    public boolean isHarmful(@Nullable String data) {
+        if ( data == null || data.isEmpty() ) return true;
+        for ( MobEffect effect : getEffects(data) ) if ( !effect.isBeneficial() ) return true;
+        return false;
+    }
+
+    @Override
     protected List<MobEffect> getEffects(String data) {
         List<MobEffect> effects = Lists.newArrayList();
         for ( String string : List.of(data.split(" ")) ) {

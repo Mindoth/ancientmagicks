@@ -22,9 +22,9 @@ public class PotionEffectItem extends EntityTargetEffect {
     }
 
     @Override
-    protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result) {
+    protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result, String data) {
         return result instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof LivingEntity
-                && allyFilter(owner, entityHitResult.getEntity(), isHarmful()) && mobTypeFilter(entityHitResult.getEntity());
+                && allyFilter(owner, entityHitResult.getEntity(), isHarmful(data)) && mobTypeFilter(entityHitResult.getEntity());
     }
 
     protected List<MobEffect> getEffects(String data) {

@@ -53,7 +53,7 @@ public class MindControlEffectItem extends PotionEffectItem {
         int life = Mth.floor(stats.get(LIFE) - 100) * 30 + 600;
         mob.getPersistentData().putUUID(MindControlEffect.NBT_KEY_CONTROL, owner.getUUID());
         for ( MobEffect effect : getEffects(data) ) {
-            mob.addEffect(new MobEffectInstance(effect, life, amp, false, isHarmful()));
+            mob.addEffect(new MobEffectInstance(effect, life, amp, false, true));
             //if ( mob instanceof PathfinderMob pthMob ) mob.goalSelector.addGoal(0, new MeleeAttackGoal(pthMob, 1.0F, true));
             mob.setTarget(MindControlEffect.findMindControlTarget(mob, owner, mob.level()));
         }
