@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.brewing.BrewingRecipe;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
@@ -52,6 +53,7 @@ public class AncientMagicks {
     private void addRegistries(final IEventBus modEventBus) {
         AncientMagicksTab.register(modEventBus);
         AncientMagicksItems.ITEMS.register(modEventBus);
+        AncientMagicksBlocks.BLOCKS.register(modEventBus);
         AncientMagicksEntities.ENTITIES.register(modEventBus);
         AncientMagicksEffects.EFFECTS.register(modEventBus);
         AncientMagicksPotions.POTIONS.register(modEventBus);
@@ -60,7 +62,7 @@ public class AncientMagicks {
         AncientMagicksModifiers.LOOT_FUNCTIONS.register(modEventBus);
         AncientMagicksAttributes.ATTRIBUTES.register(modEventBus);
         AncientMagicksRecipes.SERIALIZERS.register(modEventBus);
-        //AncientMagicksEnchantments.ENCHANTMENTS.register(modEventBus);
+        AncientMagicksMenus.MENUS.register(modEventBus);
 
         //KEEP THESE LAST
         modEventBus.addListener(this::commonSetup);
@@ -69,6 +71,7 @@ public class AncientMagicks {
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if ( event.getTab() == AncientMagicksTab.ANCIENTMAGICKS_TAB.get() ) {
+            for ( RegistryObject<Block> block : AncientMagicksBlocks.BLOCKS.getEntries() ) event.accept(block);
             for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) event.accept(item);
         }
     }

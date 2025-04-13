@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "ancientmagicks:block/spell_crafting_table"
+    }
+  }
+}

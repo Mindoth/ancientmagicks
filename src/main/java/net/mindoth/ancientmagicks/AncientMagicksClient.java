@@ -4,6 +4,7 @@ import net.mindoth.ancientmagicks.client.model.SimpleRobeModel;
 import net.mindoth.ancientmagicks.client.screen.AncientMagicksScreen;
 import net.mindoth.ancientmagicks.client.screen.GuiSpellWheel;
 import net.mindoth.ancientmagicks.client.screen.HudMana;
+import net.mindoth.ancientmagicks.client.screen.SpellCraftingScreen;
 import net.mindoth.ancientmagicks.config.AncientMagicksClientConfig;
 import net.mindoth.ancientmagicks.item.DyeableMagicItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
@@ -15,7 +16,9 @@ import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketAskToOpenSpellWheel;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
 import net.mindoth.ancientmagicks.registries.AncientMagicksKeyBinds;
+import net.mindoth.ancientmagicks.registries.AncientMagicksMenus;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -29,6 +32,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -100,6 +104,11 @@ public class AncientMagicksClient {
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
             event.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "mana_hud", HudMana.OVERLAY);
+        }
+
+        @SubscribeEvent
+        public static void registerScreens(FMLClientSetupEvent event) {
+            MenuScreens.register(AncientMagicksMenus.SPELL_CRAFTING_MENU.get(), SpellCraftingScreen::new);
         }
     }
 }
