@@ -11,9 +11,6 @@ public class AncientMagicksRecipes {
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS =
             DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, AncientMagicks.MOD_ID);
 
-    public static final RegistryObject<SimpleCraftingRecipeSerializer<SpellCraftingRecipe>> SPELL_CRAFTING_RECIPE =
-            SERIALIZERS.register("spell_crafting", () -> new SimpleCraftingRecipeSerializer<>(SpellCraftingRecipe::new));
-
     public static final RegistryObject<SimpleCraftingRecipeSerializer<ArcaneDustCraftingRecipe>> ARCANE_DUST_CRAFTING_RECIPE =
             SERIALIZERS.register("arcane_dust_crafting", () -> new SimpleCraftingRecipeSerializer<>(ArcaneDustCraftingRecipe::new));
 
