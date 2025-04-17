@@ -2,14 +2,15 @@ package net.mindoth.ancientmagicks.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.client.menu.ComponentSlot;
 import net.mindoth.ancientmagicks.client.menu.SpellCraftingMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ServerboundContainerButtonClickPacket;
 import net.minecraft.network.protocol.game.ServerboundRenameItemPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,6 +26,8 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/spell_crafting_screen.png");
     private EditBox name;
+    private Button craftButton;
+    private Button dumpButton;
 
     public SpellCraftingScreen(SpellCraftingMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -41,35 +44,54 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         this.name.setTextColorUneditable(-1);
         this.name.setBordered(true);
         this.name.setMaxLength(50);
-        this.name.setResponder(this::onNameChanged);
+        //this.name.setResponder(this::onNameChanged);
         this.name.setValue("");
         this.addWidget(this.name);
         this.setInitialFocus(this.name);
-        this.name.setEditable(true);
+        this.name.setEditable(false);
+        //Widgets
+        buildButtons(x, y);
     }
 
-    private void onNameChanged(String string) {
+    private void buildButtons(int x, int y) {
+        craftButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleCraftButton)
+                .bounds(x, y, 18, 18)
+                .build());
+        /*this.dumpButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleDumpButton)
+                .bounds(x, y, 18, 18)
+                .build());*/
+    }
+
+    private void handleCraftButton(Button button) {
         Slot slot = this.menu.getSlot(0);
         if ( slot.hasItem() ) {
-            String name = string;
-            if ( !slot.getItem().hasCustomHoverName() && string.equals(slot.getItem().getHoverName().getString()) ) name = "";
-            if ( this.menu.setItemName(name) ) this.minecraft.player.connection.send(new ServerboundRenameItemPacket(name));
+            String string = this.name.getValue();
+            if ( !slot.getItem().hasCustomHoverName() && string.equals(slot.getItem().getHoverName().getString()) ) string = "";
+            if ( this.menu.setSpell(string) ) this.name.setValue("");
+            /*String string = this.name.getValue();
+            if ( !slot.getItem().hasCustomHoverName() && string.equals(slot.getItem().getHoverName().getString()) ) string = "";
+            if ( this.menu.setItemName(string) ) this.minecraft.player.connection.send(new ServerboundRenameItemPacket(string));
+            this.name.setValue("");*/
         }
+    }
+
+    private void handleDumpButton(Button button) {
+
     }
 
     @Override
     public void slotChanged(AbstractContainerMenu pContainerToSend, int pSlotInd, ItemStack pStack) {
         if ( pSlotInd == 0 ) {
-            this.name.setEditable(!pStack.isEmpty());
+            boolean isEditable = !pStack.isEmpty();
+            this.name.setEditable(isEditable);
             this.setFocused(this.name);
+            if ( !isEditable ) this.name.setValue("");
         }
     }
 
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        if (pKeyCode == 256) {
-            this.minecraft.player.closeContainer();
-        }
+        if ( pKeyCode == 256 ) this.minecraft.player.closeContainer();
         return !this.name.keyPressed(pKeyCode, pScanCode, pModifiers) && !this.name.canConsumeInput() ? super.keyPressed(pKeyCode, pScanCode, pModifiers) : true;
     }
 
@@ -77,6 +99,8 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
     public void containerTick() {
         super.containerTick();
         this.name.tick();
+        if ( craftButton.isFocused() ) craftButton.setFocused(false);
+        //if ( dumpButton.isFocused() ) dumpButton.setFocused(false);
     }
 
     @Override

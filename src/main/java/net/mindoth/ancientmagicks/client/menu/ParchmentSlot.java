@@ -7,13 +7,13 @@ import net.minecraft.world.item.ItemStack;
 
 public class ParchmentSlot extends Slot {
 
-    public ParchmentSlot(Container pContainer, int pSlot, int pX, int pY) {
-        super(pContainer, pSlot, pX, pY);
+    public ParchmentSlot(Container pContainer, int pSlot, int pXPosition, int pYPosition) {
+        super(pContainer, pSlot, pXPosition, pYPosition);
     }
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return stack.getItem() instanceof ParchmentItem;
+        return stack.getItem() instanceof ParchmentItem && (!stack.hasTag() || !stack.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING));
     }
 
     @Override

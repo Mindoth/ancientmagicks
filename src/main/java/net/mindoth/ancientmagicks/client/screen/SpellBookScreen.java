@@ -29,7 +29,7 @@ import java.util.List;
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class SpellBookScreen extends AncientMagicksScreen {
 
-    private ItemStack book;
+    private final ItemStack book;
     private List<ItemStack> itemList = Lists.newArrayList();
     final private List<ItemStack> scrollList;
     private List<List<ItemStack>> pageList;

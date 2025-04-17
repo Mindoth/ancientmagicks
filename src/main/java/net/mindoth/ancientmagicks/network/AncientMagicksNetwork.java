@@ -33,6 +33,12 @@ public class AncientMagicksNetwork {
 
         CHANNEL = net;
 
+        net.messageBuilder(PacketAssembleSpell.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketAssembleSpell::new)
+                .encoder(PacketAssembleSpell::encode)
+                .consumerMainThread(PacketAssembleSpell::handle)
+                .add();
+
         net.messageBuilder(PacketAskToOpenSpellWheel.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(PacketAskToOpenSpellWheel::new)
                 .encoder(PacketAskToOpenSpellWheel::encode)

@@ -16,7 +16,7 @@ public class ComponentSlot extends Slot {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return stack.getItem() instanceof ComponentItem && !stack.hasTag() && this.hasPaper;
+        return stack.getItem() instanceof ComponentItem && this.hasPaper;
     }
 
     @Override
