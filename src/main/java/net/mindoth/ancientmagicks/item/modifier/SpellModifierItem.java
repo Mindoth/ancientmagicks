@@ -5,7 +5,15 @@ import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
 import net.mindoth.ancientmagicks.item.form.entity.AbstractSpellEntity;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,10 +41,9 @@ public class SpellModifierItem extends ComponentItem {
 
     //Wood brain mode
     public static boolean canAddModifier(SpellModifierItem modifier, ComponentItem component) {
-        /*return ((modifier.usableWithForms() && component instanceof SpellFormItem) || (modifier.usableWithEffects() && component instanceof SpellEffectItem))
+        return ((modifier.usableWithForms() && component instanceof SpellFormItem) || (modifier.usableWithEffects() && component instanceof SpellEffectItem))
                 && (modifier.exclusiveWith().isEmpty() || modifier.exclusiveWith().contains(component))
-                && (modifier.incompatibleWith().isEmpty() || !modifier.incompatibleWith().contains(component));*/
-        return true;
+                && (modifier.incompatibleWith().isEmpty() || !modifier.incompatibleWith().contains(component));
     }
 
     public void addEntityModifier(AbstractSpellEntity projectile, int count) {

@@ -29,8 +29,14 @@ public class ParchmentItem extends Item {
     public static final String NBT_KEY_SPELL_NAME = "am_spell_name";
     public static final String NBT_KEY_PAPER_TIER = "am_paper_tier";
 
-    public ParchmentItem(Properties pProperties) {
+    private final int size;
+    public int getSize() {
+        return this.size;
+    }
+
+    public ParchmentItem(Properties pProperties, int size) {
         super(pProperties);
+        this.size = size;
     }
 
     public static List<ColorRuneItem> getScrollComboList(ItemStack stack) {

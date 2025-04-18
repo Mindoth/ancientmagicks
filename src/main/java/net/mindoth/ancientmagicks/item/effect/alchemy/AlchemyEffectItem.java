@@ -83,6 +83,6 @@ public class AlchemyEffectItem extends PotionEffectItem {
                 tooltip.add(Component.translatable(effect).withStyle(ChatFormatting.GRAY));
             }
         }
-        else tooltip.add(Component.translatable("tooltip.ancientmagicks.empty").withStyle(ChatFormatting.GRAY));
+        else tooltip.add(Component.translatable("tooltip.ancientmagicks." + stack.getItem()).withStyle(ChatFormatting.GRAY));
     }
 }

@@ -75,13 +75,13 @@ public class AncientMagicksItems {
 
     //Spell Parchments
     public static final RegistryObject<Item> PARCHMENT = ITEMS.register("parchment",
-            () -> new ParchmentItem(new Item.Properties()));
+            () -> new ParchmentItem(new Item.Properties(), 3));
 
     public static final RegistryObject<Item> INFERNAL_PARCHMENT = ITEMS.register("infernal_parchment",
-            () -> new ParchmentItem(new Item.Properties()));
+            () -> new ParchmentItem(new Item.Properties(), 6));
 
     public static final RegistryObject<Item> ARCANE_PARCHMENT = ITEMS.register("arcane_parchment",
-            () -> new ParchmentItem(new Item.Properties()));
+            () -> new ParchmentItem(new Item.Properties(), 9));
 
 
     //Runes

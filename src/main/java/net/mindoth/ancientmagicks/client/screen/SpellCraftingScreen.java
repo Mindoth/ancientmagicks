@@ -155,13 +155,10 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         }
 
         for ( int i = 0; i < this.menu.slots.size(); i++ ) {
-            Slot slot = this.menu.getSlot(i);
-            if ( !this.menu.isCleanParchment(this.menu.getSlot(0).getItem()) ) {
-                if ( slot instanceof ComponentSlot ) {
-                    int xPos = x + 26 + (i - 2) * 18;
-                    int yPos = y + this.menu.getBottomRowHeight();
-                    AncientMagicksScreen.drawTexture(TEXTURE, xPos, yPos, 0, 175, 16, 16, 256, 256, graphics);
-                }
+            if ( this.menu.getSlot(i) instanceof ComponentSlot slot && !slot.isOpen ) {
+                int xPos = x + 26 + (i - 2) * 18;
+                int yPos = y + this.menu.getBottomRowHeight();
+                AncientMagicksScreen.drawTexture(TEXTURE, xPos, yPos, 0, 175, 16, 16, 256, 256, graphics);
             }
         }
     }

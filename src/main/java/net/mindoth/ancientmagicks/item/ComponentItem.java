@@ -1,10 +1,16 @@
 package net.mindoth.ancientmagicks.item;
 
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,6 +30,13 @@ public class ComponentItem extends Item {
         super(pProperties);
         this.manaCost = manaCost;
         this.cooldown = cooldown;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(Component.translatable("tooltip.ancientmagicks." + stack.getItem()).withStyle(ChatFormatting.GRAY));
+        super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
     public static final String NBT_KEY_EMPTY = "am_empty";
@@ -57,8 +70,8 @@ public class ComponentItem extends Item {
         HashMap<String, Float> stats = new HashMap<>();
         stats.merge(POWER, 1.0F, Float::sum);
         stats.merge(LIFE, 1.0F, Float::sum);
+        stats.merge(REACH, 4.5F, Float::sum);
         stats.merge(AOE, 0.0F, Float::sum);
-        stats.merge(REACH, 0.0F, Float::sum);
         return stats;
     }
 

@@ -85,29 +85,33 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
         return !stack.isEmpty() && stack.getItem() instanceof ParchmentItem && (!stack.hasTag() || !stack.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING));
     }
 
+    public int howManyComponentSlotsOpen() {
+        int count = 0;
+        for ( Slot slot : this.slots ) if ( slot instanceof ComponentSlot componentSlot && componentSlot.isOpen ) count++;
+        return count;
+    }
+
     @Override
     public void slotsChanged(Container pInventory) {
         this.access.execute((level, pos) -> {
-            if ( !level.isClientSide ) {
-                ItemStack stack = craftSlots.getItem(0);
-                //Placed clean parchment
-                if ( isCleanParchment(stack) ) {
-                    for ( Slot slot : this.slots ) {
-                        if ( slot instanceof ComponentSlot componentSlot ) {
-                            if ( !componentSlot.isOpen ) componentSlot.isOpen = true;
-                        }
-                    }
+            ItemStack stack = craftSlots.getItem(0);
+            //Placed clean parchment
+            if ( isCleanParchment(stack) ) {
+                final int slotsToOpen = ((ParchmentItem)stack.getItem()).getSize();
+                for ( Slot slot : this.slots ) {
+                    if ( howManyComponentSlotsOpen() >= slotsToOpen ) break;
+                    if ( slot instanceof ComponentSlot componentSlot && !componentSlot.isOpen ) componentSlot.isOpen = true;
                 }
-                //Removed scroll
-                else {
-                    for ( Slot slot : this.slots ) {
-                        if ( slot instanceof ComponentSlot componentSlot ) {
-                            if ( !slot.getItem().isEmpty() ) {
-                                if ( stack.isEmpty() ) quickMoveStack(this.player, slot.index);
-                                else setSlotContent(slot.getSlotIndex(), ItemStack.EMPTY);
-                            }
-                            if ( componentSlot.isOpen ) componentSlot.isOpen = false;
+            }
+            //Removed scroll
+            else {
+                for ( Slot slot : this.slots ) {
+                    if ( slot instanceof ComponentSlot componentSlot ) {
+                        if ( !level.isClientSide && !componentSlot.getItem().isEmpty() ) {
+                            if ( stack.isEmpty() ) quickMoveStack(this.player, componentSlot.index);
+                            else setSlotContent(componentSlot.getSlotIndex(), ItemStack.EMPTY);
                         }
+                        if ( componentSlot.isOpen ) componentSlot.isOpen = false;
                     }
                 }
             }
@@ -134,7 +138,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
                     ItemStack stack = craftSlots.getItem(0);
                     List<ComponentItem> componentList = CastingValidator.getSpellStackFromScroll(stack);
                     List<String> dataList = CastingValidator.getDataListFromScroll(stack);
-                    for ( int i = 0; i < craftSlots.getContainerSize(); i++ ) {
+                    for ( int i = 0; i < this.slots.size(); i++ ) {
                         if ( i == 0 ) cleanScroll(stack);
                         else {
                             Slot slot = this.slots.get(i);
