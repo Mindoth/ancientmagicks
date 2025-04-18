@@ -29,6 +29,8 @@ import java.util.List;
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class SpellBookScreen extends AncientMagicksScreen {
 
+    private static final ResourceLocation TEXTURE = new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/spell_book_screen.png");
+
     private final ItemStack book;
     private List<ItemStack> itemList = Lists.newArrayList();
     final private List<ItemStack> scrollList;
@@ -233,14 +235,13 @@ public class SpellBookScreen extends AncientMagicksScreen {
 
         //Background
         renderBackground(graphics);
-        drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/spell_book_screen.png"),
-                x - 140, y - 90, 0, 0, 280, 180, 280, 180, graphics);
+        drawTexture(TEXTURE, x - 140, y - 90, 0, 0, 280, 180, 280, 200, graphics);
 
         //Arrows
-        if ( this.rightArrow.visible ) this.rightArrow.renderTexture(graphics, new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/page_arrows.png"),
-                x + this.rightArrowXOffset, y + this.arrowYOffset, 0, 0, 10, 18, 10, 36, 20);
-        if ( this.leftArrow.visible ) this.leftArrow.renderTexture(graphics, new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/page_arrows.png"),
-                x + this.leftArrowXOffset, y + this.arrowYOffset, 18, 0, 10, 18, 10, 36, 20);
+        if ( this.rightArrow.visible ) this.rightArrow.renderTexture(graphics, TEXTURE, x + this.rightArrowXOffset, y + this.arrowYOffset,
+                0, 180, 10, 18, 10, 280, 200);
+        if ( this.leftArrow.visible ) this.leftArrow.renderTexture(graphics, TEXTURE, x + this.leftArrowXOffset, y + this.arrowYOffset,
+                18, 180, 10, 18, 10, 280, 200);
 
         for ( List<ItemStack> page : this.pageList ) {
             if ( this.spreadNumber == this.pageList.indexOf(page) ) {

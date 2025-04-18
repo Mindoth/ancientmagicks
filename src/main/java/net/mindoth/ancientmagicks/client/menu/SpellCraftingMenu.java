@@ -34,7 +34,10 @@ import java.util.List;
 
 public class SpellCraftingMenu extends AbstractContainerMenu {
 
-    private static final int TOP_ROW_HEIGHT = 23;
+    private static final int TOP_ROW_HEIGHT = 39;
+    public int getTopRowHeight() {
+        return TOP_ROW_HEIGHT;
+    }
     private static final int BOTTOM_ROW_HEIGHT = 52 + 9;
     public int getBottomRowHeight() {
         return BOTTOM_ROW_HEIGHT;
@@ -58,7 +61,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
         super(AncientMagicksMenus.SPELL_CRAFTING_MENU.get(), containerId);
         this.access = access;
         this.player = playerInventory.player;
-        this.addSlot(new ParchmentSlot(this.craftSlots, 0, 49, TOP_ROW_HEIGHT));
+        this.addSlot(new ParchmentSlot(this.craftSlots, 0, 79, TOP_ROW_HEIGHT));
 
         //Crafting slots
         for ( int i = 0; i < 9; ++i ) {
@@ -79,7 +82,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     }
 
     public boolean isCleanParchment(ItemStack stack) {
-        return stack.getItem() instanceof ParchmentItem && (!stack.hasTag() || !stack.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING));
+        return !stack.isEmpty() && stack.getItem() instanceof ParchmentItem && (!stack.hasTag() || !stack.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING));
     }
 
     @Override
@@ -91,16 +94,19 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
                 if ( isCleanParchment(stack) ) {
                     for ( Slot slot : this.slots ) {
                         if ( slot instanceof ComponentSlot componentSlot ) {
-                            if ( !componentSlot.isOpen) componentSlot.isOpen = true;
+                            if ( !componentSlot.isOpen ) componentSlot.isOpen = true;
                         }
                     }
                 }
                 //Removed scroll
-                else if ( stack.isEmpty() ) {
+                else {
                     for ( Slot slot : this.slots ) {
                         if ( slot instanceof ComponentSlot componentSlot ) {
-                            if ( !slot.getItem().isEmpty() ) quickMoveStack(this.player, slot.index);
-                            if ( componentSlot.isOpen) componentSlot.isOpen = false;
+                            if ( !slot.getItem().isEmpty() ) {
+                                if ( stack.isEmpty() ) quickMoveStack(this.player, slot.index);
+                                else setSlotContent(slot.getSlotIndex(), ItemStack.EMPTY);
+                            }
+                            if ( componentSlot.isOpen ) componentSlot.isOpen = false;
                         }
                     }
                 }
@@ -108,9 +114,13 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
         });
     }
 
-    public boolean dumpSpell() {
+    public boolean isReadyToDump() {
         ItemStack stack = craftSlots.getItem(0);
-        if ( !isCleanParchment(stack) ) {
+        return !stack.isEmpty() && stack.getItem() instanceof ParchmentItem && stack.hasTag() && stack.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING);
+    }
+
+    public boolean dumpSpell() {
+        if ( isReadyToDump() ) {
             AncientMagicksNetwork.sendToServer(new PacketDumpSpell());
             return true;
         }
@@ -120,20 +130,21 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     public void processDumping() {
         this.access.execute((level, pos) -> {
             if ( !level.isClientSide ) {
-                ItemStack stack = craftSlots.getItem(0);
-                List<ComponentItem> componentList = CastingValidator.getSpellStackFromScroll(stack);
-                List<String> dataList = CastingValidator.getDataListFromScroll(stack);
-                for ( int i = 0; i < craftSlots.getContainerSize(); i++ ) {
-                    if ( i == 0 ) cleanScroll(stack);
-                    else {
-                        Slot slot = this.slots.get(i);
-                        if ( slot instanceof ComponentSlot componentSlot ) {
-                            if ( !componentSlot.isOpen) componentSlot.isOpen = true;
-                            ItemStack component = new ItemStack(componentList.get(i - 1));
-                            if ( ((ComponentItem)component.getItem()).isEncodeable() ) {
-                                component.getOrCreateTag().putString(SpellEffectItem.NBT_KEY_COMPONENT_DATA, dataList.get(i - 1));
+                if ( isReadyToDump() ) {
+                    ItemStack stack = craftSlots.getItem(0);
+                    List<ComponentItem> componentList = CastingValidator.getSpellStackFromScroll(stack);
+                    List<String> dataList = CastingValidator.getDataListFromScroll(stack);
+                    for ( int i = 0; i < craftSlots.getContainerSize(); i++ ) {
+                        if ( i == 0 ) cleanScroll(stack);
+                        else {
+                            Slot slot = this.slots.get(i);
+                            if ( slot instanceof ComponentSlot ) {
+                                ItemStack component = new ItemStack(componentList.get(i - 1));
+                                if ( ((ComponentItem)component.getItem()).isEncodeable() ) {
+                                    component.getOrCreateTag().putString(SpellEffectItem.NBT_KEY_COMPONENT_DATA, dataList.get(i - 1));
+                                }
+                                setSlotContent(i, component);
                             }
-                            setSlotContent(i, component);
                         }
                     }
                 }
@@ -149,13 +160,17 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
             if ( tag.contains(ParchmentItem.NBT_KEY_SPELL_STRING) ) tag.remove(ParchmentItem.NBT_KEY_SPELL_STRING);
             if ( tag.contains(ParchmentItem.NBT_KEY_DATA_STRING) ) tag.remove(ParchmentItem.NBT_KEY_DATA_STRING);
             if ( tag.contains(ParchmentItem.NBT_KEY_CODE_STRING) ) tag.remove(ParchmentItem.NBT_KEY_CODE_STRING);
+            if ( stack.getTag().isEmpty() ) stack.setTag(null);
         }
         setSlotContent(0, stack);
     }
 
+    public boolean isReadyToCraft() {
+        return isCleanParchment(craftSlots.getItem(0)) && assemble(craftSlots) != ItemStack.EMPTY;
+    }
+
     public boolean setSpell(String string) {
-        ItemStack stack = assemble(craftSlots);
-        if ( stack != ItemStack.EMPTY ) {
+        if ( isReadyToCraft() ) {
             AncientMagicksNetwork.sendToServer(new PacketAssembleSpell(getItemName(string)));
             return true;
         }
@@ -165,16 +180,11 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     public void processCrafting(String name) {
         this.access.execute((level, pos) -> {
             if ( !level.isClientSide ) {
-                ItemStack stack = assemble(craftSlots);
-                if ( stack != ItemStack.EMPTY ) {
+                if ( isReadyToCraft() ) {
+                    ItemStack stack = assemble(craftSlots);
                     if ( name == null || Util.isBlank(name) ) stack.resetHoverName();
                     else stack.setHoverName(Component.literal(name));
                     setSlotContent(0, stack);
-                    for ( Slot slot : this.slots ) {
-                        if ( slot instanceof ComponentSlot && !slot.getItem().isEmpty() ) {
-                            setSlotContent(slot.getSlotIndex(), ItemStack.EMPTY);
-                        }
-                    }
                 }
             }
         });
@@ -192,7 +202,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     }
 
     public ItemStack assemble(Container container) {
-        ItemStack scroll = craftSlots.getItem(0);
+        ItemStack scroll = craftSlots.getItem(0).copy();
         List<ItemStack> componentStackList = Lists.newArrayList();
         List<ItemStack> restList = Lists.newArrayList();
         for ( int i = 1; i < container.getContainerSize(); i++ ) {

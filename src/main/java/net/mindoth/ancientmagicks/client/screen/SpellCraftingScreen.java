@@ -37,7 +37,7 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
     protected void subInit() {
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
-        this.name = new EditBox(this.font, x + 17, y + 44, 142, 12, Component.translatable("container.ancientmagicks.name"));
+        this.name = new EditBox(this.font, x + 17, y + 20, 142, 12, Component.translatable("container.ancientmagicks.name"));
         this.name.setCanLoseFocus(false);
         this.name.setTextColor(-1);
         this.name.setTextColorUneditable(-1);
@@ -54,10 +54,10 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
 
     private void buildButtons(int x, int y) {
         craftButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleCraftButton)
-                .bounds(x, y, 18, 18)
+                .bounds(x + 97, y + this.menu.getTopRowHeight(), 16, 16)
                 .build());
         dumpButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleDumpButton)
-                .bounds(x + 64, y, 18, 18)
+                .bounds(x + 61, y + this.menu.getTopRowHeight(), 16, 16)
                 .build());
     }
 
@@ -80,7 +80,7 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
     @Override
     public void slotChanged(AbstractContainerMenu pContainerToSend, int pSlotInd, ItemStack pStack) {
         if ( pSlotInd == 0 ) {
-            boolean isEditable = !pStack.isEmpty();
+            boolean isEditable = this.menu.isCleanParchment(pStack);
             this.name.setEditable(isEditable);
             this.setFocused(this.name);
             if ( !isEditable ) this.name.setValue("");
@@ -134,6 +134,25 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
 
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
+
+        if ( this.menu.isReadyToCraft() ) {
+            this.craftButton.renderTexture(graphics, TEXTURE, x + 97, y + this.menu.getTopRowHeight(),
+                    0, 191, 16, 16, 16, 256, 256);
+            this.dumpButton.renderTexture(graphics, TEXTURE, x + 61, y + this.menu.getTopRowHeight(),
+                    16, 223, 0, 16, 16, 256, 256);
+        }
+        else {
+            this.craftButton.renderTexture(graphics, TEXTURE, x + 97, y + this.menu.getTopRowHeight(),
+                    0, 223, 0, 16, 16, 256, 256);
+            if ( this.menu.isReadyToDump() ) {
+                this.dumpButton.renderTexture(graphics, TEXTURE, x + 61, y + this.menu.getTopRowHeight(),
+                        16, 191, 16, 16, 16, 256, 256);
+            }
+            else {
+                this.dumpButton.renderTexture(graphics, TEXTURE, x + 61, y + this.menu.getTopRowHeight(),
+                        16, 223, 0, 16, 16, 256, 256);
+            }
+        }
 
         for ( int i = 0; i < this.menu.slots.size(); i++ ) {
             Slot slot = this.menu.getSlot(i);
