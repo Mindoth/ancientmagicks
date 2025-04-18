@@ -28,7 +28,6 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
@@ -37,6 +36,9 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
 
     private static final int TOP_ROW_HEIGHT = 23;
     private static final int BOTTOM_ROW_HEIGHT = 52 + 9;
+    public int getBottomRowHeight() {
+        return BOTTOM_ROW_HEIGHT;
+    }
     private final Container craftSlots = new SimpleContainer(1 + 9) {
         @Override
         public void setChanged() {
@@ -89,7 +91,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
                 if ( isCleanParchment(stack) ) {
                     for ( Slot slot : this.slots ) {
                         if ( slot instanceof ComponentSlot componentSlot ) {
-                            if ( !componentSlot.hasPaper ) componentSlot.hasPaper = true;
+                            if ( !componentSlot.isOpen) componentSlot.isOpen = true;
                         }
                     }
                 }
@@ -98,7 +100,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
                     for ( Slot slot : this.slots ) {
                         if ( slot instanceof ComponentSlot componentSlot ) {
                             if ( !slot.getItem().isEmpty() ) quickMoveStack(this.player, slot.index);
-                            if ( componentSlot.hasPaper ) componentSlot.hasPaper = false;
+                            if ( componentSlot.isOpen) componentSlot.isOpen = false;
                         }
                     }
                 }
@@ -126,7 +128,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
                     else {
                         Slot slot = this.slots.get(i);
                         if ( slot instanceof ComponentSlot componentSlot ) {
-                            if ( !componentSlot.hasPaper ) componentSlot.hasPaper = true;
+                            if ( !componentSlot.isOpen) componentSlot.isOpen = true;
                             ItemStack component = new ItemStack(componentList.get(i - 1));
                             if ( ((ComponentItem)component.getItem()).isEncodeable() ) {
                                 component.getOrCreateTag().putString(SpellEffectItem.NBT_KEY_COMPONENT_DATA, dataList.get(i - 1));

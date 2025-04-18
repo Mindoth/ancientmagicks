@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.client.menu.ComponentSlot;
 import net.mindoth.ancientmagicks.client.menu.SpellCraftingMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -10,8 +11,6 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ServerboundContainerButtonClickPacket;
-import net.minecraft.network.protocol.game.ServerboundRenameItemPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -127,11 +126,25 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        renderBackground(guiGraphics);
-        super.render(guiGraphics, mouseX, mouseY, delta);
-        this.name.render(guiGraphics, mouseX, mouseY, delta);
-        renderTooltip(guiGraphics, mouseX, mouseY);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(graphics);
+        super.render(graphics, mouseX, mouseY, partialTicks);
+        this.name.render(graphics, mouseX, mouseY, partialTicks);
+        renderTooltip(graphics, mouseX, mouseY);
+
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageHeight) / 2;
+
+        for ( int i = 0; i < this.menu.slots.size(); i++ ) {
+            Slot slot = this.menu.getSlot(i);
+            if ( !this.menu.isCleanParchment(this.menu.getSlot(0).getItem()) ) {
+                if ( slot instanceof ComponentSlot ) {
+                    int xPos = x + 26 + (i - 2) * 18;
+                    int yPos = y + this.menu.getBottomRowHeight();
+                    AncientMagicksScreen.drawTexture(TEXTURE, xPos, yPos, 0, 175, 16, 16, 256, 256, graphics);
+                }
+            }
+        }
     }
 
     @Override
@@ -140,7 +153,7 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - imageWidth) / 2;
-        int y = (height - this.imageHeight) / 2;
-        guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, this.imageHeight);
+        int y = (height - imageHeight) / 2;
+        guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
     }
 }

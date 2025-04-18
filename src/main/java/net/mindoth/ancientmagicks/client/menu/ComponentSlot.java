@@ -7,16 +7,16 @@ import net.minecraft.world.item.ItemStack;
 
 public class ComponentSlot extends Slot {
 
-    public boolean hasPaper;
+    public boolean isOpen;
 
-    public ComponentSlot(Container pContainer, int pSlot, int pX, int pY, boolean hasPaper) {
+    public ComponentSlot(Container pContainer, int pSlot, int pX, int pY, boolean isOpen) {
         super(pContainer, pSlot, pX, pY);
-        this.hasPaper = hasPaper;
+        this.isOpen = isOpen;
     }
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return stack.getItem() instanceof ComponentItem && this.hasPaper;
+        return stack.getItem() instanceof ComponentItem && this.isOpen;
     }
 
     @Override
