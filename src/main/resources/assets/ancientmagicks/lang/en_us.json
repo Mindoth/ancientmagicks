@@ -60,7 +60,7 @@
   "item.ancientmagicks.mind_control_effect": "Mind Control",
   "tooltip.ancientmagicks.mind_control_effect": "Temporarily turns the target into an ally",
   "item.ancientmagicks.alchemy_effect": "Alchemy",
-  "tooltip.ancientmagicks.alchemy_effect": "Craft together with a potion to apply its effects to the target",
+  "tooltip.ancientmagicks.alchemy_effect": "Craft together with a potion to apply its effects on the target",
   "item.ancientmagicks.polymorph_effect": "Polymorph",
   "tooltip.ancientmagicks.polymorph_effect": "Temporarily transforms the target into a harmless sheep",
   "item.ancientmagicks.chaotic_polymorph_effect": "Chaotic Polymorph",
