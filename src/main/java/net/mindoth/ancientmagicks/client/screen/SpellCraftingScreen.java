@@ -57,26 +57,25 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         craftButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleCraftButton)
                 .bounds(x, y, 18, 18)
                 .build());
-        /*this.dumpButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleDumpButton)
-                .bounds(x, y, 18, 18)
-                .build());*/
+        dumpButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleDumpButton)
+                .bounds(x + 64, y, 18, 18)
+                .build());
     }
 
     private void handleCraftButton(Button button) {
         Slot slot = this.menu.getSlot(0);
-        if ( slot.hasItem() ) {
+        if ( slot.hasItem() && this.menu.isCleanParchment(slot.getItem()) ) {
             String string = this.name.getValue();
             if ( !slot.getItem().hasCustomHoverName() && string.equals(slot.getItem().getHoverName().getString()) ) string = "";
             if ( this.menu.setSpell(string) ) this.name.setValue("");
-            /*String string = this.name.getValue();
-            if ( !slot.getItem().hasCustomHoverName() && string.equals(slot.getItem().getHoverName().getString()) ) string = "";
-            if ( this.menu.setItemName(string) ) this.minecraft.player.connection.send(new ServerboundRenameItemPacket(string));
-            this.name.setValue("");*/
         }
     }
 
     private void handleDumpButton(Button button) {
-
+        Slot slot = this.menu.getSlot(0);
+        if ( slot.hasItem() && !this.menu.isCleanParchment(slot.getItem()) ) {
+            if ( this.menu.dumpSpell() ) this.name.setValue(slot.getItem().getHoverName().getString());
+        }
     }
 
     @Override
@@ -100,7 +99,7 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         super.containerTick();
         this.name.tick();
         if ( craftButton.isFocused() ) craftButton.setFocused(false);
-        //if ( dumpButton.isFocused() ) dumpButton.setFocused(false);
+        if ( dumpButton.isFocused() ) dumpButton.setFocused(false);
     }
 
     @Override

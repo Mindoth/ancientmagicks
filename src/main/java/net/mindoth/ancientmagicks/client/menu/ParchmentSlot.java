@@ -13,7 +13,7 @@ public class ParchmentSlot extends Slot {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return stack.getItem() instanceof ParchmentItem && (!stack.hasTag() || !stack.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING));
+        return stack.getItem() instanceof ParchmentItem;
     }
 
     @Override

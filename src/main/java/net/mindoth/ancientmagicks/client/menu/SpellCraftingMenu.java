@@ -5,8 +5,10 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.CastingValidator;
 import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
+import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketAssembleSpell;
+import net.mindoth.ancientmagicks.network.PacketDumpSpell;
 import net.mindoth.ancientmagicks.registries.AncientMagicksBlocks;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.ancientmagicks.registries.AncientMagicksMenus;
@@ -29,7 +31,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class SpellCraftingMenu extends AbstractContainerMenu {
@@ -75,33 +76,79 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
         }
     }
 
-    @Override
-    public void slotsChanged(Container pInventory) {
-        this.access.execute((level, pos) -> updateComponentSlots(level, this.player));
+    public boolean isCleanParchment(ItemStack stack) {
+        return stack.getItem() instanceof ParchmentItem && (!stack.hasTag() || !stack.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING));
     }
 
-    private void updateComponentSlots(Level level, Player player) {
-        if ( !level.isClientSide ) {
-            ItemStack stack = craftSlots.getItem(0);
+    @Override
+    public void slotsChanged(Container pInventory) {
+        this.access.execute((level, pos) -> {
+            if ( !level.isClientSide ) {
+                ItemStack stack = craftSlots.getItem(0);
+                //Placed clean parchment
+                if ( isCleanParchment(stack) ) {
+                    for ( Slot slot : this.slots ) {
+                        if ( slot instanceof ComponentSlot componentSlot ) {
+                            if ( !componentSlot.hasPaper ) componentSlot.hasPaper = true;
+                        }
+                    }
+                }
+                //Removed scroll
+                else if ( stack.isEmpty() ) {
+                    for ( Slot slot : this.slots ) {
+                        if ( slot instanceof ComponentSlot componentSlot ) {
+                            if ( !slot.getItem().isEmpty() ) quickMoveStack(this.player, slot.index);
+                            if ( componentSlot.hasPaper ) componentSlot.hasPaper = false;
+                        }
+                    }
+                }
+            }
+        });
+    }
 
-            //Placed
-            if ( !stack.isEmpty() ) {
-                for ( Slot slot : this.slots ) {
-                    if ( slot instanceof ComponentSlot componentSlot ) {
-                        if ( !componentSlot.hasPaper ) componentSlot.hasPaper = true;
-                    }
-                }
-            }
-            //Removed
-            else {
-                for ( Slot slot : this.slots ) {
-                    if ( slot instanceof ComponentSlot componentSlot ) {
-                        if ( !slot.getItem().isEmpty() ) quickMoveStack(player, slot.index);
-                        if ( componentSlot.hasPaper ) componentSlot.hasPaper = false;
-                    }
-                }
-            }
+    public boolean dumpSpell() {
+        ItemStack stack = craftSlots.getItem(0);
+        if ( !isCleanParchment(stack) ) {
+            AncientMagicksNetwork.sendToServer(new PacketDumpSpell());
+            return true;
         }
+        else return false;
+    }
+
+    public void processDumping() {
+        this.access.execute((level, pos) -> {
+            if ( !level.isClientSide ) {
+                ItemStack stack = craftSlots.getItem(0);
+                List<ComponentItem> componentList = CastingValidator.getSpellStackFromScroll(stack);
+                List<String> dataList = CastingValidator.getDataListFromScroll(stack);
+                for ( int i = 0; i < craftSlots.getContainerSize(); i++ ) {
+                    if ( i == 0 ) cleanScroll(stack);
+                    else {
+                        Slot slot = this.slots.get(i);
+                        if ( slot instanceof ComponentSlot componentSlot ) {
+                            if ( !componentSlot.hasPaper ) componentSlot.hasPaper = true;
+                            ItemStack component = new ItemStack(componentList.get(i - 1));
+                            if ( ((ComponentItem)component.getItem()).isEncodeable() ) {
+                                component.getOrCreateTag().putString(SpellEffectItem.NBT_KEY_COMPONENT_DATA, dataList.get(i - 1));
+                            }
+                            setSlotContent(i, component);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void cleanScroll(ItemStack scroll) {
+        ItemStack stack = scroll.copy();
+        if ( stack.hasCustomHoverName() ) stack.resetHoverName();
+        if ( stack.hasTag() ) {
+            CompoundTag tag = stack.getTag();
+            if ( tag.contains(ParchmentItem.NBT_KEY_SPELL_STRING) ) tag.remove(ParchmentItem.NBT_KEY_SPELL_STRING);
+            if ( tag.contains(ParchmentItem.NBT_KEY_DATA_STRING) ) tag.remove(ParchmentItem.NBT_KEY_DATA_STRING);
+            if ( tag.contains(ParchmentItem.NBT_KEY_CODE_STRING) ) tag.remove(ParchmentItem.NBT_KEY_CODE_STRING);
+        }
+        setSlotContent(0, stack);
     }
 
     public boolean setSpell(String string) {
