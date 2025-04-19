@@ -269,7 +269,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         }
 
         //Hover tooltip
-        for ( ItemStack slot : this.ColorRunes) {
+        /*for ( ItemStack slot : this.ColorRunes) {
             RenderSystem.disableDepthTest();
             ms.pushPose();
 
@@ -282,7 +282,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
             }
 
             ms.popPose();
-        }
+        }*/
     }
 
     private void drawSlice(BufferBuilder buffer, float x, float y, float z, float radiusIn, float radiusOut, float startAngle, float endAngle,
