@@ -5,7 +5,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.ColorRuneItem;
+import net.mindoth.ancientmagicks.item.modifier.ColorModifierItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
@@ -17,7 +17,6 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -44,7 +43,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
     private int selectedItem;
     private final ItemStack book;
     private final List<ItemStack> ColorRunes;
-    private final List<ColorRuneItem> comboList = Lists.newArrayList();
+    private final List<ColorModifierItem> comboList = Lists.newArrayList();
     private ItemStack comboResult;
     //private HashMap<Integer, ItemStack> possibleResults;
     private final String hotbar;
@@ -56,9 +55,9 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         this.selectedItem = -1;
         this.book = book;
         this.ColorRunes = List.of(
-                new ItemStack(AncientMagicksItems.BLUE_RUNE.get()), new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()),
-                new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()), new ItemStack(AncientMagicksItems.GREEN_RUNE.get()),
-                new ItemStack(AncientMagicksItems.BLACK_RUNE.get()), new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
+                new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()), new ItemStack(AncientMagicksItems.RED_RUNE.get()),
+                new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()), new ItemStack(AncientMagicksItems.WHITE_RUNE.get()),
+                new ItemStack(AncientMagicksItems.BLUE_RUNE.get()), new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
         int size = AncientMagicks.comboSizeCalc();
         if ( size == 4 ) this.hotbar = "hotbar4.png";
         else if ( size == 5 ) this.hotbar = "hotbar5.png";
@@ -79,11 +78,11 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         if ( this.selectedItem != -1 ) {
             //this.possibleResults = new HashMap<>();
             ItemStack clickedItem = this.ColorRunes.get(this.selectedItem);
-            if ( clickedItem.getItem() instanceof ColorRuneItem ) {
-                if ( this.comboList.size() < AncientMagicks.comboSizeCalc() ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
+            if ( clickedItem.getItem() instanceof ColorModifierItem) {
+                if ( this.comboList.size() < AncientMagicks.comboSizeCalc() ) this.comboList.add((ColorModifierItem)clickedItem.getItem());
                 else {
                     this.comboList.remove(0);
-                    this.comboList.add((ColorRuneItem)clickedItem.getItem());
+                    this.comboList.add((ColorModifierItem)clickedItem.getItem());
                 }
             }
             if ( getSlotForSpell(this.comboList) > -1 ) {
@@ -95,7 +94,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         return true;
     }
 
-    private int getSlotForSpell(List<ColorRuneItem> comboList) {
+    private int getSlotForSpell(List<ColorModifierItem> comboList) {
         int state = -1;
         List<ItemStack> scrollList = SpellBookItem.getScrollListFromBook(this.book.getTag());
         for ( int i = 0; i < scrollList.size(); i++ ) {

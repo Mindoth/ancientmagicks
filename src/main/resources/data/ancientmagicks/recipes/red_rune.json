@@ -5,12 +5,12 @@
       "item": "ancientmagicks:blank_rune"
     },
     {
-      "item": "minecraft:purple_dye"
+      "item": "minecraft:red_dye"
     }
   ],
 
   "result": {
-    "item": "ancientmagicks:purple_rune",
+    "item": "ancientmagicks:red_rune",
     "count": 1
   }
 }

@@ -2,19 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     " # ",
-    "#D#",
+    "#L#",
     " # "
   ],
   "key": {
     "#": {
       "item": "minecraft:clay_ball"
     },
-    "D": {
-      "item": "minecraft:black_dye"
+    "L": {
+      "item": "minecraft:lapis_lazuli"
     }
   },
   "result": {
-    "item": "ancientmagicks:black_rune",
+    "item": "ancientmagicks:blank_rune",
     "count": 1
   }
 }

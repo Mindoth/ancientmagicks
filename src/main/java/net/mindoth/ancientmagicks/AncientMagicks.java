@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
-import net.mindoth.ancientmagicks.item.ColorRuneItem;
+import net.mindoth.ancientmagicks.item.modifier.ColorModifierItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
@@ -13,10 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.brewing.BrewingRecipe;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -129,12 +127,12 @@ public class AncientMagicks {
 
     //Thank god for Stack Overflow (the website)
     //https://stackoverflow.com/questions/1075656/simple-way-to-find-if-two-different-lists-contain-exactly-the-same-elements/67986292#67986292
-    public static boolean listsMatch(List<ColorRuneItem> firstList, List<ColorRuneItem> secondList) {
+    public static boolean listsMatch(List<ColorModifierItem> firstList, List<ColorModifierItem> secondList) {
         if ( firstList == secondList ) return true;
         if ( firstList != null && secondList != null ) {
             if ( firstList.isEmpty() && secondList.isEmpty() ) return true;
             if ( firstList.size() != secondList.size() ) return false;
-            List<ColorRuneItem> tmpSecondList = new ArrayList<>(secondList);
+            List<ColorModifierItem> tmpSecondList = new ArrayList<>(secondList);
             Object currFirstObject;
             for ( int i=1 ; i<=firstList.size() ; i++ ) {
                 currFirstObject = firstList.get(i-1);

@@ -1,18 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " # ",
-    "#D#",
-    " # "
-  ],
-  "key": {
-    "#": {
-      "item": "minecraft:clay_ball"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:blank_rune"
     },
-    "D": {
+    {
       "item": "minecraft:green_dye"
     }
-  },
+  ],
+
   "result": {
     "item": "ancientmagicks:green_rune",
     "count": 1

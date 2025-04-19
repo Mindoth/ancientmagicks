@@ -54,8 +54,15 @@ public class SpellEffectItem extends ComponentItem {
         return true;
     }
 
-    public ParticleColor.IntWrapper getParticleColor() {
-        return ColorCode.DARK_PURPLE.getParticleColor();
+    public ParticleColor.IntWrapper getParticleColor(HashMap<String, Float> stats) {
+        ParticleColor.IntWrapper color = new ParticleColor.IntWrapper(Mth.floor(stats.get(ComponentItem.RED)), Mth.floor(stats.get(ComponentItem.GREEN)), Mth.floor(stats.get(ComponentItem.BLUE)));
+        if ( color.r < 0 || color.r > 255 || color.g < 0 || color.g > 255 || color.b < 0 || color.b > 255 ) {
+            int r = new Random().nextInt(0, 256);
+            int g = new Random().nextInt(0, 256);
+            int b = new Random().nextInt(0, 256);
+            return new ParticleColor.IntWrapper(r, g, b);
+        }
+        else return color;
     }
 
     public enum ColorCode {
@@ -108,11 +115,11 @@ public class SpellEffectItem extends ComponentItem {
                     if ( canApply(level, owner, caster, newResult, data) ) doSpell(level, owner, caster, newResult, stats, data);
                 }
                 state = true;
-                aoeEntitySpellParticles(level, result, center, aoe);
+                aoeEntitySpellParticles(level, result, center, aoe, stats);
             }
             else if ( canApply(level, owner, caster, result, data) ) state = doSpell(level, owner, caster, result, stats, data);
         }
-        else if ( this instanceof BlockTargetEffect) {
+        else if ( this instanceof BlockTargetEffect ) {
             if ( aoe > 0.0F ) {
                 List<BlockPos> blocks;
                 boolean isInside = false;
@@ -127,7 +134,7 @@ public class SpellEffectItem extends ComponentItem {
                     if ( canApply(level, owner, caster, newResult, data) ) doSpell(level, owner, caster, newResult, stats, data);
                 }
                 state = true;
-                for ( int i = -(int)aoe; i <= aoe; i++ ) aoeBlockSpellParticles(level, center, aoe, i);
+                for ( int i = -(int)aoe; i <= aoe; i++ ) aoeBlockSpellParticles(level, center, aoe, i, stats);
             }
             else if ( canApply(level, owner, caster, result, data) ) state = doSpell(level, owner, caster, result, stats, data);
         }
@@ -209,7 +216,7 @@ public class SpellEffectItem extends ComponentItem {
         return 1;
     }
 
-    private void aoeEntitySpellParticles(Level level, HitResult result, Vec3 oldCenter, float range) {
+    private void aoeEntitySpellParticles(Level level, HitResult result, Vec3 oldCenter, float range, HashMap<String, Float> stats) {
         BlockPos pos = new BlockPos(Mth.floor(oldCenter.x), Mth.floor(oldCenter.y), Mth.floor(oldCenter.z));
         if ( result instanceof BlockHitResult blockHitResult ) pos = getPosOfFace(blockHitResult.getBlockPos(), blockHitResult.getDirection());
         Vec3 center = oldCenter;
@@ -221,7 +228,7 @@ public class SpellEffectItem extends ComponentItem {
         Vec3 particleStart = new Vec3(center.x + range, center.y + range, center.z + range);
         Vec3 particleEnd = new Vec3(center.x - range, center.y - range, center.z - range);
         AABB particleBox = new AABB(particleStart, particleEnd);
-        addAoeParticles(level, particleBox, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, 0.15D);
+        addAoeParticles(level, particleBox, 0.15F, 8, 0.15D, stats);
     }
 
     private static BlockPos getPosOfFace(BlockPos blockPos, Direction face) {
@@ -235,14 +242,14 @@ public class SpellEffectItem extends ComponentItem {
         };
     }
 
-    private void aoeBlockSpellParticles(Level level, Vec3 center, float range, int addition) {
+    private void aoeBlockSpellParticles(Level level, Vec3 center, float range, int addition, HashMap<String, Float> stats) {
         Vec3 start = new Vec3(Mth.ceil(center.x + range), Mth.ceil(center.y + range + addition), Mth.ceil(center.z + range));
         Vec3 end = new Vec3(Mth.floor(center.x - range), Mth.floor(center.y - range + addition), Mth.floor(center.z - range));
         AABB particleBox = new AABB(start, end);
-        addAoeParticles(level, particleBox, getParticleColor().r, getParticleColor().g, getParticleColor().b, 0.15F, 8, 0.0D);
+        addAoeParticles(level, particleBox, 0.15F, 8, 0.0D, stats);
     }
 
-    protected void addAoeParticles(Level level, AABB box, int r, int g, int b, float size, int age, double lift) {
+    protected void addAoeParticles(Level level, AABB box, float size, int age, double lift, HashMap<String, Float> stats) {
         Vec3 center = box.getCenter();
         double maxX = box.maxX;
         double minX = box.minX;
@@ -257,7 +264,8 @@ public class SpellEffectItem extends ComponentItem {
             double randY = center.y - 0.5D + new Random().nextDouble();
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+            ParticleColor.IntWrapper color = getParticleColor(stats);
+            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
         }
         for ( int i = 0; i < amount; i++ ) {
@@ -265,7 +273,8 @@ public class SpellEffectItem extends ComponentItem {
             double randY = center.y - 0.5D + new Random().nextDouble();
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+            ParticleColor.IntWrapper color = getParticleColor(stats);
+            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
         }
         for ( int i = 0; i < amount; i++ ) {
@@ -273,7 +282,8 @@ public class SpellEffectItem extends ComponentItem {
             double randY = center.y - 0.5D + new Random().nextDouble();
             double randZ = minZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+            ParticleColor.IntWrapper color = getParticleColor(stats);
+            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
         }
         for ( int i = 0; i < amount; i++ ) {
@@ -281,12 +291,13 @@ public class SpellEffectItem extends ComponentItem {
             double randY = center.y - 0.5D + new Random().nextDouble();
             double randZ = maxZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+            ParticleColor.IntWrapper color = getParticleColor(stats);
+            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
         }
     }
 
-    protected void addEnchantParticles(Entity target, int r, int g, int b, float size, int age) {
+    protected void addEnchantParticles(Entity target, float size, int age, HashMap<String, Float> stats) {
         double var = 0.15D;
         double maxX = target.getBoundingBox().maxX + var;
         double minX = target.getBoundingBox().minX - var;
@@ -300,7 +311,8 @@ public class SpellEffectItem extends ComponentItem {
             double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+            ParticleColor.IntWrapper color = getParticleColor(stats);
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
@@ -308,7 +320,8 @@ public class SpellEffectItem extends ComponentItem {
             double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+            ParticleColor.IntWrapper color = getParticleColor(stats);
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
@@ -316,7 +329,8 @@ public class SpellEffectItem extends ComponentItem {
             double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
             double randZ = minZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+            ParticleColor.IntWrapper color = getParticleColor(stats);
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
@@ -324,7 +338,8 @@ public class SpellEffectItem extends ComponentItem {
             double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
             double randZ = maxZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(r, g, b, size, age, false, getRenderType(),
+            ParticleColor.IntWrapper color = getParticleColor(stats);
+            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
     }

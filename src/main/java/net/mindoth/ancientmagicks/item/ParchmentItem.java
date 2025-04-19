@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
+import net.mindoth.ancientmagicks.item.modifier.ColorModifierItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -39,15 +40,15 @@ public class ParchmentItem extends Item {
         this.size = size;
     }
 
-    public static List<ColorRuneItem> getScrollComboList(ItemStack stack) {
+    public static List<ColorModifierItem> getScrollComboList(ItemStack stack) {
         if ( !(stack.getItem() instanceof ParchmentItem) ) return null;
         if ( !stack.hasTag() || !stack.getTag().contains(NBT_KEY_CODE_STRING) ) return null;
         CompoundTag tag = stack.getTag();
         List<String> codeList = List.of(tag.getString(NBT_KEY_CODE_STRING).split(","));
-        List<ColorRuneItem> runes = Lists.newArrayList();
+        List<ColorModifierItem> runes = Lists.newArrayList();
         for ( String string : codeList ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-            if ( item instanceof ColorRuneItem colorRuneItem ) runes.add(colorRuneItem);
+            if ( item instanceof ColorModifierItem colorModifierItem ) runes.add(colorModifierItem);
         }
         if ( codeList.size() == AncientMagicks.comboSizeCalc() && codeList.size() == codeList.size() ) return runes;
         else return null;
@@ -59,10 +60,10 @@ public class ParchmentItem extends Item {
         if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_CODE_STRING) ) {
             CompoundTag tag = stack.getTag();
             List<String> codeString = List.of(tag.getString(NBT_KEY_CODE_STRING).split(","));
-            List<ColorRuneItem> runes = getScrollComboList(stack);
+            List<ColorModifierItem> runes = getScrollComboList(stack);
             if ( runes != null && runes.size() == AncientMagicks.comboSizeCalc() && runes.size() == codeString.size() ) {
                 StringBuilder stringBuilder = new StringBuilder();
-                for ( ColorRuneItem rune : runes ) {
+                for ( ColorModifierItem rune : runes ) {
                     String color = rune.getColor() + "0" + "\u00A7r";
                     stringBuilder.append(color);
                 }

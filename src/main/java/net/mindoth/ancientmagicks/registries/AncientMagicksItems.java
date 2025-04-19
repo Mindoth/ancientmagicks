@@ -2,13 +2,14 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
-import net.mindoth.ancientmagicks.item.ColorRuneItem;
+import net.mindoth.ancientmagicks.item.modifier.ColorModifierItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
+import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.effect.alchemy.AlchemyEffectItem;
 import net.mindoth.ancientmagicks.item.effect.callthunder.CallThunderEffectItem;
 import net.mindoth.ancientmagicks.item.effect.chaoticpolymorph.ChaoticPolymorphEffectItem;
@@ -88,23 +89,23 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> BLANK_RUNE = ITEMS.register("blank_rune",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune",
+            () -> new ColorModifierItem(new Item.Properties(), "\u00A7f", 0, 0, SpellEffectItem.ColorCode.WHITE));
+
     public static final RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7b"));
-
-    public static final RegistryObject<Item> PURPLE_RUNE = ITEMS.register("purple_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7d"));
-
-    public static final RegistryObject<Item> YELLOW_RUNE = ITEMS.register("yellow_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7e"));
+            () -> new ColorModifierItem(new Item.Properties(), "\u00A7b", 0, 0, SpellEffectItem.ColorCode.DARK_BLUE));
 
     public static final RegistryObject<Item> GREEN_RUNE = ITEMS.register("green_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7a"));
+            () -> new ColorModifierItem(new Item.Properties(), "\u00A7a", 0, 0, SpellEffectItem.ColorCode.GREEN));
 
-    public static final RegistryObject<Item> BLACK_RUNE = ITEMS.register("black_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A78"));
+    public static final RegistryObject<Item> PURPLE_RUNE = ITEMS.register("purple_rune",
+            () -> new ColorModifierItem(new Item.Properties(), "\u00A7d", 0, 0, SpellEffectItem.ColorCode.DARK_PURPLE));
 
-    public static final RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7f"));
+    public static final RegistryObject<Item> RED_RUNE = ITEMS.register("red_rune",
+            () -> new ColorModifierItem(new Item.Properties(), "\u00A74", 0, 0, SpellEffectItem.ColorCode.DARK_RED));
+
+    public static final RegistryObject<Item> YELLOW_RUNE = ITEMS.register("yellow_rune",
+            () -> new ColorModifierItem(new Item.Properties(), "\u00A7e", 0, 0, SpellEffectItem.ColorCode.YELLOW));
 
 
     //Forms

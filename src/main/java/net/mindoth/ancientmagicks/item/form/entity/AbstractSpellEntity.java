@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Predicate;
 
 public abstract class AbstractSpellEntity extends Projectile {
@@ -307,7 +308,15 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     public ParticleColor getParticleColor() {
-        return new ParticleColor(this.entityData.get(RED), this.entityData.get(GREEN), this.entityData.get(BLUE));
+        if ( this.entityData.get(RED) < 0 || this.entityData.get(RED) > 255
+                || this.entityData.get(GREEN) < 0 || this.entityData.get(GREEN) > 255
+                || this.entityData.get(BLUE) < 0 || this.entityData.get(BLUE) > 255 ) {
+            int r = new Random().nextInt(0, 256);
+            int g = new Random().nextInt(0, 256);
+            int b = new Random().nextInt(0, 256);
+            return new ParticleColor(r, g, b);
+        }
+        else return new ParticleColor(this.entityData.get(RED), this.entityData.get(GREEN), this.entityData.get(BLUE));
     }
 
     public float getSize() {
@@ -433,9 +442,12 @@ public abstract class AbstractSpellEntity extends Projectile {
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(RED, 170);
+        /*this.entityData.define(RED, 170);
         this.entityData.define(GREEN, 25);
-        this.entityData.define(BLUE, 170);
+        this.entityData.define(BLUE, 170);*/
+        this.entityData.define(RED, -1);
+        this.entityData.define(GREEN, -1);
+        this.entityData.define(BLUE, -1);
         this.entityData.define(SIZE, 0.2F);
 
         this.entityData.define(SPELLSTACK, "");

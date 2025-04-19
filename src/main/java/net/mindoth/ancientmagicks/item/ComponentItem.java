@@ -54,10 +54,13 @@ public class ComponentItem extends Item {
         return NBT_KEY_EMPTY;
     }
 
+    public static final String RED = "red";
+    public static final String GREEN = "green";
+    public static final String BLUE = "blue";
     public static final String POWER = "power";
     public static final String LIFE = "life";
-    public static final String AOE = "aoe";
     public static final String REACH = "reach";
+    public static final String AOE = "aoe";
 
     //Projectile exclusive
     public static final String SPEED = "speed";
@@ -68,10 +71,13 @@ public class ComponentItem extends Item {
 
     public static HashMap<String, Float> createDefaultStats() {
         HashMap<String, Float> stats = new HashMap<>();
-        stats.merge(POWER, 1.0F, Float::sum);
-        stats.merge(LIFE, 1.0F, Float::sum);
-        stats.merge(REACH, 4.5F, Float::sum);
-        stats.merge(AOE, 0.0F, Float::sum);
+        stats.put(RED, -1.0F);
+        stats.put(GREEN, -1.0F);
+        stats.put(BLUE, -1.0F);
+        stats.put(POWER, 1.0F);
+        stats.put(LIFE, 1.0F);
+        stats.put(REACH, 4.5F);
+        stats.put(AOE, 0.0F);
         return stats;
     }
 
