@@ -7,8 +7,9 @@ import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketAssembleSpell;
+import net.mindoth.ancientmagicks.network.PacketCraftSpell;
 import net.mindoth.ancientmagicks.network.PacketDumpSpell;
+import net.mindoth.ancientmagicks.network.PacketEditColorCode;
 import net.mindoth.ancientmagicks.registries.AncientMagicksBlocks;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.mindoth.ancientmagicks.registries.AncientMagicksMenus;
@@ -26,10 +27,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SpellCraftingMenu extends AbstractContainerMenu {
@@ -52,6 +55,8 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     };
     private final ContainerLevelAccess access;
     private final Player player;
+
+    public List<Item> colorCode = Arrays.asList(AncientMagicksItems.BLANK_RUNE.get(), AncientMagicksItems.BLANK_RUNE.get(), AncientMagicksItems.BLANK_RUNE.get());
 
     public SpellCraftingMenu(int containerId, Inventory inventory, FriendlyByteBuf buf) {
         this(containerId, inventory, ContainerLevelAccess.create(inventory.player.level(), buf.readBlockPos()));
@@ -115,6 +120,21 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
                     }
                 }
             }
+            if ( level.isClientSide && isReadyToDump() ) {
+                List<Item> tempList = ParchmentItem.getScrollComboList(stack);
+                for ( int i = 0; i < tempList.size(); i++ ) editColorCode(i, tempList.get(i));
+            }
+        });
+    }
+
+    public void editColorCode(int index, Item rune) {
+        colorCode.set(index, rune);
+        AncientMagicksNetwork.sendToServer(new PacketEditColorCode(index, rune));
+    }
+
+    public void processColorCodeEditing(int index, Item rune) {
+        this.access.execute((level, pos) -> {
+            if ( !level.isClientSide ) colorCode.set(index, rune);
         });
     }
 
@@ -173,9 +193,9 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
         return isCleanParchment(craftSlots.getItem(0)) && assemble(craftSlots) != ItemStack.EMPTY;
     }
 
-    public boolean setSpell(String string) {
+    public boolean craftSpell(String string) {
         if ( isReadyToCraft() ) {
-            AncientMagicksNetwork.sendToServer(new PacketAssembleSpell(getItemName(string)));
+            AncientMagicksNetwork.sendToServer(new PacketCraftSpell(getItemName(string)));
             return true;
         }
         else return false;
@@ -234,9 +254,9 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
                 tag.putString(ParchmentItem.NBT_KEY_DATA_STRING, effectData.toString());
 
                 StringBuilder spellCode = new StringBuilder();
-                for (int i = 0; i < AncientMagicks.comboSizeCalc(); i++ ) {
+                for ( int i = 0; i < AncientMagicks.comboSizeCalc(); i++ ) {
                     if ( i > 0 ) spellCode.append(",");
-                    spellCode.append(ForgeRegistries.ITEMS.getKey(AncientMagicksItems.BLANK_RUNE.get()).toString());
+                    spellCode.append(ForgeRegistries.ITEMS.getKey(colorCode.get(i)).toString());
                 }
                 tag.putString(ParchmentItem.NBT_KEY_CODE_STRING, spellCode.toString());
                 return scroll;
@@ -289,7 +309,6 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
 
     @Override
     public boolean canTakeItemForPickAll(ItemStack pStack, Slot pSlot) {
-        //return pSlot.container != this.resultSlots && super.canTakeItemForPickAll(pStack, pSlot);
         return !(pSlot instanceof ParchmentSlot) && super.canTakeItemForPickAll(pStack, pSlot);
     }
 

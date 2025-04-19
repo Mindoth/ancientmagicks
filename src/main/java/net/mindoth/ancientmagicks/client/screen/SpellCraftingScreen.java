@@ -1,24 +1,32 @@
 package net.mindoth.ancientmagicks.client.screen;
 
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.client.menu.ComponentSlot;
 import net.mindoth.ancientmagicks.client.menu.SpellCraftingMenu;
+import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.PacketEditColorCode;
+import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMenu> implements ContainerListener {
@@ -26,7 +34,17 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
     private static final ResourceLocation TEXTURE = new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/spell_crafting_screen.png");
     private EditBox name;
     private Button craftButton;
+    private final int CRAFT_BUTTON_X_OFFSET = 39;
     private Button dumpButton;
+    private final int DUMP_BUTTON_X_OFFSET = CRAFT_BUTTON_X_OFFSET + 18;
+
+    private Button runeButtonL;
+    private final int RUNE_BUTTON_X_OFFSET_L = 101;
+    private Button runeButtonM;
+    private final int RUNE_BUTTON_X_OFFSET_M = 119;
+    private Button runeButtonR;
+    private final int RUNE_BUTTON_X_OFFSET_R = 137;
+    private List<Button> runeButtonList = Lists.newArrayList();
 
     public SpellCraftingScreen(SpellCraftingMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -54,11 +72,24 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
 
     private void buildButtons(int x, int y) {
         craftButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleCraftButton)
-                .bounds(x + 97, y + this.menu.getTopRowHeight(), 16, 16)
+                .bounds(x + CRAFT_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(), 16, 16)
                 .build());
         dumpButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleDumpButton)
-                .bounds(x + 61, y + this.menu.getTopRowHeight(), 16, 16)
+                .bounds(x + DUMP_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(), 16, 16)
                 .build());
+
+        runeButtonL = addWidget(Button.builder(Component.literal(""), this::handleRuneButton)
+                .bounds(x + RUNE_BUTTON_X_OFFSET_L, y + this.menu.getTopRowHeight(), 16, 16)
+                .build());
+        runeButtonList.add(runeButtonL);
+        runeButtonM = addWidget(Button.builder(Component.literal(""), this::handleRuneButton)
+                .bounds(x + RUNE_BUTTON_X_OFFSET_M, y + this.menu.getTopRowHeight(), 16, 16)
+                .build());
+        runeButtonList.add(runeButtonM);
+        runeButtonR = addWidget(Button.builder(Component.literal(""), this::handleRuneButton)
+                .bounds(x + RUNE_BUTTON_X_OFFSET_R, y + this.menu.getTopRowHeight(), 16, 16)
+                .build());
+        runeButtonList.add(runeButtonR);
     }
 
     private void handleCraftButton(Button button) {
@@ -66,7 +97,7 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         if ( slot.hasItem() && this.menu.isCleanParchment(slot.getItem()) ) {
             String string = this.name.getValue();
             if ( !slot.getItem().hasCustomHoverName() && string.equals(slot.getItem().getHoverName().getString()) ) string = "";
-            if ( this.menu.setSpell(string) ) this.name.setValue("");
+            if ( this.menu.craftSpell(string) ) this.name.setValue("");
         }
     }
 
@@ -75,6 +106,20 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         if ( slot.hasItem() && !this.menu.isCleanParchment(slot.getItem()) ) {
             if ( this.menu.dumpSpell() ) this.name.setValue(slot.getItem().getHoverName().getString());
         }
+    }
+
+    private void handleRuneButton(Button button) {
+        if ( !this.menu.isReadyToCraft() ) return;
+        int index = runeButtonList.indexOf(button);
+        Item rune = this.menu.colorCode.get(index);
+        if ( rune == AncientMagicksItems.BLANK_RUNE.get() ) rune = AncientMagicksItems.WHITE_RUNE.get();
+        else if ( rune == AncientMagicksItems.WHITE_RUNE.get() ) rune = AncientMagicksItems.BLUE_RUNE.get();
+        else if ( rune == AncientMagicksItems.BLUE_RUNE.get() ) rune = AncientMagicksItems.GREEN_RUNE.get();
+        else if ( rune == AncientMagicksItems.GREEN_RUNE.get() ) rune = AncientMagicksItems.PURPLE_RUNE.get();
+        else if ( rune == AncientMagicksItems.PURPLE_RUNE.get() ) rune = AncientMagicksItems.RED_RUNE.get();
+        else if ( rune == AncientMagicksItems.RED_RUNE.get() ) rune = AncientMagicksItems.YELLOW_RUNE.get();
+        else rune = AncientMagicksItems.BLANK_RUNE.get();
+        this.menu.editColorCode(index, rune);
     }
 
     @Override
@@ -99,6 +144,13 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         this.name.tick();
         if ( craftButton.isFocused() ) craftButton.setFocused(false);
         if ( dumpButton.isFocused() ) dumpButton.setFocused(false);
+        if ( runeButtonL.isFocused() ) runeButtonL.setFocused(false);
+        if ( runeButtonM.isFocused() ) runeButtonM.setFocused(false);
+        if ( runeButtonR.isFocused() ) runeButtonR.setFocused(false);
+        if ( this.menu.isReadyToCraft() ) {
+            for ( Button button : runeButtonList ) if ( !button.visible ) button.visible = true;
+        }
+        else for ( Button button1 : runeButtonList ) if ( button1.visible ) button1.visible = false;
     }
 
     @Override
@@ -135,25 +187,33 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
+        //Action buttons
         if ( this.menu.isReadyToCraft() ) {
-            this.craftButton.renderTexture(graphics, TEXTURE, x + 97, y + this.menu.getTopRowHeight(),
+            this.craftButton.renderTexture(graphics, TEXTURE, x + CRAFT_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(),
                     0, 191, 16, 16, 16, 256, 256);
-            this.dumpButton.renderTexture(graphics, TEXTURE, x + 61, y + this.menu.getTopRowHeight(),
+            this.dumpButton.renderTexture(graphics, TEXTURE, x + DUMP_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(),
                     16, 223, 0, 16, 16, 256, 256);
         }
         else {
-            this.craftButton.renderTexture(graphics, TEXTURE, x + 97, y + this.menu.getTopRowHeight(),
+            this.craftButton.renderTexture(graphics, TEXTURE, x + CRAFT_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(),
                     0, 223, 0, 16, 16, 256, 256);
             if ( this.menu.isReadyToDump() ) {
-                this.dumpButton.renderTexture(graphics, TEXTURE, x + 61, y + this.menu.getTopRowHeight(),
+                this.dumpButton.renderTexture(graphics, TEXTURE, x + DUMP_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(),
                         16, 191, 16, 16, 16, 256, 256);
             }
             else {
-                this.dumpButton.renderTexture(graphics, TEXTURE, x + 61, y + this.menu.getTopRowHeight(),
+                this.dumpButton.renderTexture(graphics, TEXTURE, x + DUMP_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(),
                         16, 223, 0, 16, 16, 256, 256);
             }
         }
 
+        //Rune buttons
+        for ( int i = 0; i < runeButtonList.size(); i++ ) {
+            Button button = runeButtonList.get(i);
+            renderItemWithDecorations(graphics, button, x + RUNE_BUTTON_X_OFFSET_L + i * 18, y + this.menu.getTopRowHeight(), mouseX, mouseY);
+        }
+
+        //Locked slots
         for ( int i = 0; i < this.menu.slots.size(); i++ ) {
             if ( this.menu.getSlot(i) instanceof ComponentSlot slot && !slot.isOpen ) {
                 int xPos = x + 26 + (i - 2) * 18;
@@ -161,6 +221,18 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
                 AncientMagicksScreen.drawTexture(TEXTURE, xPos, yPos, 0, 175, 16, 16, 256, 256, graphics);
             }
         }
+    }
+
+    protected void renderItemWithDecorations(GuiGraphics graphics, Button button, int xPos, int yPos, int mouseX, int mouseY) {
+        if ( this.menu.isReadyToCraft() ) {
+            ItemStack stack = new ItemStack(this.menu.colorCode.get(runeButtonList.indexOf(button)));
+            graphics.renderItem(stack, xPos, yPos);
+            graphics.renderItemDecorations(this.font, stack, xPos, yPos);
+            if ( mouseX >= button.getX() && mouseY >= button.getY() && mouseX < button.getX() + button.getWidth() && mouseY < button.getY() + button.getHeight() ) {
+                graphics.fill(RenderType.guiOverlay(), xPos, yPos, xPos + 16, yPos + 16, Integer.MAX_VALUE);
+            }
+        }
+        else AncientMagicksScreen.drawTexture(TEXTURE, xPos, yPos, 0, 175, 16, 16, 256, 256, graphics);
     }
 
     @Override

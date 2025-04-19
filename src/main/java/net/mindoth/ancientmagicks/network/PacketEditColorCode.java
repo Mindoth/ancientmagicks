@@ -3,24 +3,30 @@ package net.mindoth.ancientmagicks.network;
 import net.mindoth.ancientmagicks.client.menu.SpellCraftingMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PacketAssembleSpell {
+public class PacketEditColorCode {
 
-    public String name;
+    public int index;
+    public Item rune;
 
-    public PacketAssembleSpell(String name) {
-        this.name = name;
+    public PacketEditColorCode(int index, Item rune) {
+        this.index = index;
+        this.rune = rune;
     }
 
-    public PacketAssembleSpell(FriendlyByteBuf buf) {
-        this.name = buf.readUtf();
+    public PacketEditColorCode(FriendlyByteBuf buf) {
+        this.index = buf.readInt();
+        this.rune = buf.readItem().getItem();
     }
 
     public void encode(FriendlyByteBuf buf) {
-        buf.writeUtf(this.name);
+        buf.writeInt(this.index);
+        buf.writeItem(new ItemStack(this.rune));
     }
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
@@ -28,7 +34,7 @@ public class PacketAssembleSpell {
         context.enqueueWork(() -> {
             if ( context.getSender() != null ) {
                 ServerPlayer player = context.getSender();
-                if ( player.containerMenu instanceof SpellCraftingMenu ) ((SpellCraftingMenu)player.containerMenu).processCrafting(this.name);
+                if ( player.containerMenu instanceof SpellCraftingMenu ) ((SpellCraftingMenu)player.containerMenu).processColorCodeEditing(this.index, this.rune);
             }
         });
     }

@@ -21,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
@@ -43,7 +44,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
     private int selectedItem;
     private final ItemStack book;
     private final List<ItemStack> ColorRunes;
-    private final List<ColorModifierItem> comboList = Lists.newArrayList();
+    private final List<Item> comboList = Lists.newArrayList();
     private ItemStack comboResult;
     //private HashMap<Integer, ItemStack> possibleResults;
     private final String hotbar;
@@ -94,7 +95,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         return true;
     }
 
-    private int getSlotForSpell(List<ColorModifierItem> comboList) {
+    private int getSlotForSpell(List<Item> comboList) {
         int state = -1;
         List<ItemStack> scrollList = SpellBookItem.getScrollListFromBook(this.book.getTag());
         for ( int i = 0; i < scrollList.size(); i++ ) {

@@ -219,7 +219,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
     }
 
     private void handleSlotButtonVisibility() {
-        for ( Button button : this.buttonList) {
+        for ( Button button : this.buttonList ) {
             int stackIndex = this.buttonList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
             if ( stackIndex >= this.itemList.size() && button.visible ) button.visible = false;
             else if ( !button.visible ) button.visible = true;
@@ -235,13 +235,13 @@ public class SpellBookScreen extends AncientMagicksScreen {
 
         //Background
         renderBackground(graphics);
-        drawTexture(TEXTURE, x - 140, y - 90, 0, 0, 280, 180, 280, 200, graphics);
+        drawTexture(TEXTURE, x - 140, y - 90, 0, 0, 280, 180, 280, 202, graphics);
 
         //Arrows
         if ( this.rightArrow.visible ) this.rightArrow.renderTexture(graphics, TEXTURE, x + this.rightArrowXOffset, y + this.arrowYOffset,
-                0, 180, 10, 18, 10, 280, 200);
+                0, 180, 10, 18, 10, 280, 202);
         if ( this.leftArrow.visible ) this.leftArrow.renderTexture(graphics, TEXTURE, x + this.leftArrowXOffset, y + this.arrowYOffset,
-                18, 180, 10, 18, 10, 280, 200);
+                18, 180, 10, 18, 10, 280, 202);
 
         for ( List<ItemStack> page : this.pageList ) {
             if ( this.spreadNumber == this.pageList.indexOf(page) ) {
@@ -265,14 +265,13 @@ public class SpellBookScreen extends AncientMagicksScreen {
                     int yPos = y - 74 + (row * this.squareSpacing);
 
                     if ( stack.getItem() instanceof ParchmentItem ) {
-                        drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
-                                xPos - 3, yPos - 3, 0, 0, 22, 22, 22, 22, graphics);
+                        drawTexture(TEXTURE, xPos - 3, yPos - 3, 36, 180, 100, 22, 280, 202, graphics);
                     }
 
                     renderItemWithDecorations(graphics, stack, xPos, yPos);
                     if ( this.buttonList.get(i).isHovered() ) {
                         graphics.fill(RenderType.guiOverlay(), xPos, yPos, xPos + 16, yPos + 16, Integer.MAX_VALUE);
-                        graphics.renderTooltip(this.font, stack, mouseX, mouseY);
+                        if ( stack.getItem() instanceof ParchmentItem ) graphics.renderTooltip(this.font, stack, mouseX, mouseY);
                     }
 
                     column++;

@@ -33,16 +33,22 @@ public class AncientMagicksNetwork {
 
         CHANNEL = net;
 
+        net.messageBuilder(PacketEditColorCode.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketEditColorCode::new)
+                .encoder(PacketEditColorCode::encode)
+                .consumerMainThread(PacketEditColorCode::handle)
+                .add();
+
         net.messageBuilder(PacketDumpSpell.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(PacketDumpSpell::new)
                 .encoder(PacketDumpSpell::encode)
                 .consumerMainThread(PacketDumpSpell::handle)
                 .add();
 
-        net.messageBuilder(PacketAssembleSpell.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(PacketAssembleSpell::new)
-                .encoder(PacketAssembleSpell::encode)
-                .consumerMainThread(PacketAssembleSpell::handle)
+        net.messageBuilder(PacketCraftSpell.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketCraftSpell::new)
+                .encoder(PacketCraftSpell::encode)
+                .consumerMainThread(PacketCraftSpell::handle)
                 .add();
 
         net.messageBuilder(PacketAskToOpenSpellWheel.class, id(), NetworkDirection.PLAY_TO_SERVER)

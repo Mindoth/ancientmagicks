@@ -40,12 +40,12 @@ public class ParchmentItem extends Item {
         this.size = size;
     }
 
-    public static List<ColorModifierItem> getScrollComboList(ItemStack stack) {
+    public static List<Item> getScrollComboList(ItemStack stack) {
         if ( !(stack.getItem() instanceof ParchmentItem) ) return null;
         if ( !stack.hasTag() || !stack.getTag().contains(NBT_KEY_CODE_STRING) ) return null;
         CompoundTag tag = stack.getTag();
         List<String> codeList = List.of(tag.getString(NBT_KEY_CODE_STRING).split(","));
-        List<ColorModifierItem> runes = Lists.newArrayList();
+        List<Item> runes = Lists.newArrayList();
         for ( String string : codeList ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
             if ( item instanceof ColorModifierItem colorModifierItem ) runes.add(colorModifierItem);
@@ -60,12 +60,14 @@ public class ParchmentItem extends Item {
         if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_CODE_STRING) ) {
             CompoundTag tag = stack.getTag();
             List<String> codeString = List.of(tag.getString(NBT_KEY_CODE_STRING).split(","));
-            List<ColorModifierItem> runes = getScrollComboList(stack);
+            List<Item> runes = getScrollComboList(stack);
             if ( runes != null && runes.size() == AncientMagicks.comboSizeCalc() && runes.size() == codeString.size() ) {
                 StringBuilder stringBuilder = new StringBuilder();
-                for ( ColorModifierItem rune : runes ) {
-                    String color = rune.getColor() + "0" + "\u00A7r";
-                    stringBuilder.append(color);
+                for ( Item item : runes ) {
+                    if ( item instanceof ColorModifierItem rune ) {
+                        String color = rune.getColor() + "0" + "\u00A7r";
+                        stringBuilder.append(color);
+                    }
                 }
                 tooltip.add(Component.literal(stringBuilder.toString()));
             }

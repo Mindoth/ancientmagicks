@@ -7,15 +7,20 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PacketDumpSpell {
+public class PacketCraftSpell {
 
-    public PacketDumpSpell() {
+    public String name;
+
+    public PacketCraftSpell(String name) {
+        this.name = name;
     }
 
-    public PacketDumpSpell(FriendlyByteBuf buf) {
+    public PacketCraftSpell(FriendlyByteBuf buf) {
+        this.name = buf.readUtf();
     }
 
     public void encode(FriendlyByteBuf buf) {
+        buf.writeUtf(this.name);
     }
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
@@ -23,7 +28,7 @@ public class PacketDumpSpell {
         context.enqueueWork(() -> {
             if ( context.getSender() != null ) {
                 ServerPlayer player = context.getSender();
-                if ( player.containerMenu instanceof SpellCraftingMenu ) ((SpellCraftingMenu)player.containerMenu).processDumping();
+                if ( player.containerMenu instanceof SpellCraftingMenu ) ((SpellCraftingMenu)player.containerMenu).processCrafting(this.name);
             }
         });
     }

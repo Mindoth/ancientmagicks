@@ -127,12 +127,12 @@ public class AncientMagicks {
 
     //Thank god for Stack Overflow (the website)
     //https://stackoverflow.com/questions/1075656/simple-way-to-find-if-two-different-lists-contain-exactly-the-same-elements/67986292#67986292
-    public static boolean listsMatch(List<ColorModifierItem> firstList, List<ColorModifierItem> secondList) {
+    public static boolean listsMatch(List<Item> firstList, List<Item> secondList) {
         if ( firstList == secondList ) return true;
         if ( firstList != null && secondList != null ) {
             if ( firstList.isEmpty() && secondList.isEmpty() ) return true;
             if ( firstList.size() != secondList.size() ) return false;
-            List<ColorModifierItem> tmpSecondList = new ArrayList<>(secondList);
+            List<Item> tmpSecondList = new ArrayList<>(secondList);
             Object currFirstObject;
             for ( int i=1 ; i<=firstList.size() ; i++ ) {
                 currFirstObject = firstList.get(i-1);
