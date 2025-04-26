@@ -5,7 +5,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.modifier.ColorModifierItem;
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
@@ -79,11 +79,11 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         if ( this.selectedItem != -1 ) {
             //this.possibleResults = new HashMap<>();
             ItemStack clickedItem = this.ColorRunes.get(this.selectedItem);
-            if ( clickedItem.getItem() instanceof ColorModifierItem) {
-                if ( this.comboList.size() < AncientMagicks.comboSizeCalc() ) this.comboList.add((ColorModifierItem)clickedItem.getItem());
+            if ( clickedItem.getItem() instanceof ColorRuneItem ) {
+                if ( this.comboList.size() < AncientMagicks.comboSizeCalc() ) this.comboList.add(clickedItem.getItem());
                 else {
                     this.comboList.remove(0);
-                    this.comboList.add((ColorModifierItem)clickedItem.getItem());
+                    this.comboList.add(clickedItem.getItem());
                 }
             }
             if ( getSlotForSpell(this.comboList) > -1 ) {

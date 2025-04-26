@@ -1,24 +1,16 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.effect.chaoticpolymorph.ChaoticPolymorphEffect;
-import net.mindoth.ancientmagicks.item.effect.chaoticpolymorph.ChaoticPolymorphEffectItem;
+import net.mindoth.ancientmagicks.mobeffect.ChaoticPolymorphEffect;
 import net.mindoth.ancientmagicks.mobeffect.FlightEffect;
-import net.mindoth.ancientmagicks.mobeffect.FrostArmorEffect;
-import net.mindoth.ancientmagicks.mobeffect.GreaterInvisibilityEffect;
 import net.mindoth.ancientmagicks.item.effect.mindcontrol.MindControlEffect;
-import net.mindoth.ancientmagicks.mobeffect.NumbnessEffect;
-import net.mindoth.ancientmagicks.mobeffect.PerfectInvisibilityEffect;
-import net.mindoth.ancientmagicks.item.effect.polymorph.PolymorphEffect;
+import net.mindoth.ancientmagicks.mobeffect.PolymorphEffect;
 import net.mindoth.ancientmagicks.mobeffect.SleepEffect;
 import net.mindoth.ancientmagicks.mobeffect.FallControlEffect;
 import net.mindoth.ancientmagicks.mobeffect.TeleblockEffect;
-import net.mindoth.ancientmagicks.mobeffect.WitchArmorEffect;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -27,10 +19,10 @@ public class AncientMagicksEffects {
 
     //JUST Effects
     public static final RegistryObject<MindControlEffect> MIND_CONTROL = EFFECTS.register("mind_control", () -> new MindControlEffect(MobEffectCategory.HARMFUL, 0));
-    public static final RegistryObject<PolymorphEffect> POLYMORPH = EFFECTS.register("polymorph", () -> new PolymorphEffect(MobEffectCategory.HARMFUL, 16733695));
-    public static final RegistryObject<ChaoticPolymorphEffect> CHAOTIC_POLYMORPH = EFFECTS.register("chaotic_polymorph", () -> new ChaoticPolymorphEffect(MobEffectCategory.HARMFUL, 16733695));
 
     //Potions
+    public static final RegistryObject<PolymorphEffect> POLYMORPH = EFFECTS.register("polymorph", () -> new PolymorphEffect(MobEffectCategory.HARMFUL, 16733695));
+    public static final RegistryObject<ChaoticPolymorphEffect> CHAOTIC_POLYMORPH = EFFECTS.register("chaotic_polymorph", () -> new ChaoticPolymorphEffect(MobEffectCategory.HARMFUL, 16733695));
     public static final RegistryObject<FlightEffect> FLIGHT = EFFECTS.register("flight", () -> new FlightEffect(MobEffectCategory.BENEFICIAL, 11397104));
     public static final RegistryObject<FallControlEffect> FALL_CONTROL = EFFECTS.register("fall_control", () -> new FallControlEffect(MobEffectCategory.BENEFICIAL, 2404069));
     public static final RegistryObject<SleepEffect> SLEEP = EFFECTS.register("sleep", () -> new SleepEffect(MobEffectCategory.HARMFUL, 6299744));

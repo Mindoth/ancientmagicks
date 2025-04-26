@@ -2,22 +2,19 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
-import net.mindoth.ancientmagicks.item.modifier.ColorModifierItem;
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
-import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.effect.alchemy.AlchemyEffectItem;
 import net.mindoth.ancientmagicks.item.effect.callthunder.CallThunderEffectItem;
-import net.mindoth.ancientmagicks.item.effect.chaoticpolymorph.ChaoticPolymorphEffectItem;
 import net.mindoth.ancientmagicks.item.effect.createwater.CreateWaterEffectItem;
 import net.mindoth.ancientmagicks.item.effect.destroyliquids.DestroyLiquidsEffectItem;
 import net.mindoth.ancientmagicks.item.effect.mindcontrol.MindControlEffectItem;
 import net.mindoth.ancientmagicks.item.effect.notbreak.BreakEffectItem;
-import net.mindoth.ancientmagicks.item.effect.polymorph.PolymorphEffectItem;
 import net.mindoth.ancientmagicks.item.effect.teleport.TeleportEffectItem;
 import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
 import net.mindoth.ancientmagicks.item.form.SelfFormItem;
@@ -90,22 +87,22 @@ public class AncientMagicksItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune",
-            () -> new ColorModifierItem(new Item.Properties(), "\u00A7f", 0, 0, SpellEffectItem.ColorCode.WHITE));
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7f"));
 
     public static final RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune",
-            () -> new ColorModifierItem(new Item.Properties(), "\u00A7b", 0, 0, SpellEffectItem.ColorCode.DARK_BLUE));
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7b"));
 
     public static final RegistryObject<Item> GREEN_RUNE = ITEMS.register("green_rune",
-            () -> new ColorModifierItem(new Item.Properties(), "\u00A7a", 0, 0, SpellEffectItem.ColorCode.GREEN));
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7a"));
 
     public static final RegistryObject<Item> PURPLE_RUNE = ITEMS.register("purple_rune",
-            () -> new ColorModifierItem(new Item.Properties(), "\u00A7d", 0, 0, SpellEffectItem.ColorCode.DARK_PURPLE));
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7d"));
 
     public static final RegistryObject<Item> RED_RUNE = ITEMS.register("red_rune",
-            () -> new ColorModifierItem(new Item.Properties(), "\u00A74", 0, 0, SpellEffectItem.ColorCode.DARK_RED));
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A74"));
 
     public static final RegistryObject<Item> YELLOW_RUNE = ITEMS.register("yellow_rune",
-            () -> new ColorModifierItem(new Item.Properties(), "\u00A7e", 0, 0, SpellEffectItem.ColorCode.YELLOW));
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7e"));
 
 
     //Forms
@@ -139,12 +136,6 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> MIND_CONTROL_EFFECT_ITEM = ITEMS.register("mind_control_effect",
             () -> new MindControlEffectItem(new Item.Properties(), 1, 0));
-
-    public static final RegistryObject<Item> POLYMORPH_EFFECT_ITEM = ITEMS.register("polymorph_effect",
-            () -> new PolymorphEffectItem(new Item.Properties(), 1, 0));
-
-    public static final RegistryObject<Item> CHAOTIC_POLYMORPH_EFFECT_ITEM = ITEMS.register("chaotic_polymorph_effect",
-            () -> new ChaoticPolymorphEffectItem(new Item.Properties(), 1, 0));
 
     //Modifiers
     public static final RegistryObject<Item> AMPLIFY_MODIFIER_ITEM = ITEMS.register("amplify_modifier",

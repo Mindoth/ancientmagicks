@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.client.screen;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.modifier.ColorModifierItem;
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
@@ -177,7 +177,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
             this.clearWidgets();
             buildButtons(minecraft.getWindow().getGuiScaledWidth() / 2, minecraft.getWindow().getGuiScaledHeight() / 2);
         }
-        else if ( item == AncientMagicksItems.BLANK_RUNE.get() || item instanceof ColorModifierItem) changeRune(button, item);
+        else if ( item == AncientMagicksItems.BLANK_RUNE.get() || item instanceof ColorRuneItem ) changeRune(button, item);
     }
 
     private void changeRune(Button button, Item rune) {

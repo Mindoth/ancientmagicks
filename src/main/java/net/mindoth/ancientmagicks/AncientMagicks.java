@@ -3,19 +3,17 @@ package net.mindoth.ancientmagicks;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
 import net.mindoth.ancientmagicks.item.AncientMagicksTab;
-import net.mindoth.ancientmagicks.item.modifier.ColorModifierItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.registries.*;
 import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
 import net.mindoth.ancientmagicks.registries.recipe.AncientMagicksRecipes;
-import net.mindoth.ancientmagicks.registries.recipe.BetterBrewingRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -81,14 +79,18 @@ public class AncientMagicks {
             AncientMagicksNetwork.init();
             ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
 
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.ELYTRA, AncientMagicksPotions.FLIGHT_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(AncientMagicksPotions.FLIGHT_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_FLIGHT_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.FEATHER, AncientMagicksPotions.FALL_CONTROL_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(AncientMagicksPotions.FALL_CONTROL_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_FALL_CONTROL_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.POTATO, AncientMagicksPotions.SLEEP_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(AncientMagicksPotions.SLEEP_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_SLEEP_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(Potions.AWKWARD, Items.ENDER_PEARL, AncientMagicksPotions.TELEBLOCK_POTION.get()));
-            BrewingRecipeRegistry.addRecipe(new BetterBrewingRecipe(AncientMagicksPotions.TELEBLOCK_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_TELEBLOCK_POTION.get()));
+            PotionBrewing.addMix(Potions.AWKWARD, Items.ELYTRA, AncientMagicksPotions.FLIGHT_POTION.get());
+            PotionBrewing.addMix(AncientMagicksPotions.FLIGHT_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_FLIGHT_POTION.get());
+            PotionBrewing.addMix(Potions.AWKWARD, Items.FEATHER, AncientMagicksPotions.FALL_CONTROL_POTION.get());
+            PotionBrewing.addMix(AncientMagicksPotions.FALL_CONTROL_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_FALL_CONTROL_POTION.get());
+            PotionBrewing.addMix(Potions.AWKWARD, Items.POTATO, AncientMagicksPotions.SLEEP_POTION.get());
+            PotionBrewing.addMix(AncientMagicksPotions.SLEEP_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_SLEEP_POTION.get());
+            PotionBrewing.addMix(Potions.AWKWARD, Items.ENDER_PEARL, AncientMagicksPotions.TELEBLOCK_POTION.get());
+            PotionBrewing.addMix(AncientMagicksPotions.TELEBLOCK_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_TELEBLOCK_POTION.get());
+            PotionBrewing.addMix(Potions.AWKWARD, AncientMagicksItems.WOOL_CLOTH.get(), AncientMagicksPotions.POLYMORPH_POTION.get());
+            PotionBrewing.addMix(AncientMagicksPotions.POLYMORPH_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_POLYMORPH_POTION.get());
+            PotionBrewing.addMix(AncientMagicksPotions.POLYMORPH_POTION.get(), Items.FERMENTED_SPIDER_EYE, AncientMagicksPotions.CHAOTIC_POLYMORPH_POTION.get());
+            PotionBrewing.addMix(AncientMagicksPotions.LONG_POLYMORPH_POTION.get(), Items.FERMENTED_SPIDER_EYE, AncientMagicksPotions.CHAOTIC_POLYMORPH_POTION.get());
         });
     }
 

@@ -42,8 +42,9 @@ public class PotionEffectItem extends EntityTargetEffect {
             if ( effect.isInstantenous() ) {
                 life = 1;
                 amp = Mth.floor(Math.max(0, (stats.get(POWER) - 1) / 4));
+                target.addEffect(new MobEffectInstance(effect, life, amp));
             }
-            target.addEffect(new MobEffectInstance(effect, life, amp, false, !effect.isBeneficial()));
+            else target.addEffect(new MobEffectInstance(effect, life, amp, false, !effect.isBeneficial()));
         }
         return true;
     }

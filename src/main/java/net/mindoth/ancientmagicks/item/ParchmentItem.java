@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
-import net.mindoth.ancientmagicks.item.modifier.ColorModifierItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -48,7 +47,7 @@ public class ParchmentItem extends Item {
         List<Item> runes = Lists.newArrayList();
         for ( String string : codeList ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-            if ( item instanceof ColorModifierItem colorModifierItem ) runes.add(colorModifierItem);
+            if ( item instanceof ColorRuneItem colorModifierItem ) runes.add(colorModifierItem);
         }
         if ( codeList.size() == AncientMagicks.comboSizeCalc() && codeList.size() == codeList.size() ) return runes;
         else return null;
@@ -64,7 +63,7 @@ public class ParchmentItem extends Item {
             if ( runes != null && runes.size() == AncientMagicks.comboSizeCalc() && runes.size() == codeString.size() ) {
                 StringBuilder stringBuilder = new StringBuilder();
                 for ( Item item : runes ) {
-                    if ( item instanceof ColorModifierItem rune ) {
+                    if ( item instanceof ColorRuneItem rune ) {
                         String color = rune.getColor() + "0" + "\u00A7r";
                         stringBuilder.append(color);
                     }

@@ -1,33 +1,39 @@
-package net.mindoth.ancientmagicks.item.effect.chaoticpolymorph;
+package net.mindoth.ancientmagicks.mobeffect;
 
 import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
+import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.InstantenousMobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ChaoticPolymorphEffect extends MobEffect {
+@Mod.EventBusSubscriber(modid = AncientMagicks.MOD_ID)
+public class ChaoticPolymorphEffect extends InstantenousMobEffect {
 
     public ChaoticPolymorphEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
     }
 
     @Override
-    public boolean isInstantenous() {
-        return true;
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
+        return false;
     }
 
     @Override
@@ -89,5 +95,13 @@ public class ChaoticPolymorphEffect extends MobEffect {
         }
         oldMob.discard();
         //return newMob;
+    }
+
+    @SubscribeEvent
+    public static void onEntityChaoticPolymorph(final MobEffectEvent.Applicable event) {
+        if ( event.getEffectInstance().getEffect() == AncientMagicksEffects.CHAOTIC_POLYMORPH.get() ) {
+            if ( event.getEntity() instanceof Player ) event.setResult(Event.Result.DENY);
+            else event.setResult(Event.Result.DEFAULT);
+        }
     }
 }
