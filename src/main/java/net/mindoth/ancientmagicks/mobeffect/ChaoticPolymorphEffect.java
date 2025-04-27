@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.InstantenousMobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +21,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -37,7 +39,16 @@ public class ChaoticPolymorphEffect extends InstantenousMobEffect {
     }
 
     @Override
+    public void applyInstantenousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity living, int pAmplifier, double pHealth) {
+        startEffect(living);
+    }
+
+    @Override
     public void addAttributeModifiers(LivingEntity living, AttributeMap map, int pAmplifier) {
+        startEffect(living);
+    }
+
+    private void startEffect(LivingEntity living) {
         if ( !(living instanceof Mob oldMob) ) return;
         Level level = oldMob.level();
         if ( !(level instanceof ServerLevel serverLevel) ) return;

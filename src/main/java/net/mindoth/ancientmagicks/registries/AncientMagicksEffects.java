@@ -22,7 +22,7 @@ public class AncientMagicksEffects {
 
     //Potions
     public static final RegistryObject<PolymorphEffect> POLYMORPH = EFFECTS.register("polymorph", () -> new PolymorphEffect(MobEffectCategory.HARMFUL, 16733695));
-    public static final RegistryObject<ChaoticPolymorphEffect> CHAOTIC_POLYMORPH = EFFECTS.register("chaotic_polymorph", () -> new ChaoticPolymorphEffect(MobEffectCategory.HARMFUL, 16733695));
+    public static final RegistryObject<ChaoticPolymorphEffect> CHAOTIC_POLYMORPH = EFFECTS.register("chaotic_polymorph", () -> new ChaoticPolymorphEffect(MobEffectCategory.HARMFUL, 8859783));
     public static final RegistryObject<FlightEffect> FLIGHT = EFFECTS.register("flight", () -> new FlightEffect(MobEffectCategory.BENEFICIAL, 11397104));
     public static final RegistryObject<FallControlEffect> FALL_CONTROL = EFFECTS.register("fall_control", () -> new FallControlEffect(MobEffectCategory.BENEFICIAL, 2404069));
     public static final RegistryObject<SleepEffect> SLEEP = EFFECTS.register("sleep", () -> new SleepEffect(MobEffectCategory.HARMFUL, 6299744));

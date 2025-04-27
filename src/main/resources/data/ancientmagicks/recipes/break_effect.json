@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:blank_rune"
+    },
+    {
+      "item": "minecraft:wooden_pickaxe"
+    }
+  ],
+
+  "result": {
+    "item": "ancientmagicks:break_effect",
+    "count": 1
+  }
+}

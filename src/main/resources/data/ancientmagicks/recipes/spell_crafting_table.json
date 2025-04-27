@@ -2,15 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "   ",
-    "GWG",
+    "IWI",
     "###"
   ],
   "key": {
     "#": {
       "item": "minecraft:polished_deepslate"
     },
-    "G": {
-      "item": "minecraft:gold_ingot"
+    "I": {
+      "item": "minecraft:iron_ingot"
     },
     "W": {
       "item": "ancientmagicks:wool_cloth"

@@ -29,7 +29,7 @@ public class AncientMagicksCommonConfig {
         DISABLED_POLYMOBS = BUILDER.comment("Add any mobs you wish to not summon with Chaotic Polymorph here. Use * to ban all mobs from a mod, like: twilightforest:*.")
                 .define("polyDisableList", disabledPolymobs());
 
-        DISABLED_ARCANE_DUST_RECIPE_ENTRIES = BUILDER.comment("Add any items you wish to not be required to craft Arcane Dust here.")
+        DISABLED_ARCANE_DUST_RECIPE_ENTRIES = BUILDER.comment("Add any items you wish to not be required to craft Arcane Dust here. The recipe can only use Vanilla items.")
                 .define("arcaneDustRecipeEntryDisableList", disabledArcaneDustItems());
 
         BUILDER.pop();

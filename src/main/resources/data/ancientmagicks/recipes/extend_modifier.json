@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:blank_rune"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
+
+  "result": {
+    "item": "ancientmagicks:extend_modifier",
+    "count": 1
+  }
+}

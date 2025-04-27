@@ -24,8 +24,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +32,6 @@ import java.util.Random;
 @Mod(AncientMagicks.MOD_ID)
 public class AncientMagicks {
     public static final String MOD_ID = "ancientmagicks";
-    public static Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    public static Logger getLogger() {
-        return LOGGER;
-    }
 
     public AncientMagicks() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -136,8 +130,8 @@ public class AncientMagicks {
             if ( firstList.size() != secondList.size() ) return false;
             List<Item> tmpSecondList = new ArrayList<>(secondList);
             Object currFirstObject;
-            for ( int i=1 ; i<=firstList.size() ; i++ ) {
-                currFirstObject = firstList.get(i-1);
+            for ( int i = 1 ; i<=firstList.size() ; i++ ) {
+                currFirstObject = firstList.get(i - 1);
                 boolean removed = tmpSecondList.remove(currFirstObject);
                 if ( !removed ) return false;
                 if ( i != firstList.size() ) {
@@ -149,7 +143,7 @@ public class AncientMagicks {
         return false;
     }
 
-    //Check how many Color Runes should be in a Spell Code. The amount increases depending on how many Spells are registered.
+    //Check how many Color Runes should be in a Spell Code.
     public static int comboSizeCalc() {
         //return (n * (n + 2) * (n + 1)) >= (6 * SPELL_LIST.size());
         /*int returnValue = 0;

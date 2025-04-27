@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:reach_modifier"
+    },
+    {
+      "item": "minecraft:fermented_spider_eye"
+    }
+  ],
+
+  "result": {
+    "item": "ancientmagicks:contract_modifier",
+    "count": 1
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:amplify_modifier"
+    },
+    {
+      "item": "minecraft:fermented_spider_eye"
+    }
+  ],
+
+  "result": {
+    "item": "ancientmagicks:dampen_modifier",
+    "count": 1
+  }
+}

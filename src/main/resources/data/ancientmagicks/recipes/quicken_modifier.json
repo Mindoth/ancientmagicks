@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:blank_rune"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+
+  "result": {
+    "item": "ancientmagicks:quicken_modifier",
+    "count": 1
+  }
+}
