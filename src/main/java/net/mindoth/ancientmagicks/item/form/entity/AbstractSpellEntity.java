@@ -442,9 +442,6 @@ public abstract class AbstractSpellEntity extends Projectile {
 
     @Override
     protected void defineSynchedData() {
-        /*this.entityData.define(RED, 170);
-        this.entityData.define(GREEN, 25);
-        this.entityData.define(BLUE, 170);*/
         this.entityData.define(RED, -1);
         this.entityData.define(GREEN, -1);
         this.entityData.define(BLUE, -1);

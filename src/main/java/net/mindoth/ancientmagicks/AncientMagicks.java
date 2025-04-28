@@ -130,7 +130,7 @@ public class AncientMagicks {
             if ( firstList.size() != secondList.size() ) return false;
             List<Item> tmpSecondList = new ArrayList<>(secondList);
             Object currFirstObject;
-            for ( int i = 1 ; i<=firstList.size() ; i++ ) {
+            for ( int i = 1 ; i <= firstList.size() ; i++ ) {
                 currFirstObject = firstList.get(i - 1);
                 boolean removed = tmpSecondList.remove(currFirstObject);
                 if ( !removed ) return false;

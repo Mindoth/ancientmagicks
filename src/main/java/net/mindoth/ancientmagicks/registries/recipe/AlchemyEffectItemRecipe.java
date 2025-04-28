@@ -73,7 +73,7 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
                 MobEffect effect = potion.getEffects().get(i).getEffect();
                 stringBuilder.append(ForgeRegistries.MOB_EFFECTS.getKey(effect).toString());
             }
-            tag.putString(SpellEffectItem.NBT_KEY_COMPONENT_DATA, stringBuilder.toString());
+            tag.putString(ComponentItem.NBT_KEY_COMPONENT_DATA, stringBuilder.toString());
             returnStack = newStack;
         }
         return returnStack;

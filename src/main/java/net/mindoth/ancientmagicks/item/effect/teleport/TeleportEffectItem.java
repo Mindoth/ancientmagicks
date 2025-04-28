@@ -3,10 +3,14 @@ package net.mindoth.ancientmagicks.item.effect.teleport;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.RelativeMovement;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 
 import java.util.HashMap;
@@ -30,7 +34,10 @@ public class TeleportEffectItem extends SpellEffectItem {
 
         EntityTeleportEvent.TeleportCommand event = net.minecraftforge.event.ForgeEventFactory.onEntityTeleportCommand(caster, pos.x, pos.y, pos.z);
         if ( !event.isCanceled() ) {
-            if ( caster instanceof LivingEntity ) caster.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+            if ( caster instanceof LivingEntity && level instanceof ServerLevel serverLevel ) {
+                caster.teleportTo(serverLevel, event.getTargetX(), event.getTargetY(), event.getTargetZ(), RelativeMovement.ALL,
+                        caster.getViewYRot(0), caster.getViewXRot(0));
+            }
             state = true;
         }
 

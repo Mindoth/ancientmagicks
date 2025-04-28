@@ -232,7 +232,10 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
         for ( int i = 1; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() != Items.AIR ) {
-                if ( stack.getItem() instanceof ComponentItem ) componentStackList.add(stack);
+                if ( stack.getItem() instanceof ComponentItem ) {
+                    if ( ((ComponentItem)stack.getItem()).isEncodeable() && (!stack.hasTag() || !stack.getTag().contains(ComponentItem.NBT_KEY_COMPONENT_DATA)) ) return ItemStack.EMPTY;
+                    else componentStackList.add(stack);
+                }
                 else restList.add(stack);
             }
         }

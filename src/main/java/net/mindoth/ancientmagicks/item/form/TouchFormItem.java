@@ -68,7 +68,7 @@ public class TouchFormItem extends SpellFormItem {
         return false;
     }
 
-    protected static BlockHitResult getCasterPOVHitResult(Level pLevel, Entity caster, ClipContext.Fluid pFluidMode, float range) {
+    public static BlockHitResult getCasterPOVHitResult(Level pLevel, Entity caster, ClipContext.Fluid pFluidMode, float range) {
         float f = caster.getXRot();
         float f1 = caster.getYRot();
         Vec3 vec3 = caster.getEyePosition();

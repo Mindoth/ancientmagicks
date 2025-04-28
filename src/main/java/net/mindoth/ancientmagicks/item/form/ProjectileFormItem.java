@@ -25,14 +25,10 @@ public class ProjectileFormItem extends SpellFormItem {
     public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack, List<String> data) {
         Level level = caster.level();
 
-        ProjectileSpellEntity projectile = new ProjectileSpellEntity(level, owner, caster);
-        projectile.ignoredEntities.put(caster.getId(), projectile.tickCount);
-        projectile.setNoGravity(true);
-
         List<ComponentItem> newList = Lists.newArrayList();
         List<String> newData = Lists.newArrayList();
-        boolean form = false;
         HashMap<SpellModifierItem, Integer> map = new HashMap<>();
+        boolean form = false;
         for ( int i = 0; i < spellStack.size(); i++ ) {
             ComponentItem item = spellStack.get(i);
             if ( !form ) {
@@ -44,6 +40,10 @@ public class ProjectileFormItem extends SpellFormItem {
                 newData.add(data.get(i));
             }
         }
+        ProjectileSpellEntity projectile = new ProjectileSpellEntity(level, owner, caster);
+        projectile.ignoredEntities.put(caster.getId(), projectile.tickCount);
+        projectile.setNoGravity(true);
+
         for ( Map.Entry<SpellModifierItem, Integer> entry : map.entrySet() ) entry.getKey().addEntityModifier(projectile, entry.getValue());
         projectile.getEntityData().set(AbstractSpellEntity.SPELLSTACK, CastingValidator.getStringFromSpellStack(newList));
         projectile.getEntityData().set(AbstractSpellEntity.DATA, CastingValidator.getStringFromDataList(newData));

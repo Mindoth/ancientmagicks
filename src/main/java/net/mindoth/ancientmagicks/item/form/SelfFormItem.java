@@ -31,7 +31,7 @@ public class SelfFormItem extends SpellFormItem {
             ComponentItem item = spellStack.get(i);
             if ( !form ) {
                 if ( item instanceof SpellFormItem ) form = true;
-                if ( item instanceof SpellModifierItem modifier ) formModifiers.add(modifier);
+                else if ( item instanceof SpellModifierItem modifier ) formModifiers.add(modifier);
             }
             else {
                 newList.add(item);
