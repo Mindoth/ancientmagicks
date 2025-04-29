@@ -29,7 +29,6 @@ public class ExtendModifierItem extends SpellModifierItem {
         List<ComponentItem> list = Lists.newArrayList();
         list.add((ComponentItem)AncientMagicksItems.TOUCH_FORM_ITEM.get());
         list.add((ComponentItem)AncientMagicksItems.SELF_FORM_ITEM.get());
-        list.add((ComponentItem)AncientMagicksItems.SPATIAL_FORM_ITEM.get());
         return list;
     }
 

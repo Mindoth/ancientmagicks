@@ -81,10 +81,4 @@ public class ComponentItem extends Item {
         stats.put(AOE, 0.0F);
         return stats;
     }
-
-    public static HashMap<String, Float> createSpellStats(List<SpellModifierItem> modifiers) {
-        HashMap<String, Float> stats = createDefaultStats();
-        for ( SpellModifierItem modifier : modifiers ) modifier.addStatsToMap(stats);
-        return stats;
-    }
 }

@@ -37,7 +37,7 @@ public class LocationModifierItem extends SpellModifierItem {
 
     @Override
     public boolean usableWithForms() {
-        return false;
+        return true;
     }
 
     @Override

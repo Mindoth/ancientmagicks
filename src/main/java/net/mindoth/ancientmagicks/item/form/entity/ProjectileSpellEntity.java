@@ -32,12 +32,14 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
     private void castMagick(HitResult result) {
         HashMap<String, Float> stats = SpellEffectItem.createDefaultStats();
         List<SpellModifierItem> modifiers = Lists.newArrayList();
+        Level defLevel = level();
+        Vec3 defPosVec = result.getLocation();
         for ( int i = 0; i < getSpellStack().size(); i++ ) {
             ComponentItem item = getSpellStack().get(i);
             if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
             if ( item instanceof SpellEffectItem effect ) {
-                Level level = level();
-                Vec3 posVec = position();
+                Level level = defLevel;
+                Vec3 posVec = defPosVec;
                 for ( int j = 0; j < modifiers.size(); j++ ) {
                     modifiers.get(j).addStatsToMap(stats);
                     SpellModifierItem.EncodeableData ed = modifiers.get(j).addDataFromEncodeable(getData().get(j), level, posVec);

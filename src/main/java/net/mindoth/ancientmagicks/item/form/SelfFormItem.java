@@ -22,8 +22,6 @@ public class SelfFormItem extends SpellFormItem {
 
     @Override
     public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack, List<String> data) {
-        HashMap<String, Float> stats = ComponentItem.createDefaultStats();
-
         List<ComponentItem> newList = Lists.newArrayList();
         List<String> newData = Lists.newArrayList();
         List<SpellModifierItem> formModifiers = Lists.newArrayList();
@@ -39,18 +37,28 @@ public class SelfFormItem extends SpellFormItem {
                 newData.add(data.get(i));
             }
         }
-        HashMap<String, Float> formStats = ComponentItem.createSpellStats(formModifiers);
+        HashMap<String, Float> formStats = ComponentItem.createDefaultStats();
+        Level defLevel = caster.level();
+        Vec3 defPosVec = caster.position();
+        for ( int i = 0; i < formModifiers.size(); i++ ) {
+            SpellModifierItem modifier = formModifiers.get(i);
+            modifier.addStatsToMap(formStats);
+            SpellModifierItem.EncodeableData ed = modifier.addDataFromEncodeable(data.get(i), defLevel, defPosVec);
+            defLevel = ed.level;
+            defPosVec = ed.posVec;
+        }
+        HashMap<String, Float> stats = ComponentItem.createDefaultStats();
         List<SpellModifierItem> modifiers = Lists.newArrayList();
         List<Boolean> boolist = Lists.newArrayList();
         for ( int i = 0; i < newList.size(); i++ ) {
             ComponentItem item = newList.get(i);
             if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
             if ( item instanceof SpellEffectItem effect ) {
-                Level level = caster.level();
-                Vec3 posVec = caster.position();
+                Level level = defLevel;
+                Vec3 posVec = defPosVec;
                 for ( int j = 0; j < modifiers.size(); j++ ) {
                     modifiers.get(j).addStatsToMap(stats);
-                    SpellModifierItem.EncodeableData ed = modifiers.get(j).addDataFromEncodeable(newData.get(j), level, caster.position());
+                    SpellModifierItem.EncodeableData ed = modifiers.get(j).addDataFromEncodeable(newData.get(j), level, posVec);
                     level = ed.level;
                     posVec = ed.posVec;
                 }

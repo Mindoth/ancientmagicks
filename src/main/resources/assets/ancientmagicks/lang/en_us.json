@@ -49,8 +49,6 @@
   "tooltip.ancientmagicks.touch_form": "Casts the spell on the aimed target within range",
   "item.ancientmagicks.self_form": "Self Form",
   "tooltip.ancientmagicks.self_form": "Casts the spell on the caster themselves",
-  "item.ancientmagicks.spatial_form": "Spatial Form",
-  "tooltip.ancientmagicks.spatial_form": "Hold and use to set a location for a spell to form at",
 
   "item.ancientmagicks.break_effect": "Break Effect",
   "tooltip.ancientmagicks.break_effect": "Breaks a block",
