@@ -30,9 +30,9 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
-public class LocationFormItem extends SpellFormItem {
+public class SpatialFormItem extends SpellFormItem {
 
-    public LocationFormItem(Properties pProperties, int manaCost, int cooldown) {
+    public SpatialFormItem(Properties pProperties, int manaCost, int cooldown) {
         super(pProperties, manaCost, cooldown);
     }
 

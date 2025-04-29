@@ -16,7 +16,7 @@ import net.mindoth.ancientmagicks.item.effect.DestroyLiquidsEffectItem;
 import net.mindoth.ancientmagicks.item.effect.MindControlEffectItem;
 import net.mindoth.ancientmagicks.item.effect.BreakEffectItem;
 import net.mindoth.ancientmagicks.item.effect.TeleportEffectItem;
-import net.mindoth.ancientmagicks.item.form.LocationFormItem;
+import net.mindoth.ancientmagicks.item.form.SpatialFormItem;
 import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
 import net.mindoth.ancientmagicks.item.form.SelfFormItem;
 import net.mindoth.ancientmagicks.item.form.TouchFormItem;
@@ -116,8 +116,8 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> SELF_FORM_ITEM = ITEMS.register("self_form",
             () -> new SelfFormItem(new Item.Properties(), 0, 0));
 
-    public static final RegistryObject<Item> LOCATION_FORM_ITEM = ITEMS.register("location_form",
-            () -> new LocationFormItem(new Item.Properties(), 0, 0));
+    public static final RegistryObject<Item> SPATIAL_FORM_ITEM = ITEMS.register("spatial_form",
+            () -> new SpatialFormItem(new Item.Properties(), 0, 0));
 
     //Effects
     public static final RegistryObject<Item> BREAK_EFFECT_ITEM = ITEMS.register("break_effect",

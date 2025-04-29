@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:blank_rune"
+    },
+    {
+      "item": "minecraft:lodestone"
+    }
+  ],
+
+  "result": {
+    "item": "ancientmagicks:location_modifier",
+    "count": 1
+  }
+}

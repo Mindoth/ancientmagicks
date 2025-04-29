@@ -265,7 +265,10 @@ public class SpellBookScreen extends AncientMagicksScreen {
                     int yPos = y - 74 + (row * this.squareSpacing);
 
                     if ( stack.getItem() instanceof ParchmentItem ) {
-                        drawTexture(TEXTURE, xPos - 3, yPos - 3, 36, 180, 100, 22, 280, 202, graphics);
+                        drawTexture(TEXTURE, xPos - 3, yPos - 3, 36, 180, 22, 22, 280, 202, graphics);
+                    }
+                    else if ( stack.getItem() instanceof ColorRuneItem ) {
+                        drawTexture(TEXTURE, xPos - 3, yPos - 3, 58, 180, 22, 22, 280, 202, graphics);
                     }
 
                     renderItemWithDecorations(graphics, stack, xPos, yPos);

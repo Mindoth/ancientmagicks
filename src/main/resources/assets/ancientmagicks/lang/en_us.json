@@ -49,8 +49,8 @@
   "tooltip.ancientmagicks.touch_form": "Casts the spell on the aimed target within range",
   "item.ancientmagicks.self_form": "Self Form",
   "tooltip.ancientmagicks.self_form": "Casts the spell on the caster themselves",
-  "item.ancientmagicks.location_form": "Location Form",
-  "tooltip.ancientmagicks.location_form": "Hold and use to set a location for the spell to form at",
+  "item.ancientmagicks.spatial_form": "Spatial Form",
+  "tooltip.ancientmagicks.spatial_form": "Hold and use to set a location for a spell to form at",
 
   "item.ancientmagicks.break_effect": "Break Effect",
   "tooltip.ancientmagicks.break_effect": "Breaks a block",
@@ -98,7 +98,7 @@
   "item.ancientmagicks.diminish_modifier": "Diminish Modifier",
   "tooltip.ancientmagicks.diminish_modifier": "Decreases the lifetime of an effect or a projectile",
   "item.ancientmagicks.location_modifier": "Location Modifier",
-  "tooltip.ancientmagicks.location_modifier": "Hold and use to set a location for the effect to resolve at",
+  "tooltip.ancientmagicks.location_modifier": "Hold and use to set a location for an effect to resolve at",
 
 
   "effect.ancientmagicks.mind_control": "Mind Controlled",
