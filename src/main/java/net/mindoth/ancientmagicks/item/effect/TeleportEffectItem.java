@@ -1,6 +1,5 @@
-package net.mindoth.ancientmagicks.item.effect.teleport;
+package net.mindoth.ancientmagicks.item.effect;
 
-import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;

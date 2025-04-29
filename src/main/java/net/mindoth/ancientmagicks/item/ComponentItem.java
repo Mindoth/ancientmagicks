@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -83,7 +84,7 @@ public class ComponentItem extends Item {
 
     public static HashMap<String, Float> createSpellStats(List<SpellModifierItem> modifiers) {
         HashMap<String, Float> stats = createDefaultStats();
-        for ( SpellModifierItem item : modifiers ) item.addStatsToMap(stats);
+        for ( SpellModifierItem modifier : modifiers ) modifier.addStatsToMap(stats);
         return stats;
     }
 }

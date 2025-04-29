@@ -1,9 +1,7 @@
-package net.mindoth.ancientmagicks.item.effect.notbreak;
+package net.mindoth.ancientmagicks.item.effect;
 
 import com.mojang.authlib.GameProfile;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.effect.BlockTargetEffect;
-import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;

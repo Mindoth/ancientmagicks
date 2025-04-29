@@ -1,6 +1,5 @@
-package net.mindoth.ancientmagicks.item.effect.createwater;
+package net.mindoth.ancientmagicks.item.effect;
 
-import net.mindoth.ancientmagicks.item.effect.BlockTargetEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;

@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.effect.mindcontrol;
+package net.mindoth.ancientmagicks.mobeffect;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;

@@ -1,8 +1,7 @@
-package net.mindoth.ancientmagicks.item.effect.mindcontrol;
+package net.mindoth.ancientmagicks.item.effect;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
-import net.mindoth.ancientmagicks.item.effect.PotionEffectItem;
+import net.mindoth.ancientmagicks.mobeffect.MindControlEffect;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;

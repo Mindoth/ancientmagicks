@@ -5,15 +5,12 @@ import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
 import net.mindoth.ancientmagicks.item.form.entity.AbstractSpellEntity;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,5 +47,18 @@ public class SpellModifierItem extends ComponentItem {
     }
 
     public void addStatsToMap(HashMap<String, Float> stats) {
+    }
+
+    public EncodeableData addDataFromEncodeable(String data, Level level, Vec3 posVec) {
+        return new EncodeableData(level, posVec);
+    }
+
+    public static class EncodeableData {
+        public Level level;
+        public Vec3 posVec;
+        public EncodeableData(Level level, Vec3 posVec) {
+            this.level = level;
+            this.posVec = posVec;
+        }
     }
 }

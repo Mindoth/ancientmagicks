@@ -26,14 +26,14 @@ public class CastingValidator {
 
     public static boolean castSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack, List<String> data) {
         if ( spellStack.isEmpty() ) return false;
-        SpellFormItem form = null;
+        SpellFormItem formItem = null;
         for ( ComponentItem item : spellStack ) {
-            if ( item instanceof SpellFormItem formItem ) {
-                form = formItem;
+            if ( item instanceof SpellFormItem form ) {
+                formItem = form;
                 break;
             }
         }
-        if ( form != null ) return form.formSpell(owner, caster, spellStack, data);
+        if ( formItem != null ) return formItem.formSpell(owner, caster, spellStack, data);
         else return false;
     }
 

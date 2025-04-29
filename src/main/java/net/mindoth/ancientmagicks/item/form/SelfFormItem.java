@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +22,7 @@ public class SelfFormItem extends SpellFormItem {
 
     @Override
     public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack, List<String> data) {
-        Level level = caster.level();
+        HashMap<String, Float> stats = ComponentItem.createDefaultStats();
 
         List<ComponentItem> newList = Lists.newArrayList();
         List<String> newData = Lists.newArrayList();
@@ -38,21 +39,26 @@ public class SelfFormItem extends SpellFormItem {
                 newData.add(data.get(i));
             }
         }
-        HashMap<String, Float> formStats = SpellEffectItem.createSpellStats(formModifiers);
-        float aoe = formStats.get(AOE);
-
+        HashMap<String, Float> formStats = ComponentItem.createSpellStats(formModifiers);
         List<SpellModifierItem> modifiers = Lists.newArrayList();
-        HashMap<String, Float> stats = SpellEffectItem.createDefaultStats();
         List<Boolean> boolist = Lists.newArrayList();
         for ( int i = 0; i < newList.size(); i++ ) {
             ComponentItem item = newList.get(i);
             if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
             if ( item instanceof SpellEffectItem effect ) {
-                HitResult hitResult = new EntityHitResult(caster, caster.position());
-                for ( SpellModifierItem modifier : modifiers ) modifier.addStatsToMap(stats);
-                boolist.add(effect.castSpell(level, owner, caster, hitResult, aoe, stats, newData.get(i)));
+                Level level = caster.level();
+                Vec3 posVec = caster.position();
+                for ( int j = 0; j < modifiers.size(); j++ ) {
+                    modifiers.get(j).addStatsToMap(stats);
+                    SpellModifierItem.EncodeableData ed = modifiers.get(j).addDataFromEncodeable(newData.get(j), level, caster.position());
+                    level = ed.level;
+                    posVec = ed.posVec;
+                }
+                HitResult hitResult = new EntityHitResult(caster, posVec);
+
+                boolist.add(effect.castSpell(level, owner, caster, hitResult, formStats.get(AOE), stats, newData.get(i)));
                 modifiers = Lists.newArrayList();
-                stats = SpellEffectItem.createDefaultStats();
+                stats = ComponentItem.createDefaultStats();
             }
         }
         for ( boolean bool : boolist ) if ( bool ) return true;

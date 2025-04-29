@@ -1,6 +1,5 @@
-package net.mindoth.ancientmagicks.item.effect.destroyliquids;
+package net.mindoth.ancientmagicks.item.effect;
 
-import net.mindoth.ancientmagicks.item.effect.BlockTargetEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;

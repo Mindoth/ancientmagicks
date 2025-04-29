@@ -1,6 +1,5 @@
-package net.mindoth.ancientmagicks.item.effect.callthunder;
+package net.mindoth.ancientmagicks.item.effect;
 
-import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;

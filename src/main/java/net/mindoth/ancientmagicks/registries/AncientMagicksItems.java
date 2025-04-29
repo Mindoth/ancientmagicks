@@ -9,13 +9,13 @@ import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
-import net.mindoth.ancientmagicks.item.effect.alchemy.AlchemyEffectItem;
-import net.mindoth.ancientmagicks.item.effect.callthunder.CallThunderEffectItem;
-import net.mindoth.ancientmagicks.item.effect.createwater.CreateWaterEffectItem;
-import net.mindoth.ancientmagicks.item.effect.destroyliquids.DestroyLiquidsEffectItem;
-import net.mindoth.ancientmagicks.item.effect.mindcontrol.MindControlEffectItem;
-import net.mindoth.ancientmagicks.item.effect.notbreak.BreakEffectItem;
-import net.mindoth.ancientmagicks.item.effect.teleport.TeleportEffectItem;
+import net.mindoth.ancientmagicks.item.effect.AlchemyEffectItem;
+import net.mindoth.ancientmagicks.item.effect.CallThunderEffectItem;
+import net.mindoth.ancientmagicks.item.effect.CreateWaterEffectItem;
+import net.mindoth.ancientmagicks.item.effect.DestroyLiquidsEffectItem;
+import net.mindoth.ancientmagicks.item.effect.MindControlEffectItem;
+import net.mindoth.ancientmagicks.item.effect.BreakEffectItem;
+import net.mindoth.ancientmagicks.item.effect.TeleportEffectItem;
 import net.mindoth.ancientmagicks.item.form.LocationFormItem;
 import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
 import net.mindoth.ancientmagicks.item.form.SelfFormItem;
@@ -186,4 +186,7 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> GRAVITY_MODIFIER_ITEM = ITEMS.register("gravity_modifier",
             () -> new GravityModifierItem(new Item.Properties(), 0, 0));
+
+    public static final RegistryObject<Item> LOCATION_MODIFIER_ITEM = ITEMS.register("location_modifier",
+            () -> new LocationModifierItem(new Item.Properties(), 6, 0));
 }

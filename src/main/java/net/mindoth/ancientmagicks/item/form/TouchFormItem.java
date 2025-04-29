@@ -5,6 +5,7 @@ import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,7 +27,7 @@ public class TouchFormItem extends SpellFormItem {
 
     @Override
     public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack, List<String> data) {
-        Level level = caster.level();
+        HashMap<String, Float> stats = ComponentItem.createDefaultStats();
 
         List<ComponentItem> newList = Lists.newArrayList();
         List<String> newData = Lists.newArrayList();
@@ -43,35 +44,56 @@ public class TouchFormItem extends SpellFormItem {
                 newData.add(data.get(i));
             }
         }
-        HashMap<String, Float> formStats = SpellEffectItem.createSpellStats(formModifiers);
-        float range = formStats.get(REACH);
-        float aoe = formStats.get(AOE);
-
+        HashMap<String, Float> formStats = ComponentItem.createSpellStats(formModifiers);
         List<SpellModifierItem> modifiers = Lists.newArrayList();
-        HashMap<String, Float> stats = SpellEffectItem.createDefaultStats();
         List<Boolean> boolist = Lists.newArrayList();
+        float range = formStats.get(REACH);
         for ( int i = 0; i < newList.size(); i++ ) {
             ComponentItem item = newList.get(i);
             if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
             if ( item instanceof SpellEffectItem effect ) {
-                HitResult hitResult;
-                Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.0F, true, null);
-                if ( target == caster ) hitResult = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range);
-                else hitResult = new EntityHitResult(target, ShadowEvents.getPoint(level, caster, range, 0.0F, false, true, true, false));
-                for ( SpellModifierItem modifier : modifiers ) modifier.addStatsToMap(stats);
-                boolist.add(effect.castSpell(level, owner, caster, hitResult, aoe, stats, newData.get(i)));
+                Level level = caster.level();
+                Vec3 posVec = getTouchPos(level, caster, range);
+                for ( int j = 0; j < modifiers.size(); j++ ) {
+                    modifiers.get(j).addStatsToMap(stats);
+                    SpellModifierItem.EncodeableData ed = modifiers.get(j).addDataFromEncodeable(newData.get(j), level, caster.position());
+                    level = ed.level;
+                    posVec = ed.posVec;
+                }
+                HitResult hitResult = createHitResult(level, posVec, caster, range);
+
+                boolist.add(effect.castSpell(level, owner, caster, hitResult, formStats.get(AOE), stats, newData.get(i)));
                 modifiers = Lists.newArrayList();
-                stats = SpellEffectItem.createDefaultStats();
+                stats = ComponentItem.createDefaultStats();
             }
         }
         for ( boolean bool : boolist ) if ( bool ) return true;
         return false;
     }
 
-    public static BlockHitResult getCasterPOVHitResult(Level pLevel, Entity caster, ClipContext.Fluid pFluidMode, float range) {
+    public Vec3 getTouchPos(Level level, Entity caster, float range) {
+        Vec3 state;
+        Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.0F, true, null);
+        if ( target == caster ) state = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range, caster.getEyePosition()).getLocation();
+        else state = ShadowEvents.getPoint(level, caster, range, 0.0F, false, true, true, false);
+        return state;
+    }
+
+    protected HitResult createHitResult(Level level, Vec3 posVec, Entity caster, float range) {
+        HitResult hitResult;
+        Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.0F, true, null);
+        if ( target == caster ) {
+            BlockHitResult temp = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range, caster.getEyePosition());
+            hitResult = new BlockHitResult(posVec, temp.getDirection(), new BlockPos(Mth.floor(posVec.x), Mth.floor(posVec.y), Mth.floor(posVec.z)), temp.isInside());
+        }
+        else hitResult = new EntityHitResult(target, posVec);
+
+        return hitResult;
+    }
+
+    public static BlockHitResult getCasterPOVHitResult(Level pLevel, Entity caster, ClipContext.Fluid pFluidMode, float range, Vec3 vec3) {
         float f = caster.getXRot();
         float f1 = caster.getYRot();
-        Vec3 vec3 = caster.getEyePosition();
         float f2 = Mth.cos(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
         float f3 = Mth.sin(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
         float f4 = -Mth.cos(-f * ((float)Math.PI / 180F));

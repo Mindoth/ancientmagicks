@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks.registries;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.mobeffect.ChaoticPolymorphEffect;
 import net.mindoth.ancientmagicks.mobeffect.FlightEffect;
-import net.mindoth.ancientmagicks.item.effect.mindcontrol.MindControlEffect;
+import net.mindoth.ancientmagicks.mobeffect.MindControlEffect;
 import net.mindoth.ancientmagicks.mobeffect.PolymorphEffect;
 import net.mindoth.ancientmagicks.mobeffect.SleepEffect;
 import net.mindoth.ancientmagicks.mobeffect.FallControlEffect;
