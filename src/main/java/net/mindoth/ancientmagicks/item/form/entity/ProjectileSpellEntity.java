@@ -29,28 +29,39 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
         super(AncientMagicksEntities.SPELL_PROJECTILE.get(), level, owner, caster);
     }
 
-    private void castMagick(HitResult result) {
+    private void castMagick(HitResult hitResult) {
         HashMap<String, Float> stats = SpellEffectItem.createDefaultStats();
         List<SpellModifierItem> modifiers = Lists.newArrayList();
-        Level defLevel = level();
-        Vec3 defPosVec = result.getLocation();
+        List<String> modifierData = Lists.newArrayList();
         for ( int i = 0; i < getSpellStack().size(); i++ ) {
             ComponentItem item = getSpellStack().get(i);
-            if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
-            if ( item instanceof SpellEffectItem effect ) {
-                Level level = defLevel;
-                Vec3 posVec = defPosVec;
+            if ( item instanceof SpellModifierItem modifier ) {
+                modifiers.add(modifier);
+                modifierData.add(getData().get(i));
+            }
+            else if ( item instanceof SpellEffectItem effect ) {
+                Level level = level();
+                Vec3 posVec = hitResult.getLocation();
+                if ( hitResult instanceof BlockHitResult bRes ) posVec = new Vec3(bRes.getBlockPos().getX(), bRes.getBlockPos().getY(), bRes.getBlockPos().getZ());
                 for ( int j = 0; j < modifiers.size(); j++ ) {
-                    modifiers.get(j).addStatsToMap(stats);
-                    SpellModifierItem.EncodeableData ed = modifiers.get(j).addDataFromEncodeable(getData().get(j), level, posVec);
-                    level = ed.level;
-                    posVec = ed.posVec;
+                    SpellModifierItem modifier = modifiers.get(j);
+                    modifier.addStatsToMap(stats);
+                    if ( modifier.isEncodeable() ) {
+                        SpellModifierItem.EncodeableData ed = modifier.addDataFromEncodeable(modifierData.get(j), level, posVec);
+                        level = ed.level;
+                        posVec = ed.posVec;
+                    }
                 }
-                if ( result instanceof EntityHitResult eRes ) result = new EntityHitResult(eRes.getEntity(), posVec);
-                else if ( result instanceof BlockHitResult bRes ) result = new BlockHitResult(posVec, bRes.getDirection(), new BlockPos(Mth.floor(posVec.x), Mth.floor(posVec.y), Mth.floor(posVec.z)), bRes.isInside());
-                effect.castSpell(level, this.owner, this.caster, result, getAoe(), stats, getData().get(i));
-                modifiers = Lists.newArrayList();
+                if ( hitResult instanceof EntityHitResult eRes ) hitResult = new EntityHitResult(eRes.getEntity(), posVec);
+                else if ( hitResult instanceof BlockHitResult bRes ) {
+                    BlockPos bPos = new BlockPos(Mth.floor(posVec.x), Mth.floor(posVec.y), Mth.floor(posVec.z));
+                    hitResult = new BlockHitResult(posVec, bRes.getDirection(), bPos, bRes.isInside());
+                }
+
+                effect.castSpell(level, this.owner, this.caster, hitResult, getAoe(), stats, getData().get(i));
                 stats = SpellEffectItem.createDefaultStats();
+                modifiers = Lists.newArrayList();
+                modifierData = Lists.newArrayList();
             }
         }
     }

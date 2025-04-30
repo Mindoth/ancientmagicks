@@ -47,26 +47,34 @@ public class SelfFormItem extends SpellFormItem {
             defLevel = ed.level;
             defPosVec = ed.posVec;
         }
+        List<Boolean> boolist = Lists.newArrayList();
         HashMap<String, Float> stats = ComponentItem.createDefaultStats();
         List<SpellModifierItem> modifiers = Lists.newArrayList();
-        List<Boolean> boolist = Lists.newArrayList();
+        List<String> modifierData = Lists.newArrayList();
         for ( int i = 0; i < newList.size(); i++ ) {
             ComponentItem item = newList.get(i);
-            if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
-            if ( item instanceof SpellEffectItem effect ) {
+            if ( item instanceof SpellModifierItem modifier ) {
+                modifiers.add(modifier);
+                modifierData.add(newData.get(i));
+            }
+            else if ( item instanceof SpellEffectItem effect ) {
                 Level level = defLevel;
                 Vec3 posVec = defPosVec;
                 for ( int j = 0; j < modifiers.size(); j++ ) {
-                    modifiers.get(j).addStatsToMap(stats);
-                    SpellModifierItem.EncodeableData ed = modifiers.get(j).addDataFromEncodeable(newData.get(j), level, posVec);
-                    level = ed.level;
-                    posVec = ed.posVec;
+                    SpellModifierItem modifier = modifiers.get(j);
+                    modifier.addStatsToMap(stats);
+                    if ( modifier.isEncodeable() ) {
+                        SpellModifierItem.EncodeableData ed = modifier.addDataFromEncodeable(modifierData.get(j), level, posVec);
+                        level = ed.level;
+                        posVec = ed.posVec;
+                    }
                 }
                 HitResult hitResult = new EntityHitResult(caster, posVec);
 
                 boolist.add(effect.castSpell(level, owner, caster, hitResult, formStats.get(AOE), stats, newData.get(i)));
-                modifiers = Lists.newArrayList();
                 stats = ComponentItem.createDefaultStats();
+                modifiers = Lists.newArrayList();
+                modifierData = Lists.newArrayList();
             }
         }
         for ( boolean bool : boolist ) if ( bool ) return true;

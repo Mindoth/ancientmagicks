@@ -53,26 +53,34 @@ public class TouchFormItem extends SpellFormItem {
             defLevel = ed.level;
             defPosVec = ed.posVec;
         }
+        List<Boolean> boolist = Lists.newArrayList();
         HashMap<String, Float> stats = ComponentItem.createDefaultStats();
         List<SpellModifierItem> modifiers = Lists.newArrayList();
-        List<Boolean> boolist = Lists.newArrayList();
+        List<String> modifierData = Lists.newArrayList();
         for ( int i = 0; i < newList.size(); i++ ) {
             ComponentItem item = newList.get(i);
-            if ( item instanceof SpellModifierItem modifier ) modifiers.add(modifier);
-            if ( item instanceof SpellEffectItem effect ) {
+            if ( item instanceof SpellModifierItem modifier ) {
+                modifiers.add(modifier);
+                modifierData.add(newData.get(i));
+            }
+            else if ( item instanceof SpellEffectItem effect ) {
                 Level level = defLevel;
                 Vec3 posVec = defPosVec;
                 for ( int j = 0; j < modifiers.size(); j++ ) {
-                    modifiers.get(j).addStatsToMap(stats);
-                    SpellModifierItem.EncodeableData ed = modifiers.get(j).addDataFromEncodeable(newData.get(j), level, caster.position());
-                    level = ed.level;
-                    posVec = ed.posVec;
+                    SpellModifierItem modifier = modifiers.get(j);
+                    modifier.addStatsToMap(stats);
+                    if ( modifier.isEncodeable() ) {
+                        SpellModifierItem.EncodeableData ed = modifier.addDataFromEncodeable(modifierData.get(j), level, posVec);
+                        level = ed.level;
+                        posVec = ed.posVec;
+                    }
                 }
                 HitResult hitResult = createHitResult(level, posVec, caster, range);
 
                 boolist.add(effect.castSpell(level, owner, caster, hitResult, formStats.get(AOE), stats, newData.get(i)));
-                modifiers = Lists.newArrayList();
                 stats = ComponentItem.createDefaultStats();
+                modifiers = Lists.newArrayList();
+                modifierData = Lists.newArrayList();
             }
         }
         for ( boolean bool : boolist ) if ( bool ) return true;
@@ -82,7 +90,10 @@ public class TouchFormItem extends SpellFormItem {
     public Vec3 getTouchPos(Level level, Entity caster, float range) {
         Vec3 state;
         Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.0F, true, null);
-        if ( target == caster ) state = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range, caster.getEyePosition()).getLocation();
+        if ( target == caster ) {
+            BlockPos bPos = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range).getBlockPos();
+            state = new Vec3(bPos.getX(), bPos.getY(), bPos.getZ());
+        }
         else state = ShadowEvents.getPoint(level, caster, range, 0.0F, false, true, true, false);
         return state;
     }
@@ -91,7 +102,7 @@ public class TouchFormItem extends SpellFormItem {
         HitResult hitResult;
         Entity target = ShadowEvents.getPointedEntity(level, caster, range, 0.0F, true, null);
         if ( target == caster ) {
-            BlockHitResult temp = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range, caster.getEyePosition());
+            BlockHitResult temp = getCasterPOVHitResult(level, caster, ClipContext.Fluid.SOURCE_ONLY, range);
             hitResult = new BlockHitResult(posVec, temp.getDirection(), new BlockPos(Mth.floor(posVec.x), Mth.floor(posVec.y), Mth.floor(posVec.z)), temp.isInside());
         }
         else hitResult = new EntityHitResult(target, posVec);
@@ -99,9 +110,10 @@ public class TouchFormItem extends SpellFormItem {
         return hitResult;
     }
 
-    public static BlockHitResult getCasterPOVHitResult(Level pLevel, Entity caster, ClipContext.Fluid pFluidMode, float range, Vec3 vec3) {
+    public static BlockHitResult getCasterPOVHitResult(Level pLevel, Entity caster, ClipContext.Fluid pFluidMode, float range) {
         float f = caster.getXRot();
         float f1 = caster.getYRot();
+        Vec3 vec3 = caster.getEyePosition();
         float f2 = Mth.cos(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
         float f3 = Mth.sin(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
         float f4 = -Mth.cos(-f * ((float)Math.PI / 180F));
