@@ -101,6 +101,7 @@ public class SpellEffectItem extends ComponentItem {
     }
 
     public boolean castSpell(Level level, LivingEntity owner, Entity caster, HitResult result, float aoe, HashMap<String, Float> stats, String data) {
+        if ( owner == null || caster == null ) return false;
         boolean state = false;
         Vec3 center = result.getLocation();
         if ( this instanceof EntityTargetEffect ) {
@@ -153,69 +154,11 @@ public class SpellEffectItem extends ComponentItem {
         return blocks;
     }
 
-    public static void attackEntity(LivingEntity owner, Entity target, Entity source, float amount) {
-        if ( target instanceof LivingEntity ) target.hurt(target.damageSources().indirectMagic(source, owner), amount);
-    }
-
-    public static void attackEntityWithoutKnockback(LivingEntity owner, Entity caster, Entity target, float amount) {
-        final double vx = target.getDeltaMovement().x;
-        final double vy = target.getDeltaMovement().y;
-        final double vz = target.getDeltaMovement().z;
-        target.hurt(target.damageSources().indirectMagic(caster, owner), amount);
-        target.setDeltaMovement(vx, vy, vz);
-        target.hurtMarked = true;
-    }
-
-    public static boolean isPushable(Entity entity) {
-        return ( entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof PrimedTnt || entity instanceof FallingBlockEntity );
-    }
-
-    public static boolean allyFilter(Entity owner, Entity target, boolean isHarmful) {
-        return target instanceof LivingEntity && !(target instanceof ArmorStand)
-                //&& (owner != target || !isHarmful)
-                && (AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get()
-                || ((SpellEffectItem.isAlly(owner, target) && !isHarmful) || (!SpellEffectItem.isAlly(owner, target) && isHarmful)));
-    }
-
-    public boolean mobTypeFilter(Entity target) {
-        return true;
-    }
-
-    public static boolean isAlly(Entity owner, Entity target) {
-        boolean flag = false;
-        if ( owner != null && target != null ) {
-            if ( target == owner ) flag = true;
-            if ( owner.isAlliedTo(target) ) flag = true;
-            if ( owner instanceof LivingEntity livingOwner ) {
-                if ( target instanceof LivingEntity livingTarget && !(livingOwner.canAttack(livingTarget)) ) flag = true;
-                if ( target instanceof TamableAnimal pet && pet.isOwnedBy(livingOwner) ) flag = true;
-                if ( target instanceof Mob mob && isMinionsSummoner(livingOwner, mob) ) flag = true;
-            }
-        }
-        return flag;
-    }
-
-    public static boolean isMinionsOwner(LivingEntity owner, Mob mob) {
-        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
-                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner;
-    }
-
-    public static boolean isMinionsSummoner(LivingEntity owner, Mob mob) {
-        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
-                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner
-                && mob.getPersistentData().getBoolean(MindControlEffect.NBT_KEY_SUMMON);
-    }
-
-    public static boolean hasLineOfSight(Entity start, Entity target) {
-        Vec3 vec3 = new Vec3(start.getX(), start.getEyeY(), start.getZ());
-        Vec3 vec31 = new Vec3(target.getX(), target.getEyeY(), target.getZ());
-        return start.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, start)).getType() == HitResult.Type.MISS;
-    }
-
     protected int getRenderType() {
         return 1;
     }
 
+    //TODO: fix rigid aoe particles, maybe idk
     private void aoeEntitySpellParticles(Level level, HitResult result, Vec3 oldCenter, float range, HashMap<String, Float> stats) {
         BlockPos pos = new BlockPos(Mth.floor(oldCenter.x), Mth.floor(oldCenter.y), Mth.floor(oldCenter.z));
         if ( result instanceof BlockHitResult blockHitResult ) pos = getPosOfFace(blockHitResult.getBlockPos(), blockHitResult.getDirection());
@@ -249,14 +192,13 @@ public class SpellEffectItem extends ComponentItem {
         addAoeParticles(level, particleBox, 0.15F, 8, 0.0D, stats);
     }
 
-    protected void addAoeParticles(Level level, AABB box, float size, int age, double lift, HashMap<String, Float> stats) {
+    protected void addAoeParticles(Level level, AABB box, float size, int age, double vecY, HashMap<String, Float> stats) {
         Vec3 center = box.getCenter();
         double maxX = box.maxX;
         double minX = box.minX;
         double maxZ = box.maxZ;
         double minZ = box.minZ;
         double vecX = 0;
-        double vecY = lift;
         double vecZ = 0;
         int amount = 4 * (int)box.getYsize();
         for ( int i = 0; i < amount; i++ ) {
@@ -342,6 +284,65 @@ public class SpellEffectItem extends ComponentItem {
             AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
+    }
+
+    public static boolean allyFilter(Entity owner, Entity target, boolean isHarmful) {
+        return target instanceof LivingEntity && !(target instanceof ArmorStand)
+                //&& (owner != target || !isHarmful)
+                && (AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get()
+                || ((SpellEffectItem.isAlly(owner, target) && !isHarmful) || (!SpellEffectItem.isAlly(owner, target) && isHarmful)));
+    }
+
+    public boolean mobTypeFilter(Entity target) {
+        return true;
+    }
+
+    public static boolean isAlly(Entity owner, Entity target) {
+        boolean flag = false;
+        if ( owner != null && target != null ) {
+            if ( target == owner ) flag = true;
+            if ( owner.isAlliedTo(target) ) flag = true;
+            if ( owner instanceof LivingEntity livingOwner ) {
+                if ( target instanceof LivingEntity livingTarget && !(livingOwner.canAttack(livingTarget)) ) flag = true;
+                if ( target instanceof TamableAnimal pet && pet.isOwnedBy(livingOwner) ) flag = true;
+                if ( target instanceof Mob mob && isMinionsSummoner(livingOwner, mob) ) flag = true;
+            }
+        }
+        return flag;
+    }
+
+    public static boolean isMinionsOwner(LivingEntity owner, Mob mob) {
+        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
+                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner;
+    }
+
+    public static boolean isMinionsSummoner(LivingEntity owner, Mob mob) {
+        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
+                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner
+                && mob.getPersistentData().getBoolean(MindControlEffect.NBT_KEY_SUMMON);
+    }
+
+    public static boolean hasLineOfSight(Entity start, Entity target) {
+        Vec3 vec3 = new Vec3(start.getX(), start.getEyeY(), start.getZ());
+        Vec3 vec31 = new Vec3(target.getX(), target.getEyeY(), target.getZ());
+        return start.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, start)).getType() == HitResult.Type.MISS;
+    }
+
+    public static void attackEntity(LivingEntity owner, Entity target, Entity source, float amount) {
+        if ( target instanceof LivingEntity ) target.hurt(target.damageSources().indirectMagic(source, owner), amount);
+    }
+
+    public static void attackEntityWithoutKnockback(LivingEntity owner, Entity caster, Entity target, float amount) {
+        final double vx = target.getDeltaMovement().x;
+        final double vy = target.getDeltaMovement().y;
+        final double vz = target.getDeltaMovement().z;
+        target.hurt(target.damageSources().indirectMagic(caster, owner), amount);
+        target.setDeltaMovement(vx, vy, vz);
+        target.hurtMarked = true;
+    }
+
+    public static boolean isPushable(Entity entity) {
+        return ( entity instanceof LivingEntity || entity instanceof ItemEntity || entity instanceof PrimedTnt || entity instanceof FallingBlockEntity );
     }
 
     protected void playSound(Level level, Vec3 center) {

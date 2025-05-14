@@ -64,6 +64,8 @@
   "tooltip.ancientmagicks.mind_control_effect": "Temporarily turns the target into an ally",
   "item.ancientmagicks.alchemy_effect": "Alchemy Effect",
   "tooltip.ancientmagicks.alchemy_effect": "Craft together with a potion to apply its effects on the target",
+  "item.ancientmagicks.telebring_effect": "Telebring Effect",
+  "tooltip.ancientmagicks.telebring_effect": "Teleports the target to the location of the spell's caster",
 
   "item.ancientmagicks.amplify_modifier": "Amplify Modifier",
   "tooltip.ancientmagicks.amplify_modifier": "Increases the power of an effect",

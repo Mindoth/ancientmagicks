@@ -131,24 +131,27 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> MIND_CONTROL_EFFECT_ITEM = ITEMS.register("mind_control_effect",
             () -> new MindControlEffectItem(new Item.Properties(), 1, 0));
 
+    public static final RegistryObject<Item> TELEBRING_EFFECT_ITEM = ITEMS.register("telebring_effect",
+            () -> new TelebringEffectItem(new Item.Properties(), 1, 0));
+
     //Modifiers
     public static final RegistryObject<Item> AMPLIFY_MODIFIER_ITEM = ITEMS.register("amplify_modifier",
-            () -> new AmplifyModifierItem(new Item.Properties(), 4, 0));
+            () -> new AmplifyModifierItem(new Item.Properties(), 1, 0));
 
     public static final RegistryObject<Item> DAMPEN_MODIFIER_ITEM = ITEMS.register("dampen_modifier",
-            () -> new DampenModifierItem(new Item.Properties(), 0, 0));
+            () -> new DampenModifierItem(new Item.Properties(), 1, 0));
 
     public static final RegistryObject<Item> EXPAND_MODIFIER_ITEM = ITEMS.register("expand_modifier",
-            () -> new ExpandModifierItem(new Item.Properties(), 9, 0));
+            () -> new ExpandModifierItem(new Item.Properties(), 1, 0));
 
     public static final RegistryObject<Item> SHRINK_MODIFIER_ITEM = ITEMS.register("shrink_modifier",
-            () -> new ShrinkModifierItem(new Item.Properties(), 0, 0));
+            () -> new ShrinkModifierItem(new Item.Properties(), 1, 0));
 
     public static final RegistryObject<Item> REACH_MODIFIER_ITEM = ITEMS.register("reach_modifier",
             () -> new ReachModifierItem(new Item.Properties(), 1, 0));
 
     public static final RegistryObject<Item> CONTRACT_MODIFIER_ITEM = ITEMS.register("contract_modifier",
-            () -> new ContractModifierItem(new Item.Properties(), 0, 0));
+            () -> new ContractModifierItem(new Item.Properties(), 1, 0));
 
     public static final RegistryObject<Item> QUICKEN_MODIFIER_ITEM = ITEMS.register("quicken_modifier",
             () -> new QuickenModifierItem(new Item.Properties(), 1, 0));
@@ -163,20 +166,20 @@ public class AncientMagicksItems {
             () -> new DiminishModifierItem(new Item.Properties(), 1, 0));
 
     public static final RegistryObject<Item> ENTITY_PIERCE_MODIFIER_ITEM = ITEMS.register("entity_pierce_modifier",
-            () -> new EntityPierceModifierItem(new Item.Properties(), 4, 0));
+            () -> new EntityPierceModifierItem(new Item.Properties(), 1, 0));
 
     public static final RegistryObject<Item> BLOCK_PIERCE_MODIFIER_ITEM = ITEMS.register("block_pierce_modifier",
-            () -> new BlockPierceModifierItem(new Item.Properties(), 4, 0));
+            () -> new BlockPierceModifierItem(new Item.Properties(), 1, 0));
 
     public static final RegistryObject<Item> BOUNCING_MODIFIER_ITEM = ITEMS.register("bounce_modifier",
             () -> new BouncingModifierItem(new Item.Properties(), 1, 0));
 
     public static final RegistryObject<Item> HOMING_MODIFIER_ITEM = ITEMS.register("homing_modifier",
-            () -> new HomingModifierItem(new Item.Properties(), 6, 0));
+            () -> new HomingModifierItem(new Item.Properties(), 1, 0));
 
     public static final RegistryObject<Item> GRAVITY_MODIFIER_ITEM = ITEMS.register("gravity_modifier",
-            () -> new GravityModifierItem(new Item.Properties(), 0, 0));
+            () -> new GravityModifierItem(new Item.Properties(), 1, 0));
 
     public static final RegistryObject<Item> LOCATION_MODIFIER_ITEM = ITEMS.register("location_modifier",
-            () -> new LocationModifierItem(new Item.Properties(), 6, 0));
+            () -> new LocationModifierItem(new Item.Properties(), 1, 0));
 }

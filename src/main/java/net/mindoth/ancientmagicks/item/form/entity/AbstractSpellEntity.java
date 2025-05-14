@@ -225,8 +225,9 @@ public abstract class AbstractSpellEntity extends Projectile {
             if ( this.target instanceof EnderDragon || this.target instanceof EnderDragonPart ) targetPos = new Vec3(targetPos.x, this.target.getY(), targetPos.z);
             Vec3 lookVec = targetPos.subtract(position()).normalize();
             Vec3 spellMotion = new Vec3(getDeltaMovement().x(), getDeltaMovement().y(), getDeltaMovement().z());
-            float arc = 0.1F;
-            if ( position().distanceTo(this.target.position()) < 2.0D ) arc = 1.0F;
+            //float arc = 0.1F;
+            //if ( position().distanceTo(this.target.position()) < 2.0D ) arc = 1.0F;
+            float arc = 0.5F;
             Vec3 lerpVec = new Vec3(Mth.lerp(arc, spellMotion.x, lookVec.x), Mth.lerp(arc, spellMotion.y, lookVec.y), Mth.lerp(arc, spellMotion.z, lookVec.z));
             shoot(lerpVec.x, lerpVec.y, lerpVec.z, getSpeed() * 0.75F, 0);
             if ( this.ignoredEntities.containsKey(this.target.getId()) ) this.target = null;
