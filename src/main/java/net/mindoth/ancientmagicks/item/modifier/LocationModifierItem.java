@@ -8,8 +8,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +19,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.List;
 
 public class LocationModifierItem extends SpellModifierItem {
@@ -62,15 +59,12 @@ public class LocationModifierItem extends SpellModifierItem {
         if ( !level.isClientSide ) {
             ItemStack stack = player.getItemInHand(handIn);
             CompoundTag tag = stack.getOrCreateTag();
-            if ( player.isCrouching() ) tag.remove(ComponentItem.NBT_KEY_COMPONENT_DATA);
-            else {
-                StringBuilder stringBuilder = new StringBuilder();
-                String xPos = String.valueOf(player.position().x);
-                String yPos = String.valueOf(player.position().y);
-                String zPos = String.valueOf(player.position().z);
-                stringBuilder.append(player.level().dimension().registry()).append(" ").append(player.level().dimension().location()).append(" ").append(xPos).append(" ").append(yPos).append(" ").append(zPos);
-                tag.putString(ComponentItem.NBT_KEY_COMPONENT_DATA, stringBuilder.toString());
-            }
+            StringBuilder stringBuilder = new StringBuilder();
+            String xPos = String.valueOf(player.position().x);
+            String yPos = String.valueOf(player.position().y);
+            String zPos = String.valueOf(player.position().z);
+            stringBuilder.append(player.level().dimension().registry()).append(" ").append(player.level().dimension().location()).append(" ").append(xPos).append(" ").append(yPos).append(" ").append(zPos);
+            tag.putString(ComponentItem.NBT_KEY_COMPONENT_DATA, stringBuilder.toString());
         }
         return result;
     }

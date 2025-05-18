@@ -125,14 +125,14 @@ public class AncientMagicksItems {
     public static final RegistryObject<Item> TELEPORT_EFFECT_ITEM = ITEMS.register("teleport_effect",
             () -> new TeleportEffectItem(new Item.Properties(), 1, 0));
 
+    public static final RegistryObject<Item> TELEBRING_EFFECT_ITEM = ITEMS.register("telebring_effect",
+            () -> new TelebringEffectItem(new Item.Properties(), 1, 0));
+
     public static final RegistryObject<Item> ALCHEMY_EFFECT_ITEM = ITEMS.register("alchemy_effect",
             () -> new AlchemyEffectItem(new Item.Properties(), 1, 0));
 
     public static final RegistryObject<Item> MIND_CONTROL_EFFECT_ITEM = ITEMS.register("mind_control_effect",
             () -> new MindControlEffectItem(new Item.Properties(), 1, 0));
-
-    public static final RegistryObject<Item> TELEBRING_EFFECT_ITEM = ITEMS.register("telebring_effect",
-            () -> new TelebringEffectItem(new Item.Properties(), 1, 0));
 
     //Modifiers
     public static final RegistryObject<Item> AMPLIFY_MODIFIER_ITEM = ITEMS.register("amplify_modifier",

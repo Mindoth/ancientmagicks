@@ -83,11 +83,6 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
-        return new ItemStack(AncientMagicksItems.ARCANE_DUST.get());
-    }
-
-    @Override
     public RecipeSerializer<?> getSerializer() {
         return AncientMagicksRecipes.ALCHEMY_EFFECT_ITEM_RECIPE.get();
     }

@@ -48,7 +48,7 @@
   "item.ancientmagicks.touch_form": "Touch Form",
   "tooltip.ancientmagicks.touch_form": "Casts the spell on the aimed target within range",
   "item.ancientmagicks.self_form": "Self Form",
-  "tooltip.ancientmagicks.self_form": "Casts the spell on the caster themselves",
+  "tooltip.ancientmagicks.self_form": "Casts the spell on the caster themself",
 
   "item.ancientmagicks.break_effect": "Break Effect",
   "tooltip.ancientmagicks.break_effect": "Breaks a block",
@@ -65,7 +65,7 @@
   "item.ancientmagicks.alchemy_effect": "Alchemy Effect",
   "tooltip.ancientmagicks.alchemy_effect": "Craft together with a potion to apply its effects on the target",
   "item.ancientmagicks.telebring_effect": "Telebring Effect",
-  "tooltip.ancientmagicks.telebring_effect": "Teleports the target to the location of the spell's caster",
+  "tooltip.ancientmagicks.telebring_effect": "Teleports the target to the location of the caster",
 
   "item.ancientmagicks.amplify_modifier": "Amplify Modifier",
   "tooltip.ancientmagicks.amplify_modifier": "Increases the power of an effect",
@@ -98,7 +98,7 @@
   "item.ancientmagicks.diminish_modifier": "Diminish Modifier",
   "tooltip.ancientmagicks.diminish_modifier": "Decreases the lifetime of an effect or a projectile",
   "item.ancientmagicks.location_modifier": "Location Modifier",
-  "tooltip.ancientmagicks.location_modifier": "Hold and use to set a location for an effect to resolve at",
+  "tooltip.ancientmagicks.location_modifier": "Hold and use to set a location for the spell to resolve at",
 
 
   "effect.ancientmagicks.mind_control": "Mind Controlled",
