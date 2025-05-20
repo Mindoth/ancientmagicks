@@ -24,6 +24,8 @@ import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -100,49 +102,6 @@ public class SpellEffectItem extends ComponentItem {
         return true;
     }
 
-    public boolean castSpell(Level level, LivingEntity owner, Entity caster, HitResult result, float aoe, HashMap<String, Float> stats, String data) {
-        if ( owner == null || caster == null ) return false;
-        boolean state = false;
-        Vec3 center = result.getLocation();
-        if ( this instanceof EntityTargetEffect ) {
-            if ( aoe > 0.0F ) {
-                aoe *= 2;
-                Vec3 start = new Vec3(center.x + aoe, center.y + aoe, center.z + aoe);
-                Vec3 end = new Vec3(center.x - aoe, center.y - aoe, center.z - aoe);
-                AABB box = new AABB(start, end);
-                List<Entity> entities = level.getEntitiesOfClass(Entity.class, box);
-                for ( Entity entity : entities ) {
-                    EntityHitResult newResult = new EntityHitResult(entity);
-                    if ( canApply(level, owner, caster, newResult, data) ) doSpell(level, owner, caster, newResult, stats, data);
-                }
-                state = true;
-                aoeEntitySpellParticles(level, result, center, aoe, stats);
-            }
-            else if ( canApply(level, owner, caster, result, data) ) state = doSpell(level, owner, caster, result, stats, data);
-        }
-        else if ( this instanceof BlockTargetEffect ) {
-            if ( aoe > 0.0F ) {
-                List<BlockPos> blocks;
-                boolean isInside = false;
-                if ( result instanceof EntityHitResult entityHitResult ) blocks = getBlockList(entityHitResult.getEntity().getOnPos(), (int)aoe);
-                else {
-                    BlockHitResult blockHitResult = (BlockHitResult)result;
-                    blocks = getBlockList(blockHitResult.getBlockPos(), (int)aoe);
-                    isInside = blockHitResult.isInside();
-                }
-                for ( BlockPos position : blocks ) {
-                    BlockHitResult newResult = new BlockHitResult(position.getCenter(), Direction.UP, position, isInside);
-                    if ( canApply(level, owner, caster, newResult, data) ) doSpell(level, owner, caster, newResult, stats, data);
-                }
-                state = true;
-                for ( int i = -(int)aoe; i <= aoe; i++ ) aoeBlockSpellParticles(level, center, aoe, i, stats);
-            }
-            else if ( canApply(level, owner, caster, result, data) ) state = doSpell(level, owner, caster, result, stats, data);
-        }
-        else if ( canApply(level, owner, caster, result, data) ) state = doSpell(level, owner, caster, result, stats, data);
-        return state;
-    }
-
     private static @NotNull List<BlockPos> getBlockList(BlockPos pos, int range) {
         List<BlockPos> blocks = Lists.newArrayList();
         for ( int xPos = pos.getX() - range; xPos <= pos.getX() + range; xPos++ )
@@ -152,26 +111,6 @@ public class SpellEffectItem extends ComponentItem {
                 }
         if ( !blocks.contains(pos) ) blocks.add(pos);
         return blocks;
-    }
-
-    protected int getRenderType() {
-        return 1;
-    }
-
-    //TODO: fix rigid aoe particles, maybe idk
-    private void aoeEntitySpellParticles(Level level, HitResult result, Vec3 oldCenter, float range, HashMap<String, Float> stats) {
-        BlockPos pos = new BlockPos(Mth.floor(oldCenter.x), Mth.floor(oldCenter.y), Mth.floor(oldCenter.z));
-        if ( result instanceof BlockHitResult blockHitResult ) pos = getPosOfFace(blockHitResult.getBlockPos(), blockHitResult.getDirection());
-        Vec3 center = oldCenter;
-        for ( int i = pos.getY(); i >= Mth.floor(oldCenter.y - range); i-- ) {
-            BlockPos tempPos = new BlockPos(pos.getX(), i, pos.getZ());
-            if ( level.getBlockState(tempPos).isSolid() ) break;
-            else center = new Vec3(oldCenter.x, i, oldCenter.z);
-        }
-        Vec3 particleStart = new Vec3(center.x + range, center.y + range, center.z + range);
-        Vec3 particleEnd = new Vec3(center.x - range, center.y - range, center.z - range);
-        AABB particleBox = new AABB(particleStart, particleEnd);
-        addAoeParticles(level, particleBox, 0.15F, 8, 0.15D, stats);
     }
 
     private static BlockPos getPosOfFace(BlockPos blockPos, Direction face) {
@@ -185,11 +124,69 @@ public class SpellEffectItem extends ComponentItem {
         };
     }
 
-    private void aoeBlockSpellParticles(Level level, Vec3 center, float range, int addition, HashMap<String, Float> stats) {
-        Vec3 start = new Vec3(Mth.ceil(center.x + range), Mth.ceil(center.y + range + addition), Mth.ceil(center.z + range));
-        Vec3 end = new Vec3(Mth.floor(center.x - range), Mth.floor(center.y - range + addition), Mth.floor(center.z - range));
-        AABB particleBox = new AABB(start, end);
-        addAoeParticles(level, particleBox, 0.15F, 8, 0.0D, stats);
+    //TODO: aoe particles
+    public boolean castSpell(Level level, LivingEntity owner, Entity caster, HitResult result, float aoe, HashMap<String, Float> stats, String data) {
+        if ( owner == null || caster == null ) return false;
+        boolean state = false;
+        Vec3 center = result.getLocation();
+        if ( aoe > 0.0F ) {
+            Vec3 start = new Vec3(center.x + aoe, center.y + aoe, center.z + aoe);
+            Vec3 end = new Vec3(center.x - aoe, center.y - aoe, center.z - aoe);
+            AABB box = new AABB(start, end);
+            if ( this instanceof EntityTargetEffect ) {
+                List<Entity> entities = level.getEntitiesOfClass(Entity.class, box);
+                for ( Entity entity : entities ) {
+                    EntityHitResult newResult = new EntityHitResult(entity);
+                    if ( canApply(level, owner, caster, newResult, data) ) doSpell(level, owner, caster, newResult, stats, data);
+                }
+                state = true;
+                aoeEntitySpellParticles(level, box, result, aoe, stats);
+            }
+            else if ( this instanceof BlockTargetEffect ) {
+                //Vec3 newCenter = new Vec3(Mth.floor(box.getCenter().x), Mth.floor(box.getCenter().y), Mth.floor(box.getCenter().z));
+                //box = box.move(box.getCenter().x - newCenter.x, box.getCenter().y - newCenter.y, box.getCenter().z - newCenter.z);
+                List<BlockPos> blocks;
+                boolean isInside = false;
+                if ( result instanceof EntityHitResult entityHitResult ) blocks = getBlockList(entityHitResult.getEntity().getOnPos().above(), (int)aoe);
+                else {
+                    BlockHitResult blockHitResult = (BlockHitResult)result;
+                    blocks = getBlockList(blockHitResult.getBlockPos(), (int)aoe);
+                    isInside = blockHitResult.isInside();
+                }
+                for ( BlockPos position : blocks ) {
+                    BlockHitResult newResult = new BlockHitResult(position.getCenter(), Direction.UP, position, isInside);
+                    if ( canApply(level, owner, caster, newResult, data) ) doSpell(level, owner, caster, newResult, stats, data);
+                }
+                state = true;
+                aoeBlockSpellParticles(level, blocks, aoe, stats);
+            }
+            else if ( canApply(level, owner, caster, result, data) ) state = doSpell(level, owner, caster, result, stats, data);
+        }
+        else if ( canApply(level, owner, caster, result, data) ) state = doSpell(level, owner, caster, result, stats, data);
+        return state;
+    }
+
+    private void aoeEntitySpellParticles(Level level, AABB box, HitResult result, float range, HashMap<String, Float> stats) {
+        Vec3 center = box.getCenter();
+        BlockPos pos = new BlockPos(Mth.floor(center.x), Mth.floor(center.y), Mth.floor(center.z));
+        if ( result instanceof BlockHitResult blockHitResult ) pos = getPosOfFace(blockHitResult.getBlockPos(), blockHitResult.getDirection());
+        double tempY = center.y;
+        for ( int i = pos.getY(); i >= Mth.floor(center.y - range); i-- ) {
+            BlockPos tempPos = new BlockPos(pos.getX(), i, pos.getZ());
+            if ( level.getBlockState(tempPos).isSolid() ) break;
+            else tempY = i;
+        }
+        box = box.move(0, -(center.y - tempY), 0);
+        addAoeParticles(level, box, 0.15F, 8, 0.15D, stats);
+    }
+
+    private void aoeBlockSpellParticles(Level level, List<BlockPos> blocks, float aoe, HashMap<String, Float> stats) {
+        for ( int i = -(int)aoe; i <= aoe; i++ ) {
+            BlockPos start = new BlockPos(blocks.get(0).getX(), blocks.get(0).getY(), blocks.get(0).getZ());
+            BlockPos end = new BlockPos(blocks.get(blocks.size() - 1).getX() + 1, blocks.get(blocks.size() - 1).getY() + 1, blocks.get(blocks.size() - 1).getZ() + 1);
+            AABB particleBox = new AABB(start, end).move(0, i, 0);
+            addAoeParticles(level, particleBox, 0.15F, 8, 0.0D, stats);
+        }
     }
 
     protected void addAoeParticles(Level level, AABB box, float size, int age, double vecY, HashMap<String, Float> stats) {
@@ -237,6 +234,10 @@ public class SpellEffectItem extends ComponentItem {
             AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
         }
+    }
+
+    protected int getRenderType() {
+        return 1;
     }
 
     protected void addEnchantParticles(Entity target, float size, int age, HashMap<String, Float> stats) {

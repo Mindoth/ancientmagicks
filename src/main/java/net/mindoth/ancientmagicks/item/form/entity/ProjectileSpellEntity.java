@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item.form.entity;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.effect.BlockTargetEffect;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
@@ -42,7 +43,9 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
             else if ( item instanceof SpellEffectItem effect ) {
                 Level level = level();
                 Vec3 posVec = hitResult.getLocation();
-                if ( hitResult instanceof BlockHitResult bRes ) posVec = new Vec3(bRes.getBlockPos().getX(), bRes.getBlockPos().getY(), bRes.getBlockPos().getZ());
+                if ( hitResult instanceof BlockHitResult bRes && effect instanceof BlockTargetEffect ) {
+                    posVec = new Vec3(bRes.getBlockPos().getX(), bRes.getBlockPos().getY(), bRes.getBlockPos().getZ());
+                }
                 for ( int j = 0; j < modifiers.size(); j++ ) {
                     SpellModifierItem modifier = modifiers.get(j);
                     modifier.addStatsToMap(stats);

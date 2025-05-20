@@ -2,6 +2,7 @@ package net.mindoth.ancientmagicks.item.form;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.effect.BlockTargetEffect;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
@@ -46,7 +47,7 @@ public class TouchFormItem extends SpellFormItem {
         Level defLevel = caster.level();
         for ( SpellModifierItem modifier : formModifiers ) modifier.addStatsToMap(formStats);
         float range = formStats.get(REACH);
-        Vec3 defPosVec = getTouchPos(defLevel, caster, range);
+        Vec3 defPosVec = ShadowEvents.getPoint(defLevel, caster, range, 0.0F, false, true, true, false);
         for ( int i = 0; i < formModifiers.size(); i++ ) {
             SpellModifierItem modifier = formModifiers.get(i);
             SpellModifierItem.EncodeableData ed = modifier.addDataFromEncodeable(data.get(i), defLevel, defPosVec);
@@ -65,7 +66,9 @@ public class TouchFormItem extends SpellFormItem {
             }
             else if ( item instanceof SpellEffectItem effect ) {
                 Level level = defLevel;
-                Vec3 posVec = defPosVec;
+                Vec3 posVec;
+                if ( effect instanceof BlockTargetEffect ) posVec = getTouchPos(defLevel, caster, range);
+                else posVec = defPosVec;
                 for ( int j = 0; j < modifiers.size(); j++ ) {
                     SpellModifierItem modifier = modifiers.get(j);
                     modifier.addStatsToMap(stats);
