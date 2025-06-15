@@ -27,7 +27,7 @@ public class ContractModifierItem extends SpellModifierItem {
     @Override
     public List<ComponentItem> exclusiveWith() {
         List<ComponentItem> list = Lists.newArrayList();
-        list.add((ComponentItem) AncientMagicksItems.TOUCH_FORM_ITEM.get());
+        list.add((ComponentItem) AncientMagicksItems.TOUCH_SIGIL_ITEM.get());
         return list;
     }
 

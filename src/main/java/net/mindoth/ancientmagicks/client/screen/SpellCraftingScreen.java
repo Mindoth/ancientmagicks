@@ -5,8 +5,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.client.menu.ComponentSlot;
 import net.mindoth.ancientmagicks.client.menu.SpellCraftingMenu;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
-import net.mindoth.ancientmagicks.network.PacketEditColorCode;
 import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -112,12 +110,12 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         if ( !this.menu.isReadyToCraft() ) return;
         int index = runeButtonList.indexOf(button);
         Item rune = this.menu.colorCode.get(index);
-        if ( rune == AncientMagicksItems.BLANK_RUNE.get() ) rune = AncientMagicksItems.WHITE_RUNE.get();
-        else if ( rune == AncientMagicksItems.WHITE_RUNE.get() ) rune = AncientMagicksItems.BLUE_RUNE.get();
-        else if ( rune == AncientMagicksItems.BLUE_RUNE.get() ) rune = AncientMagicksItems.GREEN_RUNE.get();
-        else if ( rune == AncientMagicksItems.GREEN_RUNE.get() ) rune = AncientMagicksItems.PURPLE_RUNE.get();
-        else if ( rune == AncientMagicksItems.PURPLE_RUNE.get() ) rune = AncientMagicksItems.RED_RUNE.get();
-        else if ( rune == AncientMagicksItems.RED_RUNE.get() ) rune = AncientMagicksItems.YELLOW_RUNE.get();
+        if ( rune == AncientMagicksItems.BLANK_RUNE.get() ) rune = AncientMagicksItems.BLUE_RUNE.get();
+        else if ( rune == AncientMagicksItems.BLUE_RUNE.get() ) rune = AncientMagicksItems.PURPLE_RUNE.get();
+        else if ( rune == AncientMagicksItems.PURPLE_RUNE.get() ) rune = AncientMagicksItems.YELLOW_RUNE.get();
+        else if ( rune == AncientMagicksItems.YELLOW_RUNE.get() ) rune = AncientMagicksItems.GREEN_RUNE.get();
+        else if ( rune == AncientMagicksItems.GREEN_RUNE.get() ) rune = AncientMagicksItems.BLACK_RUNE.get();
+        else if ( rune == AncientMagicksItems.BLACK_RUNE.get() ) rune = AncientMagicksItems.WHITE_RUNE.get();
         else rune = AncientMagicksItems.BLANK_RUNE.get();
         this.menu.editColorCode(index, rune);
     }

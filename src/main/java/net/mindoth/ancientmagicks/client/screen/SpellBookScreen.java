@@ -181,12 +181,12 @@ public class SpellBookScreen extends AncientMagicksScreen {
     }
 
     private void changeRune(Button button, Item rune) {
-        if ( rune == AncientMagicksItems.BLANK_RUNE.get() ) rune = AncientMagicksItems.WHITE_RUNE.get();
-        else if ( rune == AncientMagicksItems.WHITE_RUNE.get() ) rune = AncientMagicksItems.BLUE_RUNE.get();
-        else if ( rune == AncientMagicksItems.BLUE_RUNE.get() ) rune = AncientMagicksItems.GREEN_RUNE.get();
-        else if ( rune == AncientMagicksItems.GREEN_RUNE.get() ) rune = AncientMagicksItems.PURPLE_RUNE.get();
-        else if ( rune == AncientMagicksItems.PURPLE_RUNE.get() ) rune = AncientMagicksItems.RED_RUNE.get();
-        else if ( rune == AncientMagicksItems.RED_RUNE.get() ) rune = AncientMagicksItems.YELLOW_RUNE.get();
+        if ( rune == AncientMagicksItems.BLANK_RUNE.get() ) rune = AncientMagicksItems.BLUE_RUNE.get();
+        else if ( rune == AncientMagicksItems.BLUE_RUNE.get() ) rune = AncientMagicksItems.PURPLE_RUNE.get();
+        else if ( rune == AncientMagicksItems.PURPLE_RUNE.get() ) rune = AncientMagicksItems.YELLOW_RUNE.get();
+        else if ( rune == AncientMagicksItems.YELLOW_RUNE.get() ) rune = AncientMagicksItems.GREEN_RUNE.get();
+        else if ( rune == AncientMagicksItems.GREEN_RUNE.get() ) rune = AncientMagicksItems.BLACK_RUNE.get();
+        else if ( rune == AncientMagicksItems.BLACK_RUNE.get() ) rune = AncientMagicksItems.WHITE_RUNE.get();
         else rune = AncientMagicksItems.BLANK_RUNE.get();
 
         final int index = this.itemList.indexOf(getStackFromSlot(button));

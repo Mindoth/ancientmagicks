@@ -26,7 +26,7 @@ public class GravityModifierItem extends SpellModifierItem {
     @Override
     public List<ComponentItem> exclusiveWith() {
         List<ComponentItem> list = Lists.newArrayList();
-        list.add((ComponentItem) AncientMagicksItems.PROJECTILE_FORM_ITEM.get());
+        list.add((ComponentItem) AncientMagicksItems.PROJECTILE_SIGIL_ITEM.get());
         return list;
     }
 

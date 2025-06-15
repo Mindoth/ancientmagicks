@@ -165,7 +165,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
         if ( level().isClientSide ) doClientHitEffects();
-        else {
+        else if ( getEntityPierce() <= 0 ) {
             if ( result.getEntity() instanceof LivingEntity living ) {
                 if ( !this.ignoredEntities.containsKey(living.getId()) ) {
                     doMobEffects(result);
@@ -181,7 +181,7 @@ public abstract class AbstractSpellEntity extends Projectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if ( level().isClientSide ) doClientHitEffects();
-        else {
+        else if ( getBlockPierce() <= 0 ) {
             BlockState blockState = level().getBlockState(result.getBlockPos());
             if ( !this.ignoredBlocks.containsKey(result.getBlockPos()) ) {
                 doBlockEffects(result);

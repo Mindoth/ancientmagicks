@@ -56,9 +56,9 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         this.selectedItem = -1;
         this.book = book;
         this.ColorRunes = List.of(
-                new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()), new ItemStack(AncientMagicksItems.RED_RUNE.get()),
-                new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()), new ItemStack(AncientMagicksItems.WHITE_RUNE.get()),
-                new ItemStack(AncientMagicksItems.BLUE_RUNE.get()), new ItemStack(AncientMagicksItems.GREEN_RUNE.get()));
+                new ItemStack(AncientMagicksItems.GREEN_RUNE.get()), new ItemStack(AncientMagicksItems.BLACK_RUNE.get()),
+                new ItemStack(AncientMagicksItems.WHITE_RUNE.get()), new ItemStack(AncientMagicksItems.BLUE_RUNE.get()),
+                new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()), new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
         int size = AncientMagicks.comboSizeCalc();
         if ( size == 4 ) this.hotbar = "hotbar4.png";
         else if ( size == 5 ) this.hotbar = "hotbar5.png";

@@ -27,8 +27,8 @@ public class ExtendModifierItem extends SpellModifierItem {
     @Override
     public List<ComponentItem> incompatibleWith() {
         List<ComponentItem> list = Lists.newArrayList();
-        list.add((ComponentItem)AncientMagicksItems.TOUCH_FORM_ITEM.get());
-        list.add((ComponentItem)AncientMagicksItems.SELF_FORM_ITEM.get());
+        list.add((ComponentItem)AncientMagicksItems.TOUCH_SIGIL_ITEM.get());
+        list.add((ComponentItem)AncientMagicksItems.SELF_SIGIL_ITEM.get());
         return list;
     }
 
