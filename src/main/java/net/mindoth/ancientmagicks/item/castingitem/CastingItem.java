@@ -2,9 +2,9 @@ package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.event.MagickEvents;
+import net.mindoth.ancientmagicks.item.CastingValidator;
 import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.mindoth.ancientmagicks.item.CastingValidator;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -30,15 +30,11 @@ public class CastingItem extends Item {
         if ( caster instanceof ServerPlayer serverPlayer ) {
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                 List<ComponentItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
-                int manaCost = 0;
-                int coolDown = 0;
-                for ( ComponentItem item : componentList ) {
-                    manaCost += item.getManaCost();
-                    coolDown += item.getCooldown();
-                }
+                int cost = 0;
+                for ( ComponentItem item : componentList ) cost += item.getCost();
                 if ( CastingValidator.calculateSpellRecipes(scroll, owner, caster) ) {
-                    handleCooldownsAndStuff(caster, stack, Math.max(1, 10 + coolDown));
-                    if ( !serverPlayer.isCreative() ) MagickEvents.changeMana(caster, -manaCost);
+                    handleCooldownsAndStuff(caster, stack, Math.max(1, 10));
+                    if ( !serverPlayer.isCreative() ) MagickEvents.changeMana(caster, -cost);
                 }
                 else whiffSpell(caster);
             });

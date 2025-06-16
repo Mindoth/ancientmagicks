@@ -9,8 +9,8 @@ import java.util.List;
 
 public class HomingModifierItem extends SpellModifierItem {
 
-    public HomingModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public HomingModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

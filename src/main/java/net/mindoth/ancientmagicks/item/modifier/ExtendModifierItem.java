@@ -10,8 +10,8 @@ import java.util.List;
 
 public class ExtendModifierItem extends SpellModifierItem {
 
-    public ExtendModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public ExtendModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

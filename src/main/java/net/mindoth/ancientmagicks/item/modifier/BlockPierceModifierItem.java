@@ -9,8 +9,8 @@ import java.util.List;
 
 public class BlockPierceModifierItem extends SpellModifierItem {
 
-    public BlockPierceModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public BlockPierceModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

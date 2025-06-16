@@ -34,20 +34,14 @@ import java.util.Random;
 
 public class SpellEffectItem extends ComponentItem {
 
-    public SpellEffectItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
-        this.manaCost = manaCost;
-        this.cooldown = cooldown;
+    public SpellEffectItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
+        this.cost = cost;
     }
 
-    private final int manaCost;
-    public int getManaCost() {
-        return this.manaCost;
-    }
-
-    private final int cooldown;
-    public int getCooldown() {
-        return this.cooldown;
+    private final int cost;
+    public int getCost() {
+        return this.cost;
     }
 
     public boolean isHarmful(@Nullable String data) {

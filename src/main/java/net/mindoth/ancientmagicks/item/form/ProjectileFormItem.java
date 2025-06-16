@@ -18,8 +18,8 @@ import java.util.Map;
 
 public class ProjectileFormItem extends SpellFormItem {
 
-    public ProjectileFormItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public ProjectileFormItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

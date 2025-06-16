@@ -9,8 +9,8 @@ public class ColorRuneItem extends SpellModifierItem {
         return this.color;
     }
 
-    public ColorRuneItem(Properties pProperties, int manaCost, int cooldown, String color) {
-        super(pProperties, manaCost, cooldown);
+    public ColorRuneItem(Properties pProperties, int cost, String color) {
+        super(pProperties, cost);
         this.color = color;
     }
 }

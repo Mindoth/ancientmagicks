@@ -10,8 +10,8 @@ import java.util.List;
 
 public class QuickenModifierItem extends SpellModifierItem {
 
-    public QuickenModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public QuickenModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

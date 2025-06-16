@@ -13,8 +13,8 @@ import java.util.List;
 
 public class TelebringEffectItem extends EntityTargetEffect {
 
-    public TelebringEffectItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public TelebringEffectItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

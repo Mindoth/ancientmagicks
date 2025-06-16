@@ -18,8 +18,8 @@ import java.util.List;
 
 public class MindControlEffectItem extends PotionEffectItem {
 
-    public MindControlEffectItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public MindControlEffectItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

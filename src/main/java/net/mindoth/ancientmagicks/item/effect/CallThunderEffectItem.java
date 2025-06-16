@@ -20,8 +20,8 @@ import java.util.List;
 
 public class CallThunderEffectItem extends SpellEffectItem {
 
-    public CallThunderEffectItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public CallThunderEffectItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

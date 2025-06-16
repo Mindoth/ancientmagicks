@@ -2,13 +2,10 @@ package net.mindoth.ancientmagicks.item.castingitem;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.item.CastingValidator;
 import net.mindoth.ancientmagicks.item.ComponentItem;
-import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -72,7 +69,7 @@ public class StaffItem extends CastingItem implements Vanishable {
         player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
             List<ComponentItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
             int manaCost = 0;
-            for ( ComponentItem item : componentList ) manaCost += item.getManaCost();
+            for ( ComponentItem item : componentList ) manaCost += item.getCost();
             if ( magic.getCurrentMana() >= manaCost || player.isCreative() ) doSpell(player, player, staff, scroll);
             else whiffSpell(caster);
         });

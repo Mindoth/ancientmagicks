@@ -5,11 +5,12 @@ import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.form.entity.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.ModItems;
 
+import java.util.HashMap;
 import java.util.List;
 
-public class BouncingModifierItem extends SpellModifierItem {
+public class FleetingExpertiseModifierItem extends SpellModifierItem {
 
-    public BouncingModifierItem(Properties pProperties, int cost) {
+    public FleetingExpertiseModifierItem(Properties pProperties, int cost) {
         super(pProperties, cost);
     }
 
@@ -20,18 +21,24 @@ public class BouncingModifierItem extends SpellModifierItem {
 
     @Override
     public boolean usableWithEffects() {
-        return false;
+        return true;
     }
 
     @Override
-    public List<ComponentItem> exclusiveWith() {
+    public List<ComponentItem> incompatibleWith() {
         List<ComponentItem> list = Lists.newArrayList();
-        list.add((ComponentItem) ModItems.PROJECTILE_SIGIL_ITEM.get());
+        list.add((ComponentItem) ModItems.TOUCH_SIGIL_ITEM.get());
+        list.add((ComponentItem) ModItems.SELF_SIGIL_ITEM.get());
         return list;
     }
 
     @Override
     public void addEntityModifier(AbstractSpellEntity projectile, int count) {
-        projectile.getEntityData().set(AbstractSpellEntity.BLOCK_BOUNCE, projectile.getEntityData().get(AbstractSpellEntity.BLOCK_BOUNCE) + count);
+        projectile.getEntityData().set(AbstractSpellEntity.LIFE, projectile.getEntityData().get(AbstractSpellEntity.LIFE) - count * 60);
+    }
+
+    @Override
+    public void addStatsToMap(HashMap<String, Float> stats) {
+        stats.merge(LIFE, -3.0F, Float::sum);
     }
 }

@@ -8,8 +8,8 @@ import net.minecraft.world.phys.HitResult;
 
 public class EntityTargetEffect extends SpellEffectItem {
 
-    public EntityTargetEffect(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public EntityTargetEffect(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

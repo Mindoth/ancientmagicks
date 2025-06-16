@@ -6,8 +6,8 @@ import java.util.HashMap;
 
 public class ExpandModifierItem extends SpellModifierItem {
 
-    public ExpandModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public ExpandModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

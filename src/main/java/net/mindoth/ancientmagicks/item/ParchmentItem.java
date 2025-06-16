@@ -6,6 +6,7 @@ import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -70,33 +71,33 @@ public class ParchmentItem extends Item {
                 }
                 tooltip.add(Component.literal(stringBuilder.toString()));
             }
-        }
-        if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_SPELL_STRING) ) {
-            CompoundTag tag = stack.getTag();
-            List<Item> componentList = Lists.newArrayList();
-            for ( String string : List.of(tag.getString(NBT_KEY_SPELL_STRING).split(",")) ) {
-                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-                componentList.add(item);
-            }
-            List<String> dataList = List.of(tag.getString(NBT_KEY_DATA_STRING).split(","));
-            for ( int i = 0; i < componentList.size(); i++ ) {
-                Item item = componentList.get(i);
-                String key = "";
-                if ( item instanceof SpellFormItem ) key = "tooltip.ancientmagicks.form";
-                if ( item instanceof SpellModifierItem ) key = "tooltip.ancientmagicks.modifier";
-                if ( item instanceof SpellEffectItem ) key = "tooltip.ancientmagicks.effect";
-
-                if ( item instanceof ComponentItem component && component.isEncodeable() ) {
-                    if ( Objects.equals(dataList.get(i), ComponentItem.NBT_KEY_EMPTY) ) {
-                        tooltip.add(Component.translatable(key)
-                                .append(Component.translatable(item.getDescriptionId()))
-                                .append(Component.literal(": "))
-                                .append(Component.translatable("tooltip.ancientmagicks.empty"))
-                                .withStyle(ChatFormatting.GRAY));
+            if ( !Screen.hasShiftDown() ) tooltip.add(Component.translatable("tooltip.ancientmagicks.shift").withStyle(ChatFormatting.GRAY));
+            else {
+                if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_SPELL_STRING) ) {
+                    List<Item> componentList = Lists.newArrayList();
+                    for ( String string : List.of(tag.getString(NBT_KEY_SPELL_STRING).split(",")) ) {
+                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
+                        componentList.add(item);
                     }
-                    else component.decodeTooltipData(tooltip, dataList.get(i), key, item);
+                    List<String> dataList = List.of(tag.getString(NBT_KEY_DATA_STRING).split(","));
+                    for ( int i = 0; i < componentList.size(); i++ ) {
+                        Item item = componentList.get(i);
+                        ChatFormatting color;
+                        if ( item instanceof SpellFormItem ) color = ChatFormatting.DARK_PURPLE;
+                        else if ( item instanceof SpellEffectItem ) color = ChatFormatting.RED;
+                        else if ( item instanceof SpellModifierItem ) color = ChatFormatting.BLUE;
+                        else color = ChatFormatting.GRAY;
+                        if ( item instanceof ComponentItem component && component.isEncodeable() ) {
+                            if ( Objects.equals(dataList.get(i), ComponentItem.NBT_KEY_EMPTY) ) {
+                                tooltip.add(Component.translatable(item.getDescriptionId())
+                                        .append(Component.literal(": "))
+                                        .append(Component.translatable("tooltip.ancientmagicks.empty")).withStyle(color));
+                            }
+                            else component.decodeTooltipData(tooltip, dataList.get(i), item);
+                        }
+                        else tooltip.add(Component.translatable(item.getDescriptionId()).withStyle(color));
+                    }
                 }
-                else tooltip.add(Component.translatable(key).append(Component.translatable(item.getDescriptionId())).withStyle(ChatFormatting.GRAY));
             }
         }
         super.appendHoverText(stack, world, tooltip, flagIn);

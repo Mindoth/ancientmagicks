@@ -16,8 +16,8 @@ import java.util.HashMap;
 
 public class TeleportEffectItem extends SpellEffectItem {
 
-    public TeleportEffectItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public TeleportEffectItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

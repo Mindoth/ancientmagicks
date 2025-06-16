@@ -17,8 +17,8 @@ import java.util.List;
 
 public class PotionEffectItem extends EntityTargetEffect {
 
-    public PotionEffectItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public PotionEffectItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

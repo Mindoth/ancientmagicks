@@ -15,8 +15,8 @@ import java.util.HashMap;
 
 public class CreateWaterEffectItem extends BlockTargetEffect {
 
-    public CreateWaterEffectItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public CreateWaterEffectItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

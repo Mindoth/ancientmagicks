@@ -16,8 +16,8 @@ import java.util.List;
 
 public class SelfFormItem extends SpellFormItem {
 
-    public SelfFormItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public SelfFormItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

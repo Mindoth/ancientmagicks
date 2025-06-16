@@ -19,42 +19,33 @@ import java.util.List;
 
 public class ComponentItem extends Item {
 
-    private final int manaCost;
-    public int getManaCost() {
-        return this.manaCost;
+    private final int cost;
+    public int getCost() {
+        return this.cost;
     }
 
-    private final int cooldown;
-    public int getCooldown() {
-        return this.cooldown;
-    }
-
-    public ComponentItem(Properties pProperties, int manaCost, int cooldown) {
+    public ComponentItem(Properties pProperties, int cost) {
         super(pProperties);
-        this.manaCost = manaCost;
-        this.cooldown = cooldown;
+        this.cost = cost;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        if ( stack.getItem() instanceof SpellFormItem ) {
-            tooltip.add(Component.translatable("tooltip.ancientmagicks.component_type").withStyle(ChatFormatting.GRAY)
-                    .append(Component.translatable("tooltip.ancientmagicks.type_form").withStyle(ChatFormatting.DARK_PURPLE)));
-        }
-        else if ( stack.getItem() instanceof SpellEffectItem ) {
-            tooltip.add(Component.translatable("tooltip.ancientmagicks.component_type").withStyle(ChatFormatting.GRAY)
-                    .append(Component.translatable("tooltip.ancientmagicks.type_effect").withStyle(ChatFormatting.RED)));
-        }
-        else if ( stack.getItem() instanceof SpellModifierItem ) {
-            tooltip.add(Component.translatable("tooltip.ancientmagicks.component_type").withStyle(ChatFormatting.GRAY)
-                    .append(Component.translatable("tooltip.ancientmagicks.type_modifier").withStyle(ChatFormatting.BLUE)));
-        }
-        if ( !(stack.getItem() instanceof ComponentItem component && component.isEncodeable() && stack.hasTag() && stack.getTag().contains(NBT_KEY_COMPONENT_DATA)) ) {
+        if ( stack.getItem() instanceof SpellFormItem ) tooltip.add(Component.translatable("tooltip.ancientmagicks.type_form").withStyle(ChatFormatting.DARK_PURPLE));
+        else if ( stack.getItem() instanceof SpellEffectItem ) tooltip.add(Component.translatable("tooltip.ancientmagicks.type_effect").withStyle(ChatFormatting.RED));
+        else if ( stack.getItem() instanceof SpellModifierItem ) tooltip.add(Component.translatable("tooltip.ancientmagicks.type_modifier").withStyle(ChatFormatting.BLUE));
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.component_cost").withStyle(ChatFormatting.GRAY)
+                .append(Component.literal(String.valueOf(getCost())).withStyle(ChatFormatting.AQUA)));
+        if ( !isEncodedComponent(stack) ) {
             if ( !Screen.hasShiftDown() ) tooltip.add(Component.translatable("tooltip.ancientmagicks.shift").withStyle(ChatFormatting.GRAY));
             else tooltip.add(Component.translatable("tooltip.ancientmagicks." + stack.getItem()).withStyle(ChatFormatting.GRAY));
         }
         super.appendHoverText(stack, world, tooltip, flagIn);
+    }
+
+    private boolean isEncodedComponent(ItemStack stack) {
+        return stack.getItem() instanceof ComponentItem component && component.isEncodeable() && stack.hasTag() && stack.getTag().contains(NBT_KEY_COMPONENT_DATA);
     }
 
     public static final String NBT_KEY_EMPTY = "am_empty";
@@ -64,7 +55,7 @@ public class ComponentItem extends Item {
         return false;
     }
 
-    public void decodeTooltipData(List<Component> tooltip, String data, String key, Item item) {
+    public void decodeTooltipData(List<Component> tooltip, String data, Item item) {
     }
 
     public String encodeComponentData(ItemStack stack) {

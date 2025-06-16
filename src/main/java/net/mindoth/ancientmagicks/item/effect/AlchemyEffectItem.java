@@ -20,8 +20,8 @@ import java.util.List;
 
 public class AlchemyEffectItem extends PotionEffectItem {
 
-    public AlchemyEffectItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public AlchemyEffectItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class AlchemyEffectItem extends PotionEffectItem {
     }
 
     @Override
-    public void decodeTooltipData(List<Component> tooltip, String data, String key, Item item) {
+    public void decodeTooltipData(List<Component> tooltip, String data, Item item) {
         List<String> stringList = List.of(data.split(" "));
         StringBuilder stringBuilder = new StringBuilder();
         for ( int i = 0; i < stringList.size(); i++ ) {
@@ -56,11 +56,10 @@ public class AlchemyEffectItem extends PotionEffectItem {
             stringBuilder.append(I18n.get(string));
         }
 
-        tooltip.add(Component.translatable(key)
-                .append(Component.translatable(item.getDescriptionId()))
+        tooltip.add(Component.translatable(item.getDescriptionId())
                 .append(Component.literal(": "))
                 .append(Component.literal(stringBuilder.toString()))
-                .withStyle(ChatFormatting.GRAY));
+                .withStyle(ChatFormatting.RED));
     }
 
     @OnlyIn(Dist.CLIENT)

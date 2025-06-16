@@ -30,8 +30,8 @@ public class BreakEffectItem extends BlockTargetEffect {
 
     private static final GameProfile FAKE_PROFILE = new GameProfile(UUID.fromString("fdc17a6f-5d46-484e-9343-820f43c7b101"), "am_fake_player_profile");
 
-    public BreakEffectItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public BreakEffectItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

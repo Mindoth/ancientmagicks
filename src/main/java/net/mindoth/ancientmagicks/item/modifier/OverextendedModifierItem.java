@@ -8,9 +8,9 @@ import net.mindoth.ancientmagicks.registries.ModItems;
 import java.util.HashMap;
 import java.util.List;
 
-public class ContractModifierItem extends SpellModifierItem {
+public class OverextendedModifierItem extends SpellModifierItem {
 
-    public ContractModifierItem(Properties pProperties, int cost) {
+    public OverextendedModifierItem(Properties pProperties, int cost) {
         super(pProperties, cost);
     }
 
@@ -25,20 +25,21 @@ public class ContractModifierItem extends SpellModifierItem {
     }
 
     @Override
-    public List<ComponentItem> exclusiveWith() {
+    public List<ComponentItem> incompatibleWith() {
         List<ComponentItem> list = Lists.newArrayList();
-        list.add((ComponentItem) ModItems.TOUCH_SIGIL_ITEM.get());
+        list.add((ComponentItem) ModItems.SELF_SIGIL_ITEM.get());
         return list;
     }
 
     @Override
     public void addEntityModifier(AbstractSpellEntity projectile, int count) {
-        projectile.getEntityData().set(AbstractSpellEntity.REACH, Math.max(0, projectile.getEntityData().get(AbstractSpellEntity.REACH) - count));
+        projectile.getEntityData().set(AbstractSpellEntity.REACH, projectile.getEntityData().get(AbstractSpellEntity.REACH) + count * 3);
+        projectile.getEntityData().set(AbstractSpellEntity.POWER, projectile.getEntityData().get(AbstractSpellEntity.POWER) - count * 3);
     }
 
     @Override
     public void addStatsToMap(HashMap<String, Float> stats) {
-        stats.merge(REACH, -1.0F, Float::sum);
-        stats.merge(REACH, 0.0F, Float::max);
+        stats.merge(REACH, 3.0F, Float::sum);
+        stats.merge(POWER, -3.0F, Float::sum);
     }
 }

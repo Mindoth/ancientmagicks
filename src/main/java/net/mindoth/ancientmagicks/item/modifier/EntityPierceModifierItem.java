@@ -9,8 +9,8 @@ import java.util.List;
 
 public class EntityPierceModifierItem extends SpellModifierItem {
 
-    public EntityPierceModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public EntityPierceModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

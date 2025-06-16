@@ -8,8 +8,8 @@ import net.minecraft.world.phys.HitResult;
 
 public class BlockTargetEffect extends SpellEffectItem {
 
-    public BlockTargetEffect(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public BlockTargetEffect(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

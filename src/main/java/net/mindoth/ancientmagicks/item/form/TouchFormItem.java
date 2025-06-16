@@ -22,8 +22,8 @@ import java.util.List;
 
 public class TouchFormItem extends SpellFormItem {
 
-    public TouchFormItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public TouchFormItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

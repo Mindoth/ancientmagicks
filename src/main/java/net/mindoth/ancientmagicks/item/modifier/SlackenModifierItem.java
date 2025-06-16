@@ -10,8 +10,8 @@ import java.util.List;
 
 public class SlackenModifierItem extends SpellModifierItem {
 
-    public SlackenModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public SlackenModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

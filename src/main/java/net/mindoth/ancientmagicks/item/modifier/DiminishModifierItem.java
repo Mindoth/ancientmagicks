@@ -10,8 +10,8 @@ import java.util.List;
 
 public class DiminishModifierItem extends SpellModifierItem {
 
-    public DiminishModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public DiminishModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

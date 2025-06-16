@@ -9,8 +9,8 @@ import java.util.List;
 
 public class GravityModifierItem extends SpellModifierItem {
 
-    public GravityModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public GravityModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

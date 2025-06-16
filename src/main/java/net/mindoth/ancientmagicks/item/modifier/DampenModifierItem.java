@@ -6,8 +6,8 @@ import java.util.HashMap;
 
 public class DampenModifierItem extends SpellModifierItem {
 
-    public DampenModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public DampenModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

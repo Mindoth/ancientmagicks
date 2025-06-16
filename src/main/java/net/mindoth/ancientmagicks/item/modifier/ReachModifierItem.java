@@ -10,8 +10,8 @@ import java.util.List;
 
 public class ReachModifierItem extends SpellModifierItem {
 
-    public ReachModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public ReachModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ReachModifierItem extends SpellModifierItem {
 
     @Override
     public void addEntityModifier(AbstractSpellEntity projectile, int count) {
-        projectile.getEntityData().set(AbstractSpellEntity.REACH, projectile.getEntityData().get(AbstractSpellEntity.REACH) + (float)count);
+        projectile.getEntityData().set(AbstractSpellEntity.REACH, projectile.getEntityData().get(AbstractSpellEntity.REACH) + count);
     }
 
     @Override

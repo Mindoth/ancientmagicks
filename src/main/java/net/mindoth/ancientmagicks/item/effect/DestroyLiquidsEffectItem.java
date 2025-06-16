@@ -15,8 +15,8 @@ import java.util.HashMap;
 
 public class DestroyLiquidsEffectItem extends BlockTargetEffect {
 
-    public DestroyLiquidsEffectItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public DestroyLiquidsEffectItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override

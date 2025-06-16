@@ -8,37 +8,39 @@ import net.mindoth.ancientmagicks.registries.ModItems;
 import java.util.HashMap;
 import java.util.List;
 
-public class ContractModifierItem extends SpellModifierItem {
+public class TransientFortitudeModifierItem extends SpellModifierItem {
 
-    public ContractModifierItem(Properties pProperties, int cost) {
+    public TransientFortitudeModifierItem(Properties pProperties, int cost) {
         super(pProperties, cost);
     }
 
     @Override
     public boolean usableWithForms() {
-        return true;
-    }
-
-    @Override
-    public boolean usableWithEffects() {
         return false;
     }
 
     @Override
-    public List<ComponentItem> exclusiveWith() {
+    public boolean usableWithEffects() {
+        return true;
+    }
+
+    @Override
+    public List<ComponentItem> incompatibleWith() {
         List<ComponentItem> list = Lists.newArrayList();
         list.add((ComponentItem) ModItems.TOUCH_SIGIL_ITEM.get());
+        list.add((ComponentItem) ModItems.SELF_SIGIL_ITEM.get());
         return list;
     }
 
     @Override
     public void addEntityModifier(AbstractSpellEntity projectile, int count) {
-        projectile.getEntityData().set(AbstractSpellEntity.REACH, Math.max(0, projectile.getEntityData().get(AbstractSpellEntity.REACH) - count));
+        projectile.getEntityData().set(AbstractSpellEntity.POWER, projectile.getEntityData().get(AbstractSpellEntity.POWER) + count);
+        projectile.getEntityData().set(AbstractSpellEntity.LIFE, projectile.getEntityData().get(AbstractSpellEntity.LIFE) - count * 60);
     }
 
     @Override
     public void addStatsToMap(HashMap<String, Float> stats) {
-        stats.merge(REACH, -1.0F, Float::sum);
-        stats.merge(REACH, 0.0F, Float::max);
+        stats.merge(POWER, 3.0F, Float::sum);
+        stats.merge(LIFE, -3.0F, Float::sum);
     }
 }

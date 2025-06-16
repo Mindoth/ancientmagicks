@@ -23,8 +23,8 @@ import java.util.List;
 
 public class LocationModifierItem extends SpellModifierItem {
 
-    public LocationModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public LocationModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override
@@ -70,14 +70,13 @@ public class LocationModifierItem extends SpellModifierItem {
     }
 
     @Override
-    public void decodeTooltipData(List<Component> tooltip, String data, String key, Item item) {
+    public void decodeTooltipData(List<Component> tooltip, String data, Item item) {
         List<String> stringList = List.of(data.split(" "));
 
-        tooltip.add(Component.translatable(key)
-                .append(Component.translatable(item.getDescriptionId()))
+        tooltip.add(Component.translatable(item.getDescriptionId())
                 .append(Component.literal(": "))
                 .append(Component.literal(new ResourceLocation(stringList.get(1)).getPath()))
-                .withStyle(ChatFormatting.GRAY));
+                .withStyle(ChatFormatting.BLUE));
     }
 
     //TODO Set dimension name from lang file and round coordinates in this tooltip
