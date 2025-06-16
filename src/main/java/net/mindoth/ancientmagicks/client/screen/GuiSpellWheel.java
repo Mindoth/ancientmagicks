@@ -17,6 +17,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -29,6 +30,7 @@ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
@@ -86,21 +88,34 @@ public class GuiSpellWheel extends AncientMagicksScreen {
                     this.comboList.add(clickedItem.getItem());
                 }
             }
-            if ( getSlotForSpell(this.comboList) > -1 ) {
-                this.comboResult = SpellBookItem.getScrollListFromBook(this.book.getTag()).get(getSlotForSpell(this.comboList));
-                AncientMagicksNetwork.sendToServer(new PacketSwitchBookSlot(this.book, getSlotForSpell(this.comboList)));
+            if ( getResultScroll(this.comboList) != null ) {
+                this.comboResult = getResultScroll(this.comboList);
+                AncientMagicksNetwork.sendToServer(new PacketSwitchBookSlot(this.book, getComboStringFromList(this.comboList)));
             }
             else this.comboResult = null;
         }
         return true;
     }
 
-    private int getSlotForSpell(List<Item> comboList) {
-        int state = -1;
+    private ItemStack getResultScroll(List<Item> comboList) {
         List<ItemStack> scrollList = SpellBookItem.getScrollListFromBook(this.book.getTag());
-        for ( int i = 0; i < scrollList.size(); i++ ) {
-            if ( AncientMagicks.listsMatch(comboList, ParchmentItem.getScrollComboList(scrollList.get(i))) ) {
-                state = i;
+        for ( ItemStack stack : scrollList ) if ( AncientMagicks.listsMatch(comboList, ParchmentItem.getScrollComboList(stack)) ) return stack;
+        return null;
+    }
+
+    private CompoundTag getComboStringFromList(List<Item> comboList) {
+        CompoundTag state = null;
+        List<ItemStack> scrollList = SpellBookItem.getScrollListFromBook(this.book.getTag());
+        for ( ItemStack stack : scrollList ) {
+            if ( AncientMagicks.listsMatch(comboList, ParchmentItem.getScrollComboList(stack)) ) {
+                CompoundTag newTag = new CompoundTag();
+                StringBuilder spellCode = new StringBuilder();
+                for ( int i = 0; i < AncientMagicks.comboSizeCalc(); i++ ) {
+                    if ( i > 0 ) spellCode.append(",");
+                    spellCode.append(ForgeRegistries.ITEMS.getKey(comboList.get(i)).toString());
+                }
+                newTag.putString(SpellBookItem.NBT_KEY_BOOK_SLOT, spellCode.toString());
+                state = newTag;
                 break;
             }
         }

@@ -160,6 +160,7 @@
   "effect.ancientmagicks.perfect_invisibility": "Perfect Invisibility",
 
 
+  "tooltip.ancientmagicks.shift": "Hold SHIFT for more information",
   "tooltip.ancientmagicks.empty": "Empty",
   "tooltip.ancientmagicks.book_owner": "Owner: ",
   "tooltip.ancientmagicks.form": "\u00A75Form: \u00A7r",

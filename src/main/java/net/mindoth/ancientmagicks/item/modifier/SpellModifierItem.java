@@ -38,9 +38,10 @@ public class SpellModifierItem extends ComponentItem {
 
     //Wood brain mode
     public static boolean canAddModifier(SpellModifierItem modifier, ComponentItem component) {
-        return ((modifier.usableWithForms() && component instanceof SpellFormItem) || (modifier.usableWithEffects() && component instanceof SpellEffectItem))
+        /*return ((modifier.usableWithForms() && component instanceof SpellFormItem) || (modifier.usableWithEffects() && component instanceof SpellEffectItem))
                 && (modifier.exclusiveWith().isEmpty() || modifier.exclusiveWith().contains(component))
-                && (modifier.incompatibleWith().isEmpty() || !modifier.incompatibleWith().contains(component));
+                && (modifier.incompatibleWith().isEmpty() || !modifier.incompatibleWith().contains(component));*/
+        return true;
     }
 
     public void addEntityModifier(AbstractSpellEntity projectile, int count) {

@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item;
 
 import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
 import net.mindoth.ancientmagicks.network.PacketOpenSpellBook;
@@ -39,6 +40,24 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         super(pProperties);
     }
 
+    public static ItemStack getActiveScrollFromBook(ItemStack book) {
+        ItemStack state = null;
+        CompoundTag tag = book.getTag();
+        List<ItemStack> spellList = SpellBookItem.getScrollListFromBook(tag);
+
+        List<Item> codeList = Lists.newArrayList();
+        for ( String string : List.of(tag.getString(NBT_KEY_BOOK_SLOT).split(",")) ) {
+            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
+            if ( item instanceof ColorRuneItem colorModifierItem ) codeList.add(colorModifierItem);
+        }
+
+        for ( int i = 0; i < spellList.size(); i++ ) {
+            ItemStack scroll = spellList.get(i);
+            if ( AncientMagicks.listsMatch(codeList, ParchmentItem.getScrollComboList(scroll)) ) state = SpellBookItem.getScrollListFromBook(tag).get(i);
+        }
+        return state;
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
@@ -52,7 +71,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
 
     public static void handleSignature(ServerPlayer serverPlayer, ItemStack stack) {
         CompoundTag tag = stack.getOrCreateTag();
-        if ( !tag.contains(NBT_KEY_BOOK_SLOT) ) tag.putInt(NBT_KEY_BOOK_SLOT, 0);
+        if ( !tag.contains(NBT_KEY_BOOK_SLOT) ) tag.putString(NBT_KEY_BOOK_SLOT, "");
         if ( !tag.contains(NBT_KEY_OWNER_UUID) ){
             tag.putUUID(NBT_KEY_OWNER_UUID, serverPlayer.getUUID());
             tag.putString(NBT_KEY_OWNER_NAME, serverPlayer.getDisplayName().getString());
@@ -173,6 +192,6 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return false;
+        return slotChanged;
     }
 }

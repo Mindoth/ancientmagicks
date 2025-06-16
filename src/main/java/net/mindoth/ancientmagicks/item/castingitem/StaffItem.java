@@ -2,9 +2,11 @@ package net.mindoth.ancientmagicks.item.castingitem;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.item.CastingValidator;
 import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -62,19 +64,11 @@ public class StaffItem extends CastingItem implements Vanishable {
         if ( player.getCooldowns().isOnCooldown(staff.getItem()) ) return;
         //int useTime = getUseDuration(staff) - timeLeft;
         ItemStack book = SpellBookItem.getSpellBookSlot(player);
-        if ( book.isEmpty() || !book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) ) {
+        ItemStack scroll = SpellBookItem.getActiveScrollFromBook(book);
+        if ( book.isEmpty() || !book.hasTag() || !book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) || scroll == null ) {
             whiffSpell(caster);
             return;
         }
-        CompoundTag tag = book.getTag();
-        List<ItemStack> spellList = SpellBookItem.getScrollListFromBook(tag);
-        int slot = tag.getInt(SpellBookItem.NBT_KEY_BOOK_SLOT);
-        if ( spellList.size() <= slot ) {
-            whiffSpell(caster);
-            return;
-        }
-        ItemStack scroll = spellList.get(slot);
-
         player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
             List<ComponentItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
             int manaCost = 0;
