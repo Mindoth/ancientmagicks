@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.mobeffect;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.ancientmagicks.registries.ModEffects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
@@ -33,7 +33,7 @@ public class PolymorphEffect extends MobEffect {
             tag.putString("id", EntityType.getKey(target.getType()).toString());
             target.saveWithoutId(tag);
             Sheep sheep = target.convertTo(EntityType.SHEEP, false);
-            if ( target.hasEffect(AncientMagicksEffects.POLYMORPH.get()) ) sheep.addEffect(target.getEffect(AncientMagicksEffects.POLYMORPH.get()));
+            if ( target.hasEffect(ModEffects.POLYMORPH.get()) ) sheep.addEffect(target.getEffect(ModEffects.POLYMORPH.get()));
             sheep.finalizeSpawn(level, level.getCurrentDifficultyAt(sheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
             sheep.getPersistentData().put(NBT_KEY_OLD_MOB, tag);
         }
@@ -42,7 +42,7 @@ public class PolymorphEffect extends MobEffect {
     @SubscribeEvent
     public static void transformBackWhenAttacked(final LivingHurtEvent event) {
         LivingEntity living = event.getEntity();
-        if ( living.hasEffect(AncientMagicksEffects.POLYMORPH.get()) ) living.removeEffect(AncientMagicksEffects.POLYMORPH.get());
+        if ( living.hasEffect(ModEffects.POLYMORPH.get()) ) living.removeEffect(ModEffects.POLYMORPH.get());
     }
 
     @Override
@@ -58,8 +58,8 @@ public class PolymorphEffect extends MobEffect {
         return EntityType.create(tag, level).map((entity -> {
             entity.setPos(oldMob.position());
             entity.setDeltaMovement(oldMob.getDeltaMovement());
-            if ( entity instanceof LivingEntity newLiving && newLiving.hasEffect(AncientMagicksEffects.POLYMORPH.get()) ) {
-                newLiving.removeEffect(AncientMagicksEffects.POLYMORPH.get());
+            if ( entity instanceof LivingEntity newLiving && newLiving.hasEffect(ModEffects.POLYMORPH.get()) ) {
+                newLiving.removeEffect(ModEffects.POLYMORPH.get());
             }
             level.addFreshEntity(entity);
             oldMob.discard();
@@ -70,7 +70,7 @@ public class PolymorphEffect extends MobEffect {
 
     @SubscribeEvent
     public static void onEntityPolymorph(final MobEffectEvent.Applicable event) {
-        if ( event.getEffectInstance().getEffect() == AncientMagicksEffects.POLYMORPH.get() ) {
+        if ( event.getEffectInstance().getEffect() == ModEffects.POLYMORPH.get() ) {
             if ( event.getEntity() instanceof Player ) event.setResult(Event.Result.DENY);
             else event.setResult(Event.Result.DEFAULT);
         }

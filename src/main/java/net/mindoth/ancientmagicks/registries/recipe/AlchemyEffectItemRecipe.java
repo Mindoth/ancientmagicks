@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.registries.recipe;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.ComponentItem;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.mindoth.ancientmagicks.registries.ModItems;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -34,7 +34,7 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( !stack.isEmpty() ) items.add(stack);
-            if ( stack.getItem() == AncientMagicksItems.ALCHEMY_SIGIL_ITEM.get() && (!stack.hasTag() || !stack.getTag().contains(ComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
+            if ( stack.getItem() == ModItems.ALCHEMY_SIGIL_ITEM.get() && (!stack.hasTag() || !stack.getTag().contains(ComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
                 if ( slate == null ) slate = stack;
                 else return false;
             }
@@ -55,7 +55,7 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( !stack.isEmpty() ) items.add(stack);
-            if ( stack.getItem() == AncientMagicksItems.ALCHEMY_SIGIL_ITEM.get() && (!stack.hasTag() || !stack.getTag().contains(ComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
+            if ( stack.getItem() == ModItems.ALCHEMY_SIGIL_ITEM.get() && (!stack.hasTag() || !stack.getTag().contains(ComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
                 if ( slate == null ) slate = stack;
             }
             if ( stack.getItem() instanceof PotionItem ) {
@@ -63,7 +63,7 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
             }
         }
         if ( items.size() == 2 && slate != null && potion != null ) {
-            ItemStack newStack = new ItemStack(AncientMagicksItems.ALCHEMY_SIGIL_ITEM.get());
+            ItemStack newStack = new ItemStack(ModItems.ALCHEMY_SIGIL_ITEM.get());
             CompoundTag tag = newStack.getOrCreateTag();
             StringBuilder stringBuilder = new StringBuilder();
             for ( int i = 0; i < potion.getEffects().size(); i++ ) {
@@ -84,6 +84,6 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return AncientMagicksRecipes.ALCHEMY_EFFECT_ITEM_RECIPE.get();
+        return ModRecipes.ALCHEMY_EFFECT_ITEM_RECIPE.get();
     }
 }

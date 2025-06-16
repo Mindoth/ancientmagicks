@@ -1,6 +1,8 @@
 package net.mindoth.ancientmagicks.item;
 
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
+import net.mindoth.ancientmagicks.item.form.SpellFormItem;
+import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -36,8 +38,22 @@ public class ComponentItem extends Item {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        if ( !Screen.hasShiftDown() ) tooltip.add(Component.translatable("tooltip.ancientmagicks.shift").withStyle(ChatFormatting.GRAY));
-        else tooltip.add(Component.translatable("tooltip.ancientmagicks." + stack.getItem()).withStyle(ChatFormatting.GRAY));
+        if ( stack.getItem() instanceof SpellFormItem ) {
+            tooltip.add(Component.translatable("tooltip.ancientmagicks.component_type").withStyle(ChatFormatting.GRAY)
+                    .append(Component.translatable("tooltip.ancientmagicks.type_form").withStyle(ChatFormatting.DARK_PURPLE)));
+        }
+        else if ( stack.getItem() instanceof SpellEffectItem ) {
+            tooltip.add(Component.translatable("tooltip.ancientmagicks.component_type").withStyle(ChatFormatting.GRAY)
+                    .append(Component.translatable("tooltip.ancientmagicks.type_effect").withStyle(ChatFormatting.RED)));
+        }
+        else if ( stack.getItem() instanceof SpellModifierItem ) {
+            tooltip.add(Component.translatable("tooltip.ancientmagicks.component_type").withStyle(ChatFormatting.GRAY)
+                    .append(Component.translatable("tooltip.ancientmagicks.type_modifier").withStyle(ChatFormatting.BLUE)));
+        }
+        if ( !(stack.getItem() instanceof ComponentItem component && component.isEncodeable() && stack.hasTag() && stack.getTag().contains(NBT_KEY_COMPONENT_DATA)) ) {
+            if ( !Screen.hasShiftDown() ) tooltip.add(Component.translatable("tooltip.ancientmagicks.shift").withStyle(ChatFormatting.GRAY));
+            else tooltip.add(Component.translatable("tooltip.ancientmagicks." + stack.getItem()).withStyle(ChatFormatting.GRAY));
+        }
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 

@@ -1,14 +1,13 @@
 package net.mindoth.ancientmagicks.config;
 
 import com.google.common.collect.Lists;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
-public class AncientMagicksCommonConfig {
+public class ModCommonConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 

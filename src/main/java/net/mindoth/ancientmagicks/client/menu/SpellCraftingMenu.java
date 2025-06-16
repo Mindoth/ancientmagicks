@@ -6,13 +6,13 @@ import net.mindoth.ancientmagicks.item.CastingValidator;
 import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketCraftSpell;
 import net.mindoth.ancientmagicks.network.PacketDumpSpell;
 import net.mindoth.ancientmagicks.network.PacketEditColorCode;
-import net.mindoth.ancientmagicks.registries.AncientMagicksBlocks;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
-import net.mindoth.ancientmagicks.registries.AncientMagicksMenus;
+import net.mindoth.ancientmagicks.registries.ModBlocks;
+import net.mindoth.ancientmagicks.registries.ModItems;
+import net.mindoth.ancientmagicks.registries.ModMenus;
 import net.minecraft.SharedConstants;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
@@ -56,14 +56,14 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
     private final Player player;
 
-    public List<Item> colorCode = Arrays.asList(AncientMagicksItems.BLANK_RUNE.get(), AncientMagicksItems.BLANK_RUNE.get(), AncientMagicksItems.BLANK_RUNE.get());
+    public List<Item> colorCode = Arrays.asList(ModItems.BLANK_SLATE.get(), ModItems.BLANK_SLATE.get(), ModItems.BLANK_SLATE.get());
 
     public SpellCraftingMenu(int containerId, Inventory inventory, FriendlyByteBuf buf) {
         this(containerId, inventory, ContainerLevelAccess.create(inventory.player.level(), buf.readBlockPos()));
     }
 
     public SpellCraftingMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access) {
-        super(AncientMagicksMenus.SPELL_CRAFTING_MENU.get(), containerId);
+        super(ModMenus.SPELL_CRAFTING_MENU.get(), containerId);
         this.access = access;
         this.player = playerInventory.player;
         this.addSlot(new ParchmentSlot(this.craftSlots, 0, 79, TOP_ROW_HEIGHT));
@@ -129,7 +129,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
 
     public void editColorCode(int index, Item rune) {
         colorCode.set(index, rune);
-        AncientMagicksNetwork.sendToServer(new PacketEditColorCode(index, rune));
+        ModNetwork.sendToServer(new PacketEditColorCode(index, rune));
     }
 
     public void processColorCodeEditing(int index, Item rune) {
@@ -145,7 +145,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
 
     public boolean dumpSpell() {
         if ( isReadyToDump() ) {
-            AncientMagicksNetwork.sendToServer(new PacketDumpSpell());
+            ModNetwork.sendToServer(new PacketDumpSpell());
             return true;
         }
         else return false;
@@ -195,7 +195,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
 
     public boolean craftSpell(String string) {
         if ( isReadyToCraft() ) {
-            AncientMagicksNetwork.sendToServer(new PacketCraftSpell(getItemName(string)));
+            ModNetwork.sendToServer(new PacketCraftSpell(getItemName(string)));
             return true;
         }
         else return false;
@@ -307,7 +307,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player pPlayer) {
-        return stillValid(this.access, pPlayer, AncientMagicksBlocks.SPELL_CRAFTING_TABLE.get());
+        return stillValid(this.access, pPlayer, ModBlocks.SPELL_CRAFTING_TABLE.get());
     }
 
     @Override

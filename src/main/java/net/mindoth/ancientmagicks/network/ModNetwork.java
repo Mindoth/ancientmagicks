@@ -15,7 +15,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-public class AncientMagicksNetwork {
+public class ModNetwork {
     private static SimpleChannel CHANNEL;
 
     private static int packetId = 0;

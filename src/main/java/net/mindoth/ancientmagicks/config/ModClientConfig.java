@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class AncientMagicksClientConfig {
+public class ModClientConfig {
 
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;

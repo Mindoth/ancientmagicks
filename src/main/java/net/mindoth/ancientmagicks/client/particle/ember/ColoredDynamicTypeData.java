@@ -4,7 +4,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.mindoth.ancientmagicks.registries.AncientMagicksParticles;
+import net.mindoth.ancientmagicks.registries.ModParticles;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -49,7 +49,7 @@ public class ColoredDynamicTypeData implements ParticleOptions {
     };
 
     public ColoredDynamicTypeData(float r, float g, float b, float scale, int age, boolean fade, int renderType) {
-        this.type = AncientMagicksParticles.EMBER_TYPE.get();
+        this.type = ModParticles.EMBER_TYPE.get();
         this.color = new ParticleColor(r, g, b);
         this.scale = scale;
         this.age = age;

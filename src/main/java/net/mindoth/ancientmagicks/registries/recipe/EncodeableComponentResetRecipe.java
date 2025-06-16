@@ -48,6 +48,6 @@ public class EncodeableComponentResetRecipe extends CustomRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return AncientMagicksRecipes.ENCODEABLE_COMPONENT_RESET_RECIPE.get();
+        return ModRecipes.ENCODEABLE_COMPONENT_RESET_RECIPE.get();
     }
 }

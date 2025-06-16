@@ -2,13 +2,12 @@ package net.mindoth.ancientmagicks.mobeffect;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.ancientmagicks.config.ModCommonConfig;
+import net.mindoth.ancientmagicks.registries.ModEffects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.InstantenousMobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
@@ -62,7 +61,7 @@ public class ChaoticPolymorphEffect extends InstantenousMobEffect {
 
     public static boolean isPolymobEnabled(EntityType<?> entityType) {
         List<EntityType<?>> disabledPolymobs = Lists.newArrayList();
-        List<String> configString = AncientMagicksCommonConfig.DISABLED_POLYMOBS.get();
+        List<String> configString = ModCommonConfig.DISABLED_POLYMOBS.get();
         for ( String string : configString ) {
             if ( Objects.equals(string.split(":")[1], "*") ) {
                 for ( EntityType<?> type : ForgeRegistries.ENTITY_TYPES.getValues() ) {
@@ -110,7 +109,7 @@ public class ChaoticPolymorphEffect extends InstantenousMobEffect {
 
     @SubscribeEvent
     public static void onEntityChaoticPolymorph(final MobEffectEvent.Applicable event) {
-        if ( event.getEffectInstance().getEffect() == AncientMagicksEffects.CHAOTIC_POLYMORPH.get() ) {
+        if ( event.getEffectInstance().getEffect() == ModEffects.CHAOTIC_POLYMORPH.get() ) {
             if ( event.getEntity() instanceof Player ) event.setResult(Event.Result.DENY);
             else event.setResult(Event.Result.DEFAULT);
         }

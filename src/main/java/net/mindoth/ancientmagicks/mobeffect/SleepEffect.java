@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.mobeffect;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.ancientmagicks.registries.ModEffects;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +28,7 @@ public class SleepEffect extends MobEffect {
     @SubscribeEvent
     public static void wakeUpWhenAttacked(final LivingHurtEvent event) {
         LivingEntity living = event.getEntity();
-        if ( living.hasEffect(AncientMagicksEffects.SLEEP.get()) ) living.removeEffect(AncientMagicksEffects.SLEEP.get());
+        if ( living.hasEffect(ModEffects.SLEEP.get()) ) living.removeEffect(ModEffects.SLEEP.get());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class SleepEffect extends MobEffect {
 
     @SubscribeEvent
     public static void onEntitySleep(final MobEffectEvent.Applicable event) {
-        if ( event.getEffectInstance().getEffect() == AncientMagicksEffects.SLEEP.get() ) {
+        if ( event.getEffectInstance().getEffect() == ModEffects.SLEEP.get() ) {
             if ( event.getEntity() instanceof Player ) event.setResult(Event.Result.DENY);
             else event.setResult(Event.Result.DEFAULT);
         }

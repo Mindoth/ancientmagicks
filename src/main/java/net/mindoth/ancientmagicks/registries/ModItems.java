@@ -5,7 +5,7 @@ import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.mindoth.ancientmagicks.item.armor.AncientMagicksArmorMaterials;
+import net.mindoth.ancientmagicks.item.armor.ModArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
@@ -23,7 +23,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Map;
 
-public class AncientMagicksItems {
+public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, AncientMagicks.MOD_ID);
 
     //Materials
@@ -53,13 +53,13 @@ public class AncientMagicksItems {
                     )));
 
     public static final RegistryObject<Item> ROBE_HOOD = ITEMS.register("robe_hood",
-            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.ROBE, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new ColorableMagickArmorItem(ModArmorMaterials.ROBE, ArmorItem.Type.HELMET, new Item.Properties()));
 
     public static final RegistryObject<Item> ROBE_TOP = ITEMS.register("robe_top",
-            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.ROBE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new ColorableMagickArmorItem(ModArmorMaterials.ROBE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
 
     public static final RegistryObject<Item> ROBE_BOTTOM = ITEMS.register("robe_bottom",
-            () -> new ColorableMagickArmorItem(AncientMagicksArmorMaterials.ROBE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+            () -> new ColorableMagickArmorItem(ModArmorMaterials.ROBE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 
     public static final RegistryObject<Item> SPELL_BOOK = ITEMS.register("spell_book",
             () -> new SpellBookItem(new Item.Properties().stacksTo(1)));
@@ -77,26 +77,8 @@ public class AncientMagicksItems {
 
 
     //Runes
-    public static final RegistryObject<Item> BLANK_RUNE = ITEMS.register("blank_rune",
+    public static final RegistryObject<Item> BLANK_SLATE = ITEMS.register("blank_slate",
             () -> new Item(new Item.Properties()));
-
-    public static final RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7b"));
-
-    public static final RegistryObject<Item> PURPLE_RUNE = ITEMS.register("purple_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7d"));
-
-    public static final RegistryObject<Item> YELLOW_RUNE = ITEMS.register("yellow_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7e"));
-
-    public static final RegistryObject<Item> GREEN_RUNE = ITEMS.register("green_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7a"));
-
-    public static final RegistryObject<Item> BLACK_RUNE = ITEMS.register("black_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A74"));
-
-    public static final RegistryObject<Item> WHITE_RUNE = ITEMS.register("white_rune",
-            () -> new ColorRuneItem(new Item.Properties(), "\u00A7f"));
 
 
     //Forms
@@ -182,4 +164,23 @@ public class AncientMagicksItems {
 
     public static final RegistryObject<Item> LOCATION_SIGIL_ITEM = ITEMS.register("location_sigil",
             () -> new LocationModifierItem(new Item.Properties(), 1, 0));
+
+
+    public static final RegistryObject<Item> BLUE_SIGIL = ITEMS.register("blue_sigil",
+            () -> new ColorRuneItem(new Item.Properties(), 1, 0, "\u00A7b"));
+
+    public static final RegistryObject<Item> PURPLE_SIGIL = ITEMS.register("purple_sigil",
+            () -> new ColorRuneItem(new Item.Properties(), 1, 0, "\u00A7d"));
+
+    public static final RegistryObject<Item> YELLOW_SIGIL = ITEMS.register("yellow_sigil",
+            () -> new ColorRuneItem(new Item.Properties(), 1, 0, "\u00A7e"));
+
+    public static final RegistryObject<Item> GREEN_SIGIL = ITEMS.register("green_sigil",
+            () -> new ColorRuneItem(new Item.Properties(), 1, 0, "\u00A7a"));
+
+    public static final RegistryObject<Item> BLACK_SIGIL = ITEMS.register("black_sigil",
+            () -> new ColorRuneItem(new Item.Properties(), 1, 0, "\u00A74"));
+
+    public static final RegistryObject<Item> WHITE_SIGIL = ITEMS.register("white_sigil",
+            () -> new ColorRuneItem(new Item.Properties(), 1, 0, "\u00A7f"));
 }

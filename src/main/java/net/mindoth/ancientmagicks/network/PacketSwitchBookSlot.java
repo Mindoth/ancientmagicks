@@ -35,7 +35,9 @@ public class PacketSwitchBookSlot {
             if ( context.getSender() != null ) {
                 ServerPlayer player = context.getSender();
                 if ( player.getInventory().contains(this.book) ) {
-                    ItemStack book = player.getInventory().getItem(player.getInventory().findSlotMatchingItem(this.book));
+                    ItemStack book;
+                    if ( ItemStack.isSameItemSameTags(player.getOffhandItem(), this.book) && !(player.getMainHandItem().getItem() instanceof SpellBookItem) ) book = player.getOffhandItem();
+                    else book = player.getInventory().getItem(player.getInventory().findSlotMatchingItem(this.book));
                     SpellBookItem.handleSignature(player, book);
                     book.getTag().putString(SpellBookItem.NBT_KEY_BOOK_SLOT, this.combo.getString(SpellBookItem.NBT_KEY_BOOK_SLOT));
                 }

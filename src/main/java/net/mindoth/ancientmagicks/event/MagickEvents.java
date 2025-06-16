@@ -3,10 +3,10 @@ package net.mindoth.ancientmagicks.event;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
-import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
+import net.mindoth.ancientmagicks.registries.ModEffects;
+import net.mindoth.ancientmagicks.registries.attribute.ModAttributes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
@@ -16,7 +16,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,10 +28,10 @@ public class MagickEvents {
     public static void baseManaRegen(final TickEvent.LevelTickEvent event) {
         if ( event.phase != TickEvent.Phase.END || event.level.isClientSide ) return;
         event.level.players().stream().toList().forEach(player -> {
-            final double manaRegen = player.getAttributeValue(AncientMagicksAttributes.MP_REG.get());
+            final double manaRegen = player.getAttributeValue(ModAttributes.MP_REG.get());
             if ( !(player instanceof ServerPlayer serverPlayer ) || player.isDeadOrDying() || player.isRemoved() ) return;
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-                final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get());
+                final double maxMana = serverPlayer.getAttributeValue(ModAttributes.MP_MAX.get());
                 final double currentMana = magic.getCurrentMana();
                 if ( player.tickCount % 80 == 0 ) changeMana(player, manaRegen);
                 if ( currentMana > maxMana ) changeMana(player, maxMana - currentMana);
@@ -44,11 +43,11 @@ public class MagickEvents {
     public static void changeMana(Entity entity, double addition) {
         if ( !(entity instanceof ServerPlayer serverPlayer) || serverPlayer.isRemoved() || (serverPlayer.isCreative() && addition < 0) ) return;
         serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-            final double maxMana = serverPlayer.getAttributeValue(AncientMagicksAttributes.MP_MAX.get());
+            final double maxMana = serverPlayer.getAttributeValue(ModAttributes.MP_MAX.get());
             final double currentMana = magic.getCurrentMana();
             final double newMana = Math.max(0.0D, Math.min(maxMana, currentMana + addition));
             magic.setCurrentMana(newMana);
-            AncientMagicksNetwork.sendToPlayer(new PacketSyncClientMana(newMana), serverPlayer);
+            ModNetwork.sendToPlayer(new PacketSyncClientMana(newMana), serverPlayer);
         });
     }
 
@@ -64,7 +63,7 @@ public class MagickEvents {
     @SubscribeEvent
     public static void onLivingFallSpook(final LivingFallEvent event) {
         LivingEntity living = event.getEntity();
-        if ( living.hasEffect(AncientMagicksEffects.FALL_CONTROL.get()) ) {
+        if ( living.hasEffect(ModEffects.FALL_CONTROL.get()) ) {
             if ( calculateFallDamage(living, event.getDistance(), event.getDamageMultiplier()) < living.getHealth() ) {
                 event.setCanceled(true);
             }

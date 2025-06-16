@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.client.screen;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.mindoth.ancientmagicks.registries.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -16,11 +16,11 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.List;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public class AncientTabletScreen extends AncientMagicksScreen {
+public class AncientTabletScreen extends ModScreen {
 
     private final List<ItemStack> itemList;
     private final List<Button> slotList = Lists.newArrayList();
-    private final ItemStack arcaneDust = new ItemStack(AncientMagicksItems.ARCANE_DUST.get());
+    private final ItemStack arcaneDust = new ItemStack(ModItems.ARCANE_DUST.get());
     private Button outputSlot;
 
     public AncientTabletScreen(List<ItemStack> stackList) {

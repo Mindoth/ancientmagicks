@@ -5,7 +5,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import org.lwjgl.glfw.GLFW;
 
-public class AncientMagicksKeyBinds {
+public class ModKeyBinds {
 
     public static final String KEY_SPELL_SELECTOR = "key.ancientmagicks.spell_selector";
     public static final String KEY_CATEGORY_ANCIENTMAGICKS = "key.category.ancientmagicks";

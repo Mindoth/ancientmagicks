@@ -15,9 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public class AncientMagicksScreen extends Screen {
+public class ModScreen extends Screen {
 
-    protected AncientMagicksScreen(Component pTitle) {
+    protected ModScreen(Component pTitle) {
         super(pTitle);
     }
 

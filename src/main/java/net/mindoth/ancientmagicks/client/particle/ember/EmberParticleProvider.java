@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.client.particle.ember;
 
-import net.mindoth.ancientmagicks.registries.AncientMagicksParticles;
+import net.mindoth.ancientmagicks.registries.ModParticles;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -23,6 +23,6 @@ public class EmberParticleProvider implements ParticleProvider<ColoredDynamicTyp
     }
 
     public static ParticleOptions createData(ParticleColor color, float scale, int age, boolean fade, int renderType) {
-        return new ColoredDynamicTypeData(AncientMagicksParticles.EMBER_TYPE.get(), color, scale, age, fade, renderType);
+        return new ColoredDynamicTypeData(ModParticles.EMBER_TYPE.get(), color, scale, age, fade, renderType);
     }
 }

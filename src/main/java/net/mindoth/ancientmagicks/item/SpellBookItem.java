@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks.item;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketOpenSpellBook;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -40,24 +40,6 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         super(pProperties);
     }
 
-    public static ItemStack getActiveScrollFromBook(ItemStack book) {
-        ItemStack state = null;
-        CompoundTag tag = book.getTag();
-        List<ItemStack> spellList = SpellBookItem.getScrollListFromBook(tag);
-
-        List<Item> codeList = Lists.newArrayList();
-        for ( String string : List.of(tag.getString(NBT_KEY_BOOK_SLOT).split(",")) ) {
-            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-            if ( item instanceof ColorRuneItem colorModifierItem ) codeList.add(colorModifierItem);
-        }
-
-        for ( int i = 0; i < spellList.size(); i++ ) {
-            ItemStack scroll = spellList.get(i);
-            if ( AncientMagicks.listsMatch(codeList, ParchmentItem.getScrollComboList(scroll)) ) state = SpellBookItem.getScrollListFromBook(tag).get(i);
-        }
-        return state;
-    }
-
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
@@ -67,6 +49,19 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
                     .append(Component.literal(name).withStyle(ChatFormatting.GRAY)));
         }
         super.appendHoverText(stack, world, tooltip, flagIn);
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
+        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
+        if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
+            ItemStack stack = player.getItemInHand(handIn);
+            if ( CastingItem.getHeldStaff(player) == ItemStack.EMPTY || player.isCrouching() ) {
+                handleSignature(serverPlayer, stack);
+                ModNetwork.sendToPlayer(new PacketOpenSpellBook(stack, 0), serverPlayer);
+            }
+        }
+        return result;
     }
 
     public static void handleSignature(ServerPlayer serverPlayer, ItemStack stack) {
@@ -83,17 +78,22 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         }
     }
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
-        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
-        if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
-            ItemStack stack = player.getItemInHand(handIn);
-            if ( CastingItem.getHeldStaff(player) == ItemStack.EMPTY || player.isCrouching() ) {
-                handleSignature(serverPlayer, stack);
-                AncientMagicksNetwork.sendToPlayer(new PacketOpenSpellBook(stack, 0), serverPlayer);
-            }
+    public static ItemStack getActiveScrollFromBook(ItemStack book) {
+        ItemStack state = null;
+        CompoundTag tag = book.getTag();
+        List<ItemStack> spellList = SpellBookItem.getScrollListFromBook(tag);
+
+        List<Item> codeList = Lists.newArrayList();
+        for ( String string : List.of(tag.getString(NBT_KEY_BOOK_SLOT).split(",")) ) {
+            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
+            if ( item instanceof ColorRuneItem colorModifierItem ) codeList.add(colorModifierItem);
         }
-        return result;
+
+        for ( int i = 0; i < spellList.size(); i++ ) {
+            ItemStack scroll = spellList.get(i);
+            if ( AncientMagicks.listsMatch(codeList, ParchmentItem.getScrollComboList(scroll)) ) state = SpellBookItem.getScrollListFromBook(tag).get(i);
+        }
+        return state;
     }
 
     public static ItemStack constructSpellScroll(String string, String data, String name, Item item, String code) {
@@ -176,6 +176,9 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
     }
 
     public static ItemStack getSpellBookSlot(Player player) {
+        ItemStack offHand = player.getOffhandItem();
+        if ( offHand.getItem() instanceof SpellBookItem && offHand.hasTag() && offHand.getTag().contains(NBT_KEY_SPELLS)
+                && !offHand.getTag().getString(NBT_KEY_SPELLS).isEmpty() ) return offHand;
         for ( int i = 0; i <= player.getInventory().getContainerSize(); i++ ) {
             ItemStack slot = player.getInventory().getItem(i);
             if ( slot.getItem() instanceof SpellBookItem && slot.hasTag() && slot.getTag().contains(NBT_KEY_SPELLS)

@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.mobeffect;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.ancientmagicks.registries.ModEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffect;
@@ -67,7 +67,7 @@ public class MindControlEffect extends MobEffect {
     }
 
     private static void handleTargeting(Level level, Mob cMob, LivingEntity cMobTarget) {
-        if ( !cMob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) ) return;
+        if ( !cMob.hasEffect(ModEffects.MIND_CONTROL.get()) ) return;
         CompoundTag tag = cMob.getPersistentData();
         if ( tag.hasUUID(NBT_KEY_CONTROL) ) {
             Entity entity = ShadowEvents.getEntityByUUID(level, tag.getUUID(NBT_KEY_CONTROL));
@@ -81,7 +81,7 @@ public class MindControlEffect extends MobEffect {
     @SubscribeEvent
     public static void onMindControlledUpdate(final LivingEvent.LivingTickEvent event) {
         if ( event.getEntity().level().isClientSide ) return;
-        if ( event.getEntity() instanceof Mob mob && mob.tickCount % 20 == 0 && mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) ) {
+        if ( event.getEntity() instanceof Mob mob && mob.tickCount % 20 == 0 && mob.hasEffect(ModEffects.MIND_CONTROL.get()) ) {
             if ( mob.getTarget() == null || !mob.getTarget().isAlive() ) handleTargeting(mob.level(), mob, mob.getTarget());
         }
     }
@@ -89,7 +89,7 @@ public class MindControlEffect extends MobEffect {
     @SubscribeEvent
     public static void onSetMindControlTarget(final LivingChangeTargetEvent event) {
         if ( event.getEntity().level().isClientSide ) return;
-        if ( !event.getEntity().hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) ) return;
+        if ( !event.getEntity().hasEffect(ModEffects.MIND_CONTROL.get()) ) return;
         if ( event.getEntity() instanceof Mob mob && event.getOriginalTarget() != null ) {
             CompoundTag tag = mob.getPersistentData();
             if ( !tag.hasUUID(NBT_KEY_CONTROL) ) return;
@@ -114,7 +114,7 @@ public class MindControlEffect extends MobEffect {
     }
 
     private static void onMindControlEnd(MobEffectInstance instance, Entity entity) {
-        if ( instance != null && instance.getEffect() == AncientMagicksEffects.MIND_CONTROL.get() && entity instanceof Mob mob ) {
+        if ( instance != null && instance.getEffect() == ModEffects.MIND_CONTROL.get() && entity instanceof Mob mob ) {
             if ( mob.getPersistentData().getBoolean(NBT_KEY_SUMMON) ) mob.kill();
             else {
                 mob.setTarget(null);
@@ -125,7 +125,7 @@ public class MindControlEffect extends MobEffect {
 
     @SubscribeEvent
     public static void onPlayerMindControl(final MobEffectEvent.Applicable event) {
-        if ( event.getEffectInstance().getEffect() == AncientMagicksEffects.MIND_CONTROL.get() ) {
+        if ( event.getEffectInstance().getEffect() == ModEffects.MIND_CONTROL.get() ) {
             if ( event.getEntity() instanceof Player ) event.setResult(Event.Result.DENY);
             else event.setResult(Event.Result.DEFAULT);
         }

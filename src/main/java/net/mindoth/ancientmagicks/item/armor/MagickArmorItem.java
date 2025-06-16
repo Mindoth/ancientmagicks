@@ -44,7 +44,7 @@ public class MagickArmorItem extends ArmorItem {
         return true;
     }
 
-    public MagickArmorItem(AncientMagicksArmorMaterials pMaterial, Type pType, Properties pProperties) {
+    public MagickArmorItem(ModArmorMaterials pMaterial, Type pType, Properties pProperties) {
         super(pMaterial, pType, pProperties);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         float defense = pMaterial.getDefenseForType(pType);

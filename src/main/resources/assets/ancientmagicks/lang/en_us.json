@@ -29,13 +29,13 @@
   "item.ancientmagicks.golden_staff": "Golden Staff",
   "item.ancientmagicks.netherite_staff": "Netherite Staff",
 
-  "item.ancientmagicks.blank_rune": "Blank Rune",
-  "item.ancientmagicks.blue_rune": "Blue Rune",
-  "item.ancientmagicks.purple_rune": "Purple Rune",
-  "item.ancientmagicks.yellow_rune": "Yellow Rune",
-  "item.ancientmagicks.green_rune": "Green Rune",
-  "item.ancientmagicks.black_rune": "Black Rune",
-  "item.ancientmagicks.white_rune": "White Rune",
+  "item.ancientmagicks.blank_slate": "Blank Slate",
+  "item.ancientmagicks.blue_sigil": "Blue Sigil",
+  "item.ancientmagicks.purple_sigil": "Purple Sigil",
+  "item.ancientmagicks.yellow_sigil": "Yellow Sigil",
+  "item.ancientmagicks.green_sigil": "Green Sigil",
+  "item.ancientmagicks.black_sigil": "Black Sigil",
+  "item.ancientmagicks.white_sigil": "White Sigil",
 
   "item.ancientmagicks.projectile_sigil": "Projectile Sigil",
   "tooltip.ancientmagicks.projectile_sigil": "Forms the spell into a projectile activating once it hits a target",
@@ -161,6 +161,10 @@
 
 
   "tooltip.ancientmagicks.shift": "Hold SHIFT for more information",
+  "tooltip.ancientmagicks.component_type": "Type: ",
+  "tooltip.ancientmagicks.type_form": "Form",
+  "tooltip.ancientmagicks.type_effect": "Effect",
+  "tooltip.ancientmagicks.type_modifier": "Modifier",
   "tooltip.ancientmagicks.empty": "Empty",
   "tooltip.ancientmagicks.book_owner": "Owner: ",
   "tooltip.ancientmagicks.form": "\u00A75Form: \u00A7r",

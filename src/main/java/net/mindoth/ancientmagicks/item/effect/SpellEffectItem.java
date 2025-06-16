@@ -2,12 +2,12 @@ package net.mindoth.ancientmagicks.item.effect;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
-import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
+import net.mindoth.ancientmagicks.config.ModCommonConfig;
 import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.mobeffect.MindControlEffect;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.ancientmagicks.registries.ModEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -24,8 +24,6 @@ import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -204,7 +202,7 @@ public class SpellEffectItem extends ComponentItem {
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
             ParticleColor.IntWrapper color = getParticleColor(stats);
-            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
+            ModNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
         }
         for ( int i = 0; i < amount; i++ ) {
@@ -213,7 +211,7 @@ public class SpellEffectItem extends ComponentItem {
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
             ParticleColor.IntWrapper color = getParticleColor(stats);
-            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
+            ModNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
         }
         for ( int i = 0; i < amount; i++ ) {
@@ -222,7 +220,7 @@ public class SpellEffectItem extends ComponentItem {
             double randZ = minZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
             ParticleColor.IntWrapper color = getParticleColor(stats);
-            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
+            ModNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
         }
         for ( int i = 0; i < amount; i++ ) {
@@ -231,7 +229,7 @@ public class SpellEffectItem extends ComponentItem {
             double randZ = maxZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
             ParticleColor.IntWrapper color = getParticleColor(stats);
-            AncientMagicksNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
+            ModNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
         }
     }
@@ -255,7 +253,7 @@ public class SpellEffectItem extends ComponentItem {
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
             ParticleColor.IntWrapper color = getParticleColor(stats);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
+            ModNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
@@ -264,7 +262,7 @@ public class SpellEffectItem extends ComponentItem {
             double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
             Vec3 pos = new Vec3(randX, randY, randZ);
             ParticleColor.IntWrapper color = getParticleColor(stats);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
+            ModNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
@@ -273,7 +271,7 @@ public class SpellEffectItem extends ComponentItem {
             double randZ = minZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
             ParticleColor.IntWrapper color = getParticleColor(stats);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
+            ModNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
         for ( int i = 0; i < 4; i++ ) {
@@ -282,7 +280,7 @@ public class SpellEffectItem extends ComponentItem {
             double randZ = maxZ;
             Vec3 pos = new Vec3(randX, randY, randZ);
             ParticleColor.IntWrapper color = getParticleColor(stats);
-            AncientMagicksNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
+            ModNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
                     pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
         }
     }
@@ -290,7 +288,7 @@ public class SpellEffectItem extends ComponentItem {
     public static boolean allyFilter(Entity owner, Entity target, boolean isHarmful) {
         return target instanceof LivingEntity && !(target instanceof ArmorStand)
                 //&& (owner != target || !isHarmful)
-                && (AncientMagicksCommonConfig.SPELL_FREE_FOR_ALL.get()
+                && (ModCommonConfig.SPELL_FREE_FOR_ALL.get()
                 || ((SpellEffectItem.isAlly(owner, target) && !isHarmful) || (!SpellEffectItem.isAlly(owner, target) && isHarmful)));
     }
 
@@ -313,12 +311,12 @@ public class SpellEffectItem extends ComponentItem {
     }
 
     public static boolean isMinionsOwner(LivingEntity owner, Mob mob) {
-        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
+        return mob.hasEffect(ModEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
                 && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner;
     }
 
     public static boolean isMinionsSummoner(LivingEntity owner, Mob mob) {
-        return mob.hasEffect(AncientMagicksEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
+        return mob.hasEffect(ModEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
                 && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner
                 && mob.getPersistentData().getBoolean(MindControlEffect.NBT_KEY_SUMMON);
     }

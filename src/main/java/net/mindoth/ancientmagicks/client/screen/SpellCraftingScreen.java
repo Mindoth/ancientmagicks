@@ -5,7 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.client.menu.ComponentSlot;
 import net.mindoth.ancientmagicks.client.menu.SpellCraftingMenu;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.mindoth.ancientmagicks.registries.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -110,13 +110,13 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         if ( !this.menu.isReadyToCraft() ) return;
         int index = runeButtonList.indexOf(button);
         Item rune = this.menu.colorCode.get(index);
-        if ( rune == AncientMagicksItems.BLANK_RUNE.get() ) rune = AncientMagicksItems.BLUE_RUNE.get();
-        else if ( rune == AncientMagicksItems.BLUE_RUNE.get() ) rune = AncientMagicksItems.PURPLE_RUNE.get();
-        else if ( rune == AncientMagicksItems.PURPLE_RUNE.get() ) rune = AncientMagicksItems.YELLOW_RUNE.get();
-        else if ( rune == AncientMagicksItems.YELLOW_RUNE.get() ) rune = AncientMagicksItems.GREEN_RUNE.get();
-        else if ( rune == AncientMagicksItems.GREEN_RUNE.get() ) rune = AncientMagicksItems.BLACK_RUNE.get();
-        else if ( rune == AncientMagicksItems.BLACK_RUNE.get() ) rune = AncientMagicksItems.WHITE_RUNE.get();
-        else rune = AncientMagicksItems.BLANK_RUNE.get();
+        if ( rune == ModItems.BLANK_SLATE.get() ) rune = ModItems.BLUE_SIGIL.get();
+        else if ( rune == ModItems.BLUE_SIGIL.get() ) rune = ModItems.PURPLE_SIGIL.get();
+        else if ( rune == ModItems.PURPLE_SIGIL.get() ) rune = ModItems.YELLOW_SIGIL.get();
+        else if ( rune == ModItems.YELLOW_SIGIL.get() ) rune = ModItems.GREEN_SIGIL.get();
+        else if ( rune == ModItems.GREEN_SIGIL.get() ) rune = ModItems.BLACK_SIGIL.get();
+        else if ( rune == ModItems.BLACK_SIGIL.get() ) rune = ModItems.WHITE_SIGIL.get();
+        else rune = ModItems.BLANK_SLATE.get();
         this.menu.editColorCode(index, rune);
     }
 
@@ -216,7 +216,7 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
             if ( this.menu.getSlot(i) instanceof ComponentSlot slot && !slot.isOpen ) {
                 int xPos = x + 26 + (i - 2) * 18;
                 int yPos = y + this.menu.getBottomRowHeight();
-                AncientMagicksScreen.drawTexture(TEXTURE, xPos, yPos, 0, 175, 16, 16, 256, 256, graphics);
+                ModScreen.drawTexture(TEXTURE, xPos, yPos, 0, 175, 16, 16, 256, 256, graphics);
             }
         }
     }
@@ -230,7 +230,7 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
                 graphics.fill(RenderType.guiOverlay(), xPos, yPos, xPos + 16, yPos + 16, Integer.MAX_VALUE);
             }
         }
-        else AncientMagicksScreen.drawTexture(TEXTURE, xPos, yPos, 0, 175, 16, 16, 256, 256, graphics);
+        else ModScreen.drawTexture(TEXTURE, xPos, yPos, 0, 175, 16, 16, 256, 256, graphics);
     }
 
     @Override

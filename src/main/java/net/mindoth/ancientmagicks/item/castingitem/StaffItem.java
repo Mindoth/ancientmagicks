@@ -64,11 +64,11 @@ public class StaffItem extends CastingItem implements Vanishable {
         if ( player.getCooldowns().isOnCooldown(staff.getItem()) ) return;
         //int useTime = getUseDuration(staff) - timeLeft;
         ItemStack book = SpellBookItem.getSpellBookSlot(player);
-        ItemStack scroll = SpellBookItem.getActiveScrollFromBook(book);
-        if ( book.isEmpty() || !book.hasTag() || !book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) || scroll == null ) {
+        if ( book.isEmpty() || !book.hasTag() || !book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) || SpellBookItem.getActiveScrollFromBook(book) == null ) {
             whiffSpell(caster);
             return;
         }
+        ItemStack scroll = SpellBookItem.getActiveScrollFromBook(book);
         player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
             List<ComponentItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
             int manaCost = 0;

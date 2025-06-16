@@ -1,24 +1,23 @@
 package net.mindoth.ancientmagicks.item.armor;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
-import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
+import net.mindoth.ancientmagicks.registries.ModItems;
+import net.mindoth.ancientmagicks.registries.attribute.ModAttributes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.Map;
 import java.util.function.Supplier;
 
-public enum AncientMagicksArmorMaterials implements CustomArmorMaterial {
+public enum ModArmorMaterials implements CustomArmorMaterial {
 
     ROBE("robe", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
-            0, 0, () -> Ingredient.of(AncientMagicksItems.WOOL_CLOTH.get()), Map.of(
-            AncientMagicksAttributes.MP_REG.get(), new AttributeModifier("Magick Regeneration", 1.0D, AttributeModifier.Operation.ADDITION)
+            0, 0, () -> Ingredient.of(ModItems.WOOL_CLOTH.get()), Map.of(
+            ModAttributes.MP_REG.get(), new AttributeModifier("Magick Regeneration", 1.0D, AttributeModifier.Operation.ADDITION)
     ))/*,
     SIMPLE("simple", 4, new int[]{ 1, 1, 1, 1 }, 25, SoundEvents.ARMOR_EQUIP_LEATHER,
             0, 0, () -> Ingredient.of(AncientMagicksItems.WOOL_CLOTH.get()), Map.of(
@@ -47,7 +46,7 @@ public enum AncientMagicksArmorMaterials implements CustomArmorMaterial {
 
     private static final int[] BASE_DURABILITY = { 11, 16, 15, 13 };
 
-    AncientMagicksArmorMaterials(String name, int durabilityModifier, int[] protectionAmounts, int enchantmentValue, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient, Map<Attribute, AttributeModifier> additionalAttributes) {
+    ModArmorMaterials(String name, int durabilityModifier, int[] protectionAmounts, int enchantmentValue, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient, Map<Attribute, AttributeModifier> additionalAttributes) {
         this.name = name;
         this.durabilityModifier = durabilityModifier;
         this.protectionAmounts = protectionAmounts;

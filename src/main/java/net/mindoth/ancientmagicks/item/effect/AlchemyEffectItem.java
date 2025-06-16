@@ -66,6 +66,7 @@ public class AlchemyEffectItem extends PotionEffectItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, world, tooltip, flagIn);
         if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_COMPONENT_DATA) ) {
             CompoundTag tag = stack.getTag();
             List<String> dataList = List.of(tag.getString(NBT_KEY_COMPONENT_DATA).split(" "));
@@ -74,6 +75,5 @@ public class AlchemyEffectItem extends PotionEffectItem {
                 tooltip.add(Component.translatable(effect).withStyle(ChatFormatting.GRAY));
             }
         }
-        else tooltip.add(Component.translatable("tooltip.ancientmagicks." + stack.getItem()).withStyle(ChatFormatting.GRAY));
     }
 }

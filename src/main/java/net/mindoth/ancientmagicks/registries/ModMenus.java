@@ -10,7 +10,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class AncientMagicksMenus {
+public class ModMenus {
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, AncientMagicks.MOD_ID);
 
     public static final RegistryObject<MenuType<SpellCraftingMenu>> SPELL_CRAFTING_MENU = registerMenuType("spell_crafting_menu", SpellCraftingMenu::new);

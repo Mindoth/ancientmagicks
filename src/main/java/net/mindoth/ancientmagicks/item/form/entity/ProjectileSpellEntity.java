@@ -5,7 +5,7 @@ import net.mindoth.ancientmagicks.item.ComponentItem;
 import net.mindoth.ancientmagicks.item.effect.BlockTargetEffect;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEntities;
+import net.mindoth.ancientmagicks.registries.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -27,7 +27,7 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
     }
 
     public ProjectileSpellEntity(Level level, LivingEntity owner, Entity caster) {
-        super(AncientMagicksEntities.SPELL_PROJECTILE.get(), level, owner, caster);
+        super(ModEntities.SPELL_PROJECTILE.get(), level, owner, caster);
     }
 
     private void castMagick(HitResult hitResult) {

@@ -9,9 +9,9 @@ import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketSwitchBookSlot;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.mindoth.ancientmagicks.registries.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
@@ -35,7 +35,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.List;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public class GuiSpellWheel extends AncientMagicksScreen {
+public class GuiSpellWheel extends ModScreen {
 
     private static final float PRECISION = 5.0F;
     private boolean closing;
@@ -58,9 +58,9 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         this.selectedItem = -1;
         this.book = book;
         this.ColorRunes = List.of(
-                new ItemStack(AncientMagicksItems.GREEN_RUNE.get()), new ItemStack(AncientMagicksItems.BLACK_RUNE.get()),
-                new ItemStack(AncientMagicksItems.WHITE_RUNE.get()), new ItemStack(AncientMagicksItems.BLUE_RUNE.get()),
-                new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()), new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()));
+                new ItemStack(ModItems.GREEN_SIGIL.get()), new ItemStack(ModItems.BLACK_SIGIL.get()),
+                new ItemStack(ModItems.WHITE_SIGIL.get()), new ItemStack(ModItems.BLUE_SIGIL.get()),
+                new ItemStack(ModItems.PURPLE_SIGIL.get()), new ItemStack(ModItems.YELLOW_SIGIL.get()));
         int size = AncientMagicks.comboSizeCalc();
         if ( size == 4 ) this.hotbar = "hotbar4.png";
         else if ( size == 5 ) this.hotbar = "hotbar5.png";
@@ -90,7 +90,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
             }
             if ( getResultScroll(this.comboList) != null ) {
                 this.comboResult = getResultScroll(this.comboList);
-                AncientMagicksNetwork.sendToServer(new PacketSwitchBookSlot(this.book, getComboStringFromList(this.comboList)));
+                ModNetwork.sendToServer(new PacketSwitchBookSlot(this.book, getComboStringFromList(this.comboList)));
             }
             else this.comboResult = null;
         }

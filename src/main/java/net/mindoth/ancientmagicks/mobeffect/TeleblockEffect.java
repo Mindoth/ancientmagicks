@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.mobeffect;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.ancientmagicks.registries.ModEffects;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,7 +18,7 @@ public class TeleblockEffect extends MobEffect {
     @SubscribeEvent
     public static void preventTeleportation(final EntityTeleportEvent event) {
         if ( event.getEntity().level().isClientSide ) return;
-        if ( event.getEntity() instanceof LivingEntity living && living.hasEffect(AncientMagicksEffects.TELEBLOCK.get()) ) {
+        if ( event.getEntity() instanceof LivingEntity living && living.hasEffect(ModEffects.TELEBLOCK.get()) ) {
             event.setCanceled(true);
         }
     }

@@ -5,10 +5,10 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketRemoveSpellFromBook;
 import net.mindoth.ancientmagicks.network.PacketUpdateBookData;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.mindoth.ancientmagicks.registries.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -27,7 +27,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.List;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public class SpellBookScreen extends AncientMagicksScreen {
+public class SpellBookScreen extends ModScreen {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/spell_book_screen.png");
 
@@ -170,24 +170,24 @@ public class SpellBookScreen extends AncientMagicksScreen {
         Item item = stack.getItem();
         if ( item instanceof ParchmentItem ) {
             int index = this.scrollList.indexOf(getStackFromSlot(button));
-            AncientMagicksNetwork.sendToServer(new PacketRemoveSpellFromBook(this.book, this.scrollList, index));
+            ModNetwork.sendToServer(new PacketRemoveSpellFromBook(this.book, this.scrollList, index));
             this.scrollList.remove(index);
 
             createPages(true);
             this.clearWidgets();
             buildButtons(minecraft.getWindow().getGuiScaledWidth() / 2, minecraft.getWindow().getGuiScaledHeight() / 2);
         }
-        else if ( item == AncientMagicksItems.BLANK_RUNE.get() || item instanceof ColorRuneItem ) changeRune(button, item);
+        else if ( item == ModItems.BLANK_SLATE.get() || item instanceof ColorRuneItem ) changeRune(button, item);
     }
 
     private void changeRune(Button button, Item rune) {
-        if ( rune == AncientMagicksItems.BLANK_RUNE.get() ) rune = AncientMagicksItems.BLUE_RUNE.get();
-        else if ( rune == AncientMagicksItems.BLUE_RUNE.get() ) rune = AncientMagicksItems.PURPLE_RUNE.get();
-        else if ( rune == AncientMagicksItems.PURPLE_RUNE.get() ) rune = AncientMagicksItems.YELLOW_RUNE.get();
-        else if ( rune == AncientMagicksItems.YELLOW_RUNE.get() ) rune = AncientMagicksItems.GREEN_RUNE.get();
-        else if ( rune == AncientMagicksItems.GREEN_RUNE.get() ) rune = AncientMagicksItems.BLACK_RUNE.get();
-        else if ( rune == AncientMagicksItems.BLACK_RUNE.get() ) rune = AncientMagicksItems.WHITE_RUNE.get();
-        else rune = AncientMagicksItems.BLANK_RUNE.get();
+        if ( rune == ModItems.BLANK_SLATE.get() ) rune = ModItems.BLUE_SIGIL.get();
+        else if ( rune == ModItems.BLUE_SIGIL.get() ) rune = ModItems.PURPLE_SIGIL.get();
+        else if ( rune == ModItems.PURPLE_SIGIL.get() ) rune = ModItems.YELLOW_SIGIL.get();
+        else if ( rune == ModItems.YELLOW_SIGIL.get() ) rune = ModItems.GREEN_SIGIL.get();
+        else if ( rune == ModItems.GREEN_SIGIL.get() ) rune = ModItems.BLACK_SIGIL.get();
+        else if ( rune == ModItems.BLACK_SIGIL.get() ) rune = ModItems.WHITE_SIGIL.get();
+        else rune = ModItems.BLANK_SLATE.get();
 
         final int index = this.itemList.indexOf(getStackFromSlot(button));
         this.itemList.set(index, new ItemStack(rune));
@@ -205,7 +205,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
                 ItemStack newStack = stack.copy();
                 newStack.getOrCreateTag().putString(ParchmentItem.NBT_KEY_CODE_STRING, stringBuilder.toString());
                 this.scrollList.set(this.scrollList.indexOf(stack), newStack);
-                AncientMagicksNetwork.sendToServer(new PacketUpdateBookData(this.book, this.scrollList));
+                ModNetwork.sendToServer(new PacketUpdateBookData(this.book, this.scrollList));
                 createPages(true);
                 break;
             }

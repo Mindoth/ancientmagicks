@@ -1,12 +1,12 @@
 package net.mindoth.ancientmagicks;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.config.AncientMagicksCommonConfig;
-import net.mindoth.ancientmagicks.item.AncientMagicksTab;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.config.ModCommonConfig;
+import net.mindoth.ancientmagicks.item.ModCreativeTab;
+import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.registries.*;
-import net.mindoth.ancientmagicks.registries.attribute.AncientMagicksAttributes;
-import net.mindoth.ancientmagicks.registries.recipe.AncientMagicksRecipes;
+import net.mindoth.ancientmagicks.registries.attribute.ModAttributes;
+import net.mindoth.ancientmagicks.registries.recipe.ModRecipes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -37,22 +37,22 @@ public class AncientMagicks {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         if ( FMLEnvironment.dist == Dist.CLIENT ) AncientMagicksClient.registerHandlers();
         addRegistries(modEventBus);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AncientMagicksCommonConfig.SPEC, "ancientmagicks-common.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ModCommonConfig.SPEC, "ancientmagicks-common.toml");
     }
 
     private void addRegistries(final IEventBus modEventBus) {
-        AncientMagicksTab.register(modEventBus);
-        AncientMagicksItems.ITEMS.register(modEventBus);
-        AncientMagicksBlocks.BLOCKS.register(modEventBus);
-        AncientMagicksEntities.ENTITIES.register(modEventBus);
-        AncientMagicksEffects.EFFECTS.register(modEventBus);
-        AncientMagicksPotions.POTIONS.register(modEventBus);
-        AncientMagicksParticles.PARTICLES.register(modEventBus);
-        AncientMagicksModifiers.LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
-        AncientMagicksModifiers.LOOT_FUNCTIONS.register(modEventBus);
-        AncientMagicksAttributes.ATTRIBUTES.register(modEventBus);
-        AncientMagicksRecipes.SERIALIZERS.register(modEventBus);
-        AncientMagicksMenus.MENUS.register(modEventBus);
+        ModCreativeTab.register(modEventBus);
+        ModItems.ITEMS.register(modEventBus);
+        ModBlocks.BLOCKS.register(modEventBus);
+        ModEntities.ENTITIES.register(modEventBus);
+        ModEffects.EFFECTS.register(modEventBus);
+        ModPotions.POTIONS.register(modEventBus);
+        ModParticles.PARTICLES.register(modEventBus);
+        ModModifiers.LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
+        ModModifiers.LOOT_FUNCTIONS.register(modEventBus);
+        ModAttributes.ATTRIBUTES.register(modEventBus);
+        ModRecipes.SERIALIZERS.register(modEventBus);
+        ModMenus.MENUS.register(modEventBus);
 
         //KEEP THESE LAST
         modEventBus.addListener(this::commonSetup);
@@ -60,9 +60,9 @@ public class AncientMagicks {
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if ( event.getTab() == AncientMagicksTab.ANCIENTMAGICKS_TAB.get() ) {
-            for ( RegistryObject<Block> block : AncientMagicksBlocks.BLOCKS.getEntries() ) event.accept(block);
-            for ( RegistryObject<Item> item : AncientMagicksItems.ITEMS.getEntries() ) event.accept(item);
+        if ( event.getTab() == ModCreativeTab.ANCIENTMAGICKS_TAB.get() ) {
+            for ( RegistryObject<Block> block : ModBlocks.BLOCKS.getEntries() ) event.accept(block);
+            for ( RegistryObject<Item> item : ModItems.ITEMS.getEntries() ) event.accept(item);
         }
     }
 
@@ -70,21 +70,21 @@ public class AncientMagicks {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            AncientMagicksNetwork.init();
+            ModNetwork.init();
             ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
 
-            PotionBrewing.addMix(Potions.AWKWARD, Items.ELYTRA, AncientMagicksPotions.FLIGHT_POTION.get());
-            PotionBrewing.addMix(AncientMagicksPotions.FLIGHT_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_FLIGHT_POTION.get());
-            PotionBrewing.addMix(Potions.AWKWARD, Items.FEATHER, AncientMagicksPotions.FALL_CONTROL_POTION.get());
-            PotionBrewing.addMix(AncientMagicksPotions.FALL_CONTROL_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_FALL_CONTROL_POTION.get());
-            PotionBrewing.addMix(Potions.AWKWARD, Items.POTATO, AncientMagicksPotions.SLEEP_POTION.get());
-            PotionBrewing.addMix(AncientMagicksPotions.SLEEP_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_SLEEP_POTION.get());
-            PotionBrewing.addMix(Potions.AWKWARD, Items.ENDER_PEARL, AncientMagicksPotions.TELEBLOCK_POTION.get());
-            PotionBrewing.addMix(AncientMagicksPotions.TELEBLOCK_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_TELEBLOCK_POTION.get());
-            PotionBrewing.addMix(Potions.AWKWARD, AncientMagicksItems.WOOL_CLOTH.get(), AncientMagicksPotions.POLYMORPH_POTION.get());
-            PotionBrewing.addMix(AncientMagicksPotions.POLYMORPH_POTION.get(), Items.REDSTONE, AncientMagicksPotions.LONG_POLYMORPH_POTION.get());
-            PotionBrewing.addMix(AncientMagicksPotions.POLYMORPH_POTION.get(), Items.FERMENTED_SPIDER_EYE, AncientMagicksPotions.CHAOTIC_POLYMORPH_POTION.get());
-            PotionBrewing.addMix(AncientMagicksPotions.LONG_POLYMORPH_POTION.get(), Items.FERMENTED_SPIDER_EYE, AncientMagicksPotions.CHAOTIC_POLYMORPH_POTION.get());
+            PotionBrewing.addMix(Potions.AWKWARD, Items.ELYTRA, ModPotions.FLIGHT_POTION.get());
+            PotionBrewing.addMix(ModPotions.FLIGHT_POTION.get(), Items.REDSTONE, ModPotions.LONG_FLIGHT_POTION.get());
+            PotionBrewing.addMix(Potions.AWKWARD, Items.FEATHER, ModPotions.FALL_CONTROL_POTION.get());
+            PotionBrewing.addMix(ModPotions.FALL_CONTROL_POTION.get(), Items.REDSTONE, ModPotions.LONG_FALL_CONTROL_POTION.get());
+            PotionBrewing.addMix(Potions.AWKWARD, Items.POTATO, ModPotions.SLEEP_POTION.get());
+            PotionBrewing.addMix(ModPotions.SLEEP_POTION.get(), Items.REDSTONE, ModPotions.LONG_SLEEP_POTION.get());
+            PotionBrewing.addMix(Potions.AWKWARD, Items.ENDER_PEARL, ModPotions.TELEBLOCK_POTION.get());
+            PotionBrewing.addMix(ModPotions.TELEBLOCK_POTION.get(), Items.REDSTONE, ModPotions.LONG_TELEBLOCK_POTION.get());
+            PotionBrewing.addMix(Potions.AWKWARD, ModItems.WOOL_CLOTH.get(), ModPotions.POLYMORPH_POTION.get());
+            PotionBrewing.addMix(ModPotions.POLYMORPH_POTION.get(), Items.REDSTONE, ModPotions.LONG_POLYMORPH_POTION.get());
+            PotionBrewing.addMix(ModPotions.POLYMORPH_POTION.get(), Items.FERMENTED_SPIDER_EYE, ModPotions.CHAOTIC_POLYMORPH_POTION.get());
+            PotionBrewing.addMix(ModPotions.LONG_POLYMORPH_POTION.get(), Items.FERMENTED_SPIDER_EYE, ModPotions.CHAOTIC_POLYMORPH_POTION.get());
         });
     }
 
@@ -108,7 +108,7 @@ public class AncientMagicks {
         ARCANE_DUST_LIST = Lists.newArrayList();
         List<Item> vanillaList = Lists.newArrayList();
         List<Item> disabledList = Lists.newArrayList();
-        List<String> configString = AncientMagicksCommonConfig.DISABLED_ARCANE_DUST_RECIPE_ENTRIES.get();
+        List<String> configString = ModCommonConfig.DISABLED_ARCANE_DUST_RECIPE_ENTRIES.get();
         configString.forEach(string -> disabledList.add(ForgeRegistries.ITEMS.getValue(new ResourceLocation(string))));
         ForgeRegistries.ITEMS.getValues().forEach(item -> {
             if ( (ForgeRegistries.ITEMS.getKey(item).toString().split(":")[0]).equals("minecraft")

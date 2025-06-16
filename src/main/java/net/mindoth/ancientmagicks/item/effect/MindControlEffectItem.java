@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.item.effect;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.mobeffect.MindControlEffect;
-import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.ancientmagicks.registries.ModEffects;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -35,7 +35,7 @@ public class MindControlEffectItem extends PotionEffectItem {
     @Override
     protected List<MobEffect> getEffects(String data) {
         List<MobEffect> effects = Lists.newArrayList();
-        effects.add(AncientMagicksEffects.MIND_CONTROL.get());
+        effects.add(ModEffects.MIND_CONTROL.get());
         return effects;
     }
 

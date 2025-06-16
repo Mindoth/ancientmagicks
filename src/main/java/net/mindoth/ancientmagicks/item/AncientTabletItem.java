@@ -2,9 +2,9 @@ package net.mindoth.ancientmagicks.item;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketOpenAncientTablet;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.mindoth.ancientmagicks.registries.ModItems;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -27,10 +27,10 @@ public class AncientTabletItem extends Item {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
             ItemStack stack = player.getItemInHand(handIn);
-            if ( stack.getItem() == AncientMagicksItems.ANCIENT_TABLET.get() ) {
+            if ( stack.getItem() == ModItems.ANCIENT_TABLET.get() ) {
                 List<ItemStack> stackList = Lists.newArrayList();
                 for ( Item item : AncientMagicks.ARCANE_DUST_LIST ) stackList.add(new ItemStack(item));
-                AncientMagicksNetwork.sendToPlayer(new PacketOpenAncientTablet(stackList), serverPlayer);
+                ModNetwork.sendToPlayer(new PacketOpenAncientTablet(stackList), serverPlayer);
             }
         }
         return result;

@@ -1,13 +1,12 @@
 package net.mindoth.ancientmagicks.mixins;
 
-import net.mindoth.ancientmagicks.registries.AncientMagicksEffects;
+import net.mindoth.ancientmagicks.registries.ModEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
@@ -17,7 +16,7 @@ public class LivingEntityMixin {
     @ModifyVariable(method = "checkFallDamage", at = @At("STORE"), ordinal = 0)
     protected int preventFallingParticles(int i) {
         LivingEntity living = (LivingEntity)(Object)this;
-        if ( living.hasEffect(AncientMagicksEffects.FALL_CONTROL.get()) ) return 0;
+        if ( living.hasEffect(ModEffects.FALL_CONTROL.get()) ) return 0;
         else return i;
     }
 
@@ -32,12 +31,12 @@ public class LivingEntityMixin {
     @Inject(method = "checkBedExists", at = @At(value = "HEAD"), cancellable = true)
     public void allowSleepWithPotionEffect(CallbackInfoReturnable<Boolean> callback) {
         LivingEntity living = (LivingEntity)(Object) this;
-        if ( living.hasEffect(AncientMagicksEffects.SLEEP.get()) ) callback.setReturnValue(true);
+        if ( living.hasEffect(ModEffects.SLEEP.get()) ) callback.setReturnValue(true);
     }
 
     @Inject(method = "isImmobile", at = @At(value = "HEAD"), cancellable = true)
     public void stopMovementWhileSleeping(CallbackInfoReturnable<Boolean> callback) {
         LivingEntity living = (LivingEntity)(Object) this;
-        if ( living.hasEffect(AncientMagicksEffects.SLEEP.get()) && living instanceof Mob ) callback.setReturnValue(true);
+        if ( living.hasEffect(ModEffects.SLEEP.get()) && living instanceof Mob ) callback.setReturnValue(true);
     }
 }
