@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.modifier;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.form.entity.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.registries.ModItems;
 
@@ -24,9 +24,9 @@ public class GravityModifierItem extends SpellModifierItem {
     }
 
     @Override
-    public List<ComponentItem> exclusiveWith() {
-        List<ComponentItem> list = Lists.newArrayList();
-        list.add((ComponentItem) ModItems.PROJECTILE_SIGIL_ITEM.get());
+    public List<SpellComponentItem> exclusiveWith() {
+        List<SpellComponentItem> list = Lists.newArrayList();
+        list.add((SpellComponentItem) ModItems.PROJECTILE_SIGIL_ITEM.get());
         return list;
     }
 

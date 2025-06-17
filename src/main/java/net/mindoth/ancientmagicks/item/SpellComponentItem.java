@@ -17,14 +17,14 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
-public class ComponentItem extends Item {
+public class SpellComponentItem extends Item {
 
     private final int cost;
     public int getCost() {
         return this.cost;
     }
 
-    public ComponentItem(Properties pProperties, int cost) {
+    public SpellComponentItem(Properties pProperties, int cost) {
         super(pProperties);
         this.cost = cost;
     }
@@ -35,8 +35,7 @@ public class ComponentItem extends Item {
         if ( stack.getItem() instanceof SpellFormItem ) tooltip.add(Component.translatable("tooltip.ancientmagicks.type_form").withStyle(ChatFormatting.DARK_PURPLE));
         else if ( stack.getItem() instanceof SpellEffectItem ) tooltip.add(Component.translatable("tooltip.ancientmagicks.type_effect").withStyle(ChatFormatting.RED));
         else if ( stack.getItem() instanceof SpellModifierItem ) tooltip.add(Component.translatable("tooltip.ancientmagicks.type_modifier").withStyle(ChatFormatting.BLUE));
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.component_cost").withStyle(ChatFormatting.GRAY)
-                .append(Component.literal(String.valueOf(getCost())).withStyle(ChatFormatting.AQUA)));
+
         if ( !isEncodedComponent(stack) ) {
             if ( !Screen.hasShiftDown() ) tooltip.add(Component.translatable("tooltip.ancientmagicks.shift").withStyle(ChatFormatting.GRAY));
             else tooltip.add(Component.translatable("tooltip.ancientmagicks." + stack.getItem()).withStyle(ChatFormatting.GRAY));
@@ -45,7 +44,7 @@ public class ComponentItem extends Item {
     }
 
     private boolean isEncodedComponent(ItemStack stack) {
-        return stack.getItem() instanceof ComponentItem component && component.isEncodeable() && stack.hasTag() && stack.getTag().contains(NBT_KEY_COMPONENT_DATA);
+        return stack.getItem() instanceof SpellComponentItem component && component.isEncodeable() && stack.hasTag() && stack.getTag().contains(NBT_KEY_COMPONENT_DATA);
     }
 
     public static final String NBT_KEY_EMPTY = "am_empty";

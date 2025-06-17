@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.form;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.effect.BlockTargetEffect;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
@@ -27,13 +27,13 @@ public class TouchFormItem extends SpellFormItem {
     }
 
     @Override
-    public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack, List<String> data) {
-        List<ComponentItem> newList = Lists.newArrayList();
+    public boolean formSpell(LivingEntity owner, Entity caster, List<SpellComponentItem> spellStack, List<String> data) {
+        List<SpellComponentItem> newList = Lists.newArrayList();
         List<String> newData = Lists.newArrayList();
         List<SpellModifierItem> formModifiers = Lists.newArrayList();
         boolean form = false;
         for ( int i = 0; i < spellStack.size(); i++ ) {
-            ComponentItem item = spellStack.get(i);
+            SpellComponentItem item = spellStack.get(i);
             if ( !form ) {
                 if ( item instanceof SpellFormItem ) form = true;
                 if ( item instanceof SpellModifierItem modifier ) formModifiers.add(modifier);
@@ -43,7 +43,7 @@ public class TouchFormItem extends SpellFormItem {
                 newData.add(data.get(i));
             }
         }
-        HashMap<String, Float> formStats = ComponentItem.createDefaultStats();
+        HashMap<String, Float> formStats = SpellComponentItem.createDefaultStats();
         Level defLevel = caster.level();
         for ( SpellModifierItem modifier : formModifiers ) modifier.addStatsToMap(formStats);
         float range = formStats.get(REACH);
@@ -55,11 +55,11 @@ public class TouchFormItem extends SpellFormItem {
             defPosVec = ed.posVec;
         }
         List<Boolean> boolist = Lists.newArrayList();
-        HashMap<String, Float> stats = ComponentItem.createDefaultStats();
+        HashMap<String, Float> stats = SpellComponentItem.createDefaultStats();
         List<SpellModifierItem> modifiers = Lists.newArrayList();
         List<String> modifierData = Lists.newArrayList();
         for ( int i = 0; i < newList.size(); i++ ) {
-            ComponentItem item = newList.get(i);
+            SpellComponentItem item = newList.get(i);
             if ( item instanceof SpellModifierItem modifier ) {
                 modifiers.add(modifier);
                 modifierData.add(newData.get(i));
@@ -81,7 +81,7 @@ public class TouchFormItem extends SpellFormItem {
                 HitResult hitResult = createHitResult(level, posVec, caster, range);
 
                 boolist.add(effect.castSpell(level, owner, caster, hitResult, formStats.get(AOE), stats, newData.get(i)));
-                stats = ComponentItem.createDefaultStats();
+                stats = SpellComponentItem.createDefaultStats();
                 modifiers = Lists.newArrayList();
                 modifierData = Lists.newArrayList();
             }

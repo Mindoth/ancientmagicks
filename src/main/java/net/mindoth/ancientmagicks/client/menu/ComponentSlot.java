@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.client.menu;
 
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +16,7 @@ public class ComponentSlot extends Slot {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return stack.getItem() instanceof ComponentItem && this.isOpen;
+        return stack.getItem() instanceof SpellComponentItem && this.isOpen;
     }
 
     @Override

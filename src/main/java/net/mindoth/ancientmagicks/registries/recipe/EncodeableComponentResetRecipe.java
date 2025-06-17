@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.registries.recipe;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -24,7 +24,7 @@ public class EncodeableComponentResetRecipe extends CustomRecipe {
         List<ItemStack> items = Lists.newArrayList();
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
-            if ( !stack.isEmpty() && stack.getItem() instanceof ComponentItem component && component.isEncodeable() && stack.hasTag() ) items.add(stack);
+            if ( !stack.isEmpty() && stack.getItem() instanceof SpellComponentItem component && component.isEncodeable() && stack.hasTag() ) items.add(stack);
         }
         return items.size() == 1;
     }
@@ -35,7 +35,7 @@ public class EncodeableComponentResetRecipe extends CustomRecipe {
         List<ItemStack> items = Lists.newArrayList();
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
-            if ( !stack.isEmpty() && stack.getItem() instanceof ComponentItem component && component.isEncodeable() ) items.add(stack);
+            if ( !stack.isEmpty() && stack.getItem() instanceof SpellComponentItem component && component.isEncodeable() ) items.add(stack);
         }
         if ( items.size() == 1 ) returnStack = new ItemStack(items.get(0).getItem());
         return returnStack;

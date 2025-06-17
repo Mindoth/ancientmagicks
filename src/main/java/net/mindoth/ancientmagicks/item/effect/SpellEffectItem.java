@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks.item.effect;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.ModCommonConfig;
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.mobeffect.MindControlEffect;
 import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class SpellEffectItem extends ComponentItem {
+public class SpellEffectItem extends SpellComponentItem {
 
     public SpellEffectItem(Properties pProperties, int cost) {
         super(pProperties, cost);
@@ -49,7 +49,7 @@ public class SpellEffectItem extends ComponentItem {
     }
 
     public ParticleColor.IntWrapper getParticleColor(HashMap<String, Float> stats) {
-        ParticleColor.IntWrapper color = new ParticleColor.IntWrapper(Mth.floor(stats.get(ComponentItem.RED)), Mth.floor(stats.get(ComponentItem.GREEN)), Mth.floor(stats.get(ComponentItem.BLUE)));
+        ParticleColor.IntWrapper color = new ParticleColor.IntWrapper(Mth.floor(stats.get(SpellComponentItem.RED)), Mth.floor(stats.get(SpellComponentItem.GREEN)), Mth.floor(stats.get(SpellComponentItem.BLUE)));
         if ( color.r < 0 || color.r > 255 || color.g < 0 || color.g > 255 || color.b < 0 || color.b > 255 ) {
             int r = new Random().nextInt(0, 256);
             int g = new Random().nextInt(0, 256);

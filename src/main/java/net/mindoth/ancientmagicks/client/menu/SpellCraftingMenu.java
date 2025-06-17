@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks.client.menu;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.CastingValidator;
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.network.ModNetwork;
@@ -156,7 +156,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
             if ( !level.isClientSide ) {
                 if ( isReadyToDump() ) {
                     ItemStack stack = craftSlots.getItem(0);
-                    List<ComponentItem> componentList = CastingValidator.getSpellStackFromScroll(stack);
+                    List<SpellComponentItem> componentList = CastingValidator.getSpellStackFromScroll(stack);
                     List<String> dataList = CastingValidator.getDataListFromScroll(stack);
                     for ( int i = 0; i < this.slots.size(); i++ ) {
                         if ( i == 0 ) cleanScroll(stack);
@@ -164,7 +164,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
                             Slot slot = this.slots.get(i);
                             if ( slot instanceof ComponentSlot ) {
                                 ItemStack component = new ItemStack(componentList.get(i - 1));
-                                if ( ((ComponentItem)component.getItem()).isEncodeable() ) {
+                                if ( ((SpellComponentItem)component.getItem()).isEncodeable() ) {
                                     component.getOrCreateTag().putString(SpellEffectItem.NBT_KEY_COMPONENT_DATA, dataList.get(i - 1));
                                 }
                                 setSlotContent(i, component);
@@ -232,19 +232,19 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
         for ( int i = 1; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() != Items.AIR ) {
-                if ( stack.getItem() instanceof ComponentItem ) {
-                    if ( ((ComponentItem)stack.getItem()).isEncodeable() && (!stack.hasTag() || !stack.getTag().contains(ComponentItem.NBT_KEY_COMPONENT_DATA)) ) return ItemStack.EMPTY;
+                if ( stack.getItem() instanceof SpellComponentItem) {
+                    if ( ((SpellComponentItem)stack.getItem()).isEncodeable() && (!stack.hasTag() || !stack.getTag().contains(SpellComponentItem.NBT_KEY_COMPONENT_DATA)) ) return ItemStack.EMPTY;
                     else componentStackList.add(stack);
                 }
                 else restList.add(stack);
             }
         }
         if ( restList.isEmpty() ) {
-            List<ComponentItem> componentList = Lists.newArrayList();
+            List<SpellComponentItem> componentList = Lists.newArrayList();
             StringBuilder effectData = new StringBuilder();
             for ( int i = 0; i < componentStackList.size(); i++ ) {
                 ItemStack stack = componentStackList.get(i);
-                if ( stack.getItem() instanceof ComponentItem component ) {
+                if ( stack.getItem() instanceof SpellComponentItem component ) {
                     componentList.add(component);
                     if ( i > 0 ) effectData.append(",");
                     effectData.append(component.encodeComponentData(stack));

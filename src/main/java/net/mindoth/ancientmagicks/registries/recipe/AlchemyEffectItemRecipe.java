@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.registries.recipe;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.registries.ModItems;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -34,7 +34,7 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( !stack.isEmpty() ) items.add(stack);
-            if ( stack.getItem() == ModItems.ALCHEMY_SIGIL_ITEM.get() && (!stack.hasTag() || !stack.getTag().contains(ComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
+            if ( stack.getItem() == ModItems.ALCHEMY_SIGIL_ITEM.get() && (!stack.hasTag() || !stack.getTag().contains(SpellComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
                 if ( slate == null ) slate = stack;
                 else return false;
             }
@@ -55,7 +55,7 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( !stack.isEmpty() ) items.add(stack);
-            if ( stack.getItem() == ModItems.ALCHEMY_SIGIL_ITEM.get() && (!stack.hasTag() || !stack.getTag().contains(ComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
+            if ( stack.getItem() == ModItems.ALCHEMY_SIGIL_ITEM.get() && (!stack.hasTag() || !stack.getTag().contains(SpellComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
                 if ( slate == null ) slate = stack;
             }
             if ( stack.getItem() instanceof PotionItem ) {
@@ -71,7 +71,7 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
                 MobEffect effect = potion.getEffects().get(i).getEffect();
                 stringBuilder.append(ForgeRegistries.MOB_EFFECTS.getKey(effect).toString());
             }
-            tag.putString(ComponentItem.NBT_KEY_COMPONENT_DATA, stringBuilder.toString());
+            tag.putString(SpellComponentItem.NBT_KEY_COMPONENT_DATA, stringBuilder.toString());
             returnStack = newStack;
         }
         return returnStack;

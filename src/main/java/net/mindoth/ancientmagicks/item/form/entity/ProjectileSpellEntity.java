@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.form.entity;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.effect.BlockTargetEffect;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
@@ -35,7 +35,7 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
         List<SpellModifierItem> modifiers = Lists.newArrayList();
         List<String> modifierData = Lists.newArrayList();
         for ( int i = 0; i < getSpellStack().size(); i++ ) {
-            ComponentItem item = getSpellStack().get(i);
+            SpellComponentItem item = getSpellStack().get(i);
             if ( item instanceof SpellModifierItem modifier ) {
                 modifiers.add(modifier);
                 modifierData.add(getData().get(i));

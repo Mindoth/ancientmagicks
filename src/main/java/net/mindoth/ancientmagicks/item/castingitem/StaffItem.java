@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.item.CastingValidator;
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -67,9 +67,9 @@ public class StaffItem extends CastingItem implements Vanishable {
         }
         ItemStack scroll = SpellBookItem.getActiveScrollFromBook(book);
         player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-            List<ComponentItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
+            List<SpellComponentItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
             int manaCost = 0;
-            for ( ComponentItem item : componentList ) manaCost += item.getCost();
+            for ( SpellComponentItem item : componentList ) manaCost += item.getCost();
             if ( magic.getCurrentMana() >= manaCost || player.isCreative() ) doSpell(player, player, staff, scroll);
             else whiffSpell(caster);
         });

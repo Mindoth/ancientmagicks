@@ -73,6 +73,11 @@ public class ParchmentItem extends Item {
             }
             if ( !Screen.hasShiftDown() ) tooltip.add(Component.translatable("tooltip.ancientmagicks.shift").withStyle(ChatFormatting.GRAY));
             else {
+                int cost = 0;
+                List<Item> list = getScrollComboList(stack);
+                if ( list != null ) for ( Item item : list ) if ( item instanceof SpellComponentItem component ) cost += component.getCost();
+                tooltip.add(Component.translatable("tooltip.ancientmagicks.component_cost").withStyle(ChatFormatting.GRAY)
+                        .append(Component.literal(String.valueOf(cost)).withStyle(ChatFormatting.AQUA)));
                 if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_SPELL_STRING) ) {
                     List<Item> componentList = Lists.newArrayList();
                     for ( String string : List.of(tag.getString(NBT_KEY_SPELL_STRING).split(",")) ) {
@@ -87,8 +92,8 @@ public class ParchmentItem extends Item {
                         else if ( item instanceof SpellEffectItem ) color = ChatFormatting.RED;
                         else if ( item instanceof SpellModifierItem ) color = ChatFormatting.BLUE;
                         else color = ChatFormatting.GRAY;
-                        if ( item instanceof ComponentItem component && component.isEncodeable() ) {
-                            if ( Objects.equals(dataList.get(i), ComponentItem.NBT_KEY_EMPTY) ) {
+                        if ( item instanceof SpellComponentItem component && component.isEncodeable() ) {
+                            if ( Objects.equals(dataList.get(i), SpellComponentItem.NBT_KEY_EMPTY) ) {
                                 tooltip.add(Component.translatable(item.getDescriptionId())
                                         .append(Component.literal(": "))
                                         .append(Component.translatable("tooltip.ancientmagicks.empty")).withStyle(color));

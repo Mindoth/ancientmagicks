@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.item.modifier;
 
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -64,7 +64,7 @@ public class LocationModifierItem extends SpellModifierItem {
             String yPos = String.valueOf(player.position().y);
             String zPos = String.valueOf(player.position().z);
             stringBuilder.append(player.level().dimension().registry()).append(" ").append(player.level().dimension().location()).append(" ").append(xPos).append(" ").append(yPos).append(" ").append(zPos);
-            tag.putString(ComponentItem.NBT_KEY_COMPONENT_DATA, stringBuilder.toString());
+            tag.putString(SpellComponentItem.NBT_KEY_COMPONENT_DATA, stringBuilder.toString());
         }
         return result;
     }

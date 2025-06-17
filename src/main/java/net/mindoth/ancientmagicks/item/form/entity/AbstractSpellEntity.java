@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks.item.form.entity;
 import net.mindoth.ancientmagicks.client.particle.ember.EmberParticleProvider;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.CastingValidator;
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -325,7 +325,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         return Math.min(size, 2.0F);
     }
 
-    public List<ComponentItem> getSpellStack() {
+    public List<SpellComponentItem> getSpellStack() {
         return CastingValidator.getSpellStackFromString(this.entityData.get(SPELLSTACK));
     }
 
@@ -376,7 +376,7 @@ public abstract class AbstractSpellEntity extends Projectile {
 
     public boolean isHarmful() {
         for ( int i = 0; i < getSpellStack().size(); i++ ) {
-            ComponentItem item = getSpellStack().get(i);
+            SpellComponentItem item = getSpellStack().get(i);
             if ( item instanceof SpellEffectItem effect && effect.isHarmful(getData().get(i)) ) return true;
         }
         return false;
@@ -409,15 +409,15 @@ public abstract class AbstractSpellEntity extends Projectile {
 
         this.entityData.set(SPELLSTACK, compound.getString("spellstack"));
         this.entityData.set(DATA, compound.getString("data"));
-        this.entityData.set(POWER, compound.getInt(ComponentItem.POWER));
-        this.entityData.set(SPEED, compound.getFloat(ComponentItem.SPEED));
-        this.entityData.set(LIFE, compound.getInt(ComponentItem.LIFE));
-        this.entityData.set(AOE, compound.getFloat(ComponentItem.AOE));
-        this.entityData.set(REACH, compound.getFloat(ComponentItem.REACH));
-        this.entityData.set(ENTITY_PIERCE, compound.getInt(ComponentItem.ENTITY_PIERCE));
-        this.entityData.set(BLOCK_PIERCE, compound.getInt(ComponentItem.BLOCK_PIERCE));
-        this.entityData.set(BLOCK_BOUNCE, compound.getInt(ComponentItem.BLOCK_BOUNCE));
-        this.entityData.set(IS_HOMING, compound.getBoolean(ComponentItem.IS_HOMING));
+        this.entityData.set(POWER, compound.getInt(SpellComponentItem.POWER));
+        this.entityData.set(SPEED, compound.getFloat(SpellComponentItem.SPEED));
+        this.entityData.set(LIFE, compound.getInt(SpellComponentItem.LIFE));
+        this.entityData.set(AOE, compound.getFloat(SpellComponentItem.AOE));
+        this.entityData.set(REACH, compound.getFloat(SpellComponentItem.REACH));
+        this.entityData.set(ENTITY_PIERCE, compound.getInt(SpellComponentItem.ENTITY_PIERCE));
+        this.entityData.set(BLOCK_PIERCE, compound.getInt(SpellComponentItem.BLOCK_PIERCE));
+        this.entityData.set(BLOCK_BOUNCE, compound.getInt(SpellComponentItem.BLOCK_BOUNCE));
+        this.entityData.set(IS_HOMING, compound.getBoolean(SpellComponentItem.IS_HOMING));
     }
 
     @Override
@@ -430,15 +430,15 @@ public abstract class AbstractSpellEntity extends Projectile {
 
         compound.putString("spellstack", this.entityData.get(SPELLSTACK));
         compound.putString("data", this.entityData.get(DATA));
-        compound.putInt(ComponentItem.POWER, this.entityData.get(POWER));
-        compound.putFloat(ComponentItem.SPEED, this.entityData.get(SPEED));
-        compound.putInt(ComponentItem.LIFE, this.entityData.get(LIFE));
-        compound.putFloat(ComponentItem.AOE, this.entityData.get(AOE));
-        compound.putFloat(ComponentItem.REACH, this.entityData.get(REACH));
-        compound.putInt(ComponentItem.ENTITY_PIERCE, this.entityData.get(ENTITY_PIERCE));
-        compound.putInt(ComponentItem.BLOCK_PIERCE, this.entityData.get(BLOCK_PIERCE));
-        compound.putInt(ComponentItem.BLOCK_BOUNCE, this.entityData.get(BLOCK_BOUNCE));
-        compound.putBoolean(ComponentItem.IS_HOMING, this.entityData.get(IS_HOMING));
+        compound.putInt(SpellComponentItem.POWER, this.entityData.get(POWER));
+        compound.putFloat(SpellComponentItem.SPEED, this.entityData.get(SPEED));
+        compound.putInt(SpellComponentItem.LIFE, this.entityData.get(LIFE));
+        compound.putFloat(SpellComponentItem.AOE, this.entityData.get(AOE));
+        compound.putFloat(SpellComponentItem.REACH, this.entityData.get(REACH));
+        compound.putInt(SpellComponentItem.ENTITY_PIERCE, this.entityData.get(ENTITY_PIERCE));
+        compound.putInt(SpellComponentItem.BLOCK_PIERCE, this.entityData.get(BLOCK_PIERCE));
+        compound.putInt(SpellComponentItem.BLOCK_BOUNCE, this.entityData.get(BLOCK_BOUNCE));
+        compound.putBoolean(SpellComponentItem.IS_HOMING, this.entityData.get(IS_HOMING));
     }
 
     @Override

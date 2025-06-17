@@ -1,20 +1,17 @@
 package net.mindoth.ancientmagicks.item.modifier;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.item.form.SpellFormItem;
 import net.mindoth.ancientmagicks.item.form.entity.AbstractSpellEntity;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class SpellModifierItem extends ComponentItem {
+public class SpellModifierItem extends SpellComponentItem {
 
     public SpellModifierItem(Properties pProperties, int cost) {
         super(pProperties, cost);
@@ -28,16 +25,16 @@ public class SpellModifierItem extends ComponentItem {
         return false;
     }
 
-    public List<ComponentItem> exclusiveWith() {
+    public List<SpellComponentItem> exclusiveWith() {
         return Lists.newArrayList();
     }
 
-    public List<ComponentItem> incompatibleWith() {
+    public List<SpellComponentItem> incompatibleWith() {
         return Lists.newArrayList();
     }
 
     //Wood brain mode
-    public static boolean canAddModifier(SpellModifierItem modifier, ComponentItem component) {
+    public static boolean canAddModifier(SpellModifierItem modifier, SpellComponentItem component) {
         return ((modifier.usableWithForms() && component instanceof SpellFormItem) || (modifier.usableWithEffects() && component instanceof SpellEffectItem))
                 && (modifier.exclusiveWith().isEmpty() || modifier.exclusiveWith().contains(component))
                 && (modifier.incompatibleWith().isEmpty() || !modifier.incompatibleWith().contains(component));

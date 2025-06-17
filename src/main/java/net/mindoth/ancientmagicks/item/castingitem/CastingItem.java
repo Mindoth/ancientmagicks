@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks.item.castingitem;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.event.MagickEvents;
 import net.mindoth.ancientmagicks.item.CastingValidator;
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,9 +29,9 @@ public class CastingItem extends Item {
         //Handling for players
         if ( caster instanceof ServerPlayer serverPlayer ) {
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-                List<ComponentItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
+                List<SpellComponentItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
                 int cost = 0;
-                for ( ComponentItem item : componentList ) cost += item.getCost();
+                for ( SpellComponentItem item : componentList ) cost += item.getCost();
                 if ( CastingValidator.calculateSpellRecipes(scroll, owner, caster) ) {
                     handleCooldownsAndStuff(caster, stack, Math.max(1, 10));
                     if ( !serverPlayer.isCreative() ) MagickEvents.changeMagick(caster, -cost);

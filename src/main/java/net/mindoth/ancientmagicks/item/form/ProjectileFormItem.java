@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.item.form;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.CastingValidator;
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.form.entity.AbstractSpellEntity;
 import net.mindoth.ancientmagicks.item.form.entity.ProjectileSpellEntity;
 import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
@@ -23,14 +23,14 @@ public class ProjectileFormItem extends SpellFormItem {
     }
 
     @Override
-    public boolean formSpell(LivingEntity owner, Entity caster, List<ComponentItem> spellStack, List<String> data) {
-        List<ComponentItem> newList = Lists.newArrayList();
+    public boolean formSpell(LivingEntity owner, Entity caster, List<SpellComponentItem> spellStack, List<String> data) {
+        List<SpellComponentItem> newList = Lists.newArrayList();
         List<String> newData = Lists.newArrayList();
         List<SpellModifierItem> formModifiers = Lists.newArrayList();
         HashMap<SpellModifierItem, Integer> map = new HashMap<>();
         boolean form = false;
         for ( int i = 0; i < spellStack.size(); i++ ) {
-            ComponentItem item = spellStack.get(i);
+            SpellComponentItem item = spellStack.get(i);
             if ( !form ) {
                 if ( item instanceof SpellFormItem ) form = true;
                 if ( item instanceof SpellModifierItem modifier ) {
