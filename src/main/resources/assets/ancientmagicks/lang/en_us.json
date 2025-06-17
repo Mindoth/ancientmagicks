@@ -25,6 +25,7 @@
   "item.ancientmagicks.robe_hood": "Robe Hood",
   "item.ancientmagicks.robe_top": "Robe Top",
   "item.ancientmagicks.robe_bottom": "Robe Bottom",
+  "item.ancientmagicks.robe_boots": "Robe Boots",
   "item.ancientmagicks.wooden_staff": "Wooden Staff",
   "item.ancientmagicks.golden_staff": "Golden Staff",
   "item.ancientmagicks.netherite_staff": "Netherite Staff",
@@ -169,12 +170,6 @@
   "item.minecraft.tipped_arrow.effect.teleblock_potion": "Arrow of Teleblock",
   "item.minecraft.tipped_arrow.effect.long_teleblock_potion": "Arrow of Teleblock",
 
-  "effect.ancientmagicks.frost_armor": "Frost Armor",
-  "effect.ancientmagicks.witch_armor": "Witch Armor",
-  "effect.ancientmagicks.numbness": "Numbness",
-  "effect.ancientmagicks.greater_invisibility": "Greater Invisibility",
-  "effect.ancientmagicks.perfect_invisibility": "Perfect Invisibility",
-
 
   "tooltip.ancientmagicks.shift": "Hold SHIFT for more information",
   "tooltip.ancientmagicks.empty": "Empty",
@@ -183,10 +178,6 @@
   "tooltip.ancientmagicks.type_form": "Form",
   "tooltip.ancientmagicks.type_effect": "Effect",
   "tooltip.ancientmagicks.type_modifier": "Modifier",
-  "tooltip.ancientmagicks.form": "\u00A75Form: \u00A7r",
-  "tooltip.ancientmagicks.effect": "\u00A7cEffect: \u00A7r",
-  "tooltip.ancientmagicks.modifier": "\u00A79Modifier: \u00A7r",
 
-  "attribute.ancientmagicks.magick_max": "\u00A79Maximum Mana\u00A7r",
-  "attribute.ancientmagicks.magick_regen": "\u00A79Mana Regeneration\u00A7r"
+  "attribute.ancientmagicks.magick": "\u00A79Magick\u00A7r"
 }

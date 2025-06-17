@@ -34,7 +34,7 @@ public class CastingItem extends Item {
                 for ( ComponentItem item : componentList ) cost += item.getCost();
                 if ( CastingValidator.calculateSpellRecipes(scroll, owner, caster) ) {
                     handleCooldownsAndStuff(caster, stack, Math.max(1, 10));
-                    if ( !serverPlayer.isCreative() ) MagickEvents.changeMana(caster, -cost);
+                    if ( !serverPlayer.isCreative() ) MagickEvents.changeMagick(caster, -cost);
                 }
                 else whiffSpell(caster);
             });

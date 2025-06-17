@@ -34,7 +34,7 @@ public class ModCapabilities {
             event.getOriginal().getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(oldStore -> {
                 event.getEntity().getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
-                    if ( event.isWasDeath() ) MagickEvents.changeMana(serverPlayer, Integer.MIN_VALUE);
+                    if ( event.isWasDeath() ) MagickEvents.changeMagick(serverPlayer, Integer.MIN_VALUE);
                 });
             });
             event.getOriginal().invalidateCaps();

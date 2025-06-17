@@ -52,6 +52,9 @@ public class ModItems {
                     Map.of(
                     )));
 
+    public static final RegistryObject<Item> SPELL_BOOK = ITEMS.register("spell_book",
+            () -> new SpellBookItem(new Item.Properties().stacksTo(1)));
+
     public static final RegistryObject<Item> ROBE_HOOD = ITEMS.register("robe_hood",
             () -> new ColorableMagickArmorItem(ModArmorMaterials.ROBE, ArmorItem.Type.HELMET, new Item.Properties()));
 
@@ -61,8 +64,8 @@ public class ModItems {
     public static final RegistryObject<Item> ROBE_BOTTOM = ITEMS.register("robe_bottom",
             () -> new ColorableMagickArmorItem(ModArmorMaterials.ROBE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 
-    public static final RegistryObject<Item> SPELL_BOOK = ITEMS.register("spell_book",
-            () -> new SpellBookItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> ROBE_BOOTS = ITEMS.register("robe_boots",
+            () -> new ColorableMagickArmorItem(ModArmorMaterials.ROBE, ArmorItem.Type.BOOTS, new Item.Properties()));
 
 
     //Spell Parchments

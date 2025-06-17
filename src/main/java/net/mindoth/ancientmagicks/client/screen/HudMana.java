@@ -22,9 +22,9 @@ public class HudMana implements IGuiOverlay {
         Player player = MINECRAFT.player;
         if ( player == null ) return;
         if ( !shouldDisplayMana() ) return;
-        double maxMana = player.getAttributeValue(ModAttributes.MP_MAX.get());
-        double currentMana = ClientMagicData.getCurrentMana();
-        String mana = (int)currentMana + "/" + (int)maxMana;
+        double maxMagick = player.getAttributeValue(ModAttributes.MAGICK.get());
+        double currentMagick = ClientMagicData.getCurrentMana();
+        String mana = (int)currentMagick + "/" + (int)maxMagick;
         int posX = (MINECRAFT.getWindow().getGuiScaledWidth() / 2) + 30 + ModClientConfig.MANA_BAR_X_OFFSET.get();
         int posY = MINECRAFT.getWindow().getGuiScaledHeight() - 48 + ModClientConfig.MANA_BAR_Y_OFFSET.get();
         if ( player.getAirSupply() != player.getMaxAirSupply()
@@ -37,7 +37,7 @@ public class HudMana implements IGuiOverlay {
         ItemStack main = player.getMainHandItem();
         ItemStack off = player.getOffhandItem();
         return !(MINECRAFT.screen instanceof GuiSpellWheel || player.isSpectator() || player.isCreative())
-                && (ClientMagicData.getCurrentMana() < player.getAttributeValue(ModAttributes.MP_MAX.get())
+                && (ClientMagicData.getCurrentMana() < player.getAttributeValue(ModAttributes.MAGICK.get())
                 || CastingItem.isValidCastingItem(main) || CastingItem.isValidCastingItem(off) || isWearingMagicArmor(player));
     }
 

@@ -29,7 +29,7 @@ public class ServerEvents {
         if ( event.getEntity() instanceof ServerPlayer serverPlayer ) {
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
                 if ( data.getBoolean(NBT_KEY_NOT_FIRST_LOGIN) ) ModNetwork.sendToPlayer(new PacketSyncClientMana(magic.getCurrentMana()), serverPlayer);
-                else MagickEvents.changeMana(serverPlayer, Integer.MIN_VALUE);
+                else MagickEvents.changeMagick(serverPlayer, Integer.MIN_VALUE);
             });
         }
 

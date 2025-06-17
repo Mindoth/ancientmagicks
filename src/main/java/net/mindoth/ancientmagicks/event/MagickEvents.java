@@ -25,29 +25,29 @@ import net.minecraftforge.fml.common.Mod;
 public class MagickEvents {
 
     @SubscribeEvent
-    public static void baseManaRegen(final TickEvent.LevelTickEvent event) {
+    public static void baseRegen(final TickEvent.LevelTickEvent event) {
         if ( event.phase != TickEvent.Phase.END || event.level.isClientSide ) return;
         event.level.players().stream().toList().forEach(player -> {
-            final double manaRegen = player.getAttributeValue(ModAttributes.MP_REG.get());
             if ( !(player instanceof ServerPlayer serverPlayer ) || player.isDeadOrDying() || player.isRemoved() ) return;
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-                final double maxMana = serverPlayer.getAttributeValue(ModAttributes.MP_MAX.get());
-                final double currentMana = magic.getCurrentMana();
-                if ( player.tickCount % 80 == 0 ) changeMana(player, manaRegen);
-                if ( currentMana > maxMana ) changeMana(player, maxMana - currentMana);
+                final double maxMagick = serverPlayer.getAttributeValue(ModAttributes.MAGICK.get());
+                final double currentMagick = magic.getCurrentMana();
+                final double magickRegen = 6;
+                if ( player.tickCount % 120 == 0 ) changeMagick(player, magickRegen);
+                if ( currentMagick > maxMagick ) changeMagick(player, maxMagick - currentMagick);
             });
         });
     }
 
-    //ANY CHANGES IN A PLAYER'S MANA SHOULD BE DONE HERE
-    public static void changeMana(Entity entity, double addition) {
+    //ANY CHANGES IN A PLAYER'S RESOURCE SHOULD BE DONE HERE
+    public static void changeMagick(Entity entity, double addition) {
         if ( !(entity instanceof ServerPlayer serverPlayer) || serverPlayer.isRemoved() || (serverPlayer.isCreative() && addition < 0) ) return;
         serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-            final double maxMana = serverPlayer.getAttributeValue(ModAttributes.MP_MAX.get());
-            final double currentMana = magic.getCurrentMana();
-            final double newMana = Math.max(0.0D, Math.min(maxMana, currentMana + addition));
-            magic.setCurrentMana(newMana);
-            ModNetwork.sendToPlayer(new PacketSyncClientMana(newMana), serverPlayer);
+            final double maxMagick = serverPlayer.getAttributeValue(ModAttributes.MAGICK.get());
+            final double currentMagick = magic.getCurrentMana();
+            final double newMagick = Math.max(0.0D, Math.min(maxMagick, currentMagick + addition));
+            magic.setCurrentMana(newMagick);
+            ModNetwork.sendToPlayer(new PacketSyncClientMana(newMagick), serverPlayer);
         });
     }
 
