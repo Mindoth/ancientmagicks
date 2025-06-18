@@ -16,4 +16,8 @@ public class BlockTargetEffect extends SpellEffectItem {
     protected boolean canApply(Level level, LivingEntity owner, Entity caster, HitResult result, String data) {
         return result instanceof BlockHitResult;
     }
+
+    protected boolean isInside() {
+        return true;
+    }
 }

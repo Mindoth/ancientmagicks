@@ -74,8 +74,8 @@ public class ParchmentItem extends Item {
             if ( !Screen.hasShiftDown() ) tooltip.add(Component.translatable("tooltip.ancientmagicks.shift").withStyle(ChatFormatting.GRAY));
             else {
                 int cost = 0;
-                List<Item> list = getScrollComboList(stack);
-                if ( list != null ) for ( Item item : list ) if ( item instanceof SpellComponentItem component ) cost += component.getCost();
+                List<SpellComponentItem> list = CastingValidator.getSpellStackFromScroll(stack);
+                for ( SpellComponentItem component : list ) cost += component.getCost();
                 tooltip.add(Component.translatable("tooltip.ancientmagicks.component_cost").withStyle(ChatFormatting.GRAY)
                         .append(Component.literal(String.valueOf(cost)).withStyle(ChatFormatting.AQUA)));
                 if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_SPELL_STRING) ) {

@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -39,6 +40,7 @@ public class BreakEffectItem extends BlockTargetEffect {
         BlockPos pos = ((BlockHitResult)result).getBlockPos();
         if ( level.getBlockState(pos).isAir() ) return false;
         if ( !(level instanceof ServerLevel serverLevel) ) return false;
+        boolean canDrop = !(owner instanceof Player player && player.isCreative());
         FakePlayer player = FakePlayerFactory.get(serverLevel, FAKE_PROFILE);
         int power = Mth.floor(stats.get(SpellEffectItem.POWER));
         player.setItemSlot(EquipmentSlot.MAINHAND, getToolFromStrength(power));
@@ -52,7 +54,7 @@ public class BreakEffectItem extends BlockTargetEffect {
         //level.destroyBlock(pos, true);
         List<ItemStack> list = Block.getDrops(blockState, serverLevel, pos, level.getBlockEntity(pos), player, player.getItemBySlot(EquipmentSlot.MAINHAND));
         level.removeBlock(pos, false);
-        if ( !list.isEmpty() ) for ( ItemStack stack : list ) level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack));
+        if ( !list.isEmpty() && canDrop ) for ( ItemStack stack : list ) level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack));
         level.playSound(null, pos, blockState.getSoundType().getBreakSound(), SoundSource.PLAYERS, 0.3F, 1);
         return true;
     }

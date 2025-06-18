@@ -10,6 +10,8 @@ import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.ancientmagicks.registries.ModEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -94,17 +96,6 @@ public class SpellEffectItem extends SpellComponentItem {
         return true;
     }
 
-    private static @NotNull List<BlockPos> getBlockList(BlockPos pos, int range) {
-        List<BlockPos> blocks = Lists.newArrayList();
-        for ( int xPos = pos.getX() - range; xPos <= pos.getX() + range; xPos++ )
-            for ( int yPos = pos.getY() - range; yPos <= pos.getY() + range; yPos++ )
-                for ( int zPos = pos.getZ() - range; zPos <= pos.getZ() + range; zPos++ ) {
-                    blocks.add(new BlockPos(xPos, yPos, zPos));
-                }
-        if ( !blocks.contains(pos) ) blocks.add(pos);
-        return blocks;
-    }
-
     private static BlockPos getPosOfFace(BlockPos blockPos, Direction face) {
         return switch (face) {
             case UP -> blockPos.above();
@@ -114,6 +105,43 @@ public class SpellEffectItem extends SpellComponentItem {
             case NORTH -> blockPos.north();
             case DOWN -> blockPos.below();
         };
+    }
+
+    private static @NotNull List<BlockPos> getBlockList(SpellEffectItem component, HitResult result, BlockPos pos, int range) {
+        List<BlockPos> blocks = Lists.newArrayList();
+        if ( result instanceof EntityHitResult ) {
+            for ( int xPos = pos.getX() - range; xPos <= pos.getX() + range; xPos++ ) {
+                for ( int zPos = pos.getZ() - range; zPos <= pos.getZ() + range; zPos++ ) {
+                    blocks.add(new BlockPos(xPos, pos.getY(), zPos));
+                }
+            }
+        }
+        else if ( result instanceof BlockHitResult bResult ) {
+            if ( component instanceof BlockTargetEffect bte && !bte.isInside() ) pos = getPosOfFace(pos, bResult.getDirection());
+            if ( bResult.getDirection() == Direction.UP || bResult.getDirection() == Direction.DOWN ) {
+                for ( int xPos = pos.getX() - range; xPos <= pos.getX() + range; xPos++ ) {
+                    for ( int zPos = pos.getZ() - range; zPos <= pos.getZ() + range; zPos++ ) {
+                        blocks.add(new BlockPos(xPos, pos.getY(), zPos));
+                    }
+                }
+            }
+            else if ( bResult.getDirection() == Direction.NORTH || bResult.getDirection() == Direction.SOUTH ) {
+                for ( int xPos = pos.getX() - range; xPos <= pos.getX() + range; xPos++ ) {
+                    for ( int yPos = pos.getY() - range; yPos <= pos.getY() + range; yPos++ ) {
+                        blocks.add(new BlockPos(xPos, yPos, pos.getZ()));
+                    }
+                }
+            }
+            else if ( bResult.getDirection() == Direction.EAST || bResult.getDirection() == Direction.WEST ) {
+                for ( int yPos = pos.getY() - range; yPos <= pos.getY() + range; yPos++ ) {
+                    for ( int zPos = pos.getZ() - range; zPos <= pos.getZ() + range; zPos++ ) {
+                        blocks.add(new BlockPos(pos.getX(), yPos, zPos));
+                    }
+                }
+            }
+        }
+        if ( !blocks.contains(pos) ) blocks.add(pos);
+        return blocks;
     }
 
     //TODO: aoe particles
@@ -135,14 +163,12 @@ public class SpellEffectItem extends SpellComponentItem {
                 aoeEntitySpellParticles(level, box, result, aoe, stats);
             }
             else if ( this instanceof BlockTargetEffect ) {
-                //Vec3 newCenter = new Vec3(Mth.floor(box.getCenter().x), Mth.floor(box.getCenter().y), Mth.floor(box.getCenter().z));
-                //box = box.move(box.getCenter().x - newCenter.x, box.getCenter().y - newCenter.y, box.getCenter().z - newCenter.z);
                 List<BlockPos> blocks;
                 boolean isInside = false;
-                if ( result instanceof EntityHitResult entityHitResult ) blocks = getBlockList(entityHitResult.getEntity().getOnPos().above(), (int)aoe);
+                if ( result instanceof EntityHitResult entityHitResult ) blocks = getBlockList(this, result, entityHitResult.getEntity().getOnPos().above(), (int)aoe);
                 else {
                     BlockHitResult blockHitResult = (BlockHitResult)result;
-                    blocks = getBlockList(blockHitResult.getBlockPos(), (int)aoe);
+                    blocks = getBlockList(this, result, blockHitResult.getBlockPos(), (int)aoe);
                     isInside = blockHitResult.isInside();
                 }
                 for ( BlockPos position : blocks ) {
@@ -150,7 +176,7 @@ public class SpellEffectItem extends SpellComponentItem {
                     if ( canApply(level, owner, caster, newResult, data) ) doSpell(level, owner, caster, newResult, stats, data);
                 }
                 state = true;
-                aoeBlockSpellParticles(level, blocks, aoe, stats);
+                aoeBlockSpellParticles(level, blocks, stats);
             }
             else if ( canApply(level, owner, caster, result, data) ) state = doSpell(level, owner, caster, result, stats, data);
         }
@@ -169,63 +195,98 @@ public class SpellEffectItem extends SpellComponentItem {
             else tempY = i;
         }
         box = box.move(0, -(center.y - tempY), 0);
-        addAoeParticles(level, box, 0.15F, 8, 0.15D, stats);
+        addAoeParticles(false, level, box, 0.15F, 8, stats);
     }
 
-    private void aoeBlockSpellParticles(Level level, List<BlockPos> blocks, float aoe, HashMap<String, Float> stats) {
-        for ( int i = -(int)aoe; i <= aoe; i++ ) {
-            BlockPos start = new BlockPos(blocks.get(0).getX(), blocks.get(0).getY(), blocks.get(0).getZ());
-            BlockPos end = new BlockPos(blocks.get(blocks.size() - 1).getX() + 1, blocks.get(blocks.size() - 1).getY() + 1, blocks.get(blocks.size() - 1).getZ() + 1);
-            AABB particleBox = new AABB(start, end).move(0, i, 0);
-            addAoeParticles(level, particleBox, 0.15F, 8, 0.0D, stats);
-        }
+    private void aoeBlockSpellParticles(Level level, List<BlockPos> blocks, HashMap<String, Float> stats) {
+        BlockPos start = new BlockPos(blocks.get(0).getX(), blocks.get(0).getY(), blocks.get(0).getZ());
+        BlockPos end = new BlockPos(blocks.get(blocks.size() - 1).getX() + 1, blocks.get(blocks.size() - 1).getY() + 1, blocks.get(blocks.size() - 1).getZ() + 1);
+        AABB particleBox = new AABB(start, end);
+        addAoeParticles(true, level, particleBox, 0.15F, 8, stats);
     }
 
-    protected void addAoeParticles(Level level, AABB box, float size, int age, double vecY, HashMap<String, Float> stats) {
+    protected void addAoeParticles(boolean targetBlocks, Level level, AABB box, float size, int age, HashMap<String, Float> stats) {
         Vec3 center = box.getCenter();
         double maxX = box.maxX;
         double minX = box.minX;
+        double maxY = box.maxY;
+        double minY = box.minY;
         double maxZ = box.maxZ;
         double minZ = box.minZ;
-        double vecX = 0;
-        double vecZ = 0;
-        int amount = 4 * (int)box.getYsize();
-        for ( int i = 0; i < amount; i++ ) {
-            double randX = maxX;
-            double randY = center.y - 0.5D + new Random().nextDouble();
-            double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
-            Vec3 pos = new Vec3(randX, randY, randZ);
-            ParticleColor.IntWrapper color = getParticleColor(stats);
-            ModNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
-                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
+
+        if ( targetBlocks ) {
+            int amountX = 4 * (int)box.getXsize();
+            int amountY = 4 * (int)box.getYsize();
+            int amountZ = 4 * (int)box.getZsize();
+
+            //VectorPos for each corner
+            Vec3 pos0 = new Vec3(minX, minY, minZ);
+            Vec3 pos1 = new Vec3(maxX, minY, minZ);
+            Vec3 pos2 = new Vec3(minX, minY, maxZ);
+            Vec3 pos3 = new Vec3(maxX, minY, maxZ);
+            Vec3 pos4 = new Vec3(minX, maxY, minZ);
+            Vec3 pos5 = new Vec3(maxX, maxY, minZ);
+            Vec3 pos6 = new Vec3(minX, maxY, maxZ);
+            Vec3 pos7 = new Vec3(maxX, maxY, maxZ);
+            //Bottom corners
+            generateParticles(pos0, center, level, size, age, 0, 0, 0, stats);
+            generateParticles(pos1, center, level, size, age, 0, 0, 0, stats);
+            generateParticles(pos2, center, level, size, age, 0, 0, 0, stats);
+            generateParticles(pos3, center, level, size, age, 0, 0, 0, stats);
+            //Top corners
+            generateParticles(pos4, center, level, size, age, 0, 0, 0, stats);
+            generateParticles(pos5, center, level, size, age, 0, 0, 0, stats);
+            generateParticles(pos6, center, level, size, age, 0, 0, 0, stats);
+            generateParticles(pos7, center, level, size, age, 0, 0, 0, stats);
+            //Bottom edges
+            summonParticleLine(pos0, pos1, amountX, center, level, size, age, stats);
+            summonParticleLine(pos0, pos2, amountZ, center, level, size, age, stats);
+            summonParticleLine(pos3, pos1, amountZ, center, level, size, age, stats);
+            summonParticleLine(pos3, pos2, amountX, center, level, size, age, stats);
+            //Middle edges
+            summonParticleLine(pos0, pos4, amountY, center, level, size, age, stats);
+            summonParticleLine(pos1, pos5, amountY, center, level, size, age, stats);
+            summonParticleLine(pos2, pos6, amountY, center, level, size, age, stats);
+            summonParticleLine(pos3, pos7, amountY, center, level, size, age, stats);
+            //Top edges
+            summonParticleLine(pos4, pos5, amountX, center, level, size, age, stats);
+            summonParticleLine(pos4, pos6, amountZ, center, level, size, age, stats);
+            summonParticleLine(pos7, pos5, amountZ, center, level, size, age, stats);
+            summonParticleLine(pos7, pos6, amountX, center, level, size, age, stats);
         }
-        for ( int i = 0; i < amount; i++ ) {
-            double randX = minX;
-            double randY = center.y - 0.5D + new Random().nextDouble();
-            double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
-            Vec3 pos = new Vec3(randX, randY, randZ);
-            ParticleColor.IntWrapper color = getParticleColor(stats);
-            ModNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
-                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
+        else {
+            int amount = 4 * Math.max((int)box.getYsize(), (int)box.getXsize());
+            for ( int i = 0; i < amount; i++ ) {
+                generateParticles(new Vec3(maxX, center.y - 0.5D + new Random().nextDouble(), minZ + (maxZ - minZ) * new Random().nextDouble()), center, level, size, age, 0, 0.15D, 0, stats);
+                generateParticles(new Vec3(minX, center.y - 0.5D + new Random().nextDouble(), minZ + (maxZ - minZ) * new Random().nextDouble()), center, level, size, age, 0, 0.15D, 0, stats);
+                generateParticles(new Vec3(minX + (maxX - minX) * new Random().nextDouble(), center.y - 0.5D + new Random().nextDouble(), minZ), center, level, size, age, 0, 0.15D, 0, stats);
+                generateParticles(new Vec3(minX + (maxX - minX) * new Random().nextDouble(), center.y - 0.5D + new Random().nextDouble(), maxZ), center, level, size, age, 0, 0.15D, 0, stats);
+            }
         }
-        for ( int i = 0; i < amount; i++ ) {
-            double randX = minX + (maxX - minX) * new Random().nextDouble();
-            double randY = center.y - 0.5D + new Random().nextDouble();
-            double randZ = minZ;
-            Vec3 pos = new Vec3(randX, randY, randZ);
-            ParticleColor.IntWrapper color = getParticleColor(stats);
-            ModNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
-                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
+    }
+
+    private void summonParticleLine(Vec3 startPos, Vec3 endPos, int amount, Vec3 center, Level level, float size, int age, HashMap<String, Float> stats) {
+        double startX = startPos.x;
+        double startY = startPos.y;
+        double startZ = startPos.z;
+        double endX = endPos.x;
+        double endY = endPos.y;
+        double endZ = endPos.z;
+        for (int k = 1; k < (1 + amount); k++ ) {
+            double vecX = new Random().nextDouble(1.0D - -1.0D) + -1.0D;
+            double vecY = new Random().nextDouble(1.0D - -1.0D) + -1.0D;
+            double vecZ = new Random().nextDouble(1.0D - -1.0D) + -1.0D;
+            double lineX = startX * (1 - ((double) k / amount)) + endX * ((double) k / amount);
+            double lineY = startY * (1 - ((double) k / amount)) + endY * ((double) k / amount);
+            double lineZ = startZ * (1 - ((double) k / amount)) + endZ * ((double) k / amount);
+            generateParticles(new Vec3(lineX, lineY, lineZ), center, level, size, age, vecX * 0.1D, vecY * 0.1D, vecZ * 0.1D, stats);
         }
-        for ( int i = 0; i < amount; i++ ) {
-            double randX = minX + (maxX - minX) * new Random().nextDouble();
-            double randY = center.y - 0.5D + new Random().nextDouble();
-            double randZ = maxZ;
-            Vec3 pos = new Vec3(randX, randY, randZ);
-            ParticleColor.IntWrapper color = getParticleColor(stats);
-            ModNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
-                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
-        }
+    }
+
+    private void generateParticles(Vec3 pos, Vec3 center, Level level, float size, int age, double vecX, double vecY, double vecZ, HashMap<String, Float> stats) {
+        ParticleColor.IntWrapper color = getParticleColor(stats);
+        ModNetwork.sendToNearby(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
+                pos.x, pos.y, pos.z, vecX, vecY, vecZ), level, center);
     }
 
     protected int getRenderType() {
