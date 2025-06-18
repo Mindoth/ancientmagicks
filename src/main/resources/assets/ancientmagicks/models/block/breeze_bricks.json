@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "up": "ancientmagicks:block/breeze_bricks",
+    "down": "ancientmagicks:block/breeze_bricks",
+    "north": "ancientmagicks:block/breeze_bricks",
+    "east": "ancientmagicks:block/breeze_bricks",
+    "south": "ancientmagicks:block/breeze_bricks",
+    "west": "ancientmagicks:block/breeze_bricks",
+    "particle": "ancientmagicks:block/breeze_bricks"
+  }
+}

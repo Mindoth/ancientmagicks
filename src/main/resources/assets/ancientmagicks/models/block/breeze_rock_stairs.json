@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "ancientmagicks:block/breeze_rock",
+    "side": "ancientmagicks:block/breeze_rock",
+    "top": "ancientmagicks:block/breeze_rock"
+  }
+}

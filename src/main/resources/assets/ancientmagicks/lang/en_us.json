@@ -10,7 +10,13 @@
   "container.ancientmagicks.name": "Name",
 
 
-  "block.ancientmagicks.spell_crafting_table":  "Spell Crafting Table",
+  "block.ancientmagicks.spell_crafting_table": "Spell Crafting Table",
+  "block.ancientmagicks.breeze_rock": "Breeze Rock",
+  "block.ancientmagicks.breeze_rock_stairs": "Breeze Rock Stairs",
+  "block.ancientmagicks.breeze_rock_slab": "Breeze Rock Slab",
+  "block.ancientmagicks.breeze_bricks": "Breeze Bricks",
+  "block.ancientmagicks.breeze_brick_stairs": "Breeze Brick Stairs",
+  "block.ancientmagicks.breeze_brick_slab": "Breeze Brick Slab",
 
 
   "item.ancientmagicks.wool_cloth": "Wool Cloth",
