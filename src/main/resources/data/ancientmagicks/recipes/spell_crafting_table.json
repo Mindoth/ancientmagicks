@@ -7,10 +7,10 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:polished_deepslate"
+      "item": "ancientmagicks:breeze_rock"
     },
     "I": {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:copper_ingot"
     },
     "W": {
       "item": "ancientmagicks:wool_cloth"
