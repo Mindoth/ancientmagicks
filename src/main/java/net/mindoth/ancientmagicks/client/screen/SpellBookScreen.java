@@ -39,10 +39,13 @@ public class SpellBookScreen extends ModScreen {
     private List<List<ItemStack>> pageList;
     private int spreadNumber;
     private List<Button> slotButtonList = Lists.newArrayList();
+    private final int leftButtonXOffset = -114 + 6;
+    private final int rightButtonXOffset = 20 - 6;
     private HashMap<Button, Button> buttonMap = new HashMap<>();
-    private List<Button> swapButtonList = Lists.newArrayList();
-    private final int leftSwapButtonXOffset = 56;
-    private final int rightSwapButtonXOffset = 156;
+    private List<Button> upSwapButtonList = Lists.newArrayList();
+    private List<Button> downSwapButtonList = Lists.newArrayList();
+    private final int leftSwapButtonXOffset = 16;
+    private final int rightSwapButtonXOffset = 101;
 
     private final int arrowYOffset = 68;
     private final int arrowXOffset = 94;
@@ -114,7 +117,8 @@ public class SpellBookScreen extends ModScreen {
     private void buildButtons(int x, int y) {
         this.slotButtonList = Lists.newArrayList();
         this.buttonMap = new HashMap<>();
-        this.swapButtonList = Lists.newArrayList();
+        this.upSwapButtonList = Lists.newArrayList();
+        this.downSwapButtonList = Lists.newArrayList();
         this.clearWidgets();
         boolean isRightPage = false;
         int row = 0;
@@ -129,7 +133,7 @@ public class SpellBookScreen extends ModScreen {
                 }
             }
 
-            int xPos = isRightPage ? x + 20 + (column * this.squareSpacing) : x - 114 + (column * this.squareSpacing);
+            int xPos = isRightPage ? x + (column * this.squareSpacing) + this.rightButtonXOffset : x + (column * this.squareSpacing) + this.leftButtonXOffset;
             int yPos = y - 74 + (row * this.squareSpacing);
 
             buildSlotButton(xPos - 1, yPos - 1);
@@ -157,7 +161,10 @@ public class SpellBookScreen extends ModScreen {
                 .bounds(xPos - 1, yPos - 1, 18, 18)
                 .build());
         this.slotButtonList.add(button);
-        if ( getStackFromSlot(button).getItem() instanceof ParchmentItem ) buildSwapButton(xPos, yPos, button);
+        if ( (this.slotButtonList.size() - 1) % 4 == 0 ) {
+            buildUpSwapButton(xPos, yPos, button);
+            buildDownSwapButton(xPos, yPos + 11, button);
+        }
     }
 
     private void handleSlotButton(Button button) {
@@ -185,33 +192,46 @@ public class SpellBookScreen extends ModScreen {
         }
     }
 
-    private void buildSwapButton(int xPos, int yPos, Button slotButton) {
-        if ( this.swapButtonList.size() >= this.maxRows ) xPos += this.rightSwapButtonXOffset;
+    private void buildUpSwapButton(int xPos, int yPos, Button slotButton) {
+        if ( this.upSwapButtonList.size() >= this.maxRows ) xPos += this.rightSwapButtonXOffset;
         else xPos -= this.leftSwapButtonXOffset;
         Button button = addRenderableWidget(Button.builder(Component.literal(""), this::handleSwapButton)
                 .bounds(xPos - 1, yPos - 1, 13, 9)
                 .build());
-        this.swapButtonList.add(button);
+        this.upSwapButtonList.add(button);
+        this.buttonMap.put(button, slotButton);
+    }
+
+    private void buildDownSwapButton(int xPos, int yPos, Button slotButton) {
+        if ( this.downSwapButtonList.size() >= this.maxRows ) xPos += this.rightSwapButtonXOffset;
+        else xPos -= this.leftSwapButtonXOffset;
+        Button button = addRenderableWidget(Button.builder(Component.literal(""), this::handleSwapButton)
+                .bounds(xPos - 1, yPos - 1, 13, 9)
+                .build());
+        this.downSwapButtonList.add(button);
         this.buttonMap.put(button, slotButton);
     }
 
     private void handleSwapButton(Button button) {
-        /*if ( !this.swapButtonList.contains(button) ) return;
-        ItemStack stack = this.itemList.get(this.itemList.indexOf(getStackFromSlot(this.buttonMap.get(button))));
-        System.out.println("SCROLL: " + stack.getHoverName().getString());*/
-
-        if ( !this.swapButtonList.contains(button) ) return;
+        if ( !this.upSwapButtonList.contains(button) && !this.downSwapButtonList.contains(button) ) return;
+        boolean isUp = this.upSwapButtonList.contains(button);
         ItemStack stack = this.itemList.get(this.itemList.indexOf(getStackFromSlot(this.buttonMap.get(button))));
         if ( stack.isEmpty() ) return;
         if ( stack.getItem() instanceof ParchmentItem ) {
             int index = this.scrollList.indexOf(stack);
-            ModNetwork.sendToServer(new PacketReorderSpellBook(this.book, this.scrollList, index));
+            ModNetwork.sendToServer(new PacketReorderSpellBook(this.book, this.scrollList, index, isUp));
 
-            ItemStack first = this.scrollList.get(index - 1).copy();
-            ItemStack second = this.scrollList.get(index).copy();
-
-            this.scrollList.set(index - 1, second);
-            this.scrollList.set(index, first);
+            ItemStack first = this.scrollList.get(index).copy();
+            ItemStack second;
+            if ( isUp ) {
+                second = this.scrollList.get(index - 1).copy();
+                this.scrollList.set(index - 1, first);
+            }
+            else {
+                second = this.scrollList.get(index + 1).copy();
+                this.scrollList.set(index + 1, first);
+            }
+            this.scrollList.set(index, second);
 
             createPages(true);
             this.clearWidgets();
@@ -219,10 +239,21 @@ public class SpellBookScreen extends ModScreen {
         }
     }
 
-    //TODO button visibility on click. Left side disappears sometimes
     private void handleSwapButtonVisibility() {
-        for ( Button button : this.swapButtonList ) {
-            if ( this.swapButtonList.indexOf(button) == 0 && this.spreadNumber == 0 ) button.visible = false;
+        for ( Button button : this.upSwapButtonList ) {
+            if ( this.upSwapButtonList.indexOf(button) == 0 && this.spreadNumber == 0 ) button.visible = false;
+            else {
+                if ( !this.buttonMap.get(button).visible && button.visible ) button.visible = false;
+                else if ( !button.visible ) button.visible = true;
+            }
+        }
+        for ( Button button : this.downSwapButtonList ) {
+            //last item on page
+            //no next page
+            if ( (this.downSwapButtonList.indexOf(button) == this.downSwapButtonList.size() - 1 && isLastPage())
+                    || (this.downSwapButtonList.indexOf(button) < this.downSwapButtonList.size() - 1
+                    && !(getStackFromSlot(this.buttonMap.get(this.downSwapButtonList.get(this.downSwapButtonList.indexOf(button) + 1))).getItem() instanceof ParchmentItem)) )
+                button.visible = false;
             else {
                 if ( !this.buttonMap.get(button).visible && button.visible ) button.visible = false;
                 else if ( !button.visible ) button.visible = true;
@@ -265,7 +296,7 @@ public class SpellBookScreen extends ModScreen {
                         }
                     }
 
-                    int xPos = isRightPage ? x + 20 + (column * this.squareSpacing) : x - 114 + (column * this.squareSpacing);
+                    int xPos = isRightPage ? x + (column * this.squareSpacing) + this.rightButtonXOffset : x + (column * this.squareSpacing) + this.leftButtonXOffset;
                     int yPos = y - 74 + (row * this.squareSpacing);
 
                     if ( stack.getItem() instanceof ParchmentItem ) {
@@ -281,15 +312,17 @@ public class SpellBookScreen extends ModScreen {
                         if ( stack.getItem() instanceof ParchmentItem ) graphics.renderTooltip(this.font, stack, mouseX, mouseY);
                     }
 
-                    //Swap Arrow
-                    /*if ( stack.getItem() instanceof ParchmentItem ) {
+                    //Swap Arrows
+                    if ( stack.getItem() instanceof ParchmentItem ) {
                         int index = i / this.maxColumns;
                         int newX = xPos;
                         if ( index >= this.maxRows ) newX += this.rightSwapButtonXOffset;
                         else newX -= this.leftSwapButtonXOffset;
-                        this.swapButtonList.get(index).renderTexture(graphics, TEXTURE, newX - 1, yPos - 1,
+                        this.upSwapButtonList.get(index).renderTexture(graphics, TEXTURE, newX - 1, yPos - 1,
                                 80, 180, 7, 11, 7, 280, 202);
-                    }*/
+                        this.downSwapButtonList.get(index).renderTexture(graphics, TEXTURE, newX - 1, yPos + 10,
+                                91, 180, 7, 11, 7, 280, 202);
+                    }
 
                     column++;
                 }
@@ -369,6 +402,7 @@ public class SpellBookScreen extends ModScreen {
         if ( this.leftArrow.isFocused() ) this.leftArrow.setFocused(false);
         if ( isFirstPage() && this.leftArrow.visible ) this.leftArrow.visible = false;
         if ( !isFirstPage() && !this.leftArrow.visible ) this.leftArrow.visible = true;
-        for ( Button button : this.swapButtonList ) if ( button.isFocused() ) button.setFocused(false);
+        for ( Button button : this.upSwapButtonList ) if ( button.isFocused() ) button.setFocused(false);
+        for ( Button button : this.downSwapButtonList ) if ( button.isFocused() ) button.setFocused(false);
     }
 }
