@@ -13,21 +13,21 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class PacketRemoveSpellFromBook {
+public class PacketReorderSpellBook {
 
     public ItemStack book;
     public int size;
     public List<ItemStack> scrollList = Lists.newArrayList();
     public int slot;
 
-    public PacketRemoveSpellFromBook(ItemStack book, List<ItemStack> scrollList, int slot) {
+    public PacketReorderSpellBook(ItemStack book, List<ItemStack> scrollList, int slot) {
         this.book = book;
         this.size = scrollList.size();
         this.scrollList = scrollList;
         this.slot = slot;
     }
 
-    public PacketRemoveSpellFromBook(FriendlyByteBuf buf) {
+    public PacketReorderSpellBook(FriendlyByteBuf buf) {
         this.book = buf.readItem();
         int size = buf.readVarInt();
         for ( int i = 0; i < size; i++ ) this.scrollList.add(buf.readItem());
@@ -52,13 +52,12 @@ public class PacketRemoveSpellFromBook {
                             && !(player.getMainHandItem().getItem() instanceof SpellBookItem) ) book = player.getOffhandItem();
                     else book = player.getInventory().getItem(player.getInventory().findSlotMatchingItem(this.book));
 
-                    Vec3 center = ShadowEvents.getEntityCenter(player);
-                    ItemEntity drop = new ItemEntity(player.level(), center.x, center.y, center.z, this.scrollList.get(this.slot));
-                    drop.setDeltaMovement(0, 0, 0);
-                    drop.setNoPickUpDelay();
-                    player.level().addFreshEntity(drop);
+                    ItemStack first = this.scrollList.get(this.slot - 1).copy();
+                    ItemStack second = this.scrollList.get(this.slot).copy();
 
-                    this.scrollList.remove(this.slot);
+                    this.scrollList.set(this.slot - 1, second);
+                    this.scrollList.set(this.slot, first);
+
                     book.setTag(SpellBookItem.constructBook(this.book, this.scrollList).getTag());
                 }
             }

@@ -93,6 +93,12 @@ public class ModNetwork {
                 .consumerMainThread(PacketRemoveSpellFromBook::handle)
                 .add();
 
+        net.messageBuilder(PacketReorderSpellBook.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(PacketReorderSpellBook::new)
+                .encoder(PacketReorderSpellBook::encode)
+                .consumerMainThread(PacketReorderSpellBook::handle)
+                .add();
+
         net.messageBuilder(PacketUpdateBookData.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(PacketUpdateBookData::new)
                 .encoder(PacketUpdateBookData::encode)

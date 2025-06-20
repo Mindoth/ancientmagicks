@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "ancientmagicks:breeze_bricks_slab"
+          "name": "ancientmagicks:breeze_brick_stairs"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "ancientmagicks:blocks/breeze_bricks_slab"
+  "random_sequence": "ancientmagicks:blocks/breeze_brick_stairs"
 }
