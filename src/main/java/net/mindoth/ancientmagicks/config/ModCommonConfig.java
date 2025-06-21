@@ -88,7 +88,7 @@ public class ModCommonConfig {
         list.add("minecraft:green_shulker_box");
         list.add("minecraft:red_shulker_box");
         list.add("minecraft:black_shulker_box");
-        list.add("minecraf:chorus_plant");
+        list.add("minecraft:chorus_plant");
         list.add("minecraft:grass_path");
         list.add("minecraft:dragon_egg");
 

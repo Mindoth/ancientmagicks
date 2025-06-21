@@ -50,6 +50,13 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         inventoryLabelY += 9;
     }
 
+    @Override
+    protected void init() {
+        super.init();
+        subInit();
+        this.menu.addSlotListener(this);
+    }
+
     protected void subInit() {
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
@@ -69,25 +76,26 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
     }
 
     private void buildButtons(int x, int y) {
-        craftButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleCraftButton)
-                .bounds(x + CRAFT_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(), 16, 16)
+        this.runeButtonList = Lists.newArrayList();
+        this.craftButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleCraftButton)
+                .bounds(x + this.CRAFT_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(), 16, 16)
                 .build());
-        dumpButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleDumpButton)
-                .bounds(x + DUMP_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(), 16, 16)
+        this.dumpButton = addRenderableWidget(Button.builder(Component.literal(""), this::handleDumpButton)
+                .bounds(x + this.DUMP_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(), 16, 16)
                 .build());
 
-        runeButtonL = addWidget(Button.builder(Component.literal(""), this::handleRuneButton)
-                .bounds(x + RUNE_BUTTON_X_OFFSET_L, y + this.menu.getTopRowHeight(), 16, 16)
+        this.runeButtonL = addWidget(Button.builder(Component.literal(""), this::handleRuneButton)
+                .bounds(x + this.RUNE_BUTTON_X_OFFSET_L, y + this.menu.getTopRowHeight(), 16, 16)
                 .build());
-        runeButtonList.add(runeButtonL);
-        runeButtonM = addWidget(Button.builder(Component.literal(""), this::handleRuneButton)
-                .bounds(x + RUNE_BUTTON_X_OFFSET_M, y + this.menu.getTopRowHeight(), 16, 16)
+        this.runeButtonList.add(this.runeButtonL);
+        this.runeButtonM = addWidget(Button.builder(Component.literal(""), this::handleRuneButton)
+                .bounds(x + this.RUNE_BUTTON_X_OFFSET_M, y + this.menu.getTopRowHeight(), 16, 16)
                 .build());
-        runeButtonList.add(runeButtonM);
-        runeButtonR = addWidget(Button.builder(Component.literal(""), this::handleRuneButton)
-                .bounds(x + RUNE_BUTTON_X_OFFSET_R, y + this.menu.getTopRowHeight(), 16, 16)
+        this.runeButtonList.add(this.runeButtonM);
+        this.runeButtonR = addWidget(Button.builder(Component.literal(""), this::handleRuneButton)
+                .bounds(x + this.RUNE_BUTTON_X_OFFSET_R, y + this.menu.getTopRowHeight(), 16, 16)
                 .build());
-        runeButtonList.add(runeButtonR);
+        this.runeButtonList.add(this.runeButtonR);
     }
 
     private void handleCraftButton(Button button) {
@@ -108,7 +116,7 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
 
     private void handleRuneButton(Button button) {
         if ( !this.menu.isReadyToCraft() ) return;
-        int index = runeButtonList.indexOf(button);
+        int index = this.runeButtonList.indexOf(button);
         Item rune = this.menu.colorCode.get(index);
         if ( rune == ModItems.BLANK_SLATE.get() ) rune = ModItems.BLUE_SIGIL.get();
         else if ( rune == ModItems.BLUE_SIGIL.get() ) rune = ModItems.PURPLE_SIGIL.get();
@@ -140,22 +148,15 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
     public void containerTick() {
         super.containerTick();
         this.name.tick();
-        if ( craftButton.isFocused() ) craftButton.setFocused(false);
-        if ( dumpButton.isFocused() ) dumpButton.setFocused(false);
-        if ( runeButtonL.isFocused() ) runeButtonL.setFocused(false);
-        if ( runeButtonM.isFocused() ) runeButtonM.setFocused(false);
-        if ( runeButtonR.isFocused() ) runeButtonR.setFocused(false);
+        if ( this.craftButton.isFocused() ) this.craftButton.setFocused(false);
+        if ( this.dumpButton.isFocused() ) this.dumpButton.setFocused(false);
+        if ( this.runeButtonL.isFocused() ) this.runeButtonL.setFocused(false);
+        if ( this.runeButtonM.isFocused() ) this.runeButtonM.setFocused(false);
+        if ( this.runeButtonR.isFocused() ) this.runeButtonR.setFocused(false);
         if ( this.menu.isReadyToCraft() ) {
-            for ( Button button : runeButtonList ) if ( !button.visible ) button.visible = true;
+            for ( Button button : this.runeButtonList ) if ( !button.visible ) button.visible = true;
         }
-        else for ( Button button1 : runeButtonList ) if ( button1.visible ) button1.visible = false;
-    }
-
-    @Override
-    protected void init() {
-        super.init();
-        subInit();
-        this.menu.addSlotListener(this);
+        else for ( Button button1 : this.runeButtonList ) if ( button1.visible ) button1.visible = false;
     }
 
     @Override
@@ -223,7 +224,7 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
 
     protected void renderItemWithDecorations(GuiGraphics graphics, Button button, int xPos, int yPos, int mouseX, int mouseY) {
         if ( this.menu.isReadyToCraft() ) {
-            ItemStack stack = new ItemStack(this.menu.colorCode.get(runeButtonList.indexOf(button)));
+            ItemStack stack = new ItemStack(this.menu.colorCode.get(this.runeButtonList.indexOf(button)));
             graphics.renderItem(stack, xPos, yPos);
             graphics.renderItemDecorations(this.font, stack, xPos, yPos);
             if ( mouseX >= button.getX() && mouseY >= button.getY() && mouseX < button.getX() + button.getWidth() && mouseY < button.getY() + button.getHeight() ) {

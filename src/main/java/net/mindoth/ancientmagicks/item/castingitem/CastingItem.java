@@ -32,6 +32,7 @@ public class CastingItem extends Item {
                 List<SpellComponentItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
                 int cost = 0;
                 for ( SpellComponentItem item : componentList ) cost += item.getCost();
+                cost = Math.max(0, cost);
                 if ( CastingValidator.calculateSpellRecipes(scroll, owner, caster) ) {
                     handleCooldownsAndStuff(caster, stack, Math.max(1, 10));
                     if ( !serverPlayer.isCreative() ) MagickEvents.changeMagick(caster, -cost);

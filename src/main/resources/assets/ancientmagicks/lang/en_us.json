@@ -59,8 +59,8 @@
 
   "item.ancientmagicks.break_sigil": "Break Sigil",
   "tooltip.ancientmagicks.break_sigil": "Breaks a block",
-  "item.ancientmagicks.call_thunder_sigil": "Call Thunder Sigil",
-  "tooltip.ancientmagicks.call_thunder_sigil": "Calls down a lightning strike",
+  "item.ancientmagicks.lightning_sigil": "Lightning Sigil",
+  "tooltip.ancientmagicks.lightning_sigil": "Calls down a lightning strike",
   "item.ancientmagicks.destroy_liquids_sigil": "Destroy Liquids Sigil",
   "tooltip.ancientmagicks.destroy_liquids_sigil": "Removes any liquid",
   "item.ancientmagicks.create_water_sigil": "Create Water Sigil",

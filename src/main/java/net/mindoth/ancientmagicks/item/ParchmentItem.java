@@ -76,6 +76,7 @@ public class ParchmentItem extends Item {
                 int cost = 0;
                 List<SpellComponentItem> list = CastingValidator.getSpellStackFromScroll(stack);
                 for ( SpellComponentItem component : list ) cost += component.getCost();
+                cost = Math.max(0, cost);
                 tooltip.add(Component.translatable("tooltip.ancientmagicks.component_cost").withStyle(ChatFormatting.GRAY)
                         .append(Component.literal(String.valueOf(cost)).withStyle(ChatFormatting.AQUA)));
                 if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_SPELL_STRING) ) {

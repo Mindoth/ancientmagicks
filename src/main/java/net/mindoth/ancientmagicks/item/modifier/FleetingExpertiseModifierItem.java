@@ -27,8 +27,8 @@ public class FleetingExpertiseModifierItem extends SpellModifierItem {
     @Override
     public List<SpellComponentItem> incompatibleWith() {
         List<SpellComponentItem> list = Lists.newArrayList();
-        list.add((SpellComponentItem) ModItems.TOUCH_SIGIL_ITEM.get());
-        list.add((SpellComponentItem) ModItems.SELF_SIGIL_ITEM.get());
+        list.add((SpellComponentItem) ModItems.TOUCH_SIGIL.get());
+        list.add((SpellComponentItem) ModItems.SELF_SIGIL.get());
         return list;
     }
 

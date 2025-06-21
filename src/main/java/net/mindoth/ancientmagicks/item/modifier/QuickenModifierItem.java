@@ -27,7 +27,7 @@ public class QuickenModifierItem extends SpellModifierItem {
     @Override
     public List<SpellComponentItem> exclusiveWith() {
         List<SpellComponentItem> list = Lists.newArrayList();
-        list.add((SpellComponentItem) ModItems.PROJECTILE_SIGIL_ITEM.get());
+        list.add((SpellComponentItem) ModItems.PROJECTILE_SIGIL.get());
         return list;
     }
 

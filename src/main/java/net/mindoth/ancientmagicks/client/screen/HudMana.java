@@ -25,10 +25,10 @@ public class HudMana implements IGuiOverlay {
         double maxMagick = player.getAttributeValue(ModAttributes.MAGICK.get());
         double currentMagick = ClientMagicData.getCurrentMana();
         String mana = (int)currentMagick + "/" + (int)maxMagick;
-        int posX = (MINECRAFT.getWindow().getGuiScaledWidth() / 2) + 30 + ModClientConfig.MANA_BAR_X_OFFSET.get();
-        int posY = MINECRAFT.getWindow().getGuiScaledHeight() - 48 + ModClientConfig.MANA_BAR_Y_OFFSET.get();
+        int posX = (MINECRAFT.getWindow().getGuiScaledWidth() / 2) + 30 + ModClientConfig.MAGICK_BAR_X_OFFSET.get();
+        int posY = MINECRAFT.getWindow().getGuiScaledHeight() - 48 + ModClientConfig.MAGICK_BAR_Y_OFFSET.get();
         if ( player.getAirSupply() != player.getMaxAirSupply()
-                && ModClientConfig.MANA_BAR_X_OFFSET.get() == 0 && ModClientConfig.MANA_BAR_Y_OFFSET.get() == 0 ) posY -= 10;
+                && ModClientConfig.MAGICK_BAR_X_OFFSET.get() == 0 && ModClientConfig.MAGICK_BAR_Y_OFFSET.get() == 0 ) posY -= 10;
         graphics.drawString(gui.getFont(), mana, posX, posY, 2744299);
     }
 

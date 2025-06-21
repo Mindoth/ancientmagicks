@@ -34,7 +34,7 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( !stack.isEmpty() ) items.add(stack);
-            if ( stack.getItem() == ModItems.ALCHEMY_SIGIL_ITEM.get() && (!stack.hasTag() || !stack.getTag().contains(SpellComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
+            if ( stack.getItem() == ModItems.ALCHEMY_SIGIL.get() && (!stack.hasTag() || !stack.getTag().contains(SpellComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
                 if ( slate == null ) slate = stack;
                 else return false;
             }
@@ -55,7 +55,7 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( !stack.isEmpty() ) items.add(stack);
-            if ( stack.getItem() == ModItems.ALCHEMY_SIGIL_ITEM.get() && (!stack.hasTag() || !stack.getTag().contains(SpellComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
+            if ( stack.getItem() == ModItems.ALCHEMY_SIGIL.get() && (!stack.hasTag() || !stack.getTag().contains(SpellComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
                 if ( slate == null ) slate = stack;
             }
             if ( stack.getItem() instanceof PotionItem ) {
@@ -63,7 +63,7 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
             }
         }
         if ( items.size() == 2 && slate != null && potion != null ) {
-            ItemStack newStack = new ItemStack(ModItems.ALCHEMY_SIGIL_ITEM.get());
+            ItemStack newStack = new ItemStack(ModItems.ALCHEMY_SIGIL.get());
             CompoundTag tag = newStack.getOrCreateTag();
             StringBuilder stringBuilder = new StringBuilder();
             for ( int i = 0; i < potion.getEffects().size(); i++ ) {

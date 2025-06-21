@@ -18,9 +18,9 @@ import net.minecraft.world.phys.Vec3;
 import java.util.HashMap;
 import java.util.List;
 
-public class CallThunderEffectItem extends SpellEffectItem {
+public class LightningEffectItem extends SpellEffectItem {
 
-    public CallThunderEffectItem(Properties pProperties, int cost) {
+    public LightningEffectItem(Properties pProperties, int cost) {
         super(pProperties, cost);
     }
 
@@ -38,15 +38,15 @@ public class CallThunderEffectItem extends SpellEffectItem {
             if ( result instanceof EntityHitResult entityHitResult ) entities.remove(entityHitResult.getEntity());
             for ( Entity entity : entities ) {
                 EntityHitResult entityHitResult = new EntityHitResult(entity);
-                if ( canApply(level, owner, caster, entityHitResult, data) ) callThunder(level, caster, entityHitResult, stats);
+                if ( canApply(level, owner, caster, entityHitResult, data) ) lightning(level, caster, entityHitResult, stats);
             }
             state = true;
         }
-        else if ( canApply(level, owner, caster, result, data) ) state = callThunder(level, caster, result, stats);
+        else if ( canApply(level, owner, caster, result, data) ) state = lightning(level, caster, result, stats);
         return state;
     }
 
-    private boolean callThunder(Level level, Entity caster, HitResult result, HashMap<String, Float> stats) {
+    private boolean lightning(Level level, Entity caster, HitResult result, HashMap<String, Float> stats) {
         boolean state = false;
         int power = 5 + Mth.floor(stats.get(SpellEffectItem.POWER));
         Vec3 point = result.getLocation();

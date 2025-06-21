@@ -27,7 +27,7 @@ public class OverextendedModifierItem extends SpellModifierItem {
     @Override
     public List<SpellComponentItem> incompatibleWith() {
         List<SpellComponentItem> list = Lists.newArrayList();
-        list.add((SpellComponentItem) ModItems.SELF_SIGIL_ITEM.get());
+        list.add((SpellComponentItem) ModItems.SELF_SIGIL.get());
         return list;
     }
 

@@ -27,7 +27,7 @@ public class ReachModifierItem extends SpellModifierItem {
     @Override
     public List<SpellComponentItem> exclusiveWith() {
         List<SpellComponentItem> list = Lists.newArrayList();
-        list.add((SpellComponentItem) ModItems.TOUCH_SIGIL_ITEM.get());
+        list.add((SpellComponentItem) ModItems.TOUCH_SIGIL.get());
         return list;
     }
 
