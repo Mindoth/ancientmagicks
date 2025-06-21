@@ -3,11 +3,9 @@ package net.mindoth.ancientmagicks.item.castingitem;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
-import net.mindoth.ancientmagicks.event.MagickEvents;
 import net.mindoth.ancientmagicks.item.CastingValidator;
-import net.mindoth.ancientmagicks.item.ComponentItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -63,23 +61,15 @@ public class StaffItem extends CastingItem implements Vanishable {
         if ( player.getCooldowns().isOnCooldown(staff.getItem()) ) return;
         //int useTime = getUseDuration(staff) - timeLeft;
         ItemStack book = SpellBookItem.getSpellBookSlot(player);
-        if ( book.isEmpty() || !book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) ) {
+        if ( book.isEmpty() || !book.hasTag() || !book.getTag().contains(SpellBookItem.NBT_KEY_BOOK_SLOT) || SpellBookItem.getActiveScrollFromBook(book) == null ) {
             whiffSpell(caster);
             return;
         }
-        CompoundTag tag = book.getTag();
-        List<ItemStack> spellList = SpellBookItem.getScrollListFromBook(tag);
-        int slot = tag.getInt(SpellBookItem.NBT_KEY_BOOK_SLOT);
-        if ( spellList.size() <= slot ) {
-            whiffSpell(caster);
-            return;
-        }
-        ItemStack scroll = spellList.get(slot);
-
+        ItemStack scroll = SpellBookItem.getActiveScrollFromBook(book);
         player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-            List<ComponentItem> componentList = CastingValidator.getComponentListFromScroll(scroll);
+            List<SpellComponentItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
             int manaCost = 0;
-            for ( ComponentItem item : componentList ) manaCost += item.getManaCost();
+            for ( SpellComponentItem item : componentList ) manaCost += item.getCost();
             if ( magic.getCurrentMana() >= manaCost || player.isCreative() ) doSpell(player, player, staff, scroll);
             else whiffSpell(caster);
         });

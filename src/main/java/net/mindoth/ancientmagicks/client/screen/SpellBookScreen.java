@@ -5,10 +5,11 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketRemoveSpellFromBook;
+import net.mindoth.ancientmagicks.network.PacketReorderSpellBook;
 import net.mindoth.ancientmagicks.network.PacketUpdateBookData;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.mindoth.ancientmagicks.registries.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -24,17 +25,27 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public class SpellBookScreen extends AncientMagicksScreen {
+public class SpellBookScreen extends ModScreen {
 
-    private ItemStack book;
+    private static final ResourceLocation TEXTURE = new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/spell_book_screen.png");
+
+    private final ItemStack book;
     private List<ItemStack> itemList = Lists.newArrayList();
-    final private List<ItemStack> scrollList;
+    private final List<ItemStack> scrollList;
     private List<List<ItemStack>> pageList;
     private int spreadNumber;
-    private List<Button> buttonList = Lists.newArrayList();
+    private List<Button> slotButtonList = Lists.newArrayList();
+    private final int leftButtonXOffset = -114 + 6;
+    private final int rightButtonXOffset = 20 - 6;
+    private HashMap<Button, Button> buttonMap = new HashMap<>();
+    private List<Button> upSwapButtonList = Lists.newArrayList();
+    private List<Button> downSwapButtonList = Lists.newArrayList();
+    private final int leftSwapButtonXOffset = 16;
+    private final int rightSwapButtonXOffset = 101;
 
     private final int arrowYOffset = 68;
     private final int arrowXOffset = 94;
@@ -44,7 +55,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
     private final int leftArrowXOffset = -18 - this.arrowXOffset;
 
     private final int maxRows = 5;
-    private final int maxColumns = 4;
+    private final int maxColumns = AncientMagicks.comboSizeCalc() + 1;
     private final int squareSpacing = 26;
 
     protected SpellBookScreen(ItemStack book, int spreadNumber) {
@@ -93,14 +104,21 @@ public class SpellBookScreen extends AncientMagicksScreen {
     protected void init() {
         super.init();
 
-        //Widgets
         buildButtons(minecraft.getWindow().getGuiScaledWidth() / 2, minecraft.getWindow().getGuiScaledHeight() / 2);
 
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
     }
 
+    private void handleButtonVisibility() {
+        handleSlotButtonVisibility();
+        handleSwapButtonVisibility();
+    }
+
     private void buildButtons(int x, int y) {
-        this.buttonList = Lists.newArrayList();
+        this.slotButtonList = Lists.newArrayList();
+        this.buttonMap = new HashMap<>();
+        this.upSwapButtonList = Lists.newArrayList();
+        this.downSwapButtonList = Lists.newArrayList();
         this.clearWidgets();
         boolean isRightPage = false;
         int row = 0;
@@ -115,14 +133,14 @@ public class SpellBookScreen extends AncientMagicksScreen {
                 }
             }
 
-            int xPos = isRightPage ? x + 20 + (column * this.squareSpacing) : x - 114 + (column * this.squareSpacing);
+            int xPos = isRightPage ? x + (column * this.squareSpacing) + this.rightButtonXOffset : x + (column * this.squareSpacing) + this.leftButtonXOffset;
             int yPos = y - 74 + (row * this.squareSpacing);
 
             buildSlotButton(xPos - 1, yPos - 1);
 
             column++;
         }
-        handleSlotButtonVisibility();
+        handleButtonVisibility();
 
         //Page Arrows
         this.rightArrow = addRenderableWidget(Button.builder(Component.literal(""), this::handlePageRight)
@@ -142,85 +160,104 @@ public class SpellBookScreen extends AncientMagicksScreen {
         Button button = addRenderableWidget(Button.builder(Component.literal(""), this::handleSlotButton)
                 .bounds(xPos - 1, yPos - 1, 18, 18)
                 .build());
-        this.buttonList.add(button);
-    }
-
-    private void handlePageLeft(Button button) {
-        if ( !isFirstPage() ) {
-            this.spreadNumber--;
-            handleSlotButtonVisibility();
-            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
-        }
-    }
-
-    private void handlePageRight(Button button) {
-        if ( !isLastPage() ) {
-            this.spreadNumber++;
-            handleSlotButtonVisibility();
-            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
+        this.slotButtonList.add(button);
+        if ( (this.slotButtonList.size() - 1) % 4 == 0 ) {
+            buildUpSwapButton(xPos, yPos, button);
+            buildDownSwapButton(xPos, yPos + 11, button);
         }
     }
 
     private void handleSlotButton(Button button) {
-        if ( !this.buttonList.contains(button) ) return;
+        if ( !this.slotButtonList.contains(button) ) return;
         ItemStack stack = getStackFromSlot(button);
         if ( stack.isEmpty() ) return;
         Item item = stack.getItem();
         if ( item instanceof ParchmentItem ) {
-            int index = this.scrollList.indexOf(getStackFromSlot(button));
-            AncientMagicksNetwork.sendToServer(new PacketRemoveSpellFromBook(this.book, this.scrollList, index));
+            int index = this.scrollList.indexOf(stack);
+            ModNetwork.sendToServer(new PacketRemoveSpellFromBook(this.book, this.scrollList, index));
             this.scrollList.remove(index);
 
             createPages(true);
             this.clearWidgets();
             buildButtons(minecraft.getWindow().getGuiScaledWidth() / 2, minecraft.getWindow().getGuiScaledHeight() / 2);
         }
-        else if ( item == AncientMagicksItems.BLANK_RUNE.get() || item instanceof ColorRuneItem ) changeRune(button, item);
-    }
-
-    private void changeRune(Button button, Item rune) {
-        if ( rune == AncientMagicksItems.BLANK_RUNE.get() ) rune = AncientMagicksItems.BLUE_RUNE.get();
-        else if ( rune == AncientMagicksItems.BLUE_RUNE.get() ) rune = AncientMagicksItems.PURPLE_RUNE.get();
-        else if ( rune == AncientMagicksItems.PURPLE_RUNE.get() ) rune = AncientMagicksItems.YELLOW_RUNE.get();
-        else if ( rune == AncientMagicksItems.YELLOW_RUNE.get() ) rune = AncientMagicksItems.GREEN_RUNE.get();
-        else if ( rune == AncientMagicksItems.GREEN_RUNE.get() ) rune = AncientMagicksItems.BLACK_RUNE.get();
-        else if ( rune == AncientMagicksItems.BLACK_RUNE.get() ) rune = AncientMagicksItems.WHITE_RUNE.get();
-        else rune = AncientMagicksItems.BLANK_RUNE.get();
-
-        final int index = this.itemList.indexOf(getStackFromSlot(button));
-        this.itemList.set(index, new ItemStack(rune));
-        for ( int i = index; i >= 0; i-- ) {
-            ItemStack stack = this.itemList.get(i);
-            if ( stack.getItem() instanceof ParchmentItem ) {
-                String code = stack.getTag().getString(ParchmentItem.NBT_KEY_CODE_STRING);
-                List<String> codeList = List.of(code.split(","));
-                StringBuilder stringBuilder = new StringBuilder();
-                for ( int j = i + 1; j < i + 1 + codeList.size(); j++ ) {
-                    if ( j > i + 1 ) stringBuilder.append(",");
-                    String string = ForgeRegistries.ITEMS.getKey(this.itemList.get(j).getItem()).toString();
-                    stringBuilder.append(string);
-                }
-                ItemStack newStack = stack.copy();
-                newStack.getOrCreateTag().putString(ParchmentItem.NBT_KEY_CODE_STRING, stringBuilder.toString());
-                this.scrollList.set(this.scrollList.indexOf(stack), newStack);
-                AncientMagicksNetwork.sendToServer(new PacketUpdateBookData(this.book, this.scrollList));
-                createPages(true);
-                break;
-            }
-        }
-    }
-
-    private ItemStack getStackFromSlot(Button button) {
-        int stackIndex = this.buttonList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
-        if ( stackIndex >= this.itemList.size() ) return ItemStack.EMPTY;
-        return this.pageList.get(this.spreadNumber).get(this.buttonList.indexOf(button));
+        else if ( item == ModItems.BLANK_SLATE.get() || item instanceof ColorRuneItem ) changeRune(button, item);
     }
 
     private void handleSlotButtonVisibility() {
-        for ( Button button : this.buttonList) {
-            int stackIndex = this.buttonList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
+        for ( Button button : this.slotButtonList ) {
+            int stackIndex = this.slotButtonList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
             if ( stackIndex >= this.itemList.size() && button.visible ) button.visible = false;
             else if ( !button.visible ) button.visible = true;
+        }
+    }
+
+    private void buildUpSwapButton(int xPos, int yPos, Button slotButton) {
+        if ( this.upSwapButtonList.size() >= this.maxRows ) xPos += this.rightSwapButtonXOffset;
+        else xPos -= this.leftSwapButtonXOffset;
+        Button button = addRenderableWidget(Button.builder(Component.literal(""), this::handleSwapButton)
+                .bounds(xPos - 1, yPos - 1, 13, 9)
+                .build());
+        this.upSwapButtonList.add(button);
+        this.buttonMap.put(button, slotButton);
+    }
+
+    private void buildDownSwapButton(int xPos, int yPos, Button slotButton) {
+        if ( this.downSwapButtonList.size() >= this.maxRows ) xPos += this.rightSwapButtonXOffset;
+        else xPos -= this.leftSwapButtonXOffset;
+        Button button = addRenderableWidget(Button.builder(Component.literal(""), this::handleSwapButton)
+                .bounds(xPos - 1, yPos - 1, 13, 9)
+                .build());
+        this.downSwapButtonList.add(button);
+        this.buttonMap.put(button, slotButton);
+    }
+
+    private void handleSwapButton(Button button) {
+        if ( !this.upSwapButtonList.contains(button) && !this.downSwapButtonList.contains(button) ) return;
+        boolean isUp = this.upSwapButtonList.contains(button);
+        ItemStack stack = this.itemList.get(this.itemList.indexOf(getStackFromSlot(this.buttonMap.get(button))));
+        if ( stack.isEmpty() ) return;
+        if ( stack.getItem() instanceof ParchmentItem ) {
+            int index = this.scrollList.indexOf(stack);
+            ModNetwork.sendToServer(new PacketReorderSpellBook(this.book, this.scrollList, index, isUp));
+
+            ItemStack first = this.scrollList.get(index).copy();
+            ItemStack second;
+            if ( isUp ) {
+                second = this.scrollList.get(index - 1).copy();
+                this.scrollList.set(index - 1, first);
+            }
+            else {
+                second = this.scrollList.get(index + 1).copy();
+                this.scrollList.set(index + 1, first);
+            }
+            this.scrollList.set(index, second);
+
+            createPages(true);
+            this.clearWidgets();
+            buildButtons(minecraft.getWindow().getGuiScaledWidth() / 2, minecraft.getWindow().getGuiScaledHeight() / 2);
+        }
+    }
+
+    private void handleSwapButtonVisibility() {
+        for ( Button button : this.upSwapButtonList ) {
+            if ( this.upSwapButtonList.indexOf(button) == 0 && this.spreadNumber == 0 ) button.visible = false;
+            else {
+                if ( !this.buttonMap.get(button).visible && button.visible ) button.visible = false;
+                else if ( !button.visible ) button.visible = true;
+            }
+        }
+        for ( Button button : this.downSwapButtonList ) {
+            //last item on page
+            //no next page
+            if ( (this.downSwapButtonList.indexOf(button) == this.downSwapButtonList.size() - 1 && isLastPage())
+                    || (this.downSwapButtonList.indexOf(button) < this.downSwapButtonList.size() - 1
+                    && !(getStackFromSlot(this.buttonMap.get(this.downSwapButtonList.get(this.downSwapButtonList.indexOf(button) + 1))).getItem() instanceof ParchmentItem)) )
+                button.visible = false;
+            else {
+                if ( !this.buttonMap.get(button).visible && button.visible ) button.visible = false;
+                else if ( !button.visible ) button.visible = true;
+            }
         }
     }
 
@@ -233,14 +270,13 @@ public class SpellBookScreen extends AncientMagicksScreen {
 
         //Background
         renderBackground(graphics);
-        drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/spell_book_screen.png"),
-                x - 140, y - 90, 0, 0, 280, 180, 280, 180, graphics);
+        drawTexture(TEXTURE, x - 140, y - 90, 0, 0, 280, 180, 280, 202, graphics);
 
         //Arrows
-        if ( this.rightArrow.visible ) this.rightArrow.renderTexture(graphics, new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/page_arrows.png"),
-                x + this.rightArrowXOffset, y + this.arrowYOffset, 0, 0, 10, 18, 10, 36, 20);
-        if ( this.leftArrow.visible ) this.leftArrow.renderTexture(graphics, new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/page_arrows.png"),
-                x + this.leftArrowXOffset, y + this.arrowYOffset, 18, 0, 10, 18, 10, 36, 20);
+        if ( this.rightArrow.visible ) this.rightArrow.renderTexture(graphics, TEXTURE, x + this.rightArrowXOffset, y + this.arrowYOffset,
+                0, 180, 10, 18, 10, 280, 202);
+        if ( this.leftArrow.visible ) this.leftArrow.renderTexture(graphics, TEXTURE, x + this.leftArrowXOffset, y + this.arrowYOffset,
+                18, 180, 10, 18, 10, 280, 202);
 
         for ( List<ItemStack> page : this.pageList ) {
             if ( this.spreadNumber == this.pageList.indexOf(page) ) {
@@ -260,16 +296,32 @@ public class SpellBookScreen extends AncientMagicksScreen {
                         }
                     }
 
-                    int xPos = isRightPage ? x + 20 + (column * this.squareSpacing) : x - 114 + (column * this.squareSpacing);
+                    int xPos = isRightPage ? x + (column * this.squareSpacing) + this.rightButtonXOffset : x + (column * this.squareSpacing) + this.leftButtonXOffset;
                     int yPos = y - 74 + (row * this.squareSpacing);
 
-                    drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
-                            xPos - 3, yPos - 3, 0, 0, 22, 22, 22, 22, graphics);
+                    if ( stack.getItem() instanceof ParchmentItem ) {
+                        drawTexture(TEXTURE, xPos - 3, yPos - 3, 36, 180, 22, 22, 280, 202, graphics);
+                    }
+                    else if ( stack.getItem() instanceof ColorRuneItem ) {
+                        drawTexture(TEXTURE, xPos - 3, yPos - 3, 58, 180, 22, 22, 280, 202, graphics);
+                    }
 
                     renderItemWithDecorations(graphics, stack, xPos, yPos);
-                    if ( this.buttonList.get(i).isHovered() ) {
+                    if ( this.slotButtonList.get(i).isHovered() ) {
                         graphics.fill(RenderType.guiOverlay(), xPos, yPos, xPos + 16, yPos + 16, Integer.MAX_VALUE);
-                        graphics.renderTooltip(this.font, stack, mouseX, mouseY);
+                        if ( stack.getItem() instanceof ParchmentItem ) graphics.renderTooltip(this.font, stack, mouseX, mouseY);
+                    }
+
+                    //Swap Arrows
+                    if ( stack.getItem() instanceof ParchmentItem ) {
+                        int index = i / this.maxColumns;
+                        int newX = xPos;
+                        if ( index >= this.maxRows ) newX += this.rightSwapButtonXOffset;
+                        else newX -= this.leftSwapButtonXOffset;
+                        this.upSwapButtonList.get(index).renderTexture(graphics, TEXTURE, newX - 1, yPos - 1,
+                                80, 180, 7, 11, 7, 280, 202);
+                        this.downSwapButtonList.get(index).renderTexture(graphics, TEXTURE, newX - 1, yPos + 10,
+                                91, 180, 7, 11, 7, 280, 202);
                     }
 
                     column++;
@@ -288,6 +340,60 @@ public class SpellBookScreen extends AncientMagicksScreen {
         }
     }
 
+    private void handlePageLeft(Button button) {
+        if ( !isFirstPage() ) {
+            this.spreadNumber--;
+            handleButtonVisibility();
+            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
+        }
+    }
+
+    private void handlePageRight(Button button) {
+        if ( !isLastPage() ) {
+            this.spreadNumber++;
+            handleButtonVisibility();
+            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
+        }
+    }
+
+    private ItemStack getStackFromSlot(Button button) {
+        int stackIndex = this.slotButtonList.indexOf(button) + ((2 * this.maxColumns * this.maxRows) * (this.spreadNumber));
+        if ( stackIndex >= this.itemList.size() ) return ItemStack.EMPTY;
+        return this.pageList.get(this.spreadNumber).get(this.slotButtonList.indexOf(button));
+    }
+
+    private void changeRune(Button button, Item rune) {
+        if ( rune == ModItems.BLANK_SLATE.get() ) rune = ModItems.BLUE_SIGIL.get();
+        else if ( rune == ModItems.BLUE_SIGIL.get() ) rune = ModItems.PURPLE_SIGIL.get();
+        else if ( rune == ModItems.PURPLE_SIGIL.get() ) rune = ModItems.YELLOW_SIGIL.get();
+        else if ( rune == ModItems.YELLOW_SIGIL.get() ) rune = ModItems.GREEN_SIGIL.get();
+        else if ( rune == ModItems.GREEN_SIGIL.get() ) rune = ModItems.BLACK_SIGIL.get();
+        else if ( rune == ModItems.BLACK_SIGIL.get() ) rune = ModItems.WHITE_SIGIL.get();
+        else rune = ModItems.BLANK_SLATE.get();
+
+        final int index = this.itemList.indexOf(getStackFromSlot(button));
+        this.itemList.set(index, new ItemStack(rune));
+        for ( int i = index; i >= 0; i-- ) {
+            ItemStack stack = this.itemList.get(i);
+            if ( stack.getItem() instanceof ParchmentItem ) {
+                String code = stack.getTag().getString(ParchmentItem.NBT_KEY_CODE_STRING);
+                List<String> codeList = List.of(code.split(","));
+                StringBuilder stringBuilder = new StringBuilder();
+                for ( int j = i + 1; j < i + 1 + codeList.size(); j++ ) {
+                    if ( j > i + 1 ) stringBuilder.append(",");
+                    String string = ForgeRegistries.ITEMS.getKey(this.itemList.get(j).getItem()).toString();
+                    stringBuilder.append(string);
+                }
+                ItemStack newStack = stack.copy();
+                newStack.getOrCreateTag().putString(ParchmentItem.NBT_KEY_CODE_STRING, stringBuilder.toString());
+                this.scrollList.set(this.scrollList.indexOf(stack), newStack);
+                ModNetwork.sendToServer(new PacketUpdateBookData(this.book, this.scrollList));
+                createPages(true);
+                break;
+            }
+        }
+    }
+
     @Override
     public void tick() {
         if ( this.rightArrow.isFocused() ) this.rightArrow.setFocused(false);
@@ -296,5 +402,7 @@ public class SpellBookScreen extends AncientMagicksScreen {
         if ( this.leftArrow.isFocused() ) this.leftArrow.setFocused(false);
         if ( isFirstPage() && this.leftArrow.visible ) this.leftArrow.visible = false;
         if ( !isFirstPage() && !this.leftArrow.visible ) this.leftArrow.visible = true;
+        for ( Button button : this.upSwapButtonList ) if ( button.isFocused() ) button.setFocused(false);
+        for ( Button button : this.downSwapButtonList ) if ( button.isFocused() ) button.setFocused(false);
     }
 }

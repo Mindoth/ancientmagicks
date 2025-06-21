@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "up": "ancientmagicks:block/spell_crafting_table_up",
+    "down": "ancientmagicks:block/spell_crafting_table_down",
+    "north": "ancientmagicks:block/spell_crafting_table_side",
+    "east": "ancientmagicks:block/spell_crafting_table_side",
+    "south": "ancientmagicks:block/spell_crafting_table_side",
+    "west": "ancientmagicks:block/spell_crafting_table_side",
+    "particle": "ancientmagicks:block/spell_crafting_table_side"
+  }
+}

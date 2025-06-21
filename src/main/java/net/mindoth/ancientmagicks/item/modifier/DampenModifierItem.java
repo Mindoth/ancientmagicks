@@ -6,12 +6,22 @@ import java.util.HashMap;
 
 public class DampenModifierItem extends SpellModifierItem {
 
-    public DampenModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public DampenModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override
-    public void addModifierOnEntityCreation(AbstractSpellEntity projectile, int count) {
+    public boolean usableWithForms() {
+        return false;
+    }
+
+    @Override
+    public boolean usableWithEffects() {
+        return true;
+    }
+
+    @Override
+    public void addEntityModifier(AbstractSpellEntity projectile, int count) {
         projectile.getEntityData().set(AbstractSpellEntity.POWER, Math.max(0, projectile.getEntityData().get(AbstractSpellEntity.POWER) - count));
     }
 

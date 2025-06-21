@@ -6,12 +6,22 @@ import java.util.HashMap;
 
 public class ExpandModifierItem extends SpellModifierItem {
 
-    public ExpandModifierItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public ExpandModifierItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
     @Override
-    public void addModifierOnEntityCreation(AbstractSpellEntity projectile, int count) {
+    public boolean usableWithForms() {
+        return true;
+    }
+
+    @Override
+    public boolean usableWithEffects() {
+        return false;
+    }
+
+    @Override
+    public void addEntityModifier(AbstractSpellEntity projectile, int count) {
         projectile.getEntityData().set(AbstractSpellEntity.AOE, projectile.getEntityData().get(AbstractSpellEntity.AOE) + (float)count);
     }
 

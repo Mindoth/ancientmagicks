@@ -9,19 +9,20 @@ import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
-import net.mindoth.ancientmagicks.network.AncientMagicksNetwork;
+import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketSwitchBookSlot;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
+import net.mindoth.ancientmagicks.registries.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.resources.language.I18n;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
@@ -29,11 +30,12 @@ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public class GuiSpellWheel extends AncientMagicksScreen {
+public class GuiSpellWheel extends ModScreen {
 
     private static final float PRECISION = 5.0F;
     private boolean closing;
@@ -44,7 +46,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
     private int selectedItem;
     private final ItemStack book;
     private final List<ItemStack> ColorRunes;
-    private final List<ColorRuneItem> comboList = Lists.newArrayList();
+    private final List<Item> comboList = Lists.newArrayList();
     private ItemStack comboResult;
     //private HashMap<Integer, ItemStack> possibleResults;
     private final String hotbar;
@@ -56,9 +58,9 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         this.selectedItem = -1;
         this.book = book;
         this.ColorRunes = List.of(
-                new ItemStack(AncientMagicksItems.BLUE_RUNE.get()), new ItemStack(AncientMagicksItems.PURPLE_RUNE.get()),
-                new ItemStack(AncientMagicksItems.YELLOW_RUNE.get()), new ItemStack(AncientMagicksItems.GREEN_RUNE.get()),
-                new ItemStack(AncientMagicksItems.BLACK_RUNE.get()), new ItemStack(AncientMagicksItems.WHITE_RUNE.get()));
+                new ItemStack(ModItems.GREEN_SIGIL.get()), new ItemStack(ModItems.BLACK_SIGIL.get()),
+                new ItemStack(ModItems.WHITE_SIGIL.get()), new ItemStack(ModItems.BLUE_SIGIL.get()),
+                new ItemStack(ModItems.PURPLE_SIGIL.get()), new ItemStack(ModItems.YELLOW_SIGIL.get()));
         int size = AncientMagicks.comboSizeCalc();
         if ( size == 4 ) this.hotbar = "hotbar4.png";
         else if ( size == 5 ) this.hotbar = "hotbar5.png";
@@ -80,27 +82,40 @@ public class GuiSpellWheel extends AncientMagicksScreen {
             //this.possibleResults = new HashMap<>();
             ItemStack clickedItem = this.ColorRunes.get(this.selectedItem);
             if ( clickedItem.getItem() instanceof ColorRuneItem ) {
-                if ( this.comboList.size() < AncientMagicks.comboSizeCalc() ) this.comboList.add((ColorRuneItem)clickedItem.getItem());
+                if ( this.comboList.size() < AncientMagicks.comboSizeCalc() ) this.comboList.add(clickedItem.getItem());
                 else {
                     this.comboList.remove(0);
-                    this.comboList.add((ColorRuneItem)clickedItem.getItem());
+                    this.comboList.add(clickedItem.getItem());
                 }
             }
-            if ( getSlotForSpell(this.comboList) > -1 ) {
-                this.comboResult = SpellBookItem.getScrollListFromBook(this.book.getTag()).get(getSlotForSpell(this.comboList));
-                AncientMagicksNetwork.sendToServer(new PacketSwitchBookSlot(this.book, getSlotForSpell(this.comboList)));
+            if ( getResultScroll(this.comboList) != null ) {
+                this.comboResult = getResultScroll(this.comboList);
+                ModNetwork.sendToServer(new PacketSwitchBookSlot(this.book, getComboStringFromList(this.comboList)));
             }
             else this.comboResult = null;
         }
         return true;
     }
 
-    private int getSlotForSpell(List<ColorRuneItem> comboList) {
-        int state = -1;
+    private ItemStack getResultScroll(List<Item> comboList) {
         List<ItemStack> scrollList = SpellBookItem.getScrollListFromBook(this.book.getTag());
-        for ( int i = 0; i < scrollList.size(); i++ ) {
-            if ( AncientMagicks.listsMatch(comboList, ParchmentItem.getScrollComboList(scrollList.get(i))) ) {
-                state = i;
+        for ( ItemStack stack : scrollList ) if ( AncientMagicks.listsMatch(comboList, ParchmentItem.getScrollComboList(stack)) ) return stack;
+        return null;
+    }
+
+    private CompoundTag getComboStringFromList(List<Item> comboList) {
+        CompoundTag state = null;
+        List<ItemStack> scrollList = SpellBookItem.getScrollListFromBook(this.book.getTag());
+        for ( ItemStack stack : scrollList ) {
+            if ( AncientMagicks.listsMatch(comboList, ParchmentItem.getScrollComboList(stack)) ) {
+                CompoundTag newTag = new CompoundTag();
+                StringBuilder spellCode = new StringBuilder();
+                for ( int i = 0; i < AncientMagicks.comboSizeCalc(); i++ ) {
+                    if ( i > 0 ) spellCode.append(",");
+                    spellCode.append(ForgeRegistries.ITEMS.getKey(comboList.get(i)).toString());
+                }
+                newTag.putString(SpellBookItem.NBT_KEY_BOOK_SLOT, spellCode.toString());
+                state = newTag;
                 break;
             }
         }
@@ -269,7 +284,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
         }
 
         //Hover tooltip
-        for ( ItemStack slot : this.ColorRunes) {
+        /*for ( ItemStack slot : this.ColorRunes) {
             RenderSystem.disableDepthTest();
             ms.pushPose();
 
@@ -282,7 +297,7 @@ public class GuiSpellWheel extends AncientMagicksScreen {
             }
 
             ms.popPose();
-        }
+        }*/
     }
 
     private void drawSlice(BufferBuilder buffer, float x, float y, float z, float radiusIn, float radiusOut, float startAngle, float endAngle,

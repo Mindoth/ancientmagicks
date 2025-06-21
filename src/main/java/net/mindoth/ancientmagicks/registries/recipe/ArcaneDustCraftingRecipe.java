@@ -2,8 +2,7 @@ package net.mindoth.ancientmagicks.registries.recipe;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.registries.AncientMagicksItems;
-import net.minecraft.core.NonNullList;
+import net.mindoth.ancientmagicks.registries.ModItems;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -11,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
@@ -26,18 +24,14 @@ public class ArcaneDustCraftingRecipe extends CustomRecipe {
     @Override
     public boolean matches(CraftingContainer container, Level level) {
         List<Item> itemList = Lists.newArrayList();
-        for ( int i = 0; i < container.getContainerSize(); i++ ) {
-            itemList.add(container.getItem(i).getItem());
-        }
+        for ( int i = 0; i < container.getContainerSize(); i++ ) itemList.add(container.getItem(i).getItem());
         return itemList.equals(AncientMagicks.ARCANE_DUST_LIST);
     }
 
     @Override
     public ItemStack assemble(CraftingContainer container, RegistryAccess regAcc) {
         List<Item> itemList = Lists.newArrayList();
-        for ( int i = 0; i < container.getContainerSize(); i++ ) {
-            itemList.add(container.getItem(i).getItem());
-        }
+        for ( int i = 0; i < container.getContainerSize(); i++ ) itemList.add(container.getItem(i).getItem());
         return itemList.equals(AncientMagicks.ARCANE_DUST_LIST) ? getResultItem(regAcc) : ItemStack.EMPTY;
     }
 
@@ -48,11 +42,11 @@ public class ArcaneDustCraftingRecipe extends CustomRecipe {
 
     @Override
     public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
-        return new ItemStack(AncientMagicksItems.ARCANE_DUST.get());
+        return new ItemStack(ModItems.ARCANE_DUST.get());
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return AncientMagicksRecipes.ARCANE_DUST_CRAFTING_RECIPE.get();
+        return ModRecipes.ARCANE_DUST_CRAFTING_RECIPE.get();
     }
 }

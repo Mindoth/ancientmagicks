@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "IWI",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "ancientmagicks:breeze_rock"
+    },
+    "I": {
+      "item": "minecraft:copper_ingot"
+    },
+    "W": {
+      "item": "ancientmagicks:wool_cloth"
+    }
+  },
+  "result": {
+    "item": "ancientmagicks:spell_crafting_table",
+    "count": 1
+  }
+}

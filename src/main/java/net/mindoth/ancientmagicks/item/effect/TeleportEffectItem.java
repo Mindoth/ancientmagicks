@@ -1,0 +1,56 @@
+package net.mindoth.ancientmagicks.item.effect;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.RelativeMovement;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.EntityTeleportEvent;
+
+import java.util.HashMap;
+
+public class TeleportEffectItem extends SpellEffectItem {
+
+    public TeleportEffectItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
+    }
+
+    @Override
+    protected boolean doSpell(Level level, LivingEntity owner, Entity caster, HitResult result, HashMap<String, Float> stats, String data) {
+        boolean state = false;
+
+        Vec3 pos;
+        if ( result instanceof BlockHitResult blockHitResult ) {
+            BlockPos blockPos = getPosOfFace(blockHitResult.getBlockPos(), blockHitResult.getDirection());
+            pos = new Vec3(blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5D);
+        }
+        else pos = result.getLocation();
+
+        EntityTeleportEvent.TeleportCommand event = net.minecraftforge.event.ForgeEventFactory.onEntityTeleportCommand(caster, pos.x, pos.y, pos.z);
+        if ( !event.isCanceled() ) {
+            if ( caster instanceof LivingEntity && level instanceof ServerLevel serverLevel ) {
+                caster.teleportTo(serverLevel, event.getTargetX(), event.getTargetY(), event.getTargetZ(), RelativeMovement.ALL,
+                        caster.getViewYRot(0), caster.getViewXRot(0));
+            }
+            state = true;
+        }
+
+        return state;
+    }
+
+    private static BlockPos getPosOfFace(BlockPos blockPos, Direction face) {
+        return switch (face) {
+            case UP -> blockPos.above();
+            case EAST -> blockPos.east();
+            case WEST -> blockPos.west();
+            case SOUTH -> blockPos.south();
+            case NORTH -> blockPos.north();
+            case DOWN -> blockPos.below();
+        };
+    }
+}

@@ -1,20 +1,18 @@
 package net.mindoth.ancientmagicks.item.form;
 
-import net.mindoth.ancientmagicks.item.ComponentItem;
-import net.mindoth.ancientmagicks.item.spell.SpellItem;
-import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
+import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.List;
 
-public class SpellFormItem extends ComponentItem {
+public class SpellFormItem extends SpellComponentItem {
 
-    public SpellFormItem(Properties pProperties, int manaCost, int cooldown) {
-        super(pProperties, manaCost, cooldown);
+    public SpellFormItem(Properties pProperties, int cost) {
+        super(pProperties, cost);
     }
 
-    public boolean formSpell(LivingEntity owner, Entity caster, List<List<ComponentItem>> spellRecipe) {
+    public boolean formSpell(LivingEntity owner, Entity caster, List<SpellComponentItem> spellStack, List<String> data) {
         return false;
     }
 }

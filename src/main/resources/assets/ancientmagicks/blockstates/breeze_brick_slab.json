@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "ancientmagicks:block/breeze_brick_slab"
+    },
+    "type=double": {
+      "model": "ancientmagicks:block/breeze_bricks"
+    },
+    "type=top": {
+      "model": "ancientmagicks:block/breeze_brick_slab_top"
+    }
+  }
+}

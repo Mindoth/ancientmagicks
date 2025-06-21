@@ -26,7 +26,7 @@ public class PacketAskToOpenSpellWheel {
                 ServerPlayer player = context.getSender();
                 player.stopUsingItem();
                 ItemStack book = SpellBookItem.getSpellBookSlot(player);
-                AncientMagicksNetwork.sendToPlayer(new PacketOpenSpellWheel(book), player);
+                ModNetwork.sendToPlayer(new PacketOpenSpellWheel(book), player);
             }
         });
     }
