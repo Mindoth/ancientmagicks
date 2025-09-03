@@ -14,7 +14,7 @@ import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
 import net.mindoth.ancientmagicks.item.form.SelfFormItem;
 import net.mindoth.ancientmagicks.item.form.TouchFormItem;
 import net.mindoth.ancientmagicks.item.modifier.*;
-import net.mindoth.ancientmagicks.revamp.item.*;
+import net.mindoth.ancientmagicks.revamp.item.rune.*;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -203,12 +203,19 @@ public class ModItems {
             () -> new ColorRuneItem(new Item.Properties(), 1, "\u00A7f"));
 
 
-    //REVAMPED RUNES
+    //ONLY FOR TESTING
     public static final RegistryObject<Item> TEST_RUNE_ITEM = ITEMS.register("test_rune",
             () -> new RuneItem(new Item.Properties()));
 
+    //REVAMPED RUNES
     public static final RegistryObject<Item> SELF_RUNE_ITEM = ITEMS.register("self_rune",
             () -> new SelfRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> LOOK_DIRECTION_RUNE_ITEM = ITEMS.register("look_direction_rune",
+            () -> new LookDirectionRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> TARGET_POSITION_RUNE_ITEM = ITEMS.register("target_position_rune",
+            () -> new TargetPositionRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> TARGET_ENTITY_RUNE_ITEM = ITEMS.register("target_entity_rune",
             () -> new TargetEntityRuneItem(new Item.Properties()));
@@ -216,9 +223,16 @@ public class ModItems {
     public static final RegistryObject<Item> TARGET_BLOCK_RUNE_ITEM = ITEMS.register("target_block_rune",
             () -> new TargetBlockRuneItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> TARGET_FACE_RUNE_ITEM = ITEMS.register("target_face_rune",
+            () -> new TargetFaceRuneItem(new Item.Properties()));
+
+
     public static final RegistryObject<Item> MINE_RUNE_ITEM = ITEMS.register("mine_rune",
             () -> new MineRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> ATTACK_RUNE_ITEM = ITEMS.register("attack_rune",
             () -> new AttackRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> TELEPORT_RUNE_ITEM = ITEMS.register("teleport_rune",
+            () -> new TeleportRuneItem(new Item.Properties()));
 }

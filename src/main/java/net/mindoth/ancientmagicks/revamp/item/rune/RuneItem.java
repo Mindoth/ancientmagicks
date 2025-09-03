@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.revamp.item;
+package net.mindoth.ancientmagicks.revamp.item.rune;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.registries.ModItems;
@@ -29,8 +29,11 @@ public class RuneItem extends Item {
             List<Item> runeList = Lists.newArrayList();
 
             runeList.add(ModItems.SELF_RUNE_ITEM.get());
-            runeList.add(ModItems.TARGET_BLOCK_RUNE_ITEM.get());
-            runeList.add(ModItems.MINE_RUNE_ITEM.get());
+            runeList.add(ModItems.LOOK_DIRECTION_RUNE_ITEM.get());
+            runeList.add(ModItems.SELF_RUNE_ITEM.get());
+            runeList.add(ModItems.TARGET_FACE_RUNE_ITEM.get());
+            runeList.add(ModItems.SELF_RUNE_ITEM.get());
+            runeList.add(ModItems.TELEPORT_RUNE_ITEM.get());
 
             resolveStack(player, runeList);
         }

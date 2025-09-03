@@ -1,8 +1,7 @@
-package net.mindoth.ancientmagicks.revamp.item;
+package net.mindoth.ancientmagicks.revamp.item.rune;
 
 import net.mindoth.ancientmagicks.revamp.SpellData;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 
 public class AttackRuneItem extends RuneItem {
     public AttackRuneItem(Properties pProperties) {
@@ -14,9 +13,15 @@ public class AttackRuneItem extends RuneItem {
         if ( !spellData.getEntities().isEmpty() ) {
             Entity target = spellData.getEntities().get(spellData.getEntities().size() - 1);
             spellData.purgeEntities(1);
-            if ( target != null ) target.hurt(target.damageSources().indirectMagic(caster, caster), 4);
+            if ( target != null ) handleAttack(caster, target);
         }
         else spellData.setValid(false);
         return spellData;
+    }
+
+    private void handleAttack(Entity caster, Entity target) {
+        if ( target.isAttackable() && target.isAlive() ) {
+            target.hurt(target.damageSources().indirectMagic(caster, caster), 4);
+        }
     }
 }

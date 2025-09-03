@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.revamp.item;
+package net.mindoth.ancientmagicks.revamp.item.rune;
 
 import com.mojang.authlib.GameProfile;
 import net.mindoth.ancientmagicks.revamp.SpellData;

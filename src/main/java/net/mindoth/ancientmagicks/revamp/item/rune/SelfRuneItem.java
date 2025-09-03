@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.revamp.item;
+package net.mindoth.ancientmagicks.revamp.item.rune;
 
 import net.mindoth.ancientmagicks.revamp.SpellData;
 import net.minecraft.world.entity.Entity;
