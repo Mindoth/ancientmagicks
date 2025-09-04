@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.revamp.item.rune;
 
 import com.mojang.authlib.GameProfile;
+import net.mindoth.ancientmagicks.revamp.MultiBlockHitResult;
 import net.mindoth.ancientmagicks.revamp.SpellData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -12,12 +13,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
 import java.util.UUID;
 
-public class MineRuneItem extends RuneItem {
+public class MineRuneItem extends BlockTargetTemplate {
     public MineRuneItem(Properties pProperties) {
         super(pProperties);
     }
@@ -27,22 +29,46 @@ public class MineRuneItem extends RuneItem {
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
         if ( !spellData.getBlocks().isEmpty() && !spellData.getDimensions().isEmpty() ) {
-            BlockPos blockPos = spellData.getBlocks().get(spellData.getBlocks().size() - 1).getBlockPos();
+            BlockHitResult result = spellData.getLatestBlock();
             spellData.purgeBlocks(1);
-            Level dimension = spellData.getDimensions().get(spellData.getDimensions().size() - 1);
+            Level dimension = spellData.getLatestDimension();
             spellData.purgeDimensions(1);
-            if ( dimension instanceof ServerLevel serverLevel ) {
-                FakePlayer fakePlayer = FakePlayerFactory.get(serverLevel, FAKE_PROFILE);
-                Block block = serverLevel.getBlockState(blockPos).getBlock();
-                BlockState blockState = serverLevel.getBlockState(blockPos);
-                fakePlayer.setItemSlot(EquipmentSlot.MAINHAND, getToolFromStrength(1));
-                if ( block.canHarvestBlock(blockState, serverLevel, blockPos, fakePlayer) && block.defaultDestroyTime() >= 0 && !blockState.isAir() ) {
-                    serverLevel.destroyBlock(blockPos, !(caster instanceof Player player && player.isCreative()), fakePlayer);
-                }
-            }
+            int power;
+            if ( spellData.getIntegers().isEmpty() || spellData.getLatestInteger() == null ) power = 0;
+            else power = spellData.getLatestInteger();
+            spellData.purgeIntegers(1);
+            handleMine(caster, result, dimension, power);
         }
         else spellData.setValid(false);
         return spellData;
+    }
+
+    private void handleMine(Entity caster, BlockHitResult result, Level dimension, int power) {
+        if ( result instanceof MultiBlockHitResult mResult ) {
+            for ( BlockPos pos : mResult.getBlocks() ) {
+                if ( dimension instanceof ServerLevel serverLevel ) {
+                    FakePlayer fakePlayer = FakePlayerFactory.get(serverLevel, FAKE_PROFILE);
+                    Block block = serverLevel.getBlockState(pos).getBlock();
+                    BlockState blockState = serverLevel.getBlockState(pos);
+                    fakePlayer.setItemSlot(EquipmentSlot.MAINHAND, getToolFromStrength(power));
+                    if ( block.canHarvestBlock(blockState, serverLevel, pos, fakePlayer) && block.defaultDestroyTime() >= 0 && !blockState.isAir() ) {
+                        serverLevel.destroyBlock(pos, !(caster instanceof Player player && player.isCreative()), fakePlayer);
+                    }
+                }
+            }
+        }
+        else {
+            BlockPos pos = result.getBlockPos();
+            if ( dimension instanceof ServerLevel serverLevel ) {
+                FakePlayer fakePlayer = FakePlayerFactory.get(serverLevel, FAKE_PROFILE);
+                Block block = serverLevel.getBlockState(pos).getBlock();
+                BlockState blockState = serverLevel.getBlockState(pos);
+                fakePlayer.setItemSlot(EquipmentSlot.MAINHAND, getToolFromStrength(power));
+                if ( block.canHarvestBlock(blockState, serverLevel, pos, fakePlayer) && block.defaultDestroyTime() >= 0 && !blockState.isAir() ) {
+                    serverLevel.destroyBlock(pos, !(caster instanceof Player player && player.isCreative()), fakePlayer);
+                }
+            }
+        }
     }
 
     private ItemStack getToolFromStrength(int power) {

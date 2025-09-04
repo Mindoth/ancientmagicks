@@ -5,8 +5,8 @@ import net.mindoth.ancientmagicks.item.AncientTabletItem;
 import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.mindoth.ancientmagicks.item.armor.ModArmorMaterials;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
+import net.mindoth.ancientmagicks.item.armor.ModArmorMaterials;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
 import net.mindoth.ancientmagicks.item.effect.*;
@@ -214,17 +214,32 @@ public class ModItems {
     public static final RegistryObject<Item> LOOK_DIRECTION_RUNE_ITEM = ITEMS.register("look_direction_rune",
             () -> new LookDirectionRuneItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> TARGET_POSITION_RUNE_ITEM = ITEMS.register("target_position_rune",
-            () -> new TargetPositionRuneItem(new Item.Properties()));
-
     public static final RegistryObject<Item> TARGET_ENTITY_RUNE_ITEM = ITEMS.register("target_entity_rune",
             () -> new TargetEntityRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> TARGET_BLOCK_RUNE_ITEM = ITEMS.register("target_block_rune",
             () -> new TargetBlockRuneItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> BLOCK_POSITION_RUNE_ITEM = ITEMS.register("block_position_rune",
+            () -> new BlockPositionRuneItem(new Item.Properties()));
+
     public static final RegistryObject<Item> TARGET_FACE_RUNE_ITEM = ITEMS.register("target_face_rune",
             () -> new TargetFaceRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> AREA_TARGET_ENTITY_RUNE_ITEM = ITEMS.register("area_target_entity_rune",
+            () -> new AreaTargetEntityRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> AREA_TARGET_BLOCK_RUNE_ITEM = ITEMS.register("area_target_block_rune",
+            () -> new AreaTargetBlockRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> INTEGER_ONE_RUNE_ITEM = ITEMS.register("integer_one_rune",
+            () -> new IntegerOneRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> INTEGER_TWO_RUNE_ITEM = ITEMS.register("integer_two_rune",
+            () -> new IntegerTwoRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> INTEGER_THREE_RUNE_ITEM = ITEMS.register("integer_three_rune",
+            () -> new IntegerThreeRuneItem(new Item.Properties()));
 
 
     public static final RegistryObject<Item> MINE_RUNE_ITEM = ITEMS.register("mine_rune",

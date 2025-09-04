@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.revamp.item.rune;
 import net.mindoth.ancientmagicks.revamp.SpellData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.RelativeMovement;
@@ -18,21 +19,22 @@ public class TeleportRuneItem extends RuneItem {
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
         if ( !spellData.getEntities().isEmpty() && !spellData.getVectors().isEmpty() ) {
-            if ( spellData.getDimensions().isEmpty() ) spellData.addDimension(caster.level());
-            Entity entity = spellData.getEntities().get(spellData.getEntities().size() - 1);
+            Entity entity = spellData.getLatestEntity().getEntity();
             spellData.purgeEntities(1);
-            Vec3 pos = spellData.getVectors().get(spellData.getVectors().size() - 1);
+            Vec3 pos = spellData.getLatestVector();
             spellData.purgeVectors(1);
-            Level level = spellData.getDimensions().get(spellData.getDimensions().size() - 1);
+            Level level;
+            if ( spellData.getDimensions().isEmpty() || spellData.getLatestDimension() == null ) level = caster.level();
+            else level = spellData.getLatestDimension();
             spellData.purgeDimensions(1);
-            if ( entity != null && pos != null && level != null ) handleTeleport(level, entity, pos);
+            handleTeleport(level, entity, pos);
         }
         else spellData.setValid(false);
         return spellData;
     }
 
     private void handleTeleport(Level level, Entity entity, Vec3 pos) {
-        EntityTeleportEvent event = new EntityTeleportEvent(entity, pos.x, pos.y, pos.z);
+        EntityTeleportEvent event = new EntityTeleportEvent(entity, Mth.floor(pos.x) + 0.5F, pos.y, Mth.floor(pos.z) + 0.5F);
         if ( !event.isCanceled() && level instanceof ServerLevel serverLevel ) {
             entity.teleportTo(serverLevel, event.getTargetX(), event.getTargetY(), event.getTargetZ(), RelativeMovement.ALL,
                     entity.getViewYRot(0), entity.getViewXRot(0));

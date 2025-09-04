@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.revamp.item.rune;
 
+import net.mindoth.ancientmagicks.revamp.MultiEntityHitResult;
 import net.mindoth.ancientmagicks.revamp.SpellData;
-import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -13,23 +13,31 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class TargetPositionRuneItem extends RuneItem {
-    public TargetPositionRuneItem(Properties pProperties) {
+public class AreaTargetEntityRuneItem extends EntityTargetTemplate {
+    public AreaTargetEntityRuneItem(Properties pProperties) {
         super(pProperties);
     }
 
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
         if ( !spellData.getEntities().isEmpty() && !spellData.getVectors().isEmpty() ) {
-            Entity entity = spellData.getEntities().get(spellData.getEntities().size() - 1);
+            Entity entity = spellData.getLatestEntity().getEntity();
             spellData.purgeEntities(1);
-            Vec3 direction = spellData.getVectors().get(spellData.getVectors().size() - 1);
+            Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
-            if ( entity != null ) {
-                Vec3 target = getPoint(direction, entity.level(), entity, 4.5F, 0, false, false, true, false);
-                spellData.addVector(target);
-            }
-            else spellData.addVector(null);
+            int range;
+            if ( spellData.getIntegers().isEmpty() || spellData.getLatestInteger() == null ) range = 1;
+            else range = spellData.getLatestInteger();
+            spellData.purgeIntegers(1);
+            Vec3 pos = getPoint(direction, entity.level(), entity, 4.5F, 0, false, true, true, false);
+
+            Vec3 start = new Vec3(pos.x + range, pos.y + range, pos.z + range);
+            Vec3 end = new Vec3(pos.x - range, pos.y - range, pos.z - range);
+            AABB box = new AABB(start, end);
+
+            MultiEntityHitResult mResult = new MultiEntityHitResult(caster, pos, entity.level(), box);
+            spellData.addEntity(mResult);
+            aoeEntitySpellParticles(caster.level(), box, range, defaultStats());
         }
         else spellData.setValid(false);
         return spellData;
@@ -50,6 +58,7 @@ public class TargetPositionRuneItem extends RuneItem {
             double lineX = playerX * (1.0D - (double)k / (double)particleInterval) + listedEntityX * ((double)k / (double)particleInterval);
             double lineY = playerY * (1.0D - (double)k / (double)particleInterval) + listedEntityY * ((double)k / (double)particleInterval);
             double lineZ = playerZ * (1.0D - (double)k / (double)particleInterval) + listedEntityZ * ((double)k / (double)particleInterval);
+            //((ServerLevel)level).sendParticles(ParticleTypes.FLAME, lineX, lineY, lineZ, 0, 0, 0, 0, 0);
             Vec3 start = new Vec3(lineX + error, lineY + error, lineZ + error);
             Vec3 end = new Vec3(lineX - error, lineY - error, lineZ - error);
             AABB area = new AABB(start, end);
@@ -87,4 +96,5 @@ public class TargetPositionRuneItem extends RuneItem {
         }
         return returnPoint;
     }
+
 }

@@ -1,14 +1,13 @@
 package net.mindoth.ancientmagicks.revamp.item.rune;
 
 import net.mindoth.ancientmagicks.revamp.SpellData;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class TargetBlockRuneItem extends RuneItem {
+public class TargetBlockRuneItem extends BlockTargetTemplate {
     public TargetBlockRuneItem(Properties pProperties) {
         super(pProperties);
     }
@@ -16,19 +15,13 @@ public class TargetBlockRuneItem extends RuneItem {
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
         if ( !spellData.getEntities().isEmpty() && !spellData.getVectors().isEmpty() ) {
-            Entity entity = spellData.getEntities().get(spellData.getEntities().size() - 1);
+            Entity entity = spellData.getLatestEntity().getEntity();
             spellData.purgeEntities(1);
-            Vec3 direction = spellData.getVectors().get(spellData.getVectors().size() - 1);
+            Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
-            if ( entity != null ) {
-                BlockHitResult blockHitResult = getPOVHitResult(direction, entity.level(), entity, ClipContext.Fluid.SOURCE_ONLY, 4.5F);
-                spellData.addBlock(blockHitResult);
-                spellData.addDimension(entity.level());
-            }
-            else {
-                spellData.addBlock(null);
-                spellData.addDimension(null);
-            }
+            BlockHitResult blockHitResult = getPOVHitResult(direction, entity.level(), entity, ClipContext.Fluid.SOURCE_ONLY, 4.5F);
+            spellData.addBlock(blockHitResult);
+            spellData.addDimension(entity.level());
         }
         else spellData.setValid(false);
         return spellData;

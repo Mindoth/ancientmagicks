@@ -1,7 +1,6 @@
 package net.mindoth.ancientmagicks.revamp;
 
 import com.google.common.collect.Lists;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -12,11 +11,11 @@ import java.util.List;
 
 public class SpellData {
 
-    private List<Entity> entities;
-    public List<Entity> getEntities() {
+    private List<EntityHitResult> entities;
+    public List<EntityHitResult> getEntities() {
         return this.entities;
     }
-    public void addEntity(Entity entity) {
+    public void addEntity(EntityHitResult entity) {
         this.entities.add(entity);
     }
     public void purgeEntities(int amount) {
@@ -24,6 +23,9 @@ public class SpellData {
             int lastIndex = this.entities.size() - 1;
             this.entities.remove(lastIndex);
         }
+    }
+    public EntityHitResult getLatestEntity() {
+        return getEntities().get(getEntities().size() - 1);
     }
 
     private List<BlockHitResult> blocks;
@@ -39,6 +41,9 @@ public class SpellData {
             this.blocks.remove(lastIndex);
         }
     }
+    public BlockHitResult getLatestBlock() {
+        return getBlocks().get(getBlocks().size() - 1);
+    }
 
     private List<Vec3> vectors;
     public List<Vec3> getVectors() {
@@ -52,6 +57,9 @@ public class SpellData {
             int lastIndex = this.vectors.size() - 1;
             this.vectors.remove(lastIndex);
         }
+    }
+    public Vec3 getLatestVector() {
+        return getVectors().get(getVectors().size() - 1);
     }
 
     private List<Level> dimensions;
@@ -67,12 +75,33 @@ public class SpellData {
             this.dimensions.remove(lastIndex);
         }
     }
+    public Level getLatestDimension() {
+        return getDimensions().get(getDimensions().size() - 1);
+    }
+
+    private List<Integer> integers;
+    public List<Integer> getIntegers() {
+        return this.integers;
+    }
+    public void addInteger(Integer integer) {
+        this.integers.add(integer);
+    }
+    public void purgeIntegers(int amount) {
+        for ( int i = 0; i < amount; i++ ) if ( !this.integers.isEmpty() ) {
+            int lastIndex = this.integers.size() - 1;
+            this.integers.remove(lastIndex);
+        }
+    }
+    public Integer getLatestInteger() {
+        return getIntegers().get(getIntegers().size() - 1);
+    }
 
     public SpellData() {
         this.entities = Lists.newArrayList();
         this.blocks = Lists.newArrayList();
         this.vectors = Lists.newArrayList();
         this.dimensions = Lists.newArrayList();
+        this.integers = Lists.newArrayList();
 
         this.valid = true;
     }

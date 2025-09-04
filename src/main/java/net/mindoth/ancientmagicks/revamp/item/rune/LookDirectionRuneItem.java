@@ -1,10 +1,8 @@
 package net.mindoth.ancientmagicks.revamp.item.rune;
 
 import net.mindoth.ancientmagicks.revamp.SpellData;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.phys.Vec3;
 
 public class LookDirectionRuneItem extends RuneItem {
     public LookDirectionRuneItem(Item.Properties pProperties) {
@@ -14,7 +12,7 @@ public class LookDirectionRuneItem extends RuneItem {
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
         if ( !spellData.getEntities().isEmpty() ) {
-            Entity entity = spellData.getEntities().get(spellData.getEntities().size() - 1);
+            Entity entity = spellData.getLatestEntity().getEntity();
             spellData.addVector(entity.getLookAngle());
             spellData.purgeEntities(1);
         }

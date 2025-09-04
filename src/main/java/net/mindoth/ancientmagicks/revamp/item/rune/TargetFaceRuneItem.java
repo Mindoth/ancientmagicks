@@ -2,7 +2,6 @@ package net.mindoth.ancientmagicks.revamp.item.rune;
 
 import net.mindoth.ancientmagicks.revamp.SpellData;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ClipContext;
@@ -18,21 +17,15 @@ public class TargetFaceRuneItem extends RuneItem {
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
         if ( !spellData.getEntities().isEmpty() && !spellData.getVectors().isEmpty() ) {
-            Entity entity = spellData.getEntities().get(spellData.getEntities().size() - 1);
+            Entity entity = spellData.getLatestEntity().getEntity();
             spellData.purgeEntities(1);
-            Vec3 direction = spellData.getVectors().get(spellData.getVectors().size() - 1);
+            Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
-            if ( entity != null ) {
-                BlockHitResult blockHitResult = getPOVHitResult(direction, entity.level(), entity, ClipContext.Fluid.SOURCE_ONLY, 4.5F);
-                BlockPos blockPos = getPosOfFace(blockHitResult.getBlockPos(), blockHitResult.getDirection());
-                Vec3 pos = new Vec3(blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5D);
-                spellData.addVector(pos);
-                spellData.addDimension(entity.level());
-            }
-            else {
-                spellData.addVector(null);
-                spellData.addDimension(null);
-            }
+            BlockHitResult blockHitResult = getPOVHitResult(direction, entity.level(), entity, ClipContext.Fluid.SOURCE_ONLY, 4.5F);
+            BlockPos blockPos = getPosOfFace(blockHitResult.getBlockPos(), blockHitResult.getDirection());
+            Vec3 pos = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+            spellData.addBlock(new BlockHitResult(pos, blockHitResult.getDirection(), blockPos, blockHitResult.isInside()));
+            spellData.addDimension(entity.level());
         }
         else spellData.setValid(false);
         return spellData;
@@ -43,16 +36,5 @@ public class TargetFaceRuneItem extends RuneItem {
         Vec3 vec3 = entity.getEyePosition();
         Vec3 vec31 = vec3.add(direction);
         return pLevel.clip(new ClipContext(vec3, vec31, ClipContext.Block.OUTLINE, pFluidMode, entity));
-    }
-
-    private static BlockPos getPosOfFace(BlockPos blockPos, Direction face) {
-        return switch (face) {
-            case UP -> blockPos.above();
-            case EAST -> blockPos.east();
-            case WEST -> blockPos.west();
-            case SOUTH -> blockPos.south();
-            case NORTH -> blockPos.north();
-            case DOWN -> blockPos.below();
-        };
     }
 }
