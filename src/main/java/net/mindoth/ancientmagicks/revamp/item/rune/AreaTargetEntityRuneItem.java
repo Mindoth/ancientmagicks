@@ -13,16 +13,14 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class AreaTargetEntityRuneItem extends EntityTargetTemplate {
+public class AreaTargetEntityRuneItem extends UseOnEntityTemplate {
     public AreaTargetEntityRuneItem(Properties pProperties) {
         super(pProperties);
     }
 
     @Override
-    public SpellData resolve(Entity caster, SpellData spellData) {
-        if ( !spellData.getEntities().isEmpty() && !spellData.getVectors().isEmpty() ) {
-            Entity entity = spellData.getLatestEntity().getEntity();
-            spellData.purgeEntities(1);
+    public SpellData result(Entity caster, SpellData spellData, Entity entity) {
+        if ( !spellData.getVectors().isEmpty() ) {
             Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
             int range;
@@ -34,9 +32,10 @@ public class AreaTargetEntityRuneItem extends EntityTargetTemplate {
             Vec3 start = new Vec3(pos.x + range, pos.y + range, pos.z + range);
             Vec3 end = new Vec3(pos.x - range, pos.y - range, pos.z - range);
             AABB box = new AABB(start, end);
+            List<Entity> entities = entity.level().getEntitiesOfClass(Entity.class, box);
 
-            MultiEntityHitResult mResult = new MultiEntityHitResult(caster, pos, entity.level(), box);
-            spellData.addEntity(mResult);
+            if ( entities.isEmpty() ) spellData.addEntity(null);
+            else spellData.addEntity(new MultiEntityHitResult(caster, pos, entities));
             aoeEntitySpellParticles(caster.level(), box, range, defaultStats());
         }
         else spellData.setValid(false);
@@ -66,7 +65,7 @@ public class AreaTargetEntityRuneItem extends EntityTargetTemplate {
             Entity target = null;
             double lowestSoFar = Double.MAX_VALUE;
             for ( Entity closestSoFar : targets ) {
-                if ( closestSoFar instanceof LivingEntity) {
+                if ( closestSoFar instanceof LivingEntity ) {
                     double testDistance = closestSoFar.distanceToSqr(center);
                     if ( testDistance < lowestSoFar ) target = closestSoFar;
                 }
@@ -78,7 +77,7 @@ public class AreaTargetEntityRuneItem extends EntityTargetTemplate {
                 }
                 break;
             }
-            if ( stopsAtLiquid && level.getBlockState(new BlockPos(Mth.floor(lineX), Mth.floor(lineY), Mth.floor(lineZ))).getBlock() instanceof LiquidBlock) {
+            if ( stopsAtLiquid && level.getBlockState(new BlockPos(Mth.floor(lineX), Mth.floor(lineY), Mth.floor(lineZ))).getBlock() instanceof LiquidBlock ) {
                 if ( centerBlock ) {
                     BlockPos pos = new BlockPos(Mth.floor(returnPoint.x), Mth.floor(returnPoint.y), Mth.floor(returnPoint.z));
                     returnPoint = pos.getCenter();
@@ -96,5 +95,4 @@ public class AreaTargetEntityRuneItem extends EntityTargetTemplate {
         }
         return returnPoint;
     }
-
 }

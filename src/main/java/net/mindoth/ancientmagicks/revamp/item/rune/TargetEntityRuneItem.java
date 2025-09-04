@@ -1,32 +1,33 @@
 package net.mindoth.ancientmagicks.revamp.item.rune;
 
+import net.mindoth.ancientmagicks.revamp.MultiEntityHitResult;
 import net.mindoth.ancientmagicks.revamp.SpellData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-public class TargetEntityRuneItem extends EntityTargetTemplate {
+public class TargetEntityRuneItem extends UseOnEntityTemplate {
     public TargetEntityRuneItem(Properties pProperties) {
         super(pProperties);
     }
 
     @Override
-    public SpellData resolve(Entity caster, SpellData spellData) {
-        if ( !spellData.getEntities().isEmpty() && !spellData.getVectors().isEmpty() ) {
-            Entity entity = spellData.getLatestEntity().getEntity();
-            spellData.purgeEntities(1);
+    public SpellData result(Entity caster, SpellData spellData, Entity entity) {
+        if ( !spellData.getVectors().isEmpty() ) {
             Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
             Entity target = getPointedEntity(direction, entity.level(), entity, 4.5F, 0, true, null);
-            if ( target != null ) spellData.addEntity(new EntityHitResult(target));
+            if ( target != null ) spellData.addEntity(new MultiEntityHitResult(caster, target.position(), Collections.singletonList(target)));
             else spellData.addEntity(null);
         }
         else spellData.setValid(false);

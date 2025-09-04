@@ -8,19 +8,18 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.RelativeMovement;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 
-public class TeleportRuneItem extends RuneItem {
+public class TeleportRuneItem extends UseOnEntityTemplate {
     public TeleportRuneItem(Properties pProperties) {
         super(pProperties);
     }
 
     @Override
-    public SpellData resolve(Entity caster, SpellData spellData) {
-        if ( !spellData.getEntities().isEmpty() && !spellData.getVectors().isEmpty() ) {
-            Entity entity = spellData.getLatestEntity().getEntity();
-            spellData.purgeEntities(1);
+    protected SpellData result(Entity caster, SpellData spellData, Entity entity) {
+        if ( !spellData.getVectors().isEmpty() ) {
             Vec3 pos = spellData.getLatestVector();
             spellData.purgeVectors(1);
             Level level;

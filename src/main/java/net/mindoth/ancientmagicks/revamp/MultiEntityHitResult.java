@@ -11,21 +11,13 @@ import java.util.List;
 
 public class MultiEntityHitResult extends EntityHitResult {
 
-    public MultiEntityHitResult(Entity pEntity, Vec3 pLocation) {
-        super(pEntity, pLocation);
-        List<Entity> tempList = Lists.newArrayList();
-        tempList.add(pEntity);
-        this.entities = tempList;
-    }
-
     private final List<Entity> entities;
-
-    public MultiEntityHitResult(Entity pEntity, Vec3 pLocation, Level level, AABB box) {
-        super(pEntity, pLocation);
-        this.entities = level.getEntitiesOfClass(Entity.class, box);
-    }
-
     public List<Entity> getEntities() {
         return this.entities;
+    }
+
+    public MultiEntityHitResult(Entity pEntity, Vec3 pLocation, List<Entity> entities) {
+        super(pEntity, pLocation);
+        this.entities = entities;
     }
 }

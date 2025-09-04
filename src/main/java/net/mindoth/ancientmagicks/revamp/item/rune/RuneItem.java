@@ -19,7 +19,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -42,8 +44,10 @@ public class RuneItem extends Item {
             runeList.add(ModItems.SELF_RUNE_ITEM.get());
             runeList.add(ModItems.LOOK_DIRECTION_RUNE_ITEM.get());
             runeList.add(ModItems.SELF_RUNE_ITEM.get());
-            runeList.add(ModItems.AREA_TARGET_BLOCK_RUNE_ITEM.get());
-            runeList.add(ModItems.MINE_RUNE_ITEM.get());
+            runeList.add(ModItems.TARGET_FACE_RUNE_ITEM.get());
+            runeList.add(ModItems.SELF_RUNE_ITEM.get());
+            runeList.add(ModItems.BLOCK_POSITION_RUNE_ITEM.get());
+            runeList.add(ModItems.TELEPORT_RUNE_ITEM.get());
 
             resolveStack(player, runeList);
         }
@@ -74,6 +78,34 @@ public class RuneItem extends Item {
             case NORTH -> blockPos.north();
             case DOWN -> blockPos.below();
         };
+    }
+
+    protected static @NotNull List<BlockPos> getBlockList(RuneItem component, BlockHitResult bResult, BlockPos pos, int range) {
+        List<BlockPos> blocks = Lists.newArrayList();
+        if ( component instanceof UseOnBlockTemplate bte && !bte.isInside() ) pos = getPosOfFace(pos, bResult.getDirection());
+        if ( bResult.getDirection() == Direction.UP || bResult.getDirection() == Direction.DOWN ) {
+            for ( int xPos = pos.getX() - range; xPos <= pos.getX() + range; xPos++ ) {
+                for ( int zPos = pos.getZ() - range; zPos <= pos.getZ() + range; zPos++ ) {
+                    blocks.add(new BlockPos(xPos, pos.getY(), zPos));
+                }
+            }
+        }
+        else if ( bResult.getDirection() == Direction.NORTH || bResult.getDirection() == Direction.SOUTH ) {
+            for ( int xPos = pos.getX() - range; xPos <= pos.getX() + range; xPos++ ) {
+                for ( int yPos = pos.getY() - range; yPos <= pos.getY() + range; yPos++ ) {
+                    blocks.add(new BlockPos(xPos, yPos, pos.getZ()));
+                }
+            }
+        }
+        else if ( bResult.getDirection() == Direction.EAST || bResult.getDirection() == Direction.WEST ) {
+            for ( int yPos = pos.getY() - range; yPos <= pos.getY() + range; yPos++ ) {
+                for ( int zPos = pos.getZ() - range; zPos <= pos.getZ() + range; zPos++ ) {
+                    blocks.add(new BlockPos(pos.getX(), yPos, zPos));
+                }
+            }
+        }
+        if ( !blocks.contains(pos) ) blocks.add(pos);
+        return blocks;
     }
 
     protected void addAoeParticles(boolean targetBlocks, Level level, AABB box, float size, int age, HashMap<String, Float> stats) {
@@ -181,5 +213,74 @@ public class RuneItem extends Item {
 
     protected int getRenderType() {
         return 1;
+    }
+
+    protected void aoeEntitySpellParticles(Level level, AABB box, float range, HashMap<String, Float> stats) {
+        Vec3 center = box.getCenter();
+        BlockPos pos = new BlockPos(Mth.floor(center.x), Mth.floor(center.y), Mth.floor(center.z));
+        double tempY = center.y;
+        for ( int i = pos.getY(); i >= Mth.floor(center.y - range); i-- ) {
+            BlockPos tempPos = new BlockPos(pos.getX(), i, pos.getZ());
+            if ( level.getBlockState(tempPos).isSolid() ) break;
+            else tempY = i;
+        }
+        box = box.move(0, -(center.y - tempY), 0);
+        addAoeParticles(false, level, box, 0.15F, 8, stats);
+    }
+
+    protected void addEnchantParticles(Entity target, float size, int age, HashMap<String, Float> stats) {
+        double var = 0.15D;
+        double maxX = target.getBoundingBox().maxX + var;
+        double minX = target.getBoundingBox().minX - var;
+        double maxZ = target.getBoundingBox().maxZ + var;
+        double minZ = target.getBoundingBox().minZ - var;
+        //double vecX = target.getDeltaMovement().x;
+        double vecX = 0.0D;
+        double vecY = 0.25D;
+        //double vecZ = target.getDeltaMovement().z;
+        double vecZ = 0.0D;
+        for ( int i = 0; i < 4; i++ ) {
+            double randX = maxX;
+            double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
+            double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
+            Vec3 pos = new Vec3(randX, randY, randZ);
+            ParticleColor.IntWrapper color = getParticleColor(stats);
+            ModNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
+        }
+        for ( int i = 0; i < 4; i++ ) {
+            double randX = minX;
+            double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
+            double randZ = minZ + (maxZ - minZ) * new Random().nextDouble();
+            Vec3 pos = new Vec3(randX, randY, randZ);
+            ParticleColor.IntWrapper color = getParticleColor(stats);
+            ModNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
+        }
+        for ( int i = 0; i < 4; i++ ) {
+            double randX = minX + (maxX - minX) * new Random().nextDouble();
+            double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
+            double randZ = minZ;
+            Vec3 pos = new Vec3(randX, randY, randZ);
+            ParticleColor.IntWrapper color = getParticleColor(stats);
+            ModNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
+        }
+        for ( int i = 0; i < 4; i++ ) {
+            double randX = minX + (maxX - minX) * new Random().nextDouble();
+            double randY = target.getY() + ((target.getY() + (target.getBbHeight() / 2)) - target.getY()) * new Random().nextDouble();
+            double randZ = maxZ;
+            Vec3 pos = new Vec3(randX, randY, randZ);
+            ParticleColor.IntWrapper color = getParticleColor(stats);
+            ModNetwork.sendToPlayersTrackingEntity(new PacketSendCustomParticles(color.r, color.g, color.b, size, age, false, getRenderType(),
+                    pos.x, pos.y, pos.z, vecX, vecY, vecZ), target, true);
+        }
+    }
+
+    protected void aoeBlockSpellParticles(Level level, List<BlockPos> blocks, HashMap<String, Float> stats) {
+        BlockPos start = new BlockPos(blocks.get(0).getX(), blocks.get(0).getY(), blocks.get(0).getZ());
+        BlockPos end = new BlockPos(blocks.get(blocks.size() - 1).getX() + 1, blocks.get(blocks.size() - 1).getY() + 1, blocks.get(blocks.size() - 1).getZ() + 1);
+        AABB particleBox = new AABB(start, end);
+        addAoeParticles(true, level, particleBox, 0.15F, 8, stats);
     }
 }

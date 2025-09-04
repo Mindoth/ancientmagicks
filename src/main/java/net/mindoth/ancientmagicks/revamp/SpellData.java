@@ -1,21 +1,18 @@
 package net.mindoth.ancientmagicks.revamp;
 
 import com.google.common.collect.Lists;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
 public class SpellData {
 
-    private List<EntityHitResult> entities;
-    public List<EntityHitResult> getEntities() {
+    private List<MultiEntityHitResult> entities;
+    public List<MultiEntityHitResult> getEntities() {
         return this.entities;
     }
-    public void addEntity(EntityHitResult entity) {
+    public void addEntity(MultiEntityHitResult entity) {
         this.entities.add(entity);
     }
     public void purgeEntities(int amount) {
@@ -24,15 +21,15 @@ public class SpellData {
             this.entities.remove(lastIndex);
         }
     }
-    public EntityHitResult getLatestEntity() {
+    public MultiEntityHitResult getLatestEntity() {
         return getEntities().get(getEntities().size() - 1);
     }
 
-    private List<BlockHitResult> blocks;
-    public List<BlockHitResult> getBlocks() {
+    private List<MultiBlockHitResult> blocks;
+    public List<MultiBlockHitResult> getBlocks() {
         return this.blocks;
     }
-    public void addBlock(BlockHitResult block) {
+    public void addBlock(MultiBlockHitResult block) {
         this.blocks.add(block);
     }
     public void purgeBlocks(int amount) {
@@ -41,7 +38,7 @@ public class SpellData {
             this.blocks.remove(lastIndex);
         }
     }
-    public BlockHitResult getLatestBlock() {
+    public MultiBlockHitResult getLatestBlock() {
         return getBlocks().get(getBlocks().size() - 1);
     }
 
@@ -104,6 +101,16 @@ public class SpellData {
         this.integers = Lists.newArrayList();
 
         this.valid = true;
+    }
+
+    public static SpellData clone(SpellData spellData) {
+        SpellData newData = new SpellData();
+        for ( MultiEntityHitResult entity : spellData.getEntities() ) newData.addEntity(entity);
+        for ( MultiBlockHitResult block : spellData.getBlocks() ) newData.addBlock(block);
+        for ( Vec3 vec3 : spellData.getVectors() ) newData.addVector(vec3);
+        for ( Level level : spellData.getDimensions() ) newData.addDimension(level);
+        for ( int integer : spellData.getIntegers() ) newData.addInteger(integer);
+        return newData;
     }
 
     private boolean valid;

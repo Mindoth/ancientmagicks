@@ -214,14 +214,17 @@ public class ModItems {
     public static final RegistryObject<Item> LOOK_DIRECTION_RUNE_ITEM = ITEMS.register("look_direction_rune",
             () -> new LookDirectionRuneItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> ENTITY_POSITION_RUNE_ITEM = ITEMS.register("entity_position_rune",
+            () -> new EntityPositionRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> BLOCK_POSITION_RUNE_ITEM = ITEMS.register("block_position_rune",
+            () -> new BlockPositionRuneItem(new Item.Properties()));
+
     public static final RegistryObject<Item> TARGET_ENTITY_RUNE_ITEM = ITEMS.register("target_entity_rune",
             () -> new TargetEntityRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> TARGET_BLOCK_RUNE_ITEM = ITEMS.register("target_block_rune",
             () -> new TargetBlockRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> BLOCK_POSITION_RUNE_ITEM = ITEMS.register("block_position_rune",
-            () -> new BlockPositionRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> TARGET_FACE_RUNE_ITEM = ITEMS.register("target_face_rune",
             () -> new TargetFaceRuneItem(new Item.Properties()));
@@ -230,7 +233,7 @@ public class ModItems {
             () -> new AreaTargetEntityRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> AREA_TARGET_BLOCK_RUNE_ITEM = ITEMS.register("area_target_block_rune",
-            () -> new AreaTargetBlockRuneItem(new Item.Properties()));
+            () -> new AreaTargetUseOnBlockRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> INTEGER_ONE_RUNE_ITEM = ITEMS.register("integer_one_rune",
             () -> new IntegerOneRuneItem(new Item.Properties()));
