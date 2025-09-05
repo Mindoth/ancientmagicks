@@ -54,7 +54,7 @@ public class StaffItem extends CastingItem implements Vanishable {
         return result;
     }
 
-    @Override
+    /*@Override
     public void onUseTick(Level level, LivingEntity caster, ItemStack staff, int timeLeft) {
         if ( level.isClientSide ) return;
         if ( !(caster instanceof ServerPlayer player) ) return;
@@ -73,7 +73,7 @@ public class StaffItem extends CastingItem implements Vanishable {
             if ( magic.getCurrentMana() >= manaCost || player.isCreative() ) doSpell(player, player, staff, scroll);
             else whiffSpell(caster);
         });
-    }
+    }*/
 
     @Override
     public boolean isValidRepairItem(ItemStack pToRepair, ItemStack pRepair) {

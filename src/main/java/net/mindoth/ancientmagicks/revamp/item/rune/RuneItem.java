@@ -33,40 +33,27 @@ public class RuneItem extends Item {
         super(pProperties);
     }
 
-    //ONLY FOR TESTING
-    @Override
-    @Nonnull
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
-        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(hand));
-        if ( !level.isClientSide ) {
-            List<Item> runeList = Lists.newArrayList();
-
-            runeList.add(ModItems.SELF_RUNE_ITEM.get());
-            runeList.add(ModItems.LOOK_DIRECTION_RUNE_ITEM.get());
-            runeList.add(ModItems.SELF_RUNE_ITEM.get());
-            runeList.add(ModItems.TARGET_FACE_RUNE_ITEM.get());
-            runeList.add(ModItems.SELF_RUNE_ITEM.get());
-            runeList.add(ModItems.BLOCK_POSITION_RUNE_ITEM.get());
-            runeList.add(ModItems.TELEPORT_RUNE_ITEM.get());
-
-            resolveStack(player, runeList);
-        }
-        return result;
-    }
-
-    public static void resolveStack(Entity caster, List<Item> runeList) {
-        SpellData spellData = new SpellData();
-        for ( Item item : runeList ) if ( item instanceof RuneItem rune ) {
-            spellData = rune.resolve(caster, spellData);
-            if ( !spellData.isValid() ) {
-                if ( caster instanceof Player player ) player.displayClientMessage(Component.literal("FAILED SPELL"), false);
-                break;
-            }
-        }
-    }
-
     public SpellData resolve(Entity caster, SpellData spellData) {
         return spellData;
+    }
+
+    private boolean isEncodedComponent(ItemStack stack) {
+        return stack.getItem() instanceof SpellComponentItem component && component.isEncodeable() && stack.hasTag() && stack.getTag().contains(NBT_KEY_COMPONENT_DATA);
+    }
+
+    public static final String NBT_KEY_EMPTY = "am_empty";
+    public static final String NBT_KEY_COMPONENT_DATA = "am_component_data_string";
+
+    public boolean isEncodeable() {
+        return false;
+    }
+
+    public void decodeTooltipData(List<Component> tooltip, String data, Item item) {
+    }
+
+    public String encodeComponentData(ItemStack stack) {
+        if ( isEncodeable() && stack.hasTag() && stack.getTag().contains(NBT_KEY_COMPONENT_DATA) ) return stack.getTag().getString(NBT_KEY_COMPONENT_DATA);
+        return NBT_KEY_EMPTY;
     }
 
     public static BlockPos getPosOfFace(BlockPos blockPos, Direction face) {

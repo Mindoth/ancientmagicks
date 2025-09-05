@@ -13,6 +13,7 @@ import net.mindoth.ancientmagicks.network.PacketEditColorCode;
 import net.mindoth.ancientmagicks.registries.ModBlocks;
 import net.mindoth.ancientmagicks.registries.ModItems;
 import net.mindoth.ancientmagicks.registries.ModMenus;
+import net.mindoth.ancientmagicks.revamp.item.rune.RuneItem;
 import net.minecraft.SharedConstants;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
@@ -70,7 +71,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
 
         //Crafting slots
         for ( int i = 0; i < 9; ++i ) {
-            this.addSlot(new ComponentSlot(this.craftSlots, 1 + i, 26 + (i - 1) * 18, BOTTOM_ROW_HEIGHT, !craftSlots.getItem(0).isEmpty()));
+            this.addSlot(new RuneSlot(this.craftSlots, 1 + i, 26 + (i - 1) * 18, BOTTOM_ROW_HEIGHT, !craftSlots.getItem(0).isEmpty()));
         }
 
         //Player inventory
@@ -90,9 +91,9 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
         return !stack.isEmpty() && stack.getItem() instanceof ParchmentItem && (!stack.hasTag() || !stack.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING));
     }
 
-    public int howManyComponentSlotsOpen() {
+    public int howManyRuneSlotsOpen() {
         int count = 0;
-        for ( Slot slot : this.slots ) if ( slot instanceof ComponentSlot componentSlot && componentSlot.isOpen ) count++;
+        for ( Slot slot : this.slots ) if ( slot instanceof RuneSlot runeSlot && runeSlot.isOpen ) count++;
         return count;
     }
 
@@ -104,19 +105,19 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
             if ( isCleanParchment(stack) ) {
                 final int slotsToOpen = ((ParchmentItem)stack.getItem()).getSize();
                 for ( Slot slot : this.slots ) {
-                    if ( howManyComponentSlotsOpen() >= slotsToOpen ) break;
-                    if ( slot instanceof ComponentSlot componentSlot && !componentSlot.isOpen ) componentSlot.isOpen = true;
+                    if ( howManyRuneSlotsOpen() >= slotsToOpen ) break;
+                    if ( slot instanceof RuneSlot runeSlot && !runeSlot.isOpen ) runeSlot.isOpen = true;
                 }
             }
             //Removed scroll
             else {
                 for ( Slot slot : this.slots ) {
-                    if ( slot instanceof ComponentSlot componentSlot ) {
-                        if ( !level.isClientSide && !componentSlot.getItem().isEmpty() ) {
-                            if ( stack.isEmpty() ) quickMoveStack(this.player, componentSlot.index);
-                            else setSlotContent(componentSlot.getSlotIndex(), ItemStack.EMPTY);
+                    if ( slot instanceof RuneSlot runeSlot ) {
+                        if ( !level.isClientSide && !runeSlot.getItem().isEmpty() ) {
+                            if ( stack.isEmpty() ) quickMoveStack(this.player, runeSlot.index);
+                            else setSlotContent(runeSlot.getSlotIndex(), ItemStack.EMPTY);
                         }
-                        if ( componentSlot.isOpen ) componentSlot.isOpen = false;
+                        if ( runeSlot.isOpen ) runeSlot.isOpen = false;
                     }
                 }
             }
@@ -128,13 +129,13 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     }
 
     public void editColorCode(int index, Item rune) {
-        colorCode.set(index, rune);
+        this.colorCode.set(index, rune);
         ModNetwork.sendToServer(new PacketEditColorCode(index, rune));
     }
 
     public void processColorCodeEditing(int index, Item rune) {
         this.access.execute((level, pos) -> {
-            if ( !level.isClientSide ) colorCode.set(index, rune);
+            if ( !level.isClientSide ) this.colorCode.set(index, rune);
         });
     }
 
@@ -155,19 +156,19 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
         this.access.execute((level, pos) -> {
             if ( !level.isClientSide ) {
                 if ( isReadyToDump() ) {
-                    ItemStack stack = craftSlots.getItem(0);
-                    List<SpellComponentItem> componentList = CastingValidator.getSpellStackFromScroll(stack);
+                    ItemStack stack = this.craftSlots.getItem(0);
+                    List<RuneItem> runeList = CastingValidator.getSpellStackFromScroll(stack);
                     List<String> dataList = CastingValidator.getDataListFromScroll(stack);
                     for ( int i = 0; i < this.slots.size(); i++ ) {
                         if ( i == 0 ) cleanScroll(stack);
                         else {
                             Slot slot = this.slots.get(i);
-                            if ( slot instanceof ComponentSlot ) {
-                                ItemStack component = new ItemStack(componentList.get(i - 1));
-                                if ( ((SpellComponentItem)component.getItem()).isEncodeable() ) {
-                                    component.getOrCreateTag().putString(SpellEffectItem.NBT_KEY_COMPONENT_DATA, dataList.get(i - 1));
+                            if ( slot instanceof RuneSlot) {
+                                ItemStack rune = new ItemStack(runeList.get(i - 1));
+                                if ( ((RuneItem)rune.getItem()).isEncodeable() ) {
+                                    rune.getOrCreateTag().putString(RuneItem.NBT_KEY_COMPONENT_DATA, dataList.get(i - 1));
                                 }
-                                setSlotContent(i, component);
+                                setSlotContent(i, rune);
                             }
                         }
                     }
@@ -190,7 +191,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     }
 
     public boolean isReadyToCraft() {
-        return isCleanParchment(craftSlots.getItem(0)) && assemble(craftSlots) != ItemStack.EMPTY;
+        return isCleanParchment(this.craftSlots.getItem(0)) && assemble(this.craftSlots) != ItemStack.EMPTY;
     }
 
     public boolean craftSpell(String string) {
@@ -205,7 +206,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
         this.access.execute((level, pos) -> {
             if ( !level.isClientSide ) {
                 if ( isReadyToCraft() ) {
-                    ItemStack stack = assemble(craftSlots);
+                    ItemStack stack = assemble(this.craftSlots);
                     if ( name == null || Util.isBlank(name) ) stack.resetHoverName();
                     else stack.setHoverName(Component.literal(name));
                     setSlotContent(0, stack);
@@ -215,8 +216,8 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     }
 
     private void setSlotContent(int slot, ItemStack stack) {
-        ServerPlayer serverplayer = (ServerPlayer)player;
-        craftSlots.setItem(slot, stack);
+        ServerPlayer serverplayer = (ServerPlayer)this.player;
+        this.craftSlots.setItem(slot, stack);
         this.setRemoteSlot(slot, stack);
         serverplayer.connection.send(new ClientboundContainerSetSlotPacket(this.containerId, this.incrementStateId(), slot, stack));
     }
@@ -226,40 +227,40 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     }
 
     public ItemStack assemble(Container container) {
-        ItemStack scroll = craftSlots.getItem(0).copy();
-        List<ItemStack> componentStackList = Lists.newArrayList();
+        ItemStack scroll = this.craftSlots.getItem(0).copy();
+        List<ItemStack> runeStackList = Lists.newArrayList();
         List<ItemStack> restList = Lists.newArrayList();
         for ( int i = 1; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( stack.getItem() != Items.AIR ) {
-                if ( stack.getItem() instanceof SpellComponentItem) {
-                    if ( ((SpellComponentItem)stack.getItem()).isEncodeable() && (!stack.hasTag() || !stack.getTag().contains(SpellComponentItem.NBT_KEY_COMPONENT_DATA)) ) return ItemStack.EMPTY;
-                    else componentStackList.add(stack);
+                if ( stack.getItem() instanceof RuneItem ) {
+                    if ( ((RuneItem)stack.getItem()).isEncodeable() && (!stack.hasTag() || !stack.getTag().contains(RuneItem.NBT_KEY_COMPONENT_DATA)) ) return ItemStack.EMPTY;
+                    else runeStackList.add(stack);
                 }
                 else restList.add(stack);
             }
         }
         if ( restList.isEmpty() ) {
-            List<SpellComponentItem> componentList = Lists.newArrayList();
+            List<RuneItem> runeList = Lists.newArrayList();
             StringBuilder effectData = new StringBuilder();
-            for ( int i = 0; i < componentStackList.size(); i++ ) {
-                ItemStack stack = componentStackList.get(i);
-                if ( stack.getItem() instanceof SpellComponentItem component ) {
-                    componentList.add(component);
+            for ( int i = 0; i < runeStackList.size(); i++ ) {
+                ItemStack stack = runeStackList.get(i);
+                if ( stack.getItem() instanceof RuneItem rune ) {
+                    runeList.add(rune);
                     if ( i > 0 ) effectData.append(",");
-                    effectData.append(component.encodeComponentData(stack));
+                    effectData.append(rune.encodeComponentData(stack));
                 }
             }
-            if ( CastingValidator.isValidSpell(componentList) ) {
+            if ( CastingValidator.isValidSpell(runeList) ) {
                 CompoundTag tag = scroll.getOrCreateTag();
 
-                tag.putString(ParchmentItem.NBT_KEY_SPELL_STRING, CastingValidator.getStringFromSpellStack(componentList));
+                tag.putString(ParchmentItem.NBT_KEY_SPELL_STRING, CastingValidator.getStringFromSpellStack(runeList));
                 tag.putString(ParchmentItem.NBT_KEY_DATA_STRING, effectData.toString());
 
                 StringBuilder spellCode = new StringBuilder();
                 for ( int i = 0; i < AncientMagicks.comboSizeCalc(); i++ ) {
                     if ( i > 0 ) spellCode.append(",");
-                    spellCode.append(ForgeRegistries.ITEMS.getKey(colorCode.get(i)).toString());
+                    spellCode.append(ForgeRegistries.ITEMS.getKey(this.colorCode.get(i)).toString());
                 }
                 tag.putString(ParchmentItem.NBT_KEY_CODE_STRING, spellCode.toString());
                 return scroll;
@@ -280,7 +281,8 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
                 if ( !this.moveItemStackTo(stack, 10, 46, true) ) return ItemStack.EMPTY;
                 slot.onQuickCraft(stack, itemStack);
             }
-            else */if ( pIndex >= 10 && pIndex < 46 ) {
+            else */
+            if ( pIndex >= 10 && pIndex < 46 ) {
                 if ( !this.moveItemStackTo(stack, 0, 10, false) ) {
                     if ( pIndex < 37 ) if ( !this.moveItemStackTo(stack, 37, 46, false) ) return ItemStack.EMPTY;
                     else if ( !this.moveItemStackTo(stack, 10, 37, false) ) return ItemStack.EMPTY;

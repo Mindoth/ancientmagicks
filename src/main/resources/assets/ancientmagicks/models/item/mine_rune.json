@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "ancientmagicks:item/rune_essence",
+    "layer1": "ancientmagicks:item/rune/mine"
+  }
+}

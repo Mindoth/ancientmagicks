@@ -2,25 +2,21 @@ package net.mindoth.ancientmagicks.item;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
-import net.mindoth.ancientmagicks.item.form.SpellFormItem;
-import net.mindoth.ancientmagicks.item.modifier.SpellModifierItem;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
+import net.mindoth.ancientmagicks.revamp.SpellData;
+import net.mindoth.ancientmagicks.revamp.item.rune.RuneItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Objects;
 
 public class ParchmentItem extends Item {
 
@@ -54,7 +50,29 @@ public class ParchmentItem extends Item {
         else return null;
     }
 
-    @OnlyIn(Dist.CLIENT)
+    //ONLY FOR TESTING
+    @Override
+    @Nonnull
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
+        InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(hand));
+        if ( !level.isClientSide ) {
+            ItemStack stack = player.getItemInHand(hand);
+            if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_CODE_STRING) ) {
+                List<RuneItem> runeList = CastingValidator.getSpellStackFromScroll(stack);
+                SpellData spellData = new SpellData();
+                for ( RuneItem rune : runeList ) {
+                    spellData = rune.resolve(player, spellData);
+                    if ( !spellData.isValid() ) {
+                        player.displayClientMessage(Component.literal("FAILED SPELL"), false);
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /*@OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_CODE_STRING) ) {
@@ -107,5 +125,5 @@ public class ParchmentItem extends Item {
             }
         }
         super.appendHoverText(stack, world, tooltip, flagIn);
-    }
+    }*/
 }

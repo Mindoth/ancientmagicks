@@ -25,7 +25,7 @@ public class CastingItem extends Item {
         super(pProperties);
     }
 
-    public static void doSpell(LivingEntity owner, Entity caster, @Nullable ItemStack stack, ItemStack scroll) {
+    /*public static void doSpell(LivingEntity owner, Entity caster, @Nullable ItemStack stack, ItemStack scroll) {
         //Handling for players
         if ( caster instanceof ServerPlayer serverPlayer ) {
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
@@ -42,7 +42,7 @@ public class CastingItem extends Item {
         }
         //If caster is not a player do the spell anyway
         else CastingValidator.calculateSpellRecipes(scroll, owner, caster);
-    }
+    }*/
 
     private static void handleCooldownsAndStuff(Entity caster, @Nullable ItemStack castingItem, int cooldown) {
         for ( Item item : ForgeRegistries.ITEMS.getValues() ) if ( item instanceof StaffItem ) addCastingCooldown(caster, item, cooldown);

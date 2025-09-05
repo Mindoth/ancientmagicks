@@ -22,7 +22,7 @@ public class ProjectileFormItem extends SpellFormItem {
         super(pProperties, cost);
     }
 
-    @Override
+    /*@Override
     public boolean formSpell(LivingEntity owner, Entity caster, List<SpellComponentItem> spellStack, List<String> data) {
         List<SpellComponentItem> newList = Lists.newArrayList();
         List<String> newData = Lists.newArrayList();
@@ -64,5 +64,5 @@ public class ProjectileFormItem extends SpellFormItem {
         projectile.anonShootFromRotation(caster.getXRot(), caster.getYRot(), 0, projectile.getSpeed(), 0.0F);
         level.addFreshEntity(projectile);
         return true;
-    }
+    }*/
 }

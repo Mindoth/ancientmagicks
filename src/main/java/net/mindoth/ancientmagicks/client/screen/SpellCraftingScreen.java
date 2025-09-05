@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks.client.screen;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.client.menu.ComponentSlot;
+import net.mindoth.ancientmagicks.client.menu.RuneSlot;
 import net.mindoth.ancientmagicks.client.menu.SpellCraftingMenu;
 import net.mindoth.ancientmagicks.registries.ModItems;
 import net.minecraft.client.Minecraft;
@@ -214,7 +214,7 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
 
         //Locked slots
         for ( int i = 0; i < this.menu.slots.size(); i++ ) {
-            if ( this.menu.getSlot(i) instanceof ComponentSlot slot && !slot.isOpen ) {
+            if ( this.menu.getSlot(i) instanceof RuneSlot slot && !slot.isOpen ) {
                 int xPos = x + 26 + (i - 2) * 18;
                 int yPos = y + this.menu.getBottomRowHeight();
                 ModScreen.drawTexture(TEXTURE, xPos, yPos, 0, 175, 16, 16, 256, 256, graphics);

@@ -84,7 +84,7 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
 
-    //Forms
+    /*//Forms
     public static final RegistryObject<Item> PROJECTILE_SIGIL = ITEMS.register("projectile_sigil",
             () -> new ProjectileFormItem(new Item.Properties(), 0));
 
@@ -181,7 +181,7 @@ public class ModItems {
             () -> new OverextendedModifierItem(new Item.Properties(), 1));
 
     public static final RegistryObject<Item> TRANSIENT_FORTITUDE_SIGIL = ITEMS.register("transient_fortitude_sigil",
-            () -> new TransientFortitudeModifierItem(new Item.Properties(), 1));
+            () -> new TransientFortitudeModifierItem(new Item.Properties(), 1));*/
 
 
     public static final RegistryObject<Item> BLUE_SIGIL = ITEMS.register("blue_sigil",
@@ -203,16 +203,12 @@ public class ModItems {
             () -> new ColorRuneItem(new Item.Properties(), 1, "\u00A7f"));
 
 
-    //ONLY FOR TESTING
-    public static final RegistryObject<Item> TEST_RUNE_ITEM = ITEMS.register("test_rune",
-            () -> new RuneItem(new Item.Properties()));
-
     //REVAMPED RUNES
     public static final RegistryObject<Item> SELF_RUNE_ITEM = ITEMS.register("self_rune",
             () -> new SelfRuneItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> LOOK_DIRECTION_RUNE_ITEM = ITEMS.register("look_direction_rune",
-            () -> new LookDirectionRuneItem(new Item.Properties()));
+    public static final RegistryObject<Item> SIGHT_RUNE_ITEM = ITEMS.register("sight_rune",
+            () -> new SightRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> ENTITY_POSITION_RUNE_ITEM = ITEMS.register("entity_position_rune",
             () -> new EntityPositionRuneItem(new Item.Properties()));
@@ -223,17 +219,17 @@ public class ModItems {
     public static final RegistryObject<Item> TARGET_ENTITY_RUNE_ITEM = ITEMS.register("target_entity_rune",
             () -> new TargetEntityRuneItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> TARGET_BLOCK_RUNE_ITEM = ITEMS.register("target_block_rune",
-            () -> new TargetBlockRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> TARGET_FACE_RUNE_ITEM = ITEMS.register("target_face_rune",
-            () -> new TargetFaceRuneItem(new Item.Properties()));
-
     public static final RegistryObject<Item> AREA_TARGET_ENTITY_RUNE_ITEM = ITEMS.register("area_target_entity_rune",
             () -> new AreaTargetEntityRuneItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> TARGET_BLOCK_RUNE_ITEM = ITEMS.register("target_block_rune",
+            () -> new TargetBlockRuneItem(new Item.Properties()));
+
     public static final RegistryObject<Item> AREA_TARGET_BLOCK_RUNE_ITEM = ITEMS.register("area_target_block_rune",
             () -> new AreaTargetUseOnBlockRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> TARGET_FACE_RUNE_ITEM = ITEMS.register("target_face_rune",
+            () -> new TargetFaceRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> INTEGER_ONE_RUNE_ITEM = ITEMS.register("integer_one_rune",
             () -> new IntegerOneRuneItem(new Item.Properties()));

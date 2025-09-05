@@ -30,7 +30,7 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
         super(ModEntities.SPELL_PROJECTILE.get(), level, owner, caster);
     }
 
-    private void castMagick(HitResult hitResult) {
+    /*private void castMagick(HitResult hitResult) {
         HashMap<String, Float> stats = SpellEffectItem.createDefaultStats();
         List<SpellModifierItem> modifiers = Lists.newArrayList();
         List<String> modifierData = Lists.newArrayList();
@@ -77,5 +77,5 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
     @Override
     protected void doBlockEffects(BlockHitResult result) {
         castMagick(result);
-    }
+    }*/
 }

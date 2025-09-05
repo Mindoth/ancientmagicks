@@ -5,6 +5,7 @@ import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.item.CastingValidator;
 import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
+import net.mindoth.ancientmagicks.revamp.item.rune.RuneItem;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -325,7 +326,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         return Math.min(size, 2.0F);
     }
 
-    public List<SpellComponentItem> getSpellStack() {
+    public List<RuneItem> getSpellStack() {
         return CastingValidator.getSpellStackFromString(this.entityData.get(SPELLSTACK));
     }
 
@@ -376,8 +377,9 @@ public abstract class AbstractSpellEntity extends Projectile {
 
     public boolean isHarmful() {
         for ( int i = 0; i < getSpellStack().size(); i++ ) {
-            SpellComponentItem item = getSpellStack().get(i);
-            if ( item instanceof SpellEffectItem effect && effect.isHarmful(getData().get(i)) ) return true;
+            RuneItem item = getSpellStack().get(i);
+            //if ( item instanceof SpellEffectItem effect && effect.isHarmful(getData().get(i)) ) return true;
+            return true;
         }
         return false;
     }
