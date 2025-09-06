@@ -38,6 +38,14 @@ import java.util.List;
 
 public class SpellCraftingMenu extends AbstractContainerMenu {
 
+    private static final int RESULT_SLOT = 0;
+    private static final int CRAFT_SLOT_START = 1;
+    private static final int CRAFT_SLOT_END = 28;
+    private static final int INV_SLOT_START = 28;
+    private static final int INV_SLOT_END = 55;
+    private static final int USE_ROW_SLOT_START = 55;
+    private static final int USE_ROW_SLOT_END = 64;
+
     private static final int TOP_ROW_HEIGHT = 39;
     public int getTopRowHeight() {
         return TOP_ROW_HEIGHT;
@@ -46,7 +54,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     public int getBottomRowHeight() {
         return BOTTOM_ROW_HEIGHT;
     }
-    private final Container craftSlots = new SimpleContainer(1 + 9) {
+    private final Container craftSlots = new SimpleContainer(1 + 27) {
         @Override
         public void setChanged() {
             super.setChanged();
@@ -67,23 +75,27 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
         super(ModMenus.SPELL_CRAFTING_MENU.get(), containerId);
         this.access = access;
         this.player = playerInventory.player;
+
+        //Parchment Slot
         this.addSlot(new ParchmentSlot(this.craftSlots, 0, 79, TOP_ROW_HEIGHT));
 
         //Crafting slots
-        for ( int i = 0; i < 9; ++i ) {
-            this.addSlot(new RuneSlot(this.craftSlots, 1 + i, 26 + (i - 1) * 18, BOTTOM_ROW_HEIGHT, !craftSlots.getItem(0).isEmpty()));
+        for ( int i = 0; i < 3; ++i ) {
+            for ( int j = 0; j < 9; ++j ) {
+                this.addSlot(new RuneSlot(this.craftSlots, j + i * 9 + 1, 26 + (j - 1) * 18, BOTTOM_ROW_HEIGHT + i * 18, !this.craftSlots.getItem(0).isEmpty()));
+            }
         }
 
         //Player inventory
         for ( int i = 0; i < 3; ++i ) {
             for ( int j = 0; j < 9; ++j ) {
-                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 32 + BOTTOM_ROW_HEIGHT + i * 18));
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 68 + BOTTOM_ROW_HEIGHT + i * 18));
             }
         }
 
         //Player hotbar
         for ( int i = 0; i < 9; ++i ) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 90 + BOTTOM_ROW_HEIGHT));
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 126 + BOTTOM_ROW_HEIGHT));
         }
     }
 
@@ -100,7 +112,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     @Override
     public void slotsChanged(Container pInventory) {
         this.access.execute((level, pos) -> {
-            ItemStack stack = craftSlots.getItem(0);
+            ItemStack stack = this.craftSlots.getItem(0);
             //Placed clean parchment
             if ( isCleanParchment(stack) ) {
                 final int slotsToOpen = ((ParchmentItem)stack.getItem()).getSize();
@@ -140,7 +152,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     }
 
     public boolean isReadyToDump() {
-        ItemStack stack = craftSlots.getItem(0);
+        ItemStack stack = this.craftSlots.getItem(0);
         return !stack.isEmpty() && stack.getItem() instanceof ParchmentItem && stack.hasTag() && stack.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING);
     }
 
@@ -276,19 +288,13 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
         if ( slot != null && slot.hasItem() ) {
             ItemStack stack = slot.getItem();
             itemStack = stack.copy();
-            /*if ( pIndex == 0 ) {
-                this.access.execute((p_39378_, p_39379_) -> stack.getItem().onCraftedBy(stack, p_39378_, pPlayer));
-                if ( !this.moveItemStackTo(stack, 10, 46, true) ) return ItemStack.EMPTY;
-                slot.onQuickCraft(stack, itemStack);
-            }
-            else */
-            if ( pIndex >= 10 && pIndex < 46 ) {
-                if ( !this.moveItemStackTo(stack, 0, 10, false) ) {
-                    if ( pIndex < 37 ) if ( !this.moveItemStackTo(stack, 37, 46, false) ) return ItemStack.EMPTY;
-                    else if ( !this.moveItemStackTo(stack, 10, 37, false) ) return ItemStack.EMPTY;
+            if ( pIndex >= CRAFT_SLOT_END && pIndex < USE_ROW_SLOT_END ) {
+                if ( !this.moveItemStackTo(stack, RESULT_SLOT, CRAFT_SLOT_END, false) ) {
+                    if ( pIndex < INV_SLOT_END ) if ( !this.moveItemStackTo(stack, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false) ) return ItemStack.EMPTY;
+                    else if ( !this.moveItemStackTo(stack, INV_SLOT_START, INV_SLOT_END, false) ) return ItemStack.EMPTY;
                 }
             }
-            else if ( !this.moveItemStackTo(stack, 10, 46, false) ) return ItemStack.EMPTY;
+            else if ( !this.moveItemStackTo(stack, INV_SLOT_START, USE_ROW_SLOT_END, false) ) return ItemStack.EMPTY;
 
             if ( stack.isEmpty() ) slot.setByPlayer(ItemStack.EMPTY);
             else slot.setChanged();
@@ -296,7 +302,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
             if ( stack.getCount() == itemStack.getCount() ) return ItemStack.EMPTY;
 
             slot.onTake(pPlayer, stack);
-            if ( pIndex == 0 ) pPlayer.drop(stack, false);
+            if ( pIndex == RESULT_SLOT ) pPlayer.drop(stack, false);
         }
         return itemStack;
     }

@@ -71,13 +71,13 @@ public class ModItems {
 
     //Spell Parchments
     public static final RegistryObject<Item> PARCHMENT = ITEMS.register("parchment",
-            () -> new ParchmentItem(new Item.Properties(), 3));
+            () -> new ParchmentItem(new Item.Properties(), 9));
 
     public static final RegistryObject<Item> INFERNAL_PARCHMENT = ITEMS.register("infernal_parchment",
-            () -> new ParchmentItem(new Item.Properties(), 6));
+            () -> new ParchmentItem(new Item.Properties(), 18));
 
     public static final RegistryObject<Item> ARCANE_PARCHMENT = ITEMS.register("arcane_parchment",
-            () -> new ParchmentItem(new Item.Properties(), 9));
+            () -> new ParchmentItem(new Item.Properties(), 27));
 
 
     public static final RegistryObject<Item> BLANK_SLATE = ITEMS.register("blank_slate",

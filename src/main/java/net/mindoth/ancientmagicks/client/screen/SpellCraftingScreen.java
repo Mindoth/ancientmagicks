@@ -46,8 +46,8 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
 
     public SpellCraftingScreen(SpellCraftingMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        imageHeight += 9;
-        inventoryLabelY += 9;
+        imageHeight += 45;
+        inventoryLabelY += 45;
     }
 
     @Override
@@ -189,35 +189,38 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         //Action buttons
         if ( this.menu.isReadyToCraft() ) {
             this.craftButton.renderTexture(graphics, TEXTURE, x + CRAFT_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(),
-                    0, 191, 16, 16, 16, 256, 256);
+                    176, 16, 16, 16, 16, 256, 256);
             this.dumpButton.renderTexture(graphics, TEXTURE, x + DUMP_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(),
-                    16, 223, 0, 16, 16, 256, 256);
+                    176 + 16, 48, 0, 16, 16, 256, 256);
         }
         else {
             this.craftButton.renderTexture(graphics, TEXTURE, x + CRAFT_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(),
-                    0, 223, 0, 16, 16, 256, 256);
+                    176, 48, 0, 16, 16, 256, 256);
             if ( this.menu.isReadyToDump() ) {
                 this.dumpButton.renderTexture(graphics, TEXTURE, x + DUMP_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(),
-                        16, 191, 16, 16, 16, 256, 256);
+                        176 + 16, 16, 16, 16, 16, 256, 256);
             }
             else {
                 this.dumpButton.renderTexture(graphics, TEXTURE, x + DUMP_BUTTON_X_OFFSET, y + this.menu.getTopRowHeight(),
-                        16, 223, 0, 16, 16, 256, 256);
+                        176 + 16, 48, 0, 16, 16, 256, 256);
             }
         }
 
         //Rune buttons
-        for ( int i = 0; i < runeButtonList.size(); i++ ) {
-            Button button = runeButtonList.get(i);
+        for ( int i = 0; i < this.runeButtonList.size(); i++ ) {
+            Button button = this.runeButtonList.get(i);
             renderItemWithDecorations(graphics, button, x + RUNE_BUTTON_X_OFFSET_L + i * 18, y + this.menu.getTopRowHeight(), mouseX, mouseY);
         }
 
         //Locked slots
         for ( int i = 0; i < this.menu.slots.size(); i++ ) {
             if ( this.menu.getSlot(i) instanceof RuneSlot slot && !slot.isOpen ) {
-                int xPos = x + 26 + (i - 2) * 18;
-                int yPos = y + this.menu.getBottomRowHeight();
-                ModScreen.drawTexture(TEXTURE, xPos, yPos, 0, 175, 16, 16, 256, 256, graphics);
+                int row = 0;
+                if ( i > 9 ) row += 18;
+                if ( i > 18 ) row += 18;
+                int xPos = x + 26 + (i - 2) * 18 - row * 9;
+                int yPos = y + this.menu.getBottomRowHeight() + row;
+                ModScreen.drawTexture(TEXTURE, xPos, yPos, 176, 0, 16, 16, 256, 256, graphics);
             }
         }
     }
@@ -231,7 +234,7 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
                 graphics.fill(RenderType.guiOverlay(), xPos, yPos, xPos + 16, yPos + 16, Integer.MAX_VALUE);
             }
         }
-        else ModScreen.drawTexture(TEXTURE, xPos, yPos, 0, 175, 16, 16, 256, 256, graphics);
+        else ModScreen.drawTexture(TEXTURE, xPos, yPos, 176, 0, 16, 16, 256, 256, graphics);
     }
 
     @Override
