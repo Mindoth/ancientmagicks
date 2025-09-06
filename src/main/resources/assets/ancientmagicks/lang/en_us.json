@@ -50,6 +50,8 @@
   "item.ancientmagicks.white_sigil": "White Sigil",
   "tooltip.ancientmagicks.white_sigil": "temp",
 
+
+
   "item.ancientmagicks.self_rune": "Self Rune",
   "item.ancientmagicks.sight_rune": "Sight Rune",
   "item.ancientmagicks.entity_position_rune": "Entity Position Rune",
@@ -66,6 +68,18 @@
   "item.ancientmagicks.excavate_rune": "Excavate Rune",
   "item.ancientmagicks.harm_rune": "Harm Rune",
   "item.ancientmagicks.teleport_rune": "Teleport Rune",
+
+  "tooltip.ancientmagicks.null": "Null",
+  "tooltip.ancientmagicks.vector": "Vector",
+  "tooltip.ancientmagicks.entity": "Entity",
+  "tooltip.ancientmagicks.block": "Block",
+  "tooltip.ancientmagicks.integer": "Integer",
+
+  "tooltip.ancientmagicks.excavate": "Excavates a block. Can take an integer to increase strength",
+  "tooltip.ancientmagicks.harm": "Damages an entity. Can take an integer to increase strength",
+  "tooltip.ancientmagicks.teleport": "Teleports an entity to given position. Can take a dimension to set the destination dimension",
+
+
 
   "item.ancientmagicks.projectile_sigil": "Projectile Sigil",
   "tooltip.ancientmagicks.projectile_sigil": "Forms the spell into a projectile activating once it hits a target",
