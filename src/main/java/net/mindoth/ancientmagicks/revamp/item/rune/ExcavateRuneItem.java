@@ -17,8 +17,8 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 
 import java.util.UUID;
 
-public class MineRuneItem extends UseOnBlockTemplate {
-    public MineRuneItem(Properties pProperties) {
+public class ExcavateRuneItem extends UseOnBlockTemplate {
+    public ExcavateRuneItem(Properties pProperties) {
         super(pProperties);
     }
 
@@ -51,6 +51,7 @@ public class MineRuneItem extends UseOnBlockTemplate {
         else if ( power == 1 ) return new ItemStack(Items.WOODEN_PICKAXE);
         else if ( power == 2 ) return new ItemStack(Items.STONE_PICKAXE);
         else if ( power == 3 ) return new ItemStack(Items.IRON_PICKAXE);
-        else return new ItemStack(Items.DIAMOND_PICKAXE);
+        else if ( power == 4 ) return new ItemStack(Items.DIAMOND_PICKAXE);
+        else return new ItemStack(Items.NETHERITE_PICKAXE);
     }
 }

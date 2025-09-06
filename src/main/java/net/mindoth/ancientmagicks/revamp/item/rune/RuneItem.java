@@ -6,6 +6,7 @@ import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.ancientmagicks.registries.ModItems;
+import net.mindoth.ancientmagicks.revamp.MultiBlockHitResult;
 import net.mindoth.ancientmagicks.revamp.SpellData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -24,6 +26,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -269,5 +272,12 @@ public class RuneItem extends Item {
         BlockPos end = new BlockPos(blocks.get(blocks.size() - 1).getX() + 1, blocks.get(blocks.size() - 1).getY() + 1, blocks.get(blocks.size() - 1).getZ() + 1);
         AABB particleBox = new AABB(start, end);
         addAoeParticles(true, level, particleBox, 0.15F, 8, stats);
+    }
+
+    public static MultiBlockHitResult getPOVHitResult(Vec3 position, Vec3 direction, Entity caster, Level level, ClipContext.Fluid pFluidMode, float range) {
+        direction = direction.multiply(range, range, range);
+        Vec3 vec31 = position.add(direction);
+        BlockHitResult result = level.clip(new ClipContext(position, vec31, ClipContext.Block.OUTLINE, pFluidMode, caster));
+        return new MultiBlockHitResult(result.getLocation(), result.getDirection(), result.getBlockPos(), result.isInside(), Collections.singletonList(result.getBlockPos()), level);
     }
 }

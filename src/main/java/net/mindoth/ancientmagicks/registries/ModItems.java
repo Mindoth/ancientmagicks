@@ -84,7 +84,7 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
 
-    /*//Forms
+    //Forms
     public static final RegistryObject<Item> PROJECTILE_SIGIL = ITEMS.register("projectile_sigil",
             () -> new ProjectileFormItem(new Item.Properties(), 0));
 
@@ -181,7 +181,7 @@ public class ModItems {
             () -> new OverextendedModifierItem(new Item.Properties(), 1));
 
     public static final RegistryObject<Item> TRANSIENT_FORTITUDE_SIGIL = ITEMS.register("transient_fortitude_sigil",
-            () -> new TransientFortitudeModifierItem(new Item.Properties(), 1));*/
+            () -> new TransientFortitudeModifierItem(new Item.Properties(), 1));
 
 
     public static final RegistryObject<Item> BLUE_SIGIL = ITEMS.register("blue_sigil",
@@ -213,6 +213,9 @@ public class ModItems {
     public static final RegistryObject<Item> ENTITY_POSITION_RUNE_ITEM = ITEMS.register("entity_position_rune",
             () -> new EntityPositionRuneItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> ENTITY_HEAD_POSITION_RUNE_ITEM = ITEMS.register("entity_head_position_rune",
+            () -> new EntityHeadPositionRuneItem(new Item.Properties()));
+
     public static final RegistryObject<Item> BLOCK_POSITION_RUNE_ITEM = ITEMS.register("block_position_rune",
             () -> new BlockPositionRuneItem(new Item.Properties()));
 
@@ -226,7 +229,7 @@ public class ModItems {
             () -> new TargetBlockRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> AREA_TARGET_BLOCK_RUNE_ITEM = ITEMS.register("area_target_block_rune",
-            () -> new AreaTargetUseOnBlockRuneItem(new Item.Properties()));
+            () -> new AreaTargetBlockRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> TARGET_FACE_RUNE_ITEM = ITEMS.register("target_face_rune",
             () -> new TargetFaceRuneItem(new Item.Properties()));
@@ -241,11 +244,11 @@ public class ModItems {
             () -> new IntegerThreeRuneItem(new Item.Properties()));
 
 
-    public static final RegistryObject<Item> MINE_RUNE_ITEM = ITEMS.register("mine_rune",
-            () -> new MineRuneItem(new Item.Properties()));
+    public static final RegistryObject<Item> EXCAVATE_RUNE_ITEM = ITEMS.register("excavate_rune",
+            () -> new ExcavateRuneItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> ATTACK_RUNE_ITEM = ITEMS.register("attack_rune",
-            () -> new AttackRuneItem(new Item.Properties()));
+    public static final RegistryObject<Item> HARM_RUNE_ITEM = ITEMS.register("harm_rune",
+            () -> new HarmRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> TELEPORT_RUNE_ITEM = ITEMS.register("teleport_rune",
             () -> new TeleportRuneItem(new Item.Properties()));

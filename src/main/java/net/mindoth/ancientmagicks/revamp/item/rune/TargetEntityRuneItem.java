@@ -5,10 +5,8 @@ import net.mindoth.ancientmagicks.revamp.SpellData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -16,35 +14,44 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-public class TargetEntityRuneItem extends UseOnEntityTemplate {
+public class TargetEntityRuneItem extends RuneItem {
     public TargetEntityRuneItem(Properties pProperties) {
         super(pProperties);
     }
 
     @Override
-    public SpellData result(Entity caster, SpellData spellData, Entity entity) {
-        if ( !spellData.getVectors().isEmpty() ) {
+    public SpellData resolve(Entity caster, SpellData spellData) {
+        if ( !spellData.getVectors().isEmpty() && spellData.getVectors().size() >= 2 ) {
+            Vec3 position = spellData.getLatestVector();
+            spellData.purgeVectors(1);
             Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
-            Entity target = getPointedEntity(direction, entity.level(), entity, 4.5F, 0, true, null);
-            if ( target != null ) spellData.addEntity(new MultiEntityHitResult(caster, target.position(), Collections.singletonList(target)));
+            Level level;
+            if ( spellData.getDimensions().isEmpty() || spellData.getLatestDimension() == null ) level = caster.level();
+            else level = spellData.getLatestDimension();
+            spellData.purgeDimensions(1);
+            Entity target = getPointedEntity(position, direction, caster, level, 4.5F, 0, true, null);
+            if ( target != null ) {
+                spellData.addEntity(new MultiEntityHitResult(caster, target.position(), Collections.singletonList(target)));
+                addEnchantParticles(target, 0.15F, 8, defaultStats());
+            }
             else spellData.addEntity(null);
         }
         else spellData.setValid(false);
         return spellData;
     }
 
-    private Entity getPointedEntity(Vec3 direction, Level level, Entity caster, float range, float error, boolean stopsAtSolid, @Nullable BiPredicate<Entity, Entity> filter) {
+    private Entity getPointedEntity(Vec3 position, Vec3 direction, Entity caster, Level level, float range, float error, boolean stopsAtSolid, @Nullable BiPredicate<Entity, Entity> filter) {
         direction = direction.multiply(range, range, range);
-        Vec3 center = caster.getEyePosition().add(direction);
+        Vec3 center = position.add(direction);
         Entity returnEntity = null;
-        double playerX = caster.getEyePosition().x;
-        double playerY = caster.getEyePosition().y;
-        double playerZ = caster.getEyePosition().z;
+        double playerX = position.x();
+        double playerY = position.y();
+        double playerZ = position.z();
         double listedEntityX = center.x();
         double listedEntityY = center.y();
         double listedEntityZ = center.z();
-        int particleInterval = (int)Math.round(caster.distanceToSqr(center));
+        int particleInterval = (int)Math.round(position.distanceToSqr(center));
         for ( int k = 1; k < (1 + particleInterval); k++ ) {
             double lineX = playerX * (1 - ((double) k / particleInterval)) + listedEntityX * ((double) k / particleInterval);
             double lineY = playerY * (1 - ((double) k / particleInterval)) + listedEntityY * ((double) k / particleInterval);
@@ -66,7 +73,7 @@ public class TargetEntityRuneItem extends UseOnEntityTemplate {
                 returnEntity = target;
                 break;
             }
-            if ( stopsAtSolid && caster.level().getBlockState(new BlockPos(Mth.floor(lineX), Mth.floor(lineY), Mth.floor(lineZ))).isSolid() ) break;
+            if ( stopsAtSolid && level.getBlockState(new BlockPos(Mth.floor(lineX), Mth.floor(lineY), Mth.floor(lineZ))).isSolid() ) break;
         }
         return returnEntity;
     }

@@ -3,10 +3,9 @@ package net.mindoth.ancientmagicks.revamp.item.rune;
 import net.mindoth.ancientmagicks.revamp.SpellData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.EntityHitResult;
 
-public class AttackRuneItem extends UseOnEntityTemplate {
-    public AttackRuneItem(Properties pProperties) {
+public class HarmRuneItem extends UseOnEntityTemplate {
+    public HarmRuneItem(Properties pProperties) {
         super(pProperties);
     }
 
@@ -18,7 +17,6 @@ public class AttackRuneItem extends UseOnEntityTemplate {
         spellData.purgeIntegers(1);
         if ( entity instanceof LivingEntity && entity.isAttackable() && entity.isAlive() ) {
             attackEntity(caster, caster, entity, power);
-            addEnchantParticles(entity, 0.15F, 8, defaultStats());
         }
         return spellData;
     }

@@ -6,24 +6,32 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Collections;
 
-public class TargetFaceRuneItem extends UseOnEntityTemplate {
+public class TargetFaceRuneItem extends RuneItem {
     public TargetFaceRuneItem(Item.Properties pProperties) {
         super(pProperties);
     }
 
     @Override
-    public SpellData result(Entity caster, SpellData spellData, Entity entity) {
-        if ( !spellData.getVectors().isEmpty() ) {
+    public SpellData resolve(Entity caster, SpellData spellData) {
+        if ( !spellData.getVectors().isEmpty() && spellData.getVectors().size() >= 2 ) {
+            Vec3 position = spellData.getLatestVector();
+            spellData.purgeVectors(1);
             Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
-            MultiBlockHitResult result = getPOVHitResult(direction, entity.level(), entity, ClipContext.Fluid.SOURCE_ONLY, 4.5F);
-            BlockPos blockPos = getPosOfFace(result.getBlockPos(), result.getDirection());
+            Level level;
+            if ( spellData.getDimensions().isEmpty() || spellData.getLatestDimension() == null ) level = caster.level();
+            else level = spellData.getLatestDimension();
+            spellData.purgeDimensions(1);
+            MultiBlockHitResult mResult = getPOVHitResult(position, direction, caster, level, ClipContext.Fluid.SOURCE_ONLY, 4.5F);
+            BlockPos blockPos = getPosOfFace(mResult.getBlockPos(), mResult.getDirection());
             Vec3 pos = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-            spellData.addBlock(new MultiBlockHitResult(pos, result.getDirection(), blockPos, result.isInside(), Collections.singletonList(blockPos), entity.level()));
+            spellData.addBlock(new MultiBlockHitResult(pos, mResult.getDirection(), blockPos, mResult.isInside(), Collections.singletonList(blockPos), level));
+            aoeBlockSpellParticles(level, Collections.singletonList(blockPos), defaultStats());
         }
         else spellData.setValid(false);
         return spellData;
