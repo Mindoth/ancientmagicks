@@ -45,7 +45,7 @@ public class TargetEntityRuneItem extends RuneItem {
             if ( spellData.getDimensions().isEmpty() || spellData.getLatestDimension() == null ) level = caster.level();
             else level = spellData.getLatestDimension();
             spellData.purgeDimensions(1);
-            Entity target = getPointedEntity(position, direction, caster, level, 4.5F, 0, true, null);
+            Entity target = getPointedEntity(position, direction, caster, level, 4.5F, 0.25F, true, null);
             if ( target != null ) {
                 spellData.addEntity(new MultiEntityHitResult(caster, target.position(), Collections.singletonList(target)));
                 addEnchantParticles(target, 0.15F, 8, defaultStats());
@@ -57,8 +57,7 @@ public class TargetEntityRuneItem extends RuneItem {
     }
 
     private Entity getPointedEntity(Vec3 position, Vec3 direction, Entity caster, Level level, float range, float error, boolean stopsAtSolid, @Nullable BiPredicate<Entity, Entity> filter) {
-        direction = direction.multiply(range, range, range);
-        Vec3 center = position.add(direction);
+        Vec3 center = position.add(direction.multiply(range, range, range));
         Entity returnEntity = null;
         double playerX = position.x();
         double playerY = position.y();
@@ -67,11 +66,13 @@ public class TargetEntityRuneItem extends RuneItem {
         double listedEntityY = center.y();
         double listedEntityZ = center.z();
         int particleInterval = (int)Math.round(position.distanceToSqr(center));
+        Vec3 startPos = position.add(direction.multiply(1.0D, 1.0D, 1.0D));
+        Vec3 endPos = center;
         for ( int k = 1; k < (1 + particleInterval); k++ ) {
             double lineX = playerX * (1 - ((double) k / particleInterval)) + listedEntityX * ((double) k / particleInterval);
             double lineY = playerY * (1 - ((double) k / particleInterval)) + listedEntityY * ((double) k / particleInterval);
             double lineZ = playerZ * (1 - ((double) k / particleInterval)) + listedEntityZ * ((double) k / particleInterval);
-            //((ServerLevel)level).sendParticles(ParticleTypes.FLAME, lineX, lineY, lineZ, 0, 0, 0, 0, 0);
+            endPos = new Vec3(lineX, lineY, lineZ);
             Vec3 start = new Vec3(lineX + error, lineY + error, lineZ + error);
             Vec3 end = new Vec3(lineX - error, lineY - error, lineZ - error);
             AABB area = new AABB(start, end);
@@ -90,6 +91,7 @@ public class TargetEntityRuneItem extends RuneItem {
             }
             if ( stopsAtSolid && level.getBlockState(new BlockPos(Mth.floor(lineX), Mth.floor(lineY), Mth.floor(lineZ))).isSolid() ) break;
         }
+        summonParticleLine(startPos, endPos, particleInterval, startPos, level, 0.15F, 8, defaultStats());
         return returnEntity;
     }
 }

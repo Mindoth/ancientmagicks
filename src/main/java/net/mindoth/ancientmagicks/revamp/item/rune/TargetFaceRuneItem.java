@@ -49,6 +49,10 @@ public class TargetFaceRuneItem extends RuneItem {
             Vec3 pos = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
             spellData.addBlock(new MultiBlockHitResult(pos, mResult.getDirection(), blockPos, mResult.isInside(), Collections.singletonList(blockPos), level));
             aoeBlockSpellParticles(level, Collections.singletonList(blockPos), defaultStats());
+
+            Vec3 start = position.add(direction.multiply(1.0D, 1.0D, 1.0D));
+            Vec3 end = blockPos.getCenter();
+            summonParticleLine(start, end, (int)position.distanceTo(end) * 4, start, level, 0.15F, 8, defaultStats());
         }
         else spellData.setValid(false);
         return spellData;

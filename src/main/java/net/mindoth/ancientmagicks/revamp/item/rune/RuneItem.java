@@ -150,29 +150,32 @@ public class RuneItem extends Item {
         else {
             int amount = 4 * Math.max((int)box.getYsize(), (int)box.getXsize());
             for ( int i = 0; i < amount; i++ ) {
-                generateParticles(new Vec3(maxX, center.y - 0.5D + new Random().nextDouble(), minZ + (maxZ - minZ) * new Random().nextDouble()), center, level, size, age, 0, 0.15D, 0, stats);
-                generateParticles(new Vec3(minX, center.y - 0.5D + new Random().nextDouble(), minZ + (maxZ - minZ) * new Random().nextDouble()), center, level, size, age, 0, 0.15D, 0, stats);
-                generateParticles(new Vec3(minX + (maxX - minX) * new Random().nextDouble(), center.y - 0.5D + new Random().nextDouble(), minZ), center, level, size, age, 0, 0.15D, 0, stats);
-                generateParticles(new Vec3(minX + (maxX - minX) * new Random().nextDouble(), center.y - 0.5D + new Random().nextDouble(), maxZ), center, level, size, age, 0, 0.15D, 0, stats);
+                double vec = 0.05D + (0.25D - 0.05D) * new Random().nextDouble();
+                //double vec = 0.15D;
+                generateParticles(new Vec3(maxX, center.y - 0.5D + new Random().nextDouble(), minZ + (maxZ - minZ) * new Random().nextDouble()), center, level, size, age, 0, vec, 0, stats);
+                generateParticles(new Vec3(minX, center.y - 0.5D + new Random().nextDouble(), minZ + (maxZ - minZ) * new Random().nextDouble()), center, level, size, age, 0, vec, 0, stats);
+                generateParticles(new Vec3(minX + (maxX - minX) * new Random().nextDouble(), center.y - 0.5D + new Random().nextDouble(), minZ), center, level, size, age, 0, vec, 0, stats);
+                generateParticles(new Vec3(minX + (maxX - minX) * new Random().nextDouble(), center.y - 0.5D + new Random().nextDouble(), maxZ), center, level, size, age, 0, vec, 0, stats);
             }
         }
     }
 
-    private void summonParticleLine(Vec3 startPos, Vec3 endPos, int amount, Vec3 center, Level level, float size, int age, HashMap<String, Float> stats) {
+    protected void summonParticleLine(Vec3 startPos, Vec3 endPos, int amount, Vec3 center, Level level, float size, int age, HashMap<String, Float> stats) {
         double startX = startPos.x;
         double startY = startPos.y;
         double startZ = startPos.z;
         double endX = endPos.x;
         double endY = endPos.y;
         double endZ = endPos.z;
-        for (int k = 1; k < (1 + amount); k++ ) {
+        double speed = 0.05D;
+        for ( int k = 1; k < (1 + amount); k++ ) {
             double vecX = new Random().nextDouble(1.0D - -1.0D) + -1.0D;
             double vecY = new Random().nextDouble(1.0D - -1.0D) + -1.0D;
             double vecZ = new Random().nextDouble(1.0D - -1.0D) + -1.0D;
             double lineX = startX * (1 - ((double) k / amount)) + endX * ((double) k / amount);
             double lineY = startY * (1 - ((double) k / amount)) + endY * ((double) k / amount);
             double lineZ = startZ * (1 - ((double) k / amount)) + endZ * ((double) k / amount);
-            generateParticles(new Vec3(lineX, lineY, lineZ), center, level, size, age, vecX * 0.1D, vecY * 0.1D, vecZ * 0.1D, stats);
+            generateParticles(new Vec3(lineX, lineY, lineZ), center, level, size, age, vecX * speed, vecY * speed, vecZ * speed, stats);
         }
     }
 

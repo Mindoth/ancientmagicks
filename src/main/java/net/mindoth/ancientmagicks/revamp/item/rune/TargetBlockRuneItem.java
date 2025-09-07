@@ -46,6 +46,10 @@ public class TargetBlockRuneItem extends RuneItem {
             MultiBlockHitResult mResult = getPOVHitResult(position, direction, caster, level, ClipContext.Fluid.SOURCE_ONLY, 4.5F);
             spellData.addBlock(mResult);
             aoeBlockSpellParticles(level, Collections.singletonList(mResult.getBlockPos()), defaultStats());
+
+            Vec3 start = position.add(direction.multiply(1.0D, 1.0D, 1.0D));
+            Vec3 end = mResult.getBlockPos().getCenter();
+            summonParticleLine(start, end, (int)position.distanceTo(end) * 4, start, level, 0.15F, 8, defaultStats());
         }
         else spellData.setValid(false);
         return spellData;

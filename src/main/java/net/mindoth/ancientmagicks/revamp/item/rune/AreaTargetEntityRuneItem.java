@@ -49,7 +49,7 @@ public class AreaTargetEntityRuneItem extends RuneItem {
             if ( spellData.getIntegers().isEmpty() || spellData.getLatestInteger() == null ) range = 1;
             else range = spellData.getLatestInteger();
             spellData.purgeIntegers(1);
-            Vec3 pos = getPoint(position, direction, caster, level, 4.5F, 0, false, true, true, false);
+            Vec3 pos = getPoint(position, direction, caster, level, 4.5F, 0.25F, false, true, true, false);
 
             Vec3 start = new Vec3(pos.x + range, pos.y + range, pos.z + range);
             Vec3 end = new Vec3(pos.x - range, pos.y - range, pos.z - range);
