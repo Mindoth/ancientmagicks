@@ -30,8 +30,9 @@ public class TeleportRuneItem extends UseOnEntityTemplate {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(Component.translatable("tooltip.ancientmagicks.entity").append(Component.literal(" | "))
-                .append(Component.translatable("tooltip.ancientmagicks.vector")).append(Component.literal(" -> "))
-                .append(Component.translatable("tooltip.ancientmagicks.teleport")).withStyle(ChatFormatting.GRAY));
+                .append(Component.translatable("tooltip.ancientmagicks.vector")).append(Component.literal(" | "))
+                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.dimension")).append(Component.literal(")"))
+                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.teleport")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 

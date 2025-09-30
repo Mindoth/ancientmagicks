@@ -28,7 +28,7 @@ public class EntityHeadPositionRuneItem extends UseOnEntityTemplate {
 
     @Override
     protected SpellData result(Entity caster, SpellData spellData, Entity entity) {
-        spellData.addVector(entity.getEyePosition());
+        spellData.addObject(entity.getEyePosition());
         return spellData;
     }
 }

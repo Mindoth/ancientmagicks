@@ -22,8 +22,9 @@ public class HarmRuneItem extends UseOnEntityTemplate {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.entity").append(Component.literal(" -> "))
-                .append(Component.translatable("tooltip.ancientmagicks.harm")).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.entity").append(Component.literal(" | "))
+                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.integer")).append(Component.literal(")"))
+                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.harm")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 

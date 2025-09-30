@@ -28,7 +28,7 @@ public class IntegerTwoRuneItem extends RuneItem {
 
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
-        spellData.addInteger(2);
+        spellData.addObject(2);
         return spellData;
     }
 }

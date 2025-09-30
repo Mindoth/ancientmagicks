@@ -30,7 +30,7 @@ public class IntegerOneRuneItem extends RuneItem {
 
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
-        spellData.addInteger(1);
+        spellData.addObject(1);
         return spellData;
     }
 }

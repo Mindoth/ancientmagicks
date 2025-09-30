@@ -47,10 +47,10 @@ public class TargetEntityRuneItem extends RuneItem {
             spellData.purgeDimensions(1);
             Entity target = getPointedEntity(position, direction, caster, level, 4.5F, 0.25F, true, null);
             if ( target != null ) {
-                spellData.addEntity(new MultiEntityHitResult(caster, target.position(), Collections.singletonList(target)));
+                spellData.addObject(new MultiEntityHitResult(caster, target.position(), Collections.singletonList(target)));
                 addEnchantParticles(target, 0.15F, 8, defaultStats());
             }
-            else spellData.addEntity(null);
+            else spellData.addObject(null);
         }
         else spellData.setValid(false);
         return spellData;

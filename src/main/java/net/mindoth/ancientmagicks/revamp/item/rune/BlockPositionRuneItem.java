@@ -30,7 +30,7 @@ public class BlockPositionRuneItem extends UseOnBlockTemplate {
 
     @Override
     public SpellData result(Entity caster, SpellData spellData, BlockPos pos, Level level) {
-        spellData.addVector(new Vec3(pos.getX(), pos.getY(), pos.getZ()));
+        spellData.addObject(new Vec3(pos.getX(), pos.getY(), pos.getZ()));
         return spellData;
     }
 }

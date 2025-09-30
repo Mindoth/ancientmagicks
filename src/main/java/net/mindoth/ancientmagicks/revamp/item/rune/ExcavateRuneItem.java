@@ -6,8 +6,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -32,8 +34,9 @@ public class ExcavateRuneItem extends UseOnBlockTemplate {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.block").append(Component.literal(" -> "))
-                .append(Component.translatable("tooltip.ancientmagicks.excavate")).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.block").append(Component.literal(" | "))
+                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.integer")).append(Component.literal(")"))
+                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.excavate")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
@@ -56,9 +59,21 @@ public class ExcavateRuneItem extends UseOnBlockTemplate {
             BlockState blockState = serverLevel.getBlockState(pos);
             fakePlayer.setItemSlot(EquipmentSlot.MAINHAND, getToolFromStrength(power));
             if ( block.canHarvestBlock(blockState, serverLevel, pos, fakePlayer) && block.defaultDestroyTime() >= 0 && !blockState.isAir() ) {
-                serverLevel.destroyBlock(pos, !(caster instanceof Player player && player.isCreative()), fakePlayer);
+                serverLevel.destroyBlock(pos, canDrop(caster), fakePlayer);
+                /*List<ItemStack> list = Block.getDrops(blockState, serverLevel, pos, dimension.getBlockEntity(pos), fakePlayer, fakePlayer.getItemBySlot(EquipmentSlot.MAINHAND));
+                dimension.removeBlock(pos, false);
+                if ( !list.isEmpty() && canDrop(caster) ) for ( ItemStack stack : list ) {
+                    ItemEntity drop = new ItemEntity(dimension, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack);
+                    drop.setDeltaMovement(0, 0, 0);
+                    dimension.addFreshEntity(drop);
+                }
+                dimension.playSound(null, pos, blockState.getSoundType().getBreakSound(), SoundSource.PLAYERS, 1.0F, 1);*/
             }
         }
+    }
+
+    private boolean canDrop(Entity caster) {
+        return !(caster instanceof Player player && player.isCreative());
     }
 
     private ItemStack getToolFromStrength(int power) {

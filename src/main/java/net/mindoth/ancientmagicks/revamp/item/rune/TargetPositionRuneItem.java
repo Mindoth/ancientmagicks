@@ -1,6 +1,5 @@
 package net.mindoth.ancientmagicks.revamp.item.rune;
 
-import net.mindoth.ancientmagicks.revamp.MultiEntityHitResult;
 import net.mindoth.ancientmagicks.revamp.SpellData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -20,8 +19,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class AreaTargetEntityRuneItem extends RuneItem {
-    public AreaTargetEntityRuneItem(Properties pProperties) {
+public class TargetPositionRuneItem extends RuneItem {
+    public TargetPositionRuneItem(Properties pProperties) {
         super(pProperties);
     }
 
@@ -30,9 +29,8 @@ public class AreaTargetEntityRuneItem extends RuneItem {
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(Component.translatable("tooltip.ancientmagicks.vector").append(Component.literal(" | "))
                 .append(Component.translatable("tooltip.ancientmagicks.vector")).append(Component.literal(" | "))
-                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.dimension")).append(Component.literal(")")).append(Component.literal(" | "))
-                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.integer")).append(Component.literal(")"))
-                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.entity")).withStyle(ChatFormatting.GRAY));
+                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.dimension")).append(Component.literal(")"))
+                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.vector")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
@@ -47,20 +45,12 @@ public class AreaTargetEntityRuneItem extends RuneItem {
             if ( spellData.getDimensions().isEmpty() || spellData.getLatestDimension() == null ) level = caster.level();
             else level = spellData.getLatestDimension();
             spellData.purgeDimensions(1);
-            int range;
-            if ( spellData.getIntegers().isEmpty() || spellData.getLatestInteger() == null ) range = 1;
-            else range = spellData.getLatestInteger();
-            spellData.purgeIntegers(1);
-            Vec3 pos = getPoint(position, direction, caster, level, 4.5F, 0.25F, false, true, true, false);
 
-            Vec3 start = new Vec3(pos.x + range, pos.y + range, pos.z + range);
-            Vec3 end = new Vec3(pos.x - range, pos.y - range, pos.z - range);
-            AABB box = new AABB(start, end);
-            List<Entity> entities = level.getEntitiesOfClass(Entity.class, box);
+            Vec3 start = position.add(direction.multiply(1.0D, 1.0D, 1.0D));
+            Vec3 end = getPoint(position, direction, caster, level, 4.5F, 0, false, true, true, false);
+            summonParticleLine(start, end, (int)position.distanceTo(end) * 4, start, level, 0.15F, 8, defaultStats());
 
-            if ( entities.isEmpty() ) spellData.addObject(null);
-            else spellData.addObject(new MultiEntityHitResult(caster, pos, entities));
-            aoeEntitySpellParticles(level, box, range, defaultStats());
+            spellData.addObject(end);
         }
         else spellData.setValid(false);
         return spellData;
@@ -88,7 +78,7 @@ public class AreaTargetEntityRuneItem extends RuneItem {
             Entity target = null;
             double lowestSoFar = Double.MAX_VALUE;
             for ( Entity closestSoFar : targets ) {
-                if ( closestSoFar instanceof LivingEntity ) {
+                if ( closestSoFar instanceof LivingEntity) {
                     double testDistance = closestSoFar.distanceToSqr(center);
                     if ( testDistance < lowestSoFar ) target = closestSoFar;
                 }
@@ -100,7 +90,7 @@ public class AreaTargetEntityRuneItem extends RuneItem {
                 }
                 break;
             }
-            if ( stopsAtLiquid && level.getBlockState(new BlockPos(Mth.floor(lineX), Mth.floor(lineY), Mth.floor(lineZ))).getBlock() instanceof LiquidBlock ) {
+            if ( stopsAtLiquid && level.getBlockState(new BlockPos(Mth.floor(lineX), Mth.floor(lineY), Mth.floor(lineZ))).getBlock() instanceof LiquidBlock) {
                 if ( centerBlock ) {
                     BlockPos pos = new BlockPos(Mth.floor(returnPoint.x), Mth.floor(returnPoint.y), Mth.floor(returnPoint.z));
                     returnPoint = pos.getCenter();

@@ -234,6 +234,12 @@ public class ModItems {
     public static final RegistryObject<Item> TARGET_FACE_RUNE_ITEM = ITEMS.register("target_face_rune",
             () -> new TargetFaceRuneItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> AREA_TARGET_FACE_RUNE_ITEM = ITEMS.register("area_target_face_rune",
+            () -> new AreaTargetFaceRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> TARGET_POSITION_RUNE_ITEM = ITEMS.register("target_position_rune",
+            () -> new TargetPositionRuneItem(new Item.Properties()));
+
     public static final RegistryObject<Item> INTEGER_ONE_RUNE_ITEM = ITEMS.register("integer_one_rune",
             () -> new IntegerOneRuneItem(new Item.Properties()));
 
@@ -242,6 +248,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> INTEGER_THREE_RUNE_ITEM = ITEMS.register("integer_three_rune",
             () -> new IntegerThreeRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> DUPLICITY_RUNE_ITEM = ITEMS.register("duplicity_rune",
+            () -> new DuplicityRuneItem(new Item.Properties()));
 
 
     public static final RegistryObject<Item> EXCAVATE_RUNE_ITEM = ITEMS.register("excavate_rune",
@@ -252,4 +261,7 @@ public class ModItems {
 
     public static final RegistryObject<Item> TELEPORT_RUNE_ITEM = ITEMS.register("teleport_rune",
             () -> new TeleportRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> EXPLODE_RUNE_ITEM = ITEMS.register("explode_rune",
+            () -> new ExplodeRuneItem(new Item.Properties()));
 }

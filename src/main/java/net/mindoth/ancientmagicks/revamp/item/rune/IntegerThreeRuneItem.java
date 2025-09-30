@@ -28,7 +28,7 @@ public class IntegerThreeRuneItem extends RuneItem {
 
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
-        spellData.addInteger(3);
+        spellData.addObject(3);
         return spellData;
     }
 }

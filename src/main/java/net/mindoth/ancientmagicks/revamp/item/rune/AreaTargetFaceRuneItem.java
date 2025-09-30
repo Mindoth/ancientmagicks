@@ -6,6 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
@@ -16,10 +17,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.compress.utils.Lists;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 
-public class AreaTargetBlockRuneItem extends RuneItem {
-    public AreaTargetBlockRuneItem(Properties pProperties) {
+public class AreaTargetFaceRuneItem extends RuneItem {
+    public AreaTargetFaceRuneItem(Item.Properties pProperties) {
         super(pProperties);
     }
 
@@ -51,12 +53,13 @@ public class AreaTargetBlockRuneItem extends RuneItem {
             spellData.purgeIntegers(1);
 
             MultiBlockHitResult result = getPOVHitResult(position, direction, caster, level, ClipContext.Fluid.SOURCE_ONLY, 4.5F);
-            BlockPos blockPos = result.getBlockPos();
+            BlockPos blockPos = getPosOfFace(result.getBlockPos(), result.getDirection());
+            Vec3 pos = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
             List<BlockPos> blocks = Lists.newArrayList();
             if ( range == 0 ) blocks.add(blockPos);
             else blocks = getBlockList(this, result, blockPos, range);
 
-            MultiBlockHitResult mResult = new MultiBlockHitResult(result.getLocation(), result.getDirection(), result.getBlockPos(), result.isInside(), blocks, result.getLevel());
+            MultiBlockHitResult mResult = new MultiBlockHitResult(pos, result.getDirection(), blockPos, result.isInside(), blocks, result.getLevel());
             spellData.addObject(mResult);
             aoeBlockSpellParticles(level, blocks, defaultStats());
         }

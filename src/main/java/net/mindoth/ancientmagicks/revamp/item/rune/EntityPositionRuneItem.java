@@ -29,7 +29,7 @@ public class EntityPositionRuneItem extends UseOnEntityTemplate {
 
     @Override
     protected SpellData result(Entity caster, SpellData spellData, Entity entity) {
-        spellData.addVector(new Vec3(entity.getX(), entity.getY(), entity.getZ()));
+        spellData.addObject(new Vec3(entity.getX(), entity.getY(), entity.getZ()));
         return spellData;
     }
 }

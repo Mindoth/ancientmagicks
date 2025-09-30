@@ -34,7 +34,7 @@ public class SelfRuneItem extends RuneItem {
 
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
-        spellData.addEntity(new MultiEntityHitResult(caster, caster.position(), Collections.singletonList(caster)));
+        spellData.addObject(new MultiEntityHitResult(caster, caster.position(), Collections.singletonList(caster)));
         return spellData;
     }
 }

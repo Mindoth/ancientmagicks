@@ -8,85 +8,111 @@ import java.util.List;
 
 public class SpellData {
 
-    private List<MultiEntityHitResult> entities;
-    public List<MultiEntityHitResult> getEntities() {
-        return this.entities;
+    private List<Object> stackList;
+    public List<Object> getStackList() {
+        return this.stackList;
     }
-    public void addEntity(MultiEntityHitResult entity) {
-        this.entities.add(entity);
+    public void addObject(Object object) {
+        this.stackList.add(object);
+    }
+    public Object getLatestObject() {
+        return this.stackList.get(this.stackList.size() - 1);
+    }
+
+    public List<MultiEntityHitResult> getEntities() {
+        List<MultiEntityHitResult> entities = Lists.newArrayList();
+        for ( Object object : this.stackList ) if ( object instanceof MultiEntityHitResult mEntityHitResult ) entities.add(mEntityHitResult);
+        return entities;
     }
     public void purgeEntities(int amount) {
-        for ( int i = 0; i < amount; i++ ) if ( !this.entities.isEmpty() ) {
-            int lastIndex = this.entities.size() - 1;
-            this.entities.remove(lastIndex);
+        for ( int i = 0; i < amount; i++ ) {
+            for ( int j = this.stackList.size() - 1; j >= 0; j-- ) if ( !getEntities().isEmpty() ) {
+                Object object = this.stackList.get(j);
+                if ( object instanceof MultiEntityHitResult ) {
+                    this.stackList.remove(j);
+                    break;
+                }
+            }
         }
     }
     public MultiEntityHitResult getLatestEntity() {
         return getEntities().get(getEntities().size() - 1);
     }
 
-    private List<MultiBlockHitResult> blocks;
     public List<MultiBlockHitResult> getBlocks() {
-        return this.blocks;
-    }
-    public void addBlock(MultiBlockHitResult block) {
-        this.blocks.add(block);
+        List<MultiBlockHitResult> blocks = Lists.newArrayList();
+        for ( Object object : this.stackList ) if ( object instanceof MultiBlockHitResult mBlockHitResult ) blocks.add(mBlockHitResult);
+        return blocks;
     }
     public void purgeBlocks(int amount) {
-        for ( int i = 0; i < amount; i++ ) if ( !this.blocks.isEmpty() ) {
-            int lastIndex = this.blocks.size() - 1;
-            this.blocks.remove(lastIndex);
+        for ( int i = 0; i < amount; i++ ) {
+            for ( int j = this.stackList.size() - 1; j >= 0; j-- ) if ( !getBlocks().isEmpty() ) {
+                Object object = this.stackList.get(j);
+                if ( object instanceof MultiBlockHitResult ) {
+                    this.stackList.remove(j);
+                    break;
+                }
+            }
         }
     }
     public MultiBlockHitResult getLatestBlock() {
         return getBlocks().get(getBlocks().size() - 1);
     }
 
-    private List<Vec3> vectors;
     public List<Vec3> getVectors() {
-        return this.vectors;
-    }
-    public void addVector(Vec3 vector) {
-        this.vectors.add(vector);
+        List<Vec3> vectors = Lists.newArrayList();
+        for ( Object object : this.stackList ) if ( object instanceof Vec3 vector ) vectors.add(vector);
+        return vectors;
     }
     public void purgeVectors(int amount) {
-        for ( int i = 0; i < amount; i++ ) if ( !this.vectors.isEmpty() ) {
-            int lastIndex = this.vectors.size() - 1;
-            this.vectors.remove(lastIndex);
+        for ( int i = 0; i < amount; i++ ) {
+            for ( int j = this.stackList.size() - 1; j >= 0; j-- ) if ( !getVectors().isEmpty() ) {
+                Object object = this.stackList.get(j);
+                if ( object instanceof Vec3 ) {
+                    this.stackList.remove(j);
+                    break;
+                }
+            }
         }
     }
     public Vec3 getLatestVector() {
         return getVectors().get(getVectors().size() - 1);
     }
 
-    private List<Level> dimensions;
     public List<Level> getDimensions() {
-        return this.dimensions;
-    }
-    public void addDimension(Level dimension) {
-        this.dimensions.add(dimension);
+        List<Level> dimensions = Lists.newArrayList();
+        for ( Object object : this.stackList ) if ( object instanceof Level dimension ) dimensions.add(dimension);
+        return dimensions;
     }
     public void purgeDimensions(int amount) {
-        for ( int i = 0; i < amount; i++ ) if ( !this.dimensions.isEmpty() ) {
-            int lastIndex = this.dimensions.size() - 1;
-            this.dimensions.remove(lastIndex);
+        for ( int i = 0; i < amount; i++ ) {
+            for ( int j = this.stackList.size() - 1; j >= 0; j-- ) if ( !getDimensions().isEmpty() ) {
+                Object object = this.stackList.get(j);
+                if ( object instanceof Level ) {
+                    this.stackList.remove(j);
+                    break;
+                }
+            }
         }
     }
     public Level getLatestDimension() {
         return getDimensions().get(getDimensions().size() - 1);
     }
 
-    private List<Integer> integers;
     public List<Integer> getIntegers() {
-        return this.integers;
-    }
-    public void addInteger(Integer integer) {
-        this.integers.add(integer);
+        List<Integer> integers = Lists.newArrayList();
+        for ( Object object : this.stackList ) if ( object instanceof Integer integer ) integers.add(integer);
+        return integers;
     }
     public void purgeIntegers(int amount) {
-        for ( int i = 0; i < amount; i++ ) if ( !this.integers.isEmpty() ) {
-            int lastIndex = this.integers.size() - 1;
-            this.integers.remove(lastIndex);
+        for ( int i = 0; i < amount; i++ ) {
+            for ( int j = this.stackList.size() - 1; j >= 0; j-- ) if ( !getIntegers().isEmpty() ) {
+                Object object = this.stackList.get(j);
+                if ( object instanceof Integer ) {
+                    this.stackList.remove(j);
+                    break;
+                }
+            }
         }
     }
     public Integer getLatestInteger() {
@@ -94,22 +120,13 @@ public class SpellData {
     }
 
     public SpellData() {
-        this.entities = Lists.newArrayList();
-        this.blocks = Lists.newArrayList();
-        this.vectors = Lists.newArrayList();
-        this.dimensions = Lists.newArrayList();
-        this.integers = Lists.newArrayList();
-
+        this.stackList = Lists.newArrayList();
         this.valid = true;
     }
 
     public static SpellData clone(SpellData spellData) {
         SpellData newData = new SpellData();
-        for ( MultiEntityHitResult entity : spellData.getEntities() ) newData.addEntity(entity);
-        for ( MultiBlockHitResult block : spellData.getBlocks() ) newData.addBlock(block);
-        for ( Vec3 vec3 : spellData.getVectors() ) newData.addVector(vec3);
-        for ( Level level : spellData.getDimensions() ) newData.addDimension(level);
-        for ( int integer : spellData.getIntegers() ) newData.addInteger(integer);
+        for ( Object object : spellData.getStackList() ) newData.addObject(object);
         return newData;
     }
 
