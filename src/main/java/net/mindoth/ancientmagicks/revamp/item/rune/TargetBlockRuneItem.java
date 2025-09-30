@@ -27,8 +27,9 @@ public class TargetBlockRuneItem extends RuneItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(Component.translatable("tooltip.ancientmagicks.vector").append(Component.literal(" | "))
-                .append(Component.translatable("tooltip.ancientmagicks.vector")).append(Component.literal(" -> "))
-                .append(Component.translatable("tooltip.ancientmagicks.block")).withStyle(ChatFormatting.GRAY));
+                .append(Component.translatable("tooltip.ancientmagicks.vector")).append(Component.literal(" | "))
+                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.dimension")).append(Component.literal(")"))
+                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.block")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 

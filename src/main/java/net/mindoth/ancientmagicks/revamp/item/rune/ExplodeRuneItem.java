@@ -38,9 +38,9 @@ public class ExplodeRuneItem extends RuneItem {
             if ( spellData.getDimensions().isEmpty() || spellData.getLatestDimension() == null ) level = caster.level();
             else level = spellData.getLatestDimension();
             spellData.purgeDimensions(1);
-            int power;
-            if ( spellData.getIntegers().isEmpty() || spellData.getLatestInteger() == null ) power = 1;
-            else power = 1 + spellData.getLatestInteger();
+            float power;
+            if ( spellData.getIntegers().isEmpty() || spellData.getLatestInteger() == null ) power = 1.0F;
+            else power = 1 + spellData.getLatestInteger() * 0.5F;
             spellData.purgeIntegers(1);
 
             level.explode(caster, pos.x, pos.y, pos.z, power, Level.ExplosionInteraction.BLOCK);

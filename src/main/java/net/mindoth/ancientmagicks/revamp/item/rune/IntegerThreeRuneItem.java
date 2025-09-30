@@ -21,8 +21,7 @@ public class IntegerThreeRuneItem extends RuneItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.null").append(Component.literal(" -> "))
-                .append(Component.translatable("tooltip.ancientmagicks.integer")).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.literal("-> ").append(Component.translatable("tooltip.ancientmagicks.integer")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 

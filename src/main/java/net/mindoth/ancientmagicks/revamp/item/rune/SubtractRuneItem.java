@@ -13,21 +13,30 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class IntegerTwoRuneItem extends RuneItem {
-    public IntegerTwoRuneItem(Properties pProperties) {
+public class SubtractRuneItem extends RuneItem {
+    public SubtractRuneItem(Properties pProperties) {
         super(pProperties);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.literal("-> ").append(Component.translatable("tooltip.ancientmagicks.integer")).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.integer").append(Component.literal(" | "))
+                .append(Component.translatable("tooltip.ancientmagicks.integer"))
+                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.integer")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
-        spellData.addObject(2);
+        if ( !spellData.getIntegers().isEmpty() && spellData.getIntegers().size() >= 2 ) {
+            int first = spellData.getLatestInteger();
+            spellData.purgeIntegers(1);
+            int second = spellData.getLatestInteger();
+            spellData.purgeIntegers(1);
+            spellData.addObject(first - second);
+        }
+        else spellData.setValid(false);
         return spellData;
     }
 }

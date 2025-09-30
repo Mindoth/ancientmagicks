@@ -21,14 +21,14 @@ public class SpellData {
 
     public List<MultiEntityHitResult> getEntities() {
         List<MultiEntityHitResult> entities = Lists.newArrayList();
-        for ( Object object : this.stackList ) if ( object instanceof MultiEntityHitResult mEntityHitResult ) entities.add(mEntityHitResult);
+        for ( Object object : this.stackList ) if ( object == null || object instanceof MultiEntityHitResult ) entities.add((MultiEntityHitResult)object);
         return entities;
     }
     public void purgeEntities(int amount) {
         for ( int i = 0; i < amount; i++ ) {
             for ( int j = this.stackList.size() - 1; j >= 0; j-- ) if ( !getEntities().isEmpty() ) {
                 Object object = this.stackList.get(j);
-                if ( object instanceof MultiEntityHitResult ) {
+                if ( object == null || object instanceof MultiEntityHitResult ) {
                     this.stackList.remove(j);
                     break;
                 }
@@ -41,14 +41,14 @@ public class SpellData {
 
     public List<MultiBlockHitResult> getBlocks() {
         List<MultiBlockHitResult> blocks = Lists.newArrayList();
-        for ( Object object : this.stackList ) if ( object instanceof MultiBlockHitResult mBlockHitResult ) blocks.add(mBlockHitResult);
+        for ( Object object : this.stackList ) if ( object == null || object instanceof MultiBlockHitResult ) blocks.add((MultiBlockHitResult)object);
         return blocks;
     }
     public void purgeBlocks(int amount) {
         for ( int i = 0; i < amount; i++ ) {
             for ( int j = this.stackList.size() - 1; j >= 0; j-- ) if ( !getBlocks().isEmpty() ) {
                 Object object = this.stackList.get(j);
-                if ( object instanceof MultiBlockHitResult ) {
+                if ( object == null || object instanceof MultiBlockHitResult ) {
                     this.stackList.remove(j);
                     break;
                 }
@@ -61,14 +61,14 @@ public class SpellData {
 
     public List<Vec3> getVectors() {
         List<Vec3> vectors = Lists.newArrayList();
-        for ( Object object : this.stackList ) if ( object instanceof Vec3 vector ) vectors.add(vector);
+        for ( Object object : this.stackList ) if ( object == null || object instanceof Vec3 ) vectors.add((Vec3)object);
         return vectors;
     }
     public void purgeVectors(int amount) {
         for ( int i = 0; i < amount; i++ ) {
             for ( int j = this.stackList.size() - 1; j >= 0; j-- ) if ( !getVectors().isEmpty() ) {
                 Object object = this.stackList.get(j);
-                if ( object instanceof Vec3 ) {
+                if ( object == null || object instanceof Vec3 ) {
                     this.stackList.remove(j);
                     break;
                 }
@@ -81,14 +81,14 @@ public class SpellData {
 
     public List<Level> getDimensions() {
         List<Level> dimensions = Lists.newArrayList();
-        for ( Object object : this.stackList ) if ( object instanceof Level dimension ) dimensions.add(dimension);
+        for ( Object object : this.stackList ) if ( object == null || object instanceof Level ) dimensions.add((Level)object);
         return dimensions;
     }
     public void purgeDimensions(int amount) {
         for ( int i = 0; i < amount; i++ ) {
             for ( int j = this.stackList.size() - 1; j >= 0; j-- ) if ( !getDimensions().isEmpty() ) {
                 Object object = this.stackList.get(j);
-                if ( object instanceof Level ) {
+                if ( object == null || object instanceof Level ) {
                     this.stackList.remove(j);
                     break;
                 }
@@ -101,14 +101,14 @@ public class SpellData {
 
     public List<Integer> getIntegers() {
         List<Integer> integers = Lists.newArrayList();
-        for ( Object object : this.stackList ) if ( object instanceof Integer integer ) integers.add(integer);
+        for ( Object object : this.stackList ) if ( object == null || object instanceof Integer ) integers.add((Integer)object);
         return integers;
     }
     public void purgeIntegers(int amount) {
         for ( int i = 0; i < amount; i++ ) {
             for ( int j = this.stackList.size() - 1; j >= 0; j-- ) if ( !getIntegers().isEmpty() ) {
                 Object object = this.stackList.get(j);
-                if ( object instanceof Integer ) {
+                if ( object == null || object instanceof Integer ) {
                     this.stackList.remove(j);
                     break;
                 }

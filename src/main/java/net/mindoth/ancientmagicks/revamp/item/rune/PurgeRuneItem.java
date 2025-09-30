@@ -13,21 +13,24 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class IntegerTwoRuneItem extends RuneItem {
-    public IntegerTwoRuneItem(Properties pProperties) {
+public class PurgeRuneItem extends RuneItem {
+    public PurgeRuneItem(Properties pProperties) {
         super(pProperties);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.literal("-> ").append(Component.translatable("tooltip.ancientmagicks.integer")).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.any").append(Component.literal(" ->")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
-        spellData.addObject(2);
+        if ( !spellData.getStackList().isEmpty() ) {
+            spellData.getStackList().remove(spellData.getStackList().size() - 1);
+        }
+        else spellData.setValid(false);
         return spellData;
     }
 }
