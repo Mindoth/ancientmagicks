@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.client.menu.RuneCraftingMenu;
 import net.mindoth.ancientmagicks.client.menu.SpellCraftingMenu;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -14,6 +15,7 @@ public class ModMenus {
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, AncientMagicks.MOD_ID);
 
     public static final RegistryObject<MenuType<SpellCraftingMenu>> SPELL_CRAFTING_MENU = registerMenuType("spell_crafting_menu", SpellCraftingMenu::new);
+    public static final RegistryObject<MenuType<RuneCraftingMenu>> RUNE_CRAFTING_MENU = registerMenuType("rune_crafting_menu", RuneCraftingMenu::new);
 
     private static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));

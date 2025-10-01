@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
+import net.mindoth.ancientmagicks.block.RuneCraftingTableBlock;
 import net.mindoth.ancientmagicks.block.SpellCraftingTableBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -40,6 +41,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> SPELL_CRAFTING_TABLE = registerBlock("spell_crafting_table",
             () -> new SpellCraftingTableBlock(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> RUNE_CRAFTING_TABLE = registerBlock("rune_crafting_table",
+            () -> new RuneCraftingTableBlock(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
 
 

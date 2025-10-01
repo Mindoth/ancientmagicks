@@ -1,10 +1,7 @@
 package net.mindoth.ancientmagicks;
 
 import net.mindoth.ancientmagicks.client.model.SimpleRobeModel;
-import net.mindoth.ancientmagicks.client.screen.ModScreen;
-import net.mindoth.ancientmagicks.client.screen.GuiSpellWheel;
-import net.mindoth.ancientmagicks.client.screen.HudMana;
-import net.mindoth.ancientmagicks.client.screen.SpellCraftingScreen;
+import net.mindoth.ancientmagicks.client.screen.*;
 import net.mindoth.ancientmagicks.config.ModClientConfig;
 import net.mindoth.ancientmagicks.item.DyeableMagicItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
@@ -78,7 +75,7 @@ public class AncientMagicksClient {
             int spellSelector = ModKeyBinds.SPELL_SELECTOR.getKey().getValue();
             int inventory = mc.options.keyInventory.getKey().getValue();
             Player player = mc.player;
-            if ( mc.screen instanceof ModScreen) {
+            if ( mc.screen instanceof ModScreen ) {
                 if ( key == inventory ) player.closeContainer();
                 if ( mc.screen instanceof GuiSpellWheel && key == spellSelector ) {
                     if ( (keyAction == 0 && ModClientConfig.GUI_SPELL_WHEEL_HOLD.get())
@@ -109,6 +106,7 @@ public class AncientMagicksClient {
         @SubscribeEvent
         public static void registerScreens(FMLClientSetupEvent event) {
             MenuScreens.register(ModMenus.SPELL_CRAFTING_MENU.get(), SpellCraftingScreen::new);
+            MenuScreens.register(ModMenus.RUNE_CRAFTING_MENU.get(), RuneCraftingScreen::new);
         }
     }
 }

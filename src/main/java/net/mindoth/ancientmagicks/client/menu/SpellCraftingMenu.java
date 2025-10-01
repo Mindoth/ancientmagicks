@@ -3,9 +3,7 @@ package net.mindoth.ancientmagicks.client.menu;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.CastingValidator;
-import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
-import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketCraftSpell;
 import net.mindoth.ancientmagicks.network.PacketDumpSpell;
@@ -54,6 +52,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
     public int getBottomRowHeight() {
         return BOTTOM_ROW_HEIGHT;
     }
+
     private final Container craftSlots = new SimpleContainer(1 + 27) {
         @Override
         public void setChanged() {
@@ -323,7 +322,8 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
         return !(pSlot instanceof ParchmentSlot) && super.canTakeItemForPickAll(pStack, pSlot);
     }
 
+    //No clue what this is
     public int getSize() {
-        return 11;
+        return 28;
     }
 }
