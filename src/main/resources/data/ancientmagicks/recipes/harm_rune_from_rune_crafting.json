@@ -1,0 +1,18 @@
+{
+  "type": "ancientmagicks:rune_crafting",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:rune_essence"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "item": "ancientmagicks:harm_rune"
+  }
+}

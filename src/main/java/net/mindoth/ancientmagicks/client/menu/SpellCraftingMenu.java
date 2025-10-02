@@ -324,6 +324,6 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
 
     //No clue what this is
     public int getSize() {
-        return 28;
+        return 29;
     }
 }

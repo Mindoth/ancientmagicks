@@ -38,6 +38,7 @@
   "item.ancientmagicks.golden_staff": "Golden Staff",
   "item.ancientmagicks.netherite_staff": "Netherite Staff",
   "item.ancientmagicks.blank_slate": "Blank Slate",
+  "item.ancientmagicks.rune_essence": "Rune Essence",
 
   "item.ancientmagicks.blue_sigil": "Blue Sigil",
   "tooltip.ancientmagicks.blue_sigil": "temp",
@@ -89,7 +90,7 @@
   "tooltip.ancientmagicks.dimension": "Dimension",
 
   "tooltip.ancientmagicks.excavate": "Excavates a block",
-  "tooltip.ancientmagicks.harm": "Damages an entity",
+  "tooltip.ancientmagicks.harm": "Harms an entity",
   "tooltip.ancientmagicks.teleport": "Teleports an entity to given position",
   "tooltip.ancientmagicks.explode": "Creates an explosion",
   "tooltip.ancientmagicks.force": "Adds momentum to an entity",

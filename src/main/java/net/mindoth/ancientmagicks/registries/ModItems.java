@@ -204,6 +204,10 @@ public class ModItems {
 
 
     //REVAMPED RUNES
+    public static final RegistryObject<Item> RUNE_ESSENCE = ITEMS.register("rune_essence",
+            () -> new Item(new Item.Properties()));
+
+
     public static final RegistryObject<Item> SELF_RUNE_ITEM = ITEMS.register("self_rune",
             () -> new SelfRuneItem(new Item.Properties()));
 
