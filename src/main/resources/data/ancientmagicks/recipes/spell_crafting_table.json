@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "RRR",
+    "   "
+  ],
+  "key": {
+    "C": {
+      "item": "ancientmagicks:wool_cloth"
+    },
+    "R": {
+      "item": "ancientmagicks:breeze_rock"
+    }
+  },
+  "result": {
+    "item": "ancientmagicks:spell_crafting_table",
+    "count": 1
+  }
+}

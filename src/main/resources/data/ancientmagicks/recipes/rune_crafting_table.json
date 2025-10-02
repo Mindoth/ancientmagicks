@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LRL",
+    "RRR",
+    "   "
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "R": {
+      "item": "ancientmagicks:breeze_rock"
+    }
+  },
+  "result": {
+    "item": "ancientmagicks:rune_crafting_table",
+    "count": 1
+  }
+}
