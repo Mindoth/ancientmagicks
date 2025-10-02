@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
-import net.mindoth.ancientmagicks.item.ColorRuneItem;
+import net.mindoth.ancientmagicks.revamp.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
@@ -184,28 +184,27 @@ public class ModItems {
             () -> new TransientFortitudeModifierItem(new Item.Properties(), 1));
 
 
-    public static final RegistryObject<Item> BLUE_SIGIL = ITEMS.register("blue_sigil",
-            () -> new ColorRuneItem(new Item.Properties(), 1, "\u00A7b"));
-
-    public static final RegistryObject<Item> PURPLE_SIGIL = ITEMS.register("purple_sigil",
-            () -> new ColorRuneItem(new Item.Properties(), 1, "\u00A7d"));
-
-    public static final RegistryObject<Item> YELLOW_SIGIL = ITEMS.register("yellow_sigil",
-            () -> new ColorRuneItem(new Item.Properties(), 1, "\u00A7e"));
-
-    public static final RegistryObject<Item> GREEN_SIGIL = ITEMS.register("green_sigil",
-            () -> new ColorRuneItem(new Item.Properties(), 1, "\u00A7a"));
-
-    public static final RegistryObject<Item> BLACK_SIGIL = ITEMS.register("black_sigil",
-            () -> new ColorRuneItem(new Item.Properties(), 1, "\u00A78"));
-
-    public static final RegistryObject<Item> WHITE_SIGIL = ITEMS.register("white_sigil",
-            () -> new ColorRuneItem(new Item.Properties(), 1, "\u00A7f"));
-
-
     //REVAMPED RUNES
     public static final RegistryObject<Item> RUNE_ESSENCE = ITEMS.register("rune_essence",
             () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> BLUE_SIGIL = ITEMS.register("blue_sigil",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7b"));
+
+    public static final RegistryObject<Item> PURPLE_SIGIL = ITEMS.register("purple_sigil",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7d"));
+
+    public static final RegistryObject<Item> YELLOW_SIGIL = ITEMS.register("yellow_sigil",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7e"));
+
+    public static final RegistryObject<Item> GREEN_SIGIL = ITEMS.register("green_sigil",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7a"));
+
+    public static final RegistryObject<Item> BLACK_SIGIL = ITEMS.register("black_sigil",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A78"));
+
+    public static final RegistryObject<Item> WHITE_SIGIL = ITEMS.register("white_sigil",
+            () -> new ColorRuneItem(new Item.Properties(), "\u00A7f"));
 
 
     public static final RegistryObject<Item> SELF_RUNE_ITEM = ITEMS.register("self_rune",
@@ -214,36 +213,11 @@ public class ModItems {
     public static final RegistryObject<Item> SIGHT_RUNE_ITEM = ITEMS.register("sight_rune",
             () -> new SightRuneItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> INTEGER_ONE_RUNE_ITEM = ITEMS.register("integer_one_rune",
-            () -> new IntegerOneRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> INTEGER_TWO_RUNE_ITEM = ITEMS.register("integer_two_rune",
-            () -> new IntegerTwoRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> INTEGER_THREE_RUNE_ITEM = ITEMS.register("integer_three_rune",
-            () -> new IntegerThreeRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> DUPLICITY_RUNE_ITEM = ITEMS.register("duplicity_rune",
-            () -> new DuplicityRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> NULL_RUNE_ITEM = ITEMS.register("null_rune",
-            () -> new NullRuneItem(new Item.Properties()));
-
-
-    public static final RegistryObject<Item> ADD_RUNE_ITEM = ITEMS.register("add_rune",
-            () -> new AddRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> SUBTRACT_RUNE_ITEM = ITEMS.register("subtract_rune",
-            () -> new SubtractRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> PURGE_RUNE_ITEM = ITEMS.register("purge_rune",
-            () -> new PurgeRuneItem(new Item.Properties()));
-
     public static final RegistryObject<Item> ENTITY_POSITION_RUNE_ITEM = ITEMS.register("entity_position_rune",
             () -> new EntityPositionRuneItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> ENTITY_HEAD_POSITION_RUNE_ITEM = ITEMS.register("entity_head_position_rune",
-            () -> new EntityHeadPositionRuneItem(new Item.Properties()));
+    public static final RegistryObject<Item> HEAD_POSITION_RUNE_ITEM = ITEMS.register("head_position_rune",
+            () -> new HeadPositionRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> BLOCK_POSITION_RUNE_ITEM = ITEMS.register("block_position_rune",
             () -> new BlockPositionRuneItem(new Item.Properties()));
@@ -268,6 +242,31 @@ public class ModItems {
 
     public static final RegistryObject<Item> TARGET_POSITION_RUNE_ITEM = ITEMS.register("target_position_rune",
             () -> new TargetPositionRuneItem(new Item.Properties()));
+
+
+    public static final RegistryObject<Item> INTEGER_ONE_RUNE_ITEM = ITEMS.register("integer_one_rune",
+            () -> new IntegerOneRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> INTEGER_TWO_RUNE_ITEM = ITEMS.register("integer_two_rune",
+            () -> new IntegerTwoRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> INTEGER_THREE_RUNE_ITEM = ITEMS.register("integer_three_rune",
+            () -> new IntegerThreeRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> DUPLICITY_RUNE_ITEM = ITEMS.register("duplicity_rune",
+            () -> new DuplicityRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> NULL_RUNE_ITEM = ITEMS.register("null_rune",
+            () -> new NullRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> ADD_RUNE_ITEM = ITEMS.register("add_rune",
+            () -> new AddRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> SUBTRACT_RUNE_ITEM = ITEMS.register("subtract_rune",
+            () -> new SubtractRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> PURGE_RUNE_ITEM = ITEMS.register("purge_rune",
+            () -> new PurgeRuneItem(new Item.Properties()));
 
 
     public static final RegistryObject<Item> EXCAVATE_RUNE_ITEM = ITEMS.register("excavate_rune",

@@ -1,0 +1,21 @@
+{
+  "type": "ancientmagicks:rune_crafting",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:rune_essence"
+    },
+    {
+      "item": "minecraft:flint"
+    },
+    {
+      "item": "minecraft:flint"
+    },
+    {
+      "item": "minecraft:flint"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "item": "ancientmagicks:subtract_rune"
+  }
+}

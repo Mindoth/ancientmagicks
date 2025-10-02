@@ -1,0 +1,15 @@
+{
+  "type": "ancientmagicks:rune_crafting",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:rune_essence"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "item": "ancientmagicks:integer_one_rune"
+  }
+}

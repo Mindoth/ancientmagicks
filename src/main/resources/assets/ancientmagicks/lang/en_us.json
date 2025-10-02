@@ -57,7 +57,7 @@
   "item.ancientmagicks.self_rune": "Self Rune",
   "item.ancientmagicks.sight_rune": "Sight Rune",
   "item.ancientmagicks.entity_position_rune": "Entity Position Rune",
-  "item.ancientmagicks.entity_head_position_rune": "Entity Head Position Rune",
+  "item.ancientmagicks.head_position_rune": "Head Position Rune",
   "item.ancientmagicks.block_position_rune": "Block Position Rune",
   "item.ancientmagicks.target_entity_rune": "Target Entity Rune",
   "item.ancientmagicks.area_target_entity_rune": "Area Target Entity Rune",

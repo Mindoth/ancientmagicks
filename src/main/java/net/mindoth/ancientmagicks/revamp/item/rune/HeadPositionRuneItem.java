@@ -13,8 +13,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EntityHeadPositionRuneItem extends UseOnEntityTemplate {
-    public EntityHeadPositionRuneItem(Properties pProperties) {
+public class HeadPositionRuneItem extends UseOnEntityTemplate {
+    public HeadPositionRuneItem(Properties pProperties) {
         super(pProperties);
     }
 

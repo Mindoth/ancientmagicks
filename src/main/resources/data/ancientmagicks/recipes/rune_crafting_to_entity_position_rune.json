@@ -1,0 +1,21 @@
+{
+  "type": "ancientmagicks:rune_crafting",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:rune_essence"
+    },
+    {
+      "item": "minecraft:arrow"
+    },
+    {
+      "item": "minecraft:armor_stand"
+    },
+    {
+      "item": "minecraft:arrow"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "item": "ancientmagicks:entity_position_rune"
+  }
+}

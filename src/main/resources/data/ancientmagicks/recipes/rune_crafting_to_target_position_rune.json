@@ -5,14 +5,17 @@
       "item": "ancientmagicks:rune_essence"
     },
     {
-      "item": "minecraft:spider_eye"
+      "item": "minecraft:arrow"
     },
     {
-      "item": "minecraft:gold_ingot"
+      "item": "minecraft:arrow"
+    },
+    {
+      "item": "minecraft:compass"
     }
   ],
   "output": {
     "count": 1,
-    "item": "ancientmagicks:harm_rune"
+    "item": "ancientmagicks:target_position_rune"
   }
 }
