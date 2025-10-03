@@ -3,6 +3,7 @@ package net.mindoth.ancientmagicks.item;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.ModCommonConfig;
+import net.mindoth.ancientmagicks.event.DimVec3;
 import net.mindoth.ancientmagicks.item.effect.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.mobeffect.MindControlEffect;
@@ -286,7 +287,8 @@ public class RuneItem extends Item {
         direction = direction.multiply(range, range, range);
         Vec3 vec31 = position.add(direction);
         BlockHitResult result = level.clip(new ClipContext(position, vec31, ClipContext.Block.OUTLINE, pFluidMode, caster));
-        return new MultiBlockHitResult(result.getLocation(), result.getDirection(), result.getBlockPos(), result.isInside(), Collections.singletonList(result.getBlockPos()), level);
+        return new MultiBlockHitResult(result.getLocation(), result.getDirection(), result.getBlockPos(), result.isInside(),
+                Collections.singletonList(result.getBlockPos()), new DimVec3(result.getLocation(), level));
     }
 
     public static Vec3 getPoint(Vec3 position, Vec3 direction, Entity caster, Level level, float range, float error, boolean centerBlock, boolean stopsAtEntity, boolean stopsAtSolid, boolean stopsAtLiquid) {

@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.rune;
 
+import net.mindoth.ancientmagicks.event.DimVec3;
 import net.mindoth.ancientmagicks.event.MultiEntityHitResult;
 import net.mindoth.ancientmagicks.event.SpellData;
 import net.mindoth.ancientmagicks.item.RuneItem;
@@ -30,7 +31,7 @@ public class SelfRuneItem extends RuneItem {
 
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
-        spellData.addObject(new MultiEntityHitResult(caster, caster.position(), Collections.singletonList(caster)));
+        spellData.addObject(new MultiEntityHitResult(caster, caster.position(), Collections.singletonList(caster), new DimVec3(caster.position(), caster.level())));
         return spellData;
     }
 }

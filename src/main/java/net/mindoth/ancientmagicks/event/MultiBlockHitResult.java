@@ -15,15 +15,14 @@ public class MultiBlockHitResult extends BlockHitResult {
         return this.blocks;
     }
 
-    private final Level level;
-    public Level getLevel() {
-        return this.level;
+    private final DimVec3 pos;
+    public DimVec3 getPos() {
+        return this.pos;
     }
 
-    //TODO: add dimension to hitresult
-    public MultiBlockHitResult(Vec3 pLocation, Direction pDirection, BlockPos pBlockPos, boolean pInside, List<BlockPos> blocks, Level level) {
+    public MultiBlockHitResult(Vec3 pLocation, Direction pDirection, BlockPos pBlockPos, boolean pInside, List<BlockPos> blocks, DimVec3 pos) {
         super(pLocation, pDirection, pBlockPos, pInside);
         this.blocks = blocks;
-        this.level = level;
+        this.pos = pos;
     }
 }

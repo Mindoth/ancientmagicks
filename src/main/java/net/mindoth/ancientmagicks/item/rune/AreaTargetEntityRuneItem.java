@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.rune;
 
+import net.mindoth.ancientmagicks.event.DimVec3;
 import net.mindoth.ancientmagicks.event.MultiEntityHitResult;
 import net.mindoth.ancientmagicks.event.SpellData;
 import net.mindoth.ancientmagicks.item.RuneItem;
@@ -25,9 +26,8 @@ public class AreaTargetEntityRuneItem extends RuneItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.vector").append(Component.literal(" | "))
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.position").append(Component.literal(" | "))
                 .append(Component.translatable("tooltip.ancientmagicks.vector")).append(Component.literal(" | "))
-                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.dimension")).append(Component.literal(")")).append(Component.literal(" | "))
                 .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.integer")).append(Component.literal(")"))
                 .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.entity")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
@@ -35,15 +35,12 @@ public class AreaTargetEntityRuneItem extends RuneItem {
 
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
-        if ( !spellData.getVectors().isEmpty() && spellData.getVectors().size() >= 2 ) {
-            Vec3 position = spellData.getLatestVector();
-            spellData.purgeVectors(1);
+        if ( !spellData.getPositions().isEmpty() && !spellData.getVectors().isEmpty() ) {
+            Vec3 position = spellData.getLatestPosition().getPos();
+            Level level = spellData.getLatestPosition().getLevel();
+            spellData.purgePositions(1);
             Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
-            Level level;
-            if ( spellData.getDimensions().isEmpty() || spellData.getLatestDimension() == null ) level = caster.level();
-            else level = spellData.getLatestDimension();
-            spellData.purgeDimensions(1);
             int range;
             if ( spellData.getIntegers().isEmpty() || spellData.getLatestInteger() == null ) range = 1;
             else range = spellData.getLatestInteger();
@@ -56,7 +53,7 @@ public class AreaTargetEntityRuneItem extends RuneItem {
             List<Entity> entities = level.getEntitiesOfClass(Entity.class, box);
 
             if ( entities.isEmpty() ) spellData.addObject(null);
-            else spellData.addObject(new MultiEntityHitResult(caster, pos, entities));
+            else spellData.addObject(new MultiEntityHitResult(caster, pos, entities, new DimVec3(pos, level)));
             aoeEntitySpellParticles(level, box, range, defaultStats());
         }
         else spellData.setValid(false);

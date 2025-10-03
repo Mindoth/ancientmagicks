@@ -23,25 +23,20 @@ public class TargetPositionRuneItem extends RuneItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.vector").append(Component.literal(" | "))
-                .append(Component.translatable("tooltip.ancientmagicks.vector")).append(Component.literal(" | "))
-                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.dimension")).append(Component.literal(")"))
-                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.vector")).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.position").append(Component.literal(" | "))
+                .append(Component.translatable("tooltip.ancientmagicks.vector"))
+                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.position")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
-        if ( !spellData.getVectors().isEmpty() && spellData.getVectors().size() >= 2 ) {
-            Vec3 position = spellData.getLatestVector();
-            spellData.purgeVectors(1);
+        if ( !spellData.getPositions().isEmpty() && !spellData.getVectors().isEmpty() ) {
+            Vec3 position = spellData.getLatestPosition().getPos();
+            Level level = spellData.getLatestPosition().getLevel();
+            spellData.purgePositions(1);
             Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
-            Level level;
-            if ( spellData.getDimensions().isEmpty() || spellData.getLatestDimension() == null ) level = caster.level();
-            else level = spellData.getLatestDimension();
-            spellData.purgeDimensions(1);
-
             Vec3 start = position.add(direction.multiply(1.0D, 1.0D, 1.0D));
             Vec3 end = getPoint(position, direction, caster, level, 4.5F, 0, false, true, true, false);
             summonParticleLine(start, end, (int)position.distanceTo(end) * 4, start, level, 0.15F, 8, defaultStats());

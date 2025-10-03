@@ -19,12 +19,12 @@ public class UseOnBlockTemplate extends RuneItem {
                 MultiBlockHitResult result = spellData.getLatestBlock();
                 spellData.purgeBlocks(1);
                 final SpellData copyData = SpellData.clone(spellData);
-                spellData = result(caster, spellData, result.getBlocks().get(0), result.getLevel());
+                spellData = result(caster, spellData, result.getBlocks().get(0), result.getPos().getLevel());
                 boolean state = spellData.isValid();
                 for ( int i = 1; i < result.getBlocks().size(); i++ ) {
                     final SpellData tempData = SpellData.clone(copyData);
                     BlockPos blockPos = result.getBlocks().get(i);
-                    result(caster, tempData, blockPos, result.getLevel());
+                    result(caster, tempData, blockPos, result.getPos().getLevel());
                     if ( !state && tempData.isValid() ) state = true;
                 }
                 spellData.setValid(state);

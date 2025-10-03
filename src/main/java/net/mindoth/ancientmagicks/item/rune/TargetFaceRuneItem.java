@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.rune;
 
+import net.mindoth.ancientmagicks.event.DimVec3;
 import net.mindoth.ancientmagicks.event.MultiBlockHitResult;
 import net.mindoth.ancientmagicks.event.SpellData;
 import net.mindoth.ancientmagicks.item.RuneItem;
@@ -29,27 +30,24 @@ public class TargetFaceRuneItem extends RuneItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(Component.translatable("tooltip.ancientmagicks.vector").append(Component.literal(" | "))
-                .append(Component.translatable("tooltip.ancientmagicks.vector")).append(Component.literal(" | "))
-                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.dimension")).append(Component.literal(")"))
+                .append(Component.translatable("tooltip.ancientmagicks.vector"))
                 .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.block")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
-        if ( !spellData.getVectors().isEmpty() && spellData.getVectors().size() >= 2 ) {
-            Vec3 position = spellData.getLatestVector();
-            spellData.purgeVectors(1);
+        if ( !spellData.getPositions().isEmpty() && !spellData.getVectors().isEmpty() ) {
+            Vec3 position = spellData.getLatestPosition().getPos();
+            Level level = spellData.getLatestPosition().getLevel();
+            spellData.purgePositions(1);
             Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
-            Level level;
-            if ( spellData.getDimensions().isEmpty() || spellData.getLatestDimension() == null ) level = caster.level();
-            else level = spellData.getLatestDimension();
-            spellData.purgeDimensions(1);
             MultiBlockHitResult mResult = getPOVHitResult(position, direction, caster, level, ClipContext.Fluid.SOURCE_ONLY, 4.5F);
             BlockPos blockPos = getPosOfFace(mResult.getBlockPos(), mResult.getDirection());
             Vec3 pos = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-            spellData.addObject(new MultiBlockHitResult(pos, mResult.getDirection(), blockPos, mResult.isInside(), Collections.singletonList(blockPos), level));
+            spellData.addObject(new MultiBlockHitResult(pos, mResult.getDirection(), blockPos, mResult.isInside(), Collections.singletonList(blockPos),
+                    new DimVec3(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ()), level)));
 
             //aoeBlockSpellParticles(level, Collections.singletonList(blockPos), defaultStats());
             Vec3 start = position.add(direction.multiply(1.0D, 1.0D, 1.0D));

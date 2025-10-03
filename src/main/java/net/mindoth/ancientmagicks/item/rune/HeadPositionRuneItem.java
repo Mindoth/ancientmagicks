@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.rune;
 
+import net.mindoth.ancientmagicks.event.DimVec3;
 import net.mindoth.ancientmagicks.event.SpellData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -22,13 +23,13 @@ public class HeadPositionRuneItem extends UseOnEntityTemplate {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(Component.translatable("tooltip.ancientmagicks.entity").append(Component.literal(" -> "))
-                .append(Component.translatable("tooltip.ancientmagicks.vector")).withStyle(ChatFormatting.GRAY));
+                .append(Component.translatable("tooltip.ancientmagicks.position")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
     @Override
     protected SpellData result(Entity caster, SpellData spellData, Entity entity) {
-        spellData.addObject(entity.getEyePosition());
+        spellData.addObject(new DimVec3(entity.getEyePosition(), entity.level()));
         return spellData;
     }
 }

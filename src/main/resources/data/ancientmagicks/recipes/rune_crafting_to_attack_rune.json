@@ -6,16 +6,10 @@
     },
     {
       "item": "minecraft:wooden_sword"
-    },
-    {
-      "item": "minecraft:spider_eye"
-    },
-    {
-      "item": "minecraft:gold_ingot"
     }
   ],
   "output": {
     "count": 1,
-    "item": "ancientmagicks:harm_rune"
+    "item": "ancientmagicks:attack_rune"
   }
 }

@@ -29,8 +29,7 @@ public class TeleportRuneItem extends UseOnEntityTemplate {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(Component.translatable("tooltip.ancientmagicks.entity").append(Component.literal(" | "))
-                .append(Component.translatable("tooltip.ancientmagicks.vector")).append(Component.literal(" | "))
-                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.dimension")).append(Component.literal(")"))
+                .append(Component.translatable("tooltip.ancientmagicks.position"))
                 .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.teleport")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
@@ -38,13 +37,10 @@ public class TeleportRuneItem extends UseOnEntityTemplate {
     @Override
     protected SpellData result(Entity caster, SpellData spellData, Entity entity) {
         if ( !spellData.getVectors().isEmpty() ) {
-            Vec3 pos = spellData.getLatestVector();
+            Vec3 position = spellData.getLatestPosition().getPos();
+            Level level = spellData.getLatestPosition().getLevel();
             spellData.purgeVectors(1);
-            Level level;
-            if ( spellData.getDimensions().isEmpty() || spellData.getLatestDimension() == null ) level = caster.level();
-            else level = spellData.getLatestDimension();
-            spellData.purgeDimensions(1);
-            handleTeleport(level, entity, pos);
+            handleTeleport(level, entity, position);
         }
         else spellData.setValid(false);
         return spellData;

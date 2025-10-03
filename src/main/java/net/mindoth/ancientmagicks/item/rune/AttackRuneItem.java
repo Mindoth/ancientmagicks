@@ -5,8 +5,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -16,8 +14,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class HarmRuneItem extends UseOnEntityTemplate {
-    public HarmRuneItem(Properties pProperties) {
+public class AttackRuneItem extends UseOnEntityTemplate {
+    public AttackRuneItem(Properties pProperties) {
         super(pProperties);
     }
 
@@ -37,8 +35,7 @@ public class HarmRuneItem extends UseOnEntityTemplate {
         else power = 4 + spellData.getLatestInteger();
         spellData.purgeIntegers(1);
         if ( entity instanceof LivingEntity && entity.isAttackable() && entity.isAlive() ) {
-            if ( entity instanceof Mob mob && mob.getMobType() == MobType.UNDEAD ) mob.heal(power);
-            else attackEntity(caster, caster, entity, power);
+            attackEntity(caster, caster, entity, power);
         }
         return spellData;
     }

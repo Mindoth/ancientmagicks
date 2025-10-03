@@ -172,8 +172,8 @@ public class ModItems {
     public static final RegistryObject<Item> EXCAVATE_RUNE_ITEM = ITEMS.register("excavate_rune",
             () -> new ExcavateRuneItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> HARM_RUNE_ITEM = ITEMS.register("harm_rune",
-            () -> new HarmRuneItem(new Item.Properties()));
+    public static final RegistryObject<Item> ATTACK_RUNE_ITEM = ITEMS.register("attack_rune",
+            () -> new AttackRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> TELEPORT_RUNE_ITEM = ITEMS.register("teleport_rune",
             () -> new TeleportRuneItem(new Item.Properties()));

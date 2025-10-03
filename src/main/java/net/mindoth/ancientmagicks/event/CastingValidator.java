@@ -51,13 +51,12 @@ public class CastingValidator {
 
     public static void resolveSpell(Entity caster, SpellData spellData, List<RuneItem> runeList) {
         for ( RuneItem rune : runeList ) {
-            System.out.println(spellData.getStackList());
             if ( !spellData.getRuneList().isEmpty() ) spellData.getRuneList().remove(0);
             if ( !spellData.getDataList().isEmpty() ) spellData.getDataList().remove(0);
             spellData = rune.resolve(caster, spellData);
             if ( rune == ModItems.PROJECTILE_RUNE_ITEM.get() ) break;
             if ( !spellData.isValid() ) {
-                if ( caster instanceof Player player ) player.displayClientMessage(Component.literal("FAILED SPELL"), false);
+                if ( caster instanceof Player player ) player.displayClientMessage(Component.literal("FAILED SPELL ON: " + rune), false);
                 break;
             }
         }

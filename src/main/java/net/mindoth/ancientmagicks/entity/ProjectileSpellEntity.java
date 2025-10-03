@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.entity;
 
 import net.mindoth.ancientmagicks.event.CastingValidator;
+import net.mindoth.ancientmagicks.event.DimVec3;
 import net.mindoth.ancientmagicks.registries.ModEntities;
 import net.mindoth.ancientmagicks.event.MultiBlockHitResult;
 import net.mindoth.ancientmagicks.event.MultiEntityHitResult;
@@ -33,7 +34,8 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
     @Override
     protected void doMobEffects(EntityHitResult result) {
         if ( this.spellData != null ) {
-            MultiEntityHitResult mEntityHitResult = new MultiEntityHitResult(this.caster, result.getEntity().position(), Collections.singletonList(result.getEntity()));
+            MultiEntityHitResult mEntityHitResult = new MultiEntityHitResult(this.caster, result.getEntity().position(),
+                    Collections.singletonList(result.getEntity()), new DimVec3(result.getEntity().position(), this.level()));
             castMagick(mEntityHitResult);
         }
     }
@@ -41,7 +43,8 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
     @Override
     protected void doBlockEffects(BlockHitResult result) {
         if ( this.spellData != null ) {
-            MultiBlockHitResult mBlockHitResult = new MultiBlockHitResult(result.getLocation(), result.getDirection(), result.getBlockPos(), result.isInside(), Collections.singletonList(result.getBlockPos()), this.level());
+            MultiBlockHitResult mBlockHitResult = new MultiBlockHitResult(result.getLocation(), result.getDirection(), result.getBlockPos(), result.isInside(),
+                    Collections.singletonList(result.getBlockPos()), new DimVec3(result.getLocation(), this.level()));
             castMagick(mBlockHitResult);
         }
     }

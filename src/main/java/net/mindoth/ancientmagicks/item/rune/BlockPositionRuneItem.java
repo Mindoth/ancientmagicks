@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.rune;
 
+import net.mindoth.ancientmagicks.event.DimVec3;
 import net.mindoth.ancientmagicks.event.SpellData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -24,13 +25,13 @@ public class BlockPositionRuneItem extends UseOnBlockTemplate {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(Component.translatable("tooltip.ancientmagicks.block").append(Component.literal(" -> "))
-                .append(Component.translatable("tooltip.ancientmagicks.vector")).withStyle(ChatFormatting.GRAY));
+                .append(Component.translatable("tooltip.ancientmagicks.position")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
     @Override
     public SpellData result(Entity caster, SpellData spellData, BlockPos pos, Level level) {
-        spellData.addObject(new Vec3(pos.getX(), pos.getY(), pos.getZ()));
+        spellData.addObject(new DimVec3(new Vec3(pos.getX(), pos.getY(), pos.getZ()), level));
         return spellData;
     }
 }

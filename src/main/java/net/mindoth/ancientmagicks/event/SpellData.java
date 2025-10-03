@@ -80,24 +80,24 @@ public class SpellData {
         return getVectors().get(getVectors().size() - 1);
     }
 
-    public List<Level> getDimensions() {
-        List<Level> dimensions = Lists.newArrayList();
-        for ( Object object : this.stackList ) if ( object == null || object instanceof Level ) dimensions.add((Level)object);
-        return dimensions;
+    public List<DimVec3> getPositions() {
+        List<DimVec3> positions = Lists.newArrayList();
+        for ( Object object : this.stackList ) if ( object == null || object instanceof DimVec3 ) positions.add((DimVec3)object);
+        return positions;
     }
-    public void purgeDimensions(int amount) {
+    public void purgePositions(int amount) {
         for ( int i = 0; i < amount; i++ ) {
-            for ( int j = this.stackList.size() - 1; j >= 0; j-- ) if ( !getDimensions().isEmpty() ) {
+            for ( int j = this.stackList.size() - 1; j >= 0; j-- ) if ( !getPositions().isEmpty() ) {
                 Object object = this.stackList.get(j);
-                if ( object == null || object instanceof Level ) {
+                if ( object == null || object instanceof DimVec3 ) {
                     this.stackList.remove(j);
                     break;
                 }
             }
         }
     }
-    public Level getLatestDimension() {
-        return getDimensions().get(getDimensions().size() - 1);
+    public DimVec3 getLatestPosition() {
+        return getPositions().get(getPositions().size() - 1);
     }
 
     public List<Integer> getIntegers() {
