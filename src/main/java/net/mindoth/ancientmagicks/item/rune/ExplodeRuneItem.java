@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ExplodeRuneItem extends RuneItem {
+public class ExplodeRuneItem extends UseOnPositionTemplate {
     public ExplodeRuneItem(Properties pProperties) {
         super(pProperties);
     }
@@ -30,19 +30,12 @@ public class ExplodeRuneItem extends RuneItem {
     }
 
     @Override
-    public SpellData resolve(Entity caster, SpellData spellData) {
-        if ( !spellData.getPositions().isEmpty() ) {
-            Vec3 position = spellData.getLatestPosition().getPos();
-            Level level = spellData.getLatestPosition().getLevel();
-            spellData.purgePositions(1);
-            float power;
-            if ( spellData.getIntegers().isEmpty() || spellData.getLatestInteger() == null ) power = 1.0F;
-            else power = 1 + spellData.getLatestInteger() * 0.5F;
-            spellData.purgeIntegers(1);
-
-            level.explode(null, position.x, position.y, position.z, power, Level.ExplosionInteraction.MOB);
-        }
-        else spellData.setValid(false);
+    public SpellData result(Entity caster, SpellData spellData, Vec3 position, Level level) {
+        float power;
+        if ( spellData.getIntegers().isEmpty() || spellData.getLatestInteger() == null ) power = 1.0F;
+        else power = 1 + spellData.getLatestInteger() * 0.5F;
+        spellData.purgeIntegers(1);
+        level.explode(null, position.x, position.y, position.z, power, Level.ExplosionInteraction.MOB);
         return spellData;
     }
 }

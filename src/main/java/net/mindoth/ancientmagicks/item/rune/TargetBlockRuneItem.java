@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TargetBlockRuneItem extends RuneItem {
+public class TargetBlockRuneItem extends UseOnPositionTemplate {
     public TargetBlockRuneItem(Properties pProperties) {
         super(pProperties);
     }
@@ -32,11 +32,8 @@ public class TargetBlockRuneItem extends RuneItem {
     }
 
     @Override
-    public SpellData resolve(Entity caster, SpellData spellData) {
-        if ( !spellData.getPositions().isEmpty() && !spellData.getVectors().isEmpty() ) {
-            Vec3 position = spellData.getLatestPosition().getPos();
-            Level level = spellData.getLatestPosition().getLevel();
-            spellData.purgePositions(1);
+    public SpellData result(Entity caster, SpellData spellData, Vec3 position, Level level) {
+        if ( !spellData.getVectors().isEmpty() ) {
             Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
             MultiBlockHitResult mResult = getPOVHitResult(position, direction, caster, level, ClipContext.Fluid.SOURCE_ONLY, 4.5F);

@@ -36,11 +36,13 @@ public class TeleportRuneItem extends UseOnEntityTemplate {
 
     @Override
     protected SpellData result(Entity caster, SpellData spellData, Entity entity) {
-        if ( !spellData.getVectors().isEmpty() ) {
-            Vec3 position = spellData.getLatestPosition().getPos();
-            Level level = spellData.getLatestPosition().getLevel();
-            spellData.purgeVectors(1);
-            handleTeleport(level, entity, position);
+        if ( !spellData.getPositions().isEmpty() ) {
+            if ( spellData.getLatestPosition() != null ) {
+                Vec3 position = spellData.getLatestPosition().getPos();
+                Level level = spellData.getLatestPosition().getLevel();
+                spellData.purgeVectors(1);
+                handleTeleport(level, entity, position);
+            }
         }
         else spellData.setValid(false);
         return spellData;

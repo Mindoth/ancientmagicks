@@ -31,6 +31,7 @@ public class UseOnEntityTemplate extends RuneItem {
                 }
                 spellData.setValid(state);
             }
+            else spellData.purgeEntities(1);
         }
         else spellData.setValid(false);
         return spellData;

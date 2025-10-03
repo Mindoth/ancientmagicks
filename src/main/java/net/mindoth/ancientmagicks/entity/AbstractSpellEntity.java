@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Predicate;
 
 public abstract class AbstractSpellEntity extends Projectile {
@@ -255,8 +256,22 @@ public abstract class AbstractSpellEntity extends Projectile {
         double d5 = vec3.x;
         double d6 = vec3.y;
         double d1 = vec3.z;
-        for ( int j = -4; j < 0; j++ ) {
-            if ( -this.tickCount < j ) {
+        double speed = 0.05D;
+        for ( int j = 0; j < 4; j++ ) {
+            //----------------------------------------------------------------------------------------------------------------------//
+            if ( -this.tickCount < j - 4 ) {
+                double vecX = new Random().nextDouble(1.0D - -1.0D) + -1.0D;
+                double vecY = new Random().nextDouble(1.0D - -1.0D) + -1.0D;
+                double vecZ = new Random().nextDouble(1.0D - -1.0D) + -1.0D;
+                world.addParticle(EmberParticleProvider.createData(getParticleColor(), getSize(), 8, false, getRenderType()),
+                        pos.x + d5 * (double) j / 4.0D, pos.y + d6 * (double) j / 4.0D, pos.z + d1 * (double) j / 4.0D,
+                        vecX * speed, vecY * speed, vecZ * speed);
+            }
+            //----------------------------------------------------------------------------------------------------------------------//
+
+            /*
+            //----------------------------------------------------------------------------------------------------------------------//
+            if ( -this.tickCount < j - 4 ) {
                 //Main body
                 float particleSize = Math.min(getSize(), (getSize() * 0.1F) * this.tickCount);
                 for ( int i = 0; i < 2; i++ ) {
@@ -268,7 +283,7 @@ public abstract class AbstractSpellEntity extends Projectile {
                             pos.x + randX + d5 * (double)j / 4.0D, pos.y + randY + d6 * (double)j / 4.0D, pos.z + randZ + d1 * (double)j / 4.0D, 0, 0, 0);
                 }
                 //Trail twinkle
-                if ( j == -1 ) {
+                if ( j == 3 ) {
                     for ( int i = 0; i < 8; i++ ) {
                         float sphereSize = getSize() / 3;
                         float randX = (float)((Math.random() * (sphereSize - (-sphereSize))) + (-sphereSize));
@@ -280,6 +295,8 @@ public abstract class AbstractSpellEntity extends Projectile {
                     }
                 }
             }
+            //----------------------------------------------------------------------------------------------------------------------//
+            */
         }
     }
 
@@ -405,7 +422,7 @@ public abstract class AbstractSpellEntity extends Projectile {
         this.entityData.define(RED, -1);
         this.entityData.define(GREEN, -1);
         this.entityData.define(BLUE, -1);
-        this.entityData.define(SIZE, 0.2F);
+        this.entityData.define(SIZE, 0.1F);
 
         this.entityData.define(SPELLSTACK, "");
         this.entityData.define(DATA, "");

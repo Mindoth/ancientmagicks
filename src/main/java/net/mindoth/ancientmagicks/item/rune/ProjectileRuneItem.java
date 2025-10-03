@@ -18,7 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ProjectileRuneItem extends RuneItem {
+public class ProjectileRuneItem extends UseOnPositionTemplate {
     public ProjectileRuneItem(Properties pProperties) {
         super(pProperties);
     }
@@ -34,11 +34,8 @@ public class ProjectileRuneItem extends RuneItem {
     }
 
     @Override
-    public SpellData resolve(Entity caster, SpellData spellData) {
-        if ( !spellData.getPositions().isEmpty() && !spellData.getVectors().isEmpty() ) {
-            Vec3 position = spellData.getLatestPosition().getPos();
-            Level level = spellData.getLatestPosition().getLevel();
-            spellData.purgePositions(1);
+    public SpellData result(Entity caster, SpellData spellData, Vec3 position, Level level) {
+        if ( !spellData.getVectors().isEmpty() ) {
             Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
             ProjectileSpellEntity projectile = new ProjectileSpellEntity(level, caster);

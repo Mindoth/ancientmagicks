@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.rune;
 
+import net.mindoth.ancientmagicks.event.DimVec3;
 import net.mindoth.ancientmagicks.event.SpellData;
-import net.mindoth.ancientmagicks.item.RuneItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TargetPositionRuneItem extends RuneItem {
+public class TargetPositionRuneItem extends UseOnPositionTemplate {
     public TargetPositionRuneItem(Properties pProperties) {
         super(pProperties);
     }
@@ -30,18 +30,14 @@ public class TargetPositionRuneItem extends RuneItem {
     }
 
     @Override
-    public SpellData resolve(Entity caster, SpellData spellData) {
-        if ( !spellData.getPositions().isEmpty() && !spellData.getVectors().isEmpty() ) {
-            Vec3 position = spellData.getLatestPosition().getPos();
-            Level level = spellData.getLatestPosition().getLevel();
-            spellData.purgePositions(1);
+    public SpellData result(Entity caster, SpellData spellData, Vec3 position, Level level) {
+        if ( !spellData.getVectors().isEmpty() ) {
             Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
             Vec3 start = position.add(direction.multiply(1.0D, 1.0D, 1.0D));
             Vec3 end = getPoint(position, direction, caster, level, 4.5F, 0, false, true, true, false);
             summonParticleLine(start, end, (int)position.distanceTo(end) * 4, start, level, 0.15F, 8, defaultStats());
-
-            spellData.addObject(end);
+            spellData.addObject(new DimVec3(end, level));
         }
         else spellData.setValid(false);
         return spellData;

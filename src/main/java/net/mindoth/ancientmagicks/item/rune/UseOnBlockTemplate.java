@@ -29,6 +29,7 @@ public class UseOnBlockTemplate extends RuneItem {
                 }
                 spellData.setValid(state);
             }
+            else spellData.purgeBlocks(1);
         }
         else spellData.setValid(false);
         return spellData;

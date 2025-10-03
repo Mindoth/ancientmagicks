@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-public class TargetEntityRuneItem extends RuneItem {
+public class TargetEntityRuneItem extends UseOnPositionTemplate {
     public TargetEntityRuneItem(Properties pProperties) {
         super(pProperties);
     }
@@ -37,11 +37,8 @@ public class TargetEntityRuneItem extends RuneItem {
     }
 
     @Override
-    public SpellData resolve(Entity caster, SpellData spellData) {
-        if ( !spellData.getPositions().isEmpty() && !spellData.getVectors().isEmpty() ) {
-            Vec3 position = spellData.getLatestPosition().getPos();
-            Level level = spellData.getLatestPosition().getLevel();
-            spellData.purgePositions(1);
+    public SpellData result(Entity caster, SpellData spellData, Vec3 position, Level level) {
+        if ( !spellData.getVectors().isEmpty() ) {
             Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
             Entity target = getPointedEntity(position, direction, caster, level, 4.5F, 0.25F, true, null);
@@ -91,7 +88,7 @@ public class TargetEntityRuneItem extends RuneItem {
             }
             if ( stopsAtSolid && level.getBlockState(new BlockPos(Mth.floor(lineX), Mth.floor(lineY), Mth.floor(lineZ))).isSolid() ) break;
         }
-        summonParticleLine(startPos, endPos, particleInterval, startPos, level, 0.15F, 8, defaultStats());
+        summonParticleLine(startPos, endPos, particleInterval, startPos, level, 0.1F, 8, defaultStats());
         return returnEntity;
     }
 }
