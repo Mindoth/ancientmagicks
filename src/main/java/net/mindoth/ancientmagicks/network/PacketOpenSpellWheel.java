@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.network;
 
-import net.mindoth.ancientmagicks.client.screen.GuiSpellWheel;
+import net.mindoth.ancientmagicks.client.gui.screen.GuiSpellWheel;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;

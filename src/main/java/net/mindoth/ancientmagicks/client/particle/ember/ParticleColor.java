@@ -26,7 +26,9 @@ public class ParticleColor {
         this((int)r,(int) g,(int) b);
     }
 
-    public float getRed() {return r;}
+    public float getRed() {
+        return r;
+    }
 
     public float getGreen() {
         return g;
@@ -56,13 +58,13 @@ public class ParticleColor {
         public int g;
         public int b;
 
-        public IntWrapper(int r, int g, int b){
+        public IntWrapper(int r, int g, int b) {
             this.r = r;
             this.g = g;
             this.b = b;
         }
 
-        public IntWrapper(ParticleColor color){
+        public IntWrapper(ParticleColor color) {
             this.r = (int) (color.getRed() * 255.0);
             this.g = (int) (color.getGreen() * 255.0);
             this.b = (int) (color.getBlue() * 255.0);

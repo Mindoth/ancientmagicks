@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.network;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.client.screen.AncientTabletScreen;
+import net.mindoth.ancientmagicks.client.gui.screen.AncientTabletScreen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;

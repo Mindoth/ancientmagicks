@@ -1,0 +1,21 @@
+{
+  "type": "ancientmagicks:rune_crafting",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:rune_essence"
+    },
+    {
+      "item": "minecraft:arrow"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:snowball"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "item": "ancientmagicks:projectile_rune"
+  }
+}

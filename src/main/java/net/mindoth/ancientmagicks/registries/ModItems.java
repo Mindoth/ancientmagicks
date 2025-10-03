@@ -2,19 +2,15 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
-import net.mindoth.ancientmagicks.revamp.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.armor.ModArmorMaterials;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
-import net.mindoth.ancientmagicks.item.effect.*;
-import net.mindoth.ancientmagicks.item.form.ProjectileFormItem;
-import net.mindoth.ancientmagicks.item.form.SelfFormItem;
-import net.mindoth.ancientmagicks.item.form.TouchFormItem;
-import net.mindoth.ancientmagicks.item.modifier.*;
-import net.mindoth.ancientmagicks.revamp.item.rune.*;
+import net.mindoth.ancientmagicks.item.effect.AlchemyEffectItem;
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
+import net.mindoth.ancientmagicks.item.rune.*;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -80,108 +76,9 @@ public class ModItems {
             () -> new ParchmentItem(new Item.Properties(), 27));
 
 
-    public static final RegistryObject<Item> BLANK_SLATE = ITEMS.register("blank_slate",
-            () -> new Item(new Item.Properties()));
-
-
-    //Forms
-    public static final RegistryObject<Item> PROJECTILE_SIGIL = ITEMS.register("projectile_sigil",
-            () -> new ProjectileFormItem(new Item.Properties(), 0));
-
-    public static final RegistryObject<Item> TOUCH_SIGIL = ITEMS.register("touch_sigil",
-            () -> new TouchFormItem(new Item.Properties(), 0));
-
-    public static final RegistryObject<Item> SELF_SIGIL = ITEMS.register("self_sigil",
-            () -> new SelfFormItem(new Item.Properties(), 0));
-
-    //Effects
-    public static final RegistryObject<Item> BREAK_SIGIL = ITEMS.register("break_sigil",
-            () -> new BreakEffectItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> LIGHTNING_SIGIL = ITEMS.register("lightning_sigil",
-            () -> new LightningEffectItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> DESTROY_LIQUIDS_SIGIL = ITEMS.register("destroy_liquids_sigil",
-            () -> new DestroyLiquidsEffectItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> CREATE_WATER_SIGIL = ITEMS.register("create_water_sigil",
-            () -> new CreateWaterEffectItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> TELEPORT_SIGIL = ITEMS.register("teleport_sigil",
-            () -> new TeleportEffectItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> TELEBRING_SIGIL = ITEMS.register("telebring_sigil",
-            () -> new TelebringEffectItem(new Item.Properties(), 1));
-
+    ///???
     public static final RegistryObject<Item> ALCHEMY_SIGIL = ITEMS.register("alchemy_sigil",
             () -> new AlchemyEffectItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> MIND_CONTROL_SIGIL = ITEMS.register("mind_control_sigil",
-            () -> new MindControlEffectItem(new Item.Properties(), 1));
-
-    //Modifiers
-    public static final RegistryObject<Item> AMPLIFY_SIGIL = ITEMS.register("amplify_sigil",
-            () -> new AmplifyModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> DAMPEN_SIGIL = ITEMS.register("dampen_sigil",
-            () -> new DampenModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> EXPAND_SIGIL = ITEMS.register("expand_sigil",
-            () -> new ExpandModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> SHRINK_SIGIL = ITEMS.register("shrink_sigil",
-            () -> new ShrinkModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> REACH_SIGIL = ITEMS.register("reach_sigil",
-            () -> new ReachModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> CONTRACT_SIGIL = ITEMS.register("contract_sigil",
-            () -> new ContractModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> QUICKEN_SIGIL = ITEMS.register("quicken_sigil",
-            () -> new QuickenModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> SLACKEN_SIGIL = ITEMS.register("slacken_sigil",
-            () -> new SlackenModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> EXTEND_SIGIL = ITEMS.register("extend_sigil",
-            () -> new ExtendModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> DIMINISH_SIGIL = ITEMS.register("diminish_sigil",
-            () -> new DiminishModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> ENTITY_PIERCE_SIGIL = ITEMS.register("entity_pierce_sigil",
-            () -> new EntityPierceModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> BLOCK_PIERCE_SIGIL = ITEMS.register("block_pierce_sigil",
-            () -> new BlockPierceModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> BOUNCING_SIGIL = ITEMS.register("bounce_sigil",
-            () -> new BouncingModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> HOMING_SIGIL = ITEMS.register("homing_sigil",
-            () -> new HomingModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> GRAVITY_SIGIL = ITEMS.register("gravity_sigil",
-            () -> new GravityModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> LOCATION_SIGIL = ITEMS.register("location_sigil",
-            () -> new LocationModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> BLIND_RAGE_SIGIL = ITEMS.register("blind_rage_sigil",
-            () -> new BlindRageModifierItem(new Item.Properties(), 3));
-
-    public static final RegistryObject<Item> FLEETING_EXPERTISE_SIGIL = ITEMS.register("fleeting_expertise_sigil",
-            () -> new FleetingExpertiseModifierItem(new Item.Properties(), -3));
-
-    public static final RegistryObject<Item> NARROW_MINDED_SIGIL = ITEMS.register("narrow_minded_sigil",
-            () -> new NarrowMindedModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> OVEREXTENDED_SIGIL = ITEMS.register("overextended_sigil",
-            () -> new OverextendedModifierItem(new Item.Properties(), 1));
-
-    public static final RegistryObject<Item> TRANSIENT_FORTITUDE_SIGIL = ITEMS.register("transient_fortitude_sigil",
-            () -> new TransientFortitudeModifierItem(new Item.Properties(), 1));
 
 
     //REVAMPED RUNES
@@ -242,6 +139,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> TARGET_POSITION_RUNE_ITEM = ITEMS.register("target_position_rune",
             () -> new TargetPositionRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> PROJECTILE_RUNE_ITEM = ITEMS.register("projectile_rune",
+            () -> new ProjectileRuneItem(new Item.Properties()));
 
 
     public static final RegistryObject<Item> INTEGER_ONE_RUNE_ITEM = ITEMS.register("integer_one_rune",

@@ -28,7 +28,7 @@ public class SpellBookAddRecipe extends CustomRecipe {
         List<ItemStack> restList = Lists.newArrayList();
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
-            if ( stack.getItem() != Items.AIR ) {
+            if ( !stack.isEmpty() ) {
                 boolean paperHasSpell = stack.hasTag() && stack.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING);
                 if ( stack.getItem() instanceof SpellBookItem ) bookList.add(stack);
                 else if ( stack.getItem() instanceof ParchmentItem && paperHasSpell ) paperList.add(stack);
@@ -45,7 +45,7 @@ public class SpellBookAddRecipe extends CustomRecipe {
         List<ItemStack> restList = Lists.newArrayList();
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
-            if ( stack.getItem() != Items.AIR ) {
+            if ( !stack.isEmpty() ) {
                 boolean paperHasSpell = stack.hasTag() && stack.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING);
                 if ( stack.getItem() instanceof SpellBookItem ) bookList.add(stack);
                 else if ( stack.getItem() instanceof ParchmentItem && paperHasSpell ) paperList.add(stack);

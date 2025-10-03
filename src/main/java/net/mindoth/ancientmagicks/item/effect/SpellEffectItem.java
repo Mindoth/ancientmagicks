@@ -3,15 +3,12 @@ package net.mindoth.ancientmagicks.item.effect;
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.ModCommonConfig;
-import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.mobeffect.MindControlEffect;
 import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.ancientmagicks.registries.ModEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -340,15 +337,15 @@ public class SpellEffectItem extends SpellComponentItem {
         }
     }
 
+    public boolean mobTypeFilter(Entity target) {
+        return true;
+    }
+
     public static boolean allyFilter(Entity owner, Entity target, boolean isHarmful) {
         return target instanceof LivingEntity && !(target instanceof ArmorStand)
                 //&& (owner != target || !isHarmful)
                 && (ModCommonConfig.SPELL_FREE_FOR_ALL.get()
                 || ((SpellEffectItem.isAlly(owner, target) && !isHarmful) || (!SpellEffectItem.isAlly(owner, target) && isHarmful)));
-    }
-
-    public boolean mobTypeFilter(Entity target) {
-        return true;
     }
 
     public static boolean isAlly(Entity owner, Entity target) {

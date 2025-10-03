@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.network;
 
-import net.mindoth.ancientmagicks.client.screen.SpellBookScreen;
+import net.mindoth.ancientmagicks.client.gui.screen.SpellBookScreen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;

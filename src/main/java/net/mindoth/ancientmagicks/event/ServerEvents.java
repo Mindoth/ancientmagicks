@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.event;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.capability.playermagic.PlayerMagicProvider;
 import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
 import net.minecraft.nbt.CompoundTag;

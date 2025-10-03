@@ -79,6 +79,7 @@
   "item.ancientmagicks.subtract_rune": "Subtract Rune",
   "item.ancientmagicks.force_rune": "Force Rune",
   "item.ancientmagicks.purge_rune": "Purge Rune",
+  "item.ancientmagicks.projectile_rune": "Projectile Rune",
 
   "tooltip.ancientmagicks.any": "Any",
   "tooltip.ancientmagicks.null": "Null",

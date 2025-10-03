@@ -1,14 +1,14 @@
 package net.mindoth.ancientmagicks;
 
+import net.mindoth.ancientmagicks.client.gui.screen.*;
 import net.mindoth.ancientmagicks.client.model.SimpleRobeModel;
-import net.mindoth.ancientmagicks.client.screen.*;
 import net.mindoth.ancientmagicks.config.ModClientConfig;
 import net.mindoth.ancientmagicks.item.DyeableMagicItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
-import net.mindoth.ancientmagicks.item.form.entity.ProjectileRenderer;
+import net.mindoth.ancientmagicks.entity.ProjectileRenderer;
 import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketAskToOpenSpellWheel;
 import net.mindoth.ancientmagicks.registries.ModEntities;
@@ -75,7 +75,7 @@ public class AncientMagicksClient {
             int spellSelector = ModKeyBinds.SPELL_SELECTOR.getKey().getValue();
             int inventory = mc.options.keyInventory.getKey().getValue();
             Player player = mc.player;
-            if ( mc.screen instanceof ModScreen ) {
+            if ( mc.screen instanceof ModScreen) {
                 if ( key == inventory ) player.closeContainer();
                 if ( mc.screen instanceof GuiSpellWheel && key == spellSelector ) {
                     if ( (keyAction == 0 && ModClientConfig.GUI_SPELL_WHEEL_HOLD.get())

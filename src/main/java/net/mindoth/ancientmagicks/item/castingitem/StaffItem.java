@@ -2,15 +2,10 @@ package net.mindoth.ancientmagicks.item.castingitem;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
-import net.mindoth.ancientmagicks.item.CastingValidator;
-import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -20,7 +15,6 @@ import net.minecraft.world.item.Vanishable;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 import java.util.Map;
 
 public class StaffItem extends CastingItem implements Vanishable {

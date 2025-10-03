@@ -5,7 +5,6 @@ import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
 import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketOpenSpellBook;
-import net.mindoth.ancientmagicks.revamp.item.ColorRuneItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -57,7 +56,8 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));
         if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
             ItemStack stack = player.getItemInHand(handIn);
-            if ( CastingItem.getHeldStaff(player) == ItemStack.EMPTY || player.isCrouching() ) {
+            if ( CastingItem.getHeldStaff(player).isEmpty() || player.isCrouching() ) {
+                if ( stack.hasTag() ) System.out.println(getScrollListFromBook(stack.getTag()));
                 handleSignature(serverPlayer, stack);
                 ModNetwork.sendToPlayer(new PacketOpenSpellBook(stack, 0), serverPlayer);
             }
@@ -87,7 +87,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         List<Item> codeList = Lists.newArrayList();
         for ( String string : List.of(tag.getString(NBT_KEY_BOOK_SLOT).split(",")) ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-            if ( item instanceof ColorRuneItem colorModifierItem ) codeList.add(colorModifierItem);
+            if ( item instanceof ColorRuneItem colorRuneItem ) codeList.add(colorRuneItem);
         }
 
         for ( int i = 0; i < spellList.size(); i++ ) {
@@ -190,7 +190,7 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
 
     public static @Nonnull ItemStack getHeldSpellBook(Player playerEntity) {
         ItemStack book = playerEntity.getMainHandItem().getItem() instanceof SpellBookItem ? playerEntity.getMainHandItem() : ItemStack.EMPTY;
-        if ( book == ItemStack.EMPTY ) book = playerEntity.getOffhandItem().getItem() instanceof SpellBookItem ? playerEntity.getOffhandItem() : ItemStack.EMPTY;
+        if ( book.isEmpty() ) book = playerEntity.getOffhandItem().getItem() instanceof SpellBookItem ? playerEntity.getOffhandItem() : ItemStack.EMPTY;
         return book;
     }
 

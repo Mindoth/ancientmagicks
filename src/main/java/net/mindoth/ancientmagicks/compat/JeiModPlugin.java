@@ -6,7 +6,6 @@ import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.client.screen.RuneCraftingScreen;
 import net.mindoth.ancientmagicks.registries.recipe.RuneCraftingRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;

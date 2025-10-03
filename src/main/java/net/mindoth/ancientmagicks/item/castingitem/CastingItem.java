@@ -1,12 +1,7 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
-import net.mindoth.ancientmagicks.capabilities.playermagic.PlayerMagicProvider;
-import net.mindoth.ancientmagicks.event.MagickEvents;
-import net.mindoth.ancientmagicks.item.CastingValidator;
-import net.mindoth.ancientmagicks.item.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +12,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class CastingItem extends Item {
 

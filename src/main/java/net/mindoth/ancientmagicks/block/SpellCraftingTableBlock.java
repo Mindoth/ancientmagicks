@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.block;
 
-import net.mindoth.ancientmagicks.client.menu.SpellCraftingMenu;
+import net.mindoth.ancientmagicks.client.gui.menu.SpellCraftingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

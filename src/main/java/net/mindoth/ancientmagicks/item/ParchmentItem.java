@@ -2,11 +2,8 @@ package net.mindoth.ancientmagicks.item;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.revamp.SpellData;
-import net.mindoth.ancientmagicks.revamp.item.ColorRuneItem;
-import net.mindoth.ancientmagicks.revamp.item.rune.RuneItem;
+import net.mindoth.ancientmagicks.event.CastingValidator;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -45,7 +42,7 @@ public class ParchmentItem extends Item {
         List<Item> runes = Lists.newArrayList();
         for ( String string : codeList ) {
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-            if ( item instanceof ColorRuneItem colorModifierItem ) runes.add(colorModifierItem);
+            if ( item instanceof ColorRuneItem colorRuneItem ) runes.add(colorRuneItem);
         }
         if ( codeList.size() == AncientMagicks.comboSizeCalc() && codeList.size() == codeList.size() ) return runes;
         else return null;
@@ -58,73 +55,8 @@ public class ParchmentItem extends Item {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(hand));
         if ( !level.isClientSide ) {
             ItemStack stack = player.getItemInHand(hand);
-            if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_CODE_STRING) ) {
-                List<RuneItem> runeList = CastingValidator.getSpellStackFromScroll(stack);
-                SpellData spellData = new SpellData();
-                for ( RuneItem rune : runeList ) {
-                    spellData = rune.resolve(player, spellData);
-                    if ( !spellData.isValid() ) {
-                        player.displayClientMessage(Component.literal("FAILED SPELL"), false);
-                        break;
-                    }
-                }
-            }
+            if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_CODE_STRING) ) CastingValidator.castMagick(player, stack);
         }
         return result;
     }
-
-    /*@OnlyIn(Dist.CLIENT)
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_CODE_STRING) ) {
-            CompoundTag tag = stack.getTag();
-            List<String> codeString = List.of(tag.getString(NBT_KEY_CODE_STRING).split(","));
-            List<Item> runes = getScrollComboList(stack);
-            if ( runes != null && runes.size() == AncientMagicks.comboSizeCalc() && runes.size() == codeString.size() ) {
-                StringBuilder stringBuilder = new StringBuilder();
-                for ( Item item : runes ) {
-                    if ( item instanceof ColorRuneItem rune ) {
-                        String color = rune.getColor() + "0" + "\u00A7r";
-                        stringBuilder.append(color);
-                    }
-                }
-                tooltip.add(Component.literal(stringBuilder.toString()));
-            }
-            if ( !Screen.hasShiftDown() ) tooltip.add(Component.translatable("tooltip.ancientmagicks.shift").withStyle(ChatFormatting.GRAY));
-            else {
-                int cost = 0;
-                List<SpellComponentItem> list = CastingValidator.getSpellStackFromScroll(stack);
-                for ( SpellComponentItem component : list ) cost += component.getCost();
-                cost = Math.max(0, cost);
-                tooltip.add(Component.translatable("tooltip.ancientmagicks.component_cost").withStyle(ChatFormatting.GRAY)
-                        .append(Component.literal(String.valueOf(cost)).withStyle(ChatFormatting.AQUA)));
-                if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_SPELL_STRING) ) {
-                    List<Item> componentList = Lists.newArrayList();
-                    for ( String string : List.of(tag.getString(NBT_KEY_SPELL_STRING).split(",")) ) {
-                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-                        componentList.add(item);
-                    }
-                    List<String> dataList = List.of(tag.getString(NBT_KEY_DATA_STRING).split(","));
-                    for ( int i = 0; i < componentList.size(); i++ ) {
-                        Item item = componentList.get(i);
-                        ChatFormatting color;
-                        if ( item instanceof SpellFormItem ) color = ChatFormatting.DARK_PURPLE;
-                        else if ( item instanceof SpellEffectItem ) color = ChatFormatting.RED;
-                        else if ( item instanceof SpellModifierItem ) color = ChatFormatting.BLUE;
-                        else color = ChatFormatting.GRAY;
-                        if ( item instanceof SpellComponentItem component && component.isEncodeable() ) {
-                            if ( Objects.equals(dataList.get(i), SpellComponentItem.NBT_KEY_EMPTY) ) {
-                                tooltip.add(Component.translatable(item.getDescriptionId())
-                                        .append(Component.literal(": "))
-                                        .append(Component.translatable("tooltip.ancientmagicks.empty")).withStyle(color));
-                            }
-                            else component.decodeTooltipData(tooltip, dataList.get(i), item);
-                        }
-                        else tooltip.add(Component.translatable(item.getDescriptionId()).withStyle(color));
-                    }
-                }
-            }
-        }
-        super.appendHoverText(stack, world, tooltip, flagIn);
-    }*/
 }

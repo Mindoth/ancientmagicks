@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.network;
 
-import net.mindoth.ancientmagicks.client.menu.SpellCraftingMenu;
+import net.mindoth.ancientmagicks.client.gui.menu.SpellCraftingMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
@@ -34,7 +34,7 @@ public class PacketEditColorCode {
         context.enqueueWork(() -> {
             if ( context.getSender() != null ) {
                 ServerPlayer player = context.getSender();
-                if ( player.containerMenu instanceof SpellCraftingMenu ) ((SpellCraftingMenu)player.containerMenu).processColorCodeEditing(this.index, this.rune);
+                if ( player.containerMenu instanceof SpellCraftingMenu menu ) menu.processColorCodeEditing(this.index, this.rune);
             }
         });
     }
