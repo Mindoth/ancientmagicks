@@ -39,7 +39,7 @@ public class TeleportRuneItem extends UseOnEntityTemplate {
             if ( spellData.getLatestPosition() != null ) {
                 Vec3 position = spellData.getLatestPosition().getPos();
                 Level level = spellData.getLatestPosition().getLevel();
-                spellData.purgeVectors(1);
+                spellData.purgePositions(1);
                 handleTeleport(level, entity, position);
             }
         }
@@ -47,8 +47,9 @@ public class TeleportRuneItem extends UseOnEntityTemplate {
         return spellData;
     }
 
-    private void handleTeleport(Level level, Entity entity, Vec3 pos) {
-        EntityTeleportEvent event = new EntityTeleportEvent(entity, Mth.floor(pos.x) + 0.5F, pos.y, Mth.floor(pos.z) + 0.5F);
+    private void handleTeleport(Level level, Entity entity, Vec3 position) {
+        if ( arePositionsTooClose(entity.position(), position) ) return;
+        EntityTeleportEvent event = new EntityTeleportEvent(entity, Mth.floor(position.x) + 0.5F, position.y, Mth.floor(position.z) + 0.5F);
         if ( !event.isCanceled() && level instanceof ServerLevel serverLevel ) {
             entity.teleportTo(serverLevel, event.getTargetX(), event.getTargetY(), event.getTargetZ(), RelativeMovement.ALL,
                     entity.getViewYRot(0), entity.getViewXRot(0));
@@ -56,5 +57,17 @@ public class TeleportRuneItem extends UseOnEntityTemplate {
             entity.fallDistance = 0;
             if ( entity.isInWall() ) entity.setPose(Pose.SWIMMING);
         }
+    }
+
+    private boolean arePositionsTooClose(Vec3 pos0, Vec3 pos1) {
+        int x0 = Mth.floor(pos0.x);
+        int y0 = Mth.floor(pos0.y);
+        int z0 = Mth.floor(pos0.z);
+        Vec3 vec0 = new Vec3(x0, y0, z0);
+        int x1 = Mth.floor(pos1.x);
+        int y1 = Mth.floor(pos1.y);
+        int z1 = Mth.floor(pos1.z);
+        Vec3 vec1 = new Vec3(x1, y1, z1);
+        return vec0.equals(vec1);
     }
 }

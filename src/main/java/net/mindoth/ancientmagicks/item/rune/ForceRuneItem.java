@@ -30,7 +30,7 @@ public class ForceRuneItem extends UseOnEntityTemplate {
 
     @Override
     protected SpellData result(Entity caster, SpellData spellData, Entity entity) {
-        if ( !spellData.getVectors().isEmpty() && !spellData.getVectors().isEmpty() ) {
+        if ( !spellData.getVectors().isEmpty() && !spellData.getIntegers().isEmpty() ) {
             if ( spellData.getLatestVector() != null || spellData.getLatestInteger() != null ) {
                 Vec3 direction = spellData.getLatestVector();
                 spellData.purgeVectors(1);
