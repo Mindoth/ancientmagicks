@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.effect;
+package net.mindoth.ancientmagicks.item.rune.shelf.effect;
 
 import com.mojang.authlib.GameProfile;
 import net.mindoth.ancientmagicks.AncientMagicks;
@@ -42,7 +42,7 @@ public class BreakEffectItem extends BlockTargetEffect {
         if ( !(level instanceof ServerLevel serverLevel) ) return false;
         boolean canDrop = !(owner instanceof Player player && player.isCreative());
         FakePlayer player = FakePlayerFactory.get(serverLevel, FAKE_PROFILE);
-        int power = Mth.floor(stats.get(SpellEffectItem.POWER));
+        int power = Mth.floor(stats.get(POWER));
         player.setItemSlot(EquipmentSlot.MAINHAND, getToolFromStrength(power));
         BlockState blockState = level.getBlockState(pos);
         Block block = blockState.getBlock();

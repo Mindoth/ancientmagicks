@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.effect;
+package net.mindoth.ancientmagicks.item.rune.shelf.effect;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -48,7 +48,7 @@ public class LightningEffectItem extends SpellEffectItem {
 
     private boolean lightning(Level level, Entity caster, HitResult result, HashMap<String, Float> stats) {
         boolean state = false;
-        int power = 5 + Mth.floor(stats.get(SpellEffectItem.POWER));
+        int power = 5 + Mth.floor(stats.get(POWER));
         Vec3 point = result.getLocation();
         BlockPos blockPos = new BlockPos(Mth.floor(point.x), Mth.floor(point.y), Mth.floor(point.z));
         BlockState blockState = level.getBlockState(blockPos.below());

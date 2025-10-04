@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.registries.recipe;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.effect.SpellComponentItem;
+import net.mindoth.ancientmagicks.item.rune.shelf.effect.SpellComponentItem;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;

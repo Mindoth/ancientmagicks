@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.effect;
+package net.mindoth.ancientmagicks.item.rune.shelf.effect;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

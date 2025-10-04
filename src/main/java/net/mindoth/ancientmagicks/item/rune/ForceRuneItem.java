@@ -22,25 +22,28 @@ public class ForceRuneItem extends UseOnEntityTemplate {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.entity").append(Component.literal(" | "))
-                .append(Component.translatable("tooltip.ancientmagicks.vector")).append(Component.literal(" | "))
-                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.integer")).append(Component.literal(")"))
-                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.force")).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.entity").append(Component.literal(", "))
+                .append(Component.translatable("tooltip.ancientmagicks.vector")).append(Component.literal(", "))
+                .append(Component.translatable("tooltip.ancientmagicks.integer")).append(Component.literal(" ->")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
     @Override
     protected SpellData result(Entity caster, SpellData spellData, Entity entity) {
-        if ( !spellData.getVectors().isEmpty() ) {
-            Vec3 direction = spellData.getLatestVector();
-            spellData.purgeVectors(1);
-            int power;
-            if ( spellData.getIntegers().isEmpty() || spellData.getLatestInteger() == null ) power = 1;
-            else power = 1 + spellData.getLatestInteger();
-            spellData.purgeIntegers(1);
-            Vec3 towards = entity.position().add(direction.multiply(power, power, power));
-            entity.push(towards.x - entity.position().x, towards.y - entity.position().y, towards.z - entity.position().z);
-            entity.hurtMarked = true;
+        if ( !spellData.getVectors().isEmpty() && !spellData.getVectors().isEmpty() ) {
+            if ( spellData.getLatestVector() != null || spellData.getLatestInteger() != null ) {
+                Vec3 direction = spellData.getLatestVector();
+                spellData.purgeVectors(1);
+                int power = spellData.getLatestInteger();
+                spellData.purgeIntegers(1);
+                Vec3 towards = entity.position().add(direction.multiply(power, power, power));
+                entity.push(towards.x - entity.position().x, towards.y - entity.position().y, towards.z - entity.position().z);
+                entity.hurtMarked = true;
+            }
+            else {
+                spellData.purgeVectors(1);
+                spellData.purgeIntegers(1);
+            }
         }
         else spellData.setValid(false);
         return spellData;

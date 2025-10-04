@@ -1,7 +1,8 @@
-package net.mindoth.ancientmagicks.item.rune;
+package net.mindoth.ancientmagicks.item.rune.shelf;
 
 import net.mindoth.ancientmagicks.event.DimVec3;
 import net.mindoth.ancientmagicks.event.SpellData;
+import net.mindoth.ancientmagicks.item.rune.UseOnPositionTemplate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
@@ -23,7 +24,7 @@ public class TargetPositionRuneItem extends UseOnPositionTemplate {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.position").append(Component.literal(" | "))
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.position").append(Component.literal(", "))
                 .append(Component.translatable("tooltip.ancientmagicks.vector"))
                 .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.position")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);

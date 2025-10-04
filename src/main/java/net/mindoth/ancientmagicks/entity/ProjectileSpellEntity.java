@@ -24,11 +24,13 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
         super(ModEntities.SPELL_PROJECTILE.get(), level, caster);
     }
 
-    private void castMagick(HitResult hitResult) {
+    @Override
+    protected void doExpirationEffects() {
         if ( this.spellData != null ) {
-            this.spellData.addObject(hitResult);
+            this.spellData.addObject(new DimVec3(this.position(), this.level()));
             CastingValidator.resolveSpell(this.caster, this.spellData, this.getSpellStack());
         }
+        doDeathEffects();
     }
 
     @Override
@@ -46,6 +48,13 @@ public class ProjectileSpellEntity extends AbstractSpellEntity {
             MultiBlockHitResult mBlockHitResult = new MultiBlockHitResult(result.getLocation(), result.getDirection(), result.getBlockPos(), result.isInside(),
                     Collections.singletonList(result.getBlockPos()), new DimVec3(result.getLocation(), this.level()));
             castMagick(mBlockHitResult);
+        }
+    }
+
+    private void castMagick(HitResult hitResult) {
+        if ( this.spellData != null ) {
+            this.spellData.addObject(hitResult);
+            CastingValidator.resolveSpell(this.caster, this.spellData, this.getSpellStack());
         }
     }
 }

@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.effect;
+package net.mindoth.ancientmagicks.item.rune.shelf.effect;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -9,7 +9,6 @@ import net.minecraft.world.phys.*;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class TelebringEffectItem extends EntityTargetEffect {
 

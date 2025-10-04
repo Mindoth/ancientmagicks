@@ -22,21 +22,25 @@ public class AttackRuneItem extends UseOnEntityTemplate {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.entity").append(Component.literal(" | "))
-                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.integer")).append(Component.literal(")"))
-                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.harm")).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.entity").append(Component.literal(", "))
+                .append(Component.translatable("tooltip.ancientmagicks.integer")).append(Component.literal(" ->")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
     @Override
     protected SpellData result(Entity caster, SpellData spellData, Entity entity) {
-        int power;
-        if ( spellData.getIntegers().isEmpty() || spellData.getLatestInteger() == null ) power = 4;
-        else power = 4 + spellData.getLatestInteger();
-        spellData.purgeIntegers(1);
-        if ( entity instanceof LivingEntity && entity.isAttackable() && entity.isAlive() ) {
-            attackEntity(caster, caster, entity, power);
+        if ( !spellData.getIntegers().isEmpty() ) {
+            if ( spellData.getLatestInteger() != null ) {
+                int power = spellData.getLatestInteger();
+                spellData.purgeIntegers(1);
+                if ( entity instanceof LivingEntity && entity.isAttackable() && entity.isAlive() ) {
+                    attackEntity(caster, caster, entity, power);
+                }
+                return spellData;
+            }
+            else spellData.purgeIntegers(1);
         }
+        else spellData.setValid(false);
         return spellData;
     }
 }

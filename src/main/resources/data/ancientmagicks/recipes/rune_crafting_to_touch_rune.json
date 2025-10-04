@@ -5,17 +5,11 @@
       "item": "ancientmagicks:rune_essence"
     },
     {
-      "item": "minecraft:arrow"
-    },
-    {
-      "item": "minecraft:arrow"
-    },
-    {
-      "item": "minecraft:stone"
+      "item": "minecraft:stone_button"
     }
   ],
   "output": {
     "count": 1,
-    "item": "ancientmagicks:target_block_rune"
+    "item": "ancientmagicks:touch_rune"
   }
 }

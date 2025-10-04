@@ -80,6 +80,7 @@
   "item.ancientmagicks.force_rune": "Force Rune",
   "item.ancientmagicks.purge_rune": "Purge Rune",
   "item.ancientmagicks.projectile_rune": "Projectile Rune",
+  "item.ancientmagicks.touch_rune": "Touch Rune",
 
   "tooltip.ancientmagicks.any": "Any",
   "tooltip.ancientmagicks.null": "Null",
@@ -89,12 +90,6 @@
   "tooltip.ancientmagicks.block": "Block",
   "tooltip.ancientmagicks.integer": "Integer",
   "tooltip.ancientmagicks.position": "Position",
-
-  "tooltip.ancientmagicks.excavate": "Excavates a block",
-  "tooltip.ancientmagicks.harm": "Attacks an entity",
-  "tooltip.ancientmagicks.teleport": "Teleports an entity to given position",
-  "tooltip.ancientmagicks.explode": "Creates an explosion",
-  "tooltip.ancientmagicks.force": "Adds momentum to an entity",
 
 
   "effect.ancientmagicks.mind_control": "Mind Controlled",

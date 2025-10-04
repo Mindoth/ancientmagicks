@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.effect;
+package net.mindoth.ancientmagicks.item.rune.shelf.effect;
 
 import com.google.common.collect.Lists;
 import net.minecraft.ChatFormatting;

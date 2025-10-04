@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.mobeffect;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
+import net.mindoth.ancientmagicks.item.rune.shelf.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.registries.ModEffects;
 import net.mindoth.shadowizardlib.event.ShadowEvents;
 import net.minecraft.nbt.CompoundTag;

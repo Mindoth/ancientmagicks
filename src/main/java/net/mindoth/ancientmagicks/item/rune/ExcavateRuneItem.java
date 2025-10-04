@@ -32,9 +32,8 @@ public class ExcavateRuneItem extends UseOnBlockTemplate {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.block").append(Component.literal(" | "))
-                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.integer")).append(Component.literal(")"))
-                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.excavate")).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.block").append(Component.literal(", "))
+                .append(Component.translatable("tooltip.ancientmagicks.integer")).append(Component.literal(" ->")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 
@@ -42,11 +41,16 @@ public class ExcavateRuneItem extends UseOnBlockTemplate {
 
     @Override
     protected SpellData result(Entity caster, SpellData spellData, BlockPos pos, Level level) {
-        int power;
-        if ( spellData.getIntegers().isEmpty() || spellData.getLatestInteger() == null ) power = 0;
-        else power = spellData.getLatestInteger();
-        spellData.purgeIntegers(1);
-        handleMine(caster, pos, level, power);
+        if ( !spellData.getIntegers().isEmpty() ) {
+            if ( spellData.getLatestInteger() != null ) {
+                int power = spellData.getLatestInteger();
+                spellData.purgeIntegers(1);
+                handleMine(caster, pos, level, power);
+                return spellData;
+            }
+            else spellData.purgeIntegers(1);
+        }
+        else spellData.setValid(false);
         return spellData;
     }
 

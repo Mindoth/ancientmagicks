@@ -26,10 +26,11 @@ public class ProjectileRuneItem extends UseOnPositionTemplate {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.position").append(Component.literal(" | "))
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.position").append(Component.literal(", "))
                 .append(Component.translatable("tooltip.ancientmagicks.vector"))
-                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.entity"))
-                .append(Component.literal(" / ")).append(Component.translatable("tooltip.ancientmagicks.block")).withStyle(ChatFormatting.GRAY));
+                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.position"))
+                .append(Component.literal(" | ")).append(Component.translatable("tooltip.ancientmagicks.entity"))
+                .append(Component.literal(" | ")).append(Component.translatable("tooltip.ancientmagicks.block")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
 

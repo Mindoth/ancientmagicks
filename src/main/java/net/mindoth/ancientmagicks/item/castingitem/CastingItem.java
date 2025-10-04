@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
 import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.mindoth.ancientmagicks.item.effect.SpellEffectItem;
+import net.mindoth.ancientmagicks.item.rune.shelf.effect.SpellEffectItem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

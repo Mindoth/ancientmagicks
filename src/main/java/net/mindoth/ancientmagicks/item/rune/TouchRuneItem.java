@@ -1,0 +1,105 @@
+package net.mindoth.ancientmagicks.item.rune;
+
+import net.mindoth.ancientmagicks.event.DimVec3;
+import net.mindoth.ancientmagicks.event.MultiBlockHitResult;
+import net.mindoth.ancientmagicks.event.MultiEntityHitResult;
+import net.mindoth.ancientmagicks.event.SpellData;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.BiPredicate;
+
+public class TouchRuneItem extends UseOnPositionTemplate {
+    public TouchRuneItem(Properties pProperties) {
+        super(pProperties);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.position").append(Component.literal(", "))
+                .append(Component.translatable("tooltip.ancientmagicks.vector"))
+                .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.position"))
+                .append(Component.literal(" | ")).append(Component.translatable("tooltip.ancientmagicks.entity"))
+                .append(Component.literal(" | ")).append(Component.translatable("tooltip.ancientmagicks.block")).withStyle(ChatFormatting.GRAY));
+        super.appendHoverText(stack, world, tooltip, flagIn);
+    }
+
+    @Override
+    public SpellData result(Entity caster, SpellData spellData, Vec3 position, Level level) {
+        if ( !spellData.getVectors().isEmpty() ) {
+            Vec3 direction = spellData.getLatestVector();
+            spellData.purgeVectors(1);
+            Entity target = getPointedEntity(position, direction, caster, level, 4.5F, 0.25F, true, null);
+            if ( target != null ) {
+                spellData.addObject(new MultiEntityHitResult(caster, target.position(), Collections.singletonList(target),
+                        new DimVec3(target.position(), target.level())));
+            }
+            else {
+                MultiBlockHitResult mResult = getPOVHitResult(position, direction, caster, level, ClipContext.Fluid.SOURCE_ONLY, 4.5F);
+                if ( !level.getBlockState(mResult.getBlockPos()).isAir() ) {
+                    spellData.addObject(mResult);
+                }
+                else {
+                    Vec3 end = getPoint(position, direction, caster, level, 4.5F, 0, false, true, true, false);
+                    spellData.addObject(new DimVec3(end, level));
+                }
+            }
+        }
+        else spellData.setValid(false);
+        return spellData;
+    }
+
+    private Entity getPointedEntity(Vec3 position, Vec3 direction, Entity caster, Level level, float range, float error, boolean stopsAtSolid, @Nullable BiPredicate<Entity, Entity> filter) {
+        Vec3 center = position.add(direction.multiply(range, range, range));
+        Entity returnEntity = null;
+        double playerX = position.x();
+        double playerY = position.y();
+        double playerZ = position.z();
+        double listedEntityX = center.x();
+        double listedEntityY = center.y();
+        double listedEntityZ = center.z();
+        int particleInterval = (int)Math.round(position.distanceToSqr(center));
+        Vec3 startPos = position.add(direction.multiply(1.0D, 1.0D, 1.0D));
+        Vec3 endPos = center;
+        for ( int k = 1; k < (1 + particleInterval); k++ ) {
+            double lineX = playerX * (1 - ((double) k / particleInterval)) + listedEntityX * ((double) k / particleInterval);
+            double lineY = playerY * (1 - ((double) k / particleInterval)) + listedEntityY * ((double) k / particleInterval);
+            double lineZ = playerZ * (1 - ((double) k / particleInterval)) + listedEntityZ * ((double) k / particleInterval);
+            endPos = new Vec3(lineX, lineY, lineZ);
+            Vec3 start = new Vec3(lineX + error, lineY + error, lineZ + error);
+            Vec3 end = new Vec3(lineX - error, lineY - error, lineZ - error);
+            AABB area = new AABB(start, end);
+            List<Entity> targets = level.getEntities(caster, area);
+            Entity target = null;
+            double lowestSoFar = Double.MAX_VALUE;
+            for ( Entity closestSoFar : targets ) {
+                if ( filter == null || filter.test(caster, closestSoFar) ) {
+                    double testDistance = closestSoFar.distanceToSqr(center);
+                    if ( testDistance < lowestSoFar ) target = closestSoFar;
+                }
+            }
+            if ( target != null ) {
+                returnEntity = target;
+                break;
+            }
+            if ( stopsAtSolid && level.getBlockState(new BlockPos(Mth.floor(lineX), Mth.floor(lineY), Mth.floor(lineZ))).isSolid() ) break;
+        }
+        summonParticleLine(startPos, endPos, particleInterval, startPos, level, 0.1F, 8, defaultStats());
+        return returnEntity;
+    }
+}

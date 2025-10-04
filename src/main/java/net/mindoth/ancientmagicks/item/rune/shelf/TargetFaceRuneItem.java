@@ -1,9 +1,9 @@
-package net.mindoth.ancientmagicks.item.rune;
+package net.mindoth.ancientmagicks.item.rune.shelf;
 
 import net.mindoth.ancientmagicks.event.DimVec3;
 import net.mindoth.ancientmagicks.event.MultiBlockHitResult;
 import net.mindoth.ancientmagicks.event.SpellData;
-import net.mindoth.ancientmagicks.item.RuneItem;
+import net.mindoth.ancientmagicks.item.rune.UseOnPositionTemplate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -16,22 +16,21 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.apache.commons.compress.utils.Lists;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 
-public class AreaTargetFaceRuneItem extends UseOnPositionTemplate {
-    public AreaTargetFaceRuneItem(Item.Properties pProperties) {
+public class TargetFaceRuneItem extends UseOnPositionTemplate {
+    public TargetFaceRuneItem(Item.Properties pProperties) {
         super(pProperties);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(Component.translatable("tooltip.ancientmagicks.position").append(Component.literal(" | "))
-                .append(Component.translatable("tooltip.ancientmagicks.vector")).append(Component.literal(" | "))
-                .append(Component.literal("(")).append(Component.translatable("tooltip.ancientmagicks.integer")).append(Component.literal(")"))
+        tooltip.add(Component.translatable("tooltip.ancientmagicks.vector").append(Component.literal(", "))
+                .append(Component.translatable("tooltip.ancientmagicks.vector"))
                 .append(Component.literal(" -> ")).append(Component.translatable("tooltip.ancientmagicks.block")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }
@@ -41,21 +40,16 @@ public class AreaTargetFaceRuneItem extends UseOnPositionTemplate {
         if ( !spellData.getVectors().isEmpty() ) {
             Vec3 direction = spellData.getLatestVector();
             spellData.purgeVectors(1);
-            int range;
-            if ( spellData.getIntegers().isEmpty() || spellData.getLatestInteger() == null ) range = 1;
-            else range = spellData.getLatestInteger();
-            spellData.purgeIntegers(1);
-
-            MultiBlockHitResult result = getPOVHitResult(position, direction, caster, level, ClipContext.Fluid.SOURCE_ONLY, 4.5F);
-            BlockPos blockPos = getPosOfFace(result.getBlockPos(), result.getDirection());
+            MultiBlockHitResult mResult = getPOVHitResult(position, direction, caster, level, ClipContext.Fluid.SOURCE_ONLY, 4.5F);
+            BlockPos blockPos = getPosOfFace(mResult.getBlockPos(), mResult.getDirection());
             Vec3 pos = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-            List<BlockPos> blocks = Lists.newArrayList();
-            if ( range == 0 ) blocks.add(blockPos);
-            else blocks = getBlockList(this, result, blockPos, range);
+            spellData.addObject(new MultiBlockHitResult(pos, mResult.getDirection(), blockPos, mResult.isInside(), Collections.singletonList(blockPos),
+                    new DimVec3(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ()), level)));
 
-            MultiBlockHitResult mResult = new MultiBlockHitResult(pos, result.getDirection(), blockPos, result.isInside(), blocks, new DimVec3(result.getLocation(), level));
-            spellData.addObject(mResult);
-            aoeBlockSpellParticles(level, blocks, defaultStats());
+            //aoeBlockSpellParticles(level, Collections.singletonList(blockPos), defaultStats());
+            Vec3 start = position.add(direction.multiply(1.0D, 1.0D, 1.0D));
+            Vec3 end = blockPos.getCenter();
+            summonParticleLine(start, end, (int)position.distanceTo(end) * 4, start, level, 0.15F, 8, defaultStats());
         }
         else spellData.setValid(false);
         return spellData;

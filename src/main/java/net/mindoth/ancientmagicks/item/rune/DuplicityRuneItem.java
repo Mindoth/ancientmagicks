@@ -23,7 +23,7 @@ public class DuplicityRuneItem extends RuneItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(Component.translatable("tooltip.ancientmagicks.any").append(Component.literal(" -> "))
-                .append(Component.translatable("tooltip.ancientmagicks.any")).append(Component.literal(" | "))
+                .append(Component.translatable("tooltip.ancientmagicks.any")).append(Component.literal(", "))
                 .append(Component.translatable("tooltip.ancientmagicks.any")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, world, tooltip, flagIn);
     }

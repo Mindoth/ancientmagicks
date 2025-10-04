@@ -1,4 +1,4 @@
-package net.mindoth.ancientmagicks.item.effect;
+package net.mindoth.ancientmagicks.item.rune.shelf.effect;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
