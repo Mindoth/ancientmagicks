@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "ancientmagicks:block/brakma_brick_slab"
+    },
+    "type=double": {
+      "model": "ancientmagicks:block/brakma_bricks"
+    },
+    "type=top": {
+      "model": "ancientmagicks:block/brakma_brick_slab_top"
+    }
+  }
+}

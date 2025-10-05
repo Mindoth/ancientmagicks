@@ -2,11 +2,19 @@
   "values": [
     "ancientmagicks:spell_crafting_table",
     "ancientmagicks:rune_crafting_table",
+
     "ancientmagicks:breeze_rock",
     "ancientmagicks:breeze_rock_stairs",
     "ancientmagicks:breeze_rock_slab",
     "ancientmagicks:breeze_bricks",
     "ancientmagicks:breeze_brick_stairs",
-    "ancientmagicks:breeze_brick_slab"
+    "ancientmagicks:breeze_brick_slab",
+
+    "ancientmagicks:brakma_rock",
+    "ancientmagicks:brakma_rock_stairs",
+    "ancientmagicks:brakma_rock_slab",
+    "ancientmagicks:brakma_bricks",
+    "ancientmagicks:brakma_brick_stairs",
+    "ancientmagicks:brakma_brick_slab"
   ]
 }

@@ -2,15 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "CCC",
-    "RRR",
+    "SBS",
     "   "
   ],
   "key": {
     "C": {
       "item": "ancientmagicks:wool_cloth"
     },
-    "R": {
-      "item": "ancientmagicks:breeze_rock"
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "B": {
+      "item": "minecraft:bookshelf"
     }
   },
   "result": {

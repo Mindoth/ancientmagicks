@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "up": "ancientmagicks:block/brakma_bricks",
+    "down": "ancientmagicks:block/brakma_bricks",
+    "north": "ancientmagicks:block/brakma_bricks",
+    "east": "ancientmagicks:block/brakma_bricks",
+    "south": "ancientmagicks:block/brakma_bricks",
+    "west": "ancientmagicks:block/brakma_bricks",
+    "particle": "ancientmagicks:block/brakma_bricks"
+  }
+}

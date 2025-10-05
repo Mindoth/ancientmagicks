@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "LRL",
-    "RRR",
+    "SSS",
     "   "
   ],
   "key": {
@@ -10,7 +10,10 @@
       "item": "minecraft:lapis_lazuli"
     },
     "R": {
-      "item": "ancientmagicks:breeze_rock"
+      "item": "ancientmagicks:rune_essence"
+    },
+    "S": {
+      "item": "minecraft:stone"
     }
   },
   "result": {

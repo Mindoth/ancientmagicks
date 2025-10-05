@@ -13,6 +13,10 @@
 
   "block.ancientmagicks.spell_crafting_table": "Spell Crafting Table",
   "block.ancientmagicks.rune_crafting_table": "Rune Crafting Table",
+
+  "attribute.ancientmagicks.magick": "\u00A79Magick\u00A7r",
+
+
   "block.ancientmagicks.breeze_rock": "Breeze Rock",
   "block.ancientmagicks.breeze_rock_stairs": "Breeze Rock Stairs",
   "block.ancientmagicks.breeze_rock_slab": "Breeze Rock Slab",
@@ -20,16 +24,24 @@
   "block.ancientmagicks.breeze_brick_stairs": "Breeze Brick Stairs",
   "block.ancientmagicks.breeze_brick_slab": "Breeze Brick Slab",
 
+  "block.ancientmagicks.brakma_rock": "Brakma Rock",
+  "block.ancientmagicks.brakma_rock_stairs": "Brakma Rock Stairs",
+  "block.ancientmagicks.brakma_rock_slab": "Brakma Rock Slab",
+  "block.ancientmagicks.brakma_bricks": "Brakma Bricks",
+  "block.ancientmagicks.brakma_brick_stairs": "Brakma Brick Stairs",
+  "block.ancientmagicks.brakma_brick_slab": "Brakma Brick Slab",
+
 
   "item.ancientmagicks.wool_cloth": "Wool Cloth",
+  "item.ancientmagicks.arcane_dust": "Arcane Dust",
+  "item.ancientmagicks.rune_essence": "Rune Essence",
+
   "item.ancientmagicks.parchment": "Parchment",
   "item.ancientmagicks.infernal_parchment": "Infernal Parchment",
   "item.ancientmagicks.arcane_parchment": "Arcane Parchment",
-  "item.ancientmagicks.arcane_dust": "Arcane Dust",
-  "item.ancientmagicks.spell_scroll": "Spell Scroll",
+
   "item.ancientmagicks.ancient_tablet": "Ancient Tablet",
   "item.ancientmagicks.spell_book": "Spell Book",
-  "item.ancientmagicks.spell_pearl": "Spell Pearl",
   "item.ancientmagicks.robe_hood": "Robe Hood",
   "item.ancientmagicks.robe_top": "Robe Top",
   "item.ancientmagicks.robe_bottom": "Robe Bottom",
@@ -37,22 +49,14 @@
   "item.ancientmagicks.wooden_staff": "Wooden Staff",
   "item.ancientmagicks.golden_staff": "Golden Staff",
   "item.ancientmagicks.netherite_staff": "Netherite Staff",
-  "item.ancientmagicks.blank_slate": "Blank Slate",
-  "item.ancientmagicks.rune_essence": "Rune Essence",
 
-  "item.ancientmagicks.blue_sigil": "Blue Sigil",
-  "tooltip.ancientmagicks.blue_sigil": "temp",
-  "item.ancientmagicks.purple_sigil": "Purple Sigil",
-  "tooltip.ancientmagicks.purple_sigil": "temp",
-  "item.ancientmagicks.yellow_sigil": "Yellow Sigil",
-  "tooltip.ancientmagicks.yellow_sigil": "temp",
-  "item.ancientmagicks.green_sigil": "Green Sigil",
-  "tooltip.ancientmagicks.green_sigil": "temp",
-  "item.ancientmagicks.black_sigil": "Black Sigil",
-  "tooltip.ancientmagicks.black_sigil": "temp",
-  "item.ancientmagicks.white_sigil": "White Sigil",
-  "tooltip.ancientmagicks.white_sigil": "temp",
 
+  "item.ancientmagicks.blue_sigil": "Blue Rune",
+  "item.ancientmagicks.purple_sigil": "Purple Rune",
+  "item.ancientmagicks.yellow_sigil": "Yellow Rune",
+  "item.ancientmagicks.green_sigil": "Green Rune",
+  "item.ancientmagicks.black_sigil": "Black Rune",
+  "item.ancientmagicks.white_sigil": "White Rune",
 
   "item.ancientmagicks.self_rune": "Self Rune",
   "item.ancientmagicks.sight_rune": "Sight Rune",
@@ -84,7 +88,6 @@
 
   "tooltip.ancientmagicks.any": "Any",
   "tooltip.ancientmagicks.null": "Null",
-  "tooltip.ancientmagicks.nonnull": "NonNull",
   "tooltip.ancientmagicks.vector": "Vector",
   "tooltip.ancientmagicks.entity": "Entity",
   "tooltip.ancientmagicks.block": "Block",
@@ -150,6 +153,7 @@
   "item.minecraft.tipped_arrow.effect.long_teleblock_potion": "Arrow of Teleblock",
 
 
+
   "tooltip.ancientmagicks.shift": "Hold SHIFT for more information",
   "tooltip.ancientmagicks.empty": "Empty",
   "tooltip.ancientmagicks.book_owner": "Owner: ",
@@ -158,5 +162,8 @@
   "tooltip.ancientmagicks.type_effect": "Effect",
   "tooltip.ancientmagicks.type_modifier": "Modifier",
 
-  "attribute.ancientmagicks.magick": "\u00A79Magick\u00A7r"
+
+  "item.ancientmagicks.blank_slate": "Blank Slate",
+  "item.ancientmagicks.spell_scroll": "Spell Scroll",
+  "item.ancientmagicks.spell_pearl": "Spell Pearl"
 }

@@ -28,14 +28,32 @@ public class ModBlocks {
     public static final RegistryObject<Block> BREEZE_ROCK_SLAB = registerBlock("breeze_rock_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
-
     public static final RegistryObject<Block> BREEZE_BRICKS = registerBlock("breeze_bricks",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
     public static final RegistryObject<Block> BREEZE_BRICKS_STAIRS = registerBlock("breeze_brick_stairs",
-            () -> new StairBlock(() -> ModBlocks.BREEZE_ROCK.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE)));
+            () -> new StairBlock(() -> ModBlocks.BREEZE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE)));
 
     public static final RegistryObject<Block> BREEZE_BRICKS_SLAB = registerBlock("breeze_brick_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+
+    public static final RegistryObject<Block> BRAKMA_ROCK = registerBlock("brakma_rock",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> BRAKMA_ROCK_STAIRS = registerBlock("brakma_rock_stairs",
+            () -> new StairBlock(() -> ModBlocks.BRAKMA_ROCK.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> BRAKMA_ROCK_SLAB = registerBlock("brakma_rock_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> BRAKMA_BRICKS = registerBlock("brakma_bricks",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> BRAKMA_BRICKS_STAIRS = registerBlock("brakma_brick_stairs",
+            () -> new StairBlock(() -> ModBlocks.BRAKMA_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> BRAKMA_BRICKS_SLAB = registerBlock("brakma_brick_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
 
@@ -44,7 +62,6 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> RUNE_CRAFTING_TABLE = registerBlock("rune_crafting_table",
             () -> new RuneCraftingTableBlock(BlockBehaviour.Properties.copy(Blocks.STONE)));
-
 
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
