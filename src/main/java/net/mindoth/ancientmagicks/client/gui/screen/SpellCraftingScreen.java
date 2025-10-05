@@ -110,7 +110,7 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
     private void handleDumpButton(Button button) {
         Slot slot = this.menu.getSlot(0);
         if ( slot.hasItem() && !this.menu.isCleanParchment(slot.getItem()) ) {
-            if ( this.menu.dumpSpell() ) this.name.setValue(slot.getItem().getHoverName().getString());
+            if ( this.menu.dumpSpell() && slot.getItem().hasCustomHoverName() ) this.name.setValue(slot.getItem().getHoverName().getString());
         }
     }
 
@@ -153,9 +153,7 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         if ( this.runeButtonL.isFocused() ) this.runeButtonL.setFocused(false);
         if ( this.runeButtonM.isFocused() ) this.runeButtonM.setFocused(false);
         if ( this.runeButtonR.isFocused() ) this.runeButtonR.setFocused(false);
-        if ( this.menu.isReadyToCraft() ) {
-            for ( Button button : this.runeButtonList ) if ( !button.visible ) button.visible = true;
-        }
+        if ( this.menu.isReadyToCraft() ) for ( Button button : this.runeButtonList ) if ( !button.visible ) button.visible = true;
         else for ( Button button1 : this.runeButtonList ) if ( button1.visible ) button1.visible = false;
     }
 

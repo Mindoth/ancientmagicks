@@ -79,7 +79,7 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
 
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
-        return pWidth * pHeight >= 2;
+        return true;
     }
 
     @Override

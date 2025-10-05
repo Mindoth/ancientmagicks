@@ -69,11 +69,6 @@ public class SpellBookAddRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean isSpecial() {
-        return false;
-    }
-
-    @Override
     public RecipeSerializer<?> getSerializer() {
         return ModRecipes.SPELL_BOOK_ADD_RECIPE.get();
     }
