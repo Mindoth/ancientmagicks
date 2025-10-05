@@ -173,7 +173,7 @@ public class SpellCraftingMenu extends AbstractContainerMenu {
                         if ( i == 0 ) cleanScroll(stack);
                         else {
                             Slot slot = this.slots.get(i);
-                            if ( slot instanceof RuneSlot) {
+                            if ( slot instanceof RuneSlot ) {
                                 ItemStack rune = new ItemStack(runeList.get(i - 1));
                                 if ( ((RuneItem)rune.getItem()).isEncodeable() ) {
                                     rune.getOrCreateTag().putString(RuneItem.NBT_KEY_COMPONENT_DATA, dataList.get(i - 1));

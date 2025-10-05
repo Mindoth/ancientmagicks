@@ -48,6 +48,7 @@ public class ParchmentItem extends Item {
         else return null;
     }
 
+    /*
     //ONLY FOR TESTING
     @Override
     @Nonnull
@@ -58,5 +59,5 @@ public class ParchmentItem extends Item {
             if ( stack.hasTag() && stack.getTag().contains(NBT_KEY_CODE_STRING) ) CastingValidator.castMagick(player, stack);
         }
         return result;
-    }
+    }*/
 }

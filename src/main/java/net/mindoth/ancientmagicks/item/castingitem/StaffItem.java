@@ -2,10 +2,15 @@ package net.mindoth.ancientmagicks.item.castingitem;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.mindoth.ancientmagicks.capability.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.event.CastingValidator;
+import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +20,7 @@ import net.minecraft.world.item.Vanishable;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Map;
 
 public class StaffItem extends CastingItem implements Vanishable {
@@ -48,7 +54,7 @@ public class StaffItem extends CastingItem implements Vanishable {
         return result;
     }
 
-    /*@Override
+    @Override
     public void onUseTick(Level level, LivingEntity caster, ItemStack staff, int timeLeft) {
         if ( level.isClientSide ) return;
         if ( !(caster instanceof ServerPlayer player) ) return;
@@ -61,13 +67,13 @@ public class StaffItem extends CastingItem implements Vanishable {
         }
         ItemStack scroll = SpellBookItem.getActiveScrollFromBook(book);
         player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-            List<SpellComponentItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
+            List<RuneItem> runeList = CastingValidator.getSpellStackFromScroll(scroll);
             int manaCost = 0;
-            for ( SpellComponentItem item : componentList ) manaCost += item.getCost();
-            if ( magic.getCurrentMana() >= manaCost || player.isCreative() ) doSpell(player, player, staff, scroll);
+            //for ( SpellComponentItem item : runeList ) manaCost += item.getCost();
+            if ( magic.getCurrentMana() >= manaCost || player.isCreative() ) doSpell(player, staff, scroll);
             else whiffSpell(caster);
         });
-    }*/
+    }
 
     @Override
     public boolean isValidRepairItem(ItemStack pToRepair, ItemStack pRepair) {

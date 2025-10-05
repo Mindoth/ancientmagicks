@@ -51,12 +51,12 @@
   "item.ancientmagicks.netherite_staff": "Netherite Staff",
 
 
-  "item.ancientmagicks.blue_sigil": "Blue Rune",
-  "item.ancientmagicks.purple_sigil": "Purple Rune",
-  "item.ancientmagicks.yellow_sigil": "Yellow Rune",
-  "item.ancientmagicks.green_sigil": "Green Rune",
-  "item.ancientmagicks.black_sigil": "Black Rune",
-  "item.ancientmagicks.white_sigil": "White Rune",
+  "item.ancientmagicks.blue_rune": "Blue Rune",
+  "item.ancientmagicks.purple_rune": "Purple Rune",
+  "item.ancientmagicks.yellow_rune": "Yellow Rune",
+  "item.ancientmagicks.green_rune": "Green Rune",
+  "item.ancientmagicks.black_rune": "Black Rune",
+  "item.ancientmagicks.white_rune": "White Rune",
 
   "item.ancientmagicks.self_rune": "Self Rune",
   "item.ancientmagicks.sight_rune": "Sight Rune",

@@ -16,40 +16,24 @@ import java.util.List;
 
 public class CastingValidator {
 
-    /*public static boolean calculateSpellRecipes(ItemStack scroll, LivingEntity owner, Entity caster) {
+    public static boolean castMagick(Entity caster, ItemStack scroll) {
         if ( !(scroll.getItem() instanceof ParchmentItem) || !scroll.hasTag() ) return false;
         if ( !scroll.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING) ) return false;
-        List<SpellComponentItem> spellStack = getSpellStackFromScroll(scroll);
+        List<RuneItem> runeList = getSpellStackFromScroll(scroll);
         List<String> data = getDataListFromScroll(scroll);
-        if ( !spellStack.isEmpty() && isValidSpell(spellStack) ) return castSpell(owner, caster, spellStack, data);
-        else return false;
-    }
-
-    public static boolean castSpell(LivingEntity owner, Entity caster, List<SpellComponentItem> spellStack, List<String> data) {
-        if ( spellStack.isEmpty() ) return false;
-        SpellFormItem formItem = null;
-        for ( SpellComponentItem item : spellStack ) {
-            if ( item instanceof SpellFormItem form ) {
-                formItem = form;
-                break;
+        if ( !runeList.isEmpty() && isValidSpell(runeList) ) {
+            SpellData spellData = new SpellData();
+            for ( int i = 0; i < runeList.size(); i++ ) {
+                RuneItem rune = runeList.get(i);
+                spellData.addRune(rune);
+                spellData.addData(data.get(i));
             }
+            return resolveSpell(caster, spellData, runeList);
         }
-        if ( formItem != null ) return formItem.formSpell(owner, caster, spellStack, data);
         else return false;
-    }*/
-
-    public static void castMagick(Entity caster, ItemStack stack) {
-        List<RuneItem> runeList = CastingValidator.getSpellStackFromScroll(stack);
-        SpellData spellData = new SpellData();
-        for ( int i = 0; i < runeList.size(); i++ ) {
-            RuneItem rune = runeList.get(i);
-            spellData.addRune(rune);
-            spellData.addData(getDataListFromScroll(stack).get(i));
-        }
-        resolveSpell(caster, spellData, runeList);
     }
 
-    public static void resolveSpell(Entity caster, SpellData spellData, List<RuneItem> runeList) {
+    public static boolean resolveSpell(Entity caster, SpellData spellData, List<RuneItem> runeList) {
         for ( RuneItem rune : runeList ) {
             if ( !spellData.getRuneList().isEmpty() ) spellData.getRuneList().remove(0);
             if ( !spellData.getDataList().isEmpty() ) spellData.getDataList().remove(0);
@@ -60,6 +44,7 @@ public class CastingValidator {
                 break;
             }
         }
+        return spellData.isValid();
     }
 
     public static boolean isValidSpell(List<RuneItem> spellStack) {

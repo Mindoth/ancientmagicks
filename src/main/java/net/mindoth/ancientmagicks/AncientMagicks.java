@@ -134,16 +134,14 @@ public class AncientMagicks {
                 currFirstObject = firstList.get(i - 1);
                 boolean removed = tmpSecondList.remove(currFirstObject);
                 if ( !removed ) return false;
-                if ( i != firstList.size() ) {
-                    if ( tmpSecondList.isEmpty() ) return false;
-                }
+                if ( i != firstList.size() ) if ( tmpSecondList.isEmpty() ) return false;
             }
             return tmpSecondList.isEmpty();
         }
         return false;
     }
 
-    //Check how many Color Runes should be in a Spell Code.
+    //How many Color Runes should be in a Spell Code.
     public static int comboSizeCalc() {
         //return (n * (n + 2) * (n + 1)) >= (6 * SPELL_LIST.size());
         /*int returnValue = 0;

@@ -1,7 +1,12 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
+import net.mindoth.ancientmagicks.capability.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.event.CastingValidator;
+import net.mindoth.ancientmagicks.event.MagickEvents;
+import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.rune.shelf.effect.SpellEffectItem;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -12,6 +17,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class CastingItem extends Item {
 
@@ -19,24 +25,24 @@ public class CastingItem extends Item {
         super(pProperties);
     }
 
-    /*public static void doSpell(LivingEntity owner, Entity caster, @Nullable ItemStack stack, ItemStack scroll) {
+    public static void doSpell(Entity caster, @Nullable ItemStack stack, ItemStack scroll) {
         //Handling for players
         if ( caster instanceof ServerPlayer serverPlayer ) {
             serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
-                List<SpellComponentItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
+                List<RuneItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
                 int cost = 0;
-                for ( SpellComponentItem item : componentList ) cost += item.getCost();
+                //for ( SpellComponentItem item : componentList ) cost += item.getCost();
                 cost = Math.max(0, cost);
-                if ( CastingValidator.calculateSpellRecipes(scroll, owner, caster) ) {
-                    handleCooldownsAndStuff(caster, stack, Math.max(1, 10));
+                if ( CastingValidator.castMagick(caster, scroll) ) {
+                    handleCooldownsAndStuff(caster, stack, 10);
                     if ( !serverPlayer.isCreative() ) MagickEvents.changeMagick(caster, -cost);
                 }
                 else whiffSpell(caster);
             });
         }
         //If caster is not a player do the spell anyway
-        else CastingValidator.calculateSpellRecipes(scroll, owner, caster);
-    }*/
+        else CastingValidator.castMagick(caster, scroll);
+    }
 
     private static void handleCooldownsAndStuff(Entity caster, @Nullable ItemStack castingItem, int cooldown) {
         for ( Item item : ForgeRegistries.ITEMS.getValues() ) if ( item instanceof StaffItem ) addCastingCooldown(caster, item, cooldown);

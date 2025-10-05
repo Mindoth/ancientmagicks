@@ -363,12 +363,12 @@ public class SpellBookScreen extends ModScreen {
     }
 
     private void changeRune(Button button, Item rune) {
-        if ( rune == ModItems.RUNE_ESSENCE.get() ) rune = ModItems.BLUE_SIGIL.get();
-        else if ( rune == ModItems.BLUE_SIGIL.get() ) rune = ModItems.PURPLE_SIGIL.get();
-        else if ( rune == ModItems.PURPLE_SIGIL.get() ) rune = ModItems.YELLOW_SIGIL.get();
-        else if ( rune == ModItems.YELLOW_SIGIL.get() ) rune = ModItems.GREEN_SIGIL.get();
-        else if ( rune == ModItems.GREEN_SIGIL.get() ) rune = ModItems.BLACK_SIGIL.get();
-        else if ( rune == ModItems.BLACK_SIGIL.get() ) rune = ModItems.WHITE_SIGIL.get();
+        if ( rune == ModItems.RUNE_ESSENCE.get() ) rune = ModItems.BLUE_RUNE.get();
+        else if ( rune == ModItems.BLUE_RUNE.get() ) rune = ModItems.PURPLE_RUNE.get();
+        else if ( rune == ModItems.PURPLE_RUNE.get() ) rune = ModItems.YELLOW_RUNE.get();
+        else if ( rune == ModItems.YELLOW_RUNE.get() ) rune = ModItems.GREEN_RUNE.get();
+        else if ( rune == ModItems.GREEN_RUNE.get() ) rune = ModItems.BLACK_RUNE.get();
+        else if ( rune == ModItems.BLACK_RUNE.get() ) rune = ModItems.WHITE_RUNE.get();
         else rune = ModItems.RUNE_ESSENCE.get();
 
         final int index = this.itemList.indexOf(getStackFromSlot(button));

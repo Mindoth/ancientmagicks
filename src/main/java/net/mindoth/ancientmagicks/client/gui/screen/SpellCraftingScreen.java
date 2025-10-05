@@ -118,12 +118,12 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         if ( !this.menu.isReadyToCraft() ) return;
         int index = this.runeButtonList.indexOf(button);
         Item rune = this.menu.colorCode.get(index);
-        if ( rune == ModItems.RUNE_ESSENCE.get() ) rune = ModItems.BLUE_SIGIL.get();
-        else if ( rune == ModItems.BLUE_SIGIL.get() ) rune = ModItems.PURPLE_SIGIL.get();
-        else if ( rune == ModItems.PURPLE_SIGIL.get() ) rune = ModItems.YELLOW_SIGIL.get();
-        else if ( rune == ModItems.YELLOW_SIGIL.get() ) rune = ModItems.GREEN_SIGIL.get();
-        else if ( rune == ModItems.GREEN_SIGIL.get() ) rune = ModItems.BLACK_SIGIL.get();
-        else if ( rune == ModItems.BLACK_SIGIL.get() ) rune = ModItems.WHITE_SIGIL.get();
+        if ( rune == ModItems.RUNE_ESSENCE.get() ) rune = ModItems.BLUE_RUNE.get();
+        else if ( rune == ModItems.BLUE_RUNE.get() ) rune = ModItems.PURPLE_RUNE.get();
+        else if ( rune == ModItems.PURPLE_RUNE.get() ) rune = ModItems.YELLOW_RUNE.get();
+        else if ( rune == ModItems.YELLOW_RUNE.get() ) rune = ModItems.GREEN_RUNE.get();
+        else if ( rune == ModItems.GREEN_RUNE.get() ) rune = ModItems.BLACK_RUNE.get();
+        else if ( rune == ModItems.BLACK_RUNE.get() ) rune = ModItems.WHITE_RUNE.get();
         else rune = ModItems.RUNE_ESSENCE.get();
         this.menu.editColorCode(index, rune);
     }
@@ -153,7 +153,9 @@ public class SpellCraftingScreen extends AbstractContainerScreen<SpellCraftingMe
         if ( this.runeButtonL.isFocused() ) this.runeButtonL.setFocused(false);
         if ( this.runeButtonM.isFocused() ) this.runeButtonM.setFocused(false);
         if ( this.runeButtonR.isFocused() ) this.runeButtonR.setFocused(false);
-        if ( this.menu.isReadyToCraft() ) for ( Button button : this.runeButtonList ) if ( !button.visible ) button.visible = true;
+        if ( this.menu.isReadyToCraft() ) {
+            for ( Button button : this.runeButtonList ) if ( !button.visible ) button.visible = true;
+        }
         else for ( Button button1 : this.runeButtonList ) if ( button1.visible ) button1.visible = false;
     }
 

@@ -57,7 +57,6 @@ public class SpellBookItem extends Item implements DyeableMagicItem {
         if ( !level.isClientSide && player instanceof ServerPlayer serverPlayer ) {
             ItemStack stack = player.getItemInHand(handIn);
             if ( CastingItem.getHeldStaff(player).isEmpty() || player.isCrouching() ) {
-                if ( stack.hasTag() ) System.out.println(getScrollListFromBook(stack.getTag()));
                 handleSignature(serverPlayer, stack);
                 ModNetwork.sendToPlayer(new PacketOpenSpellBook(stack, 0), serverPlayer);
             }

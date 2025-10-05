@@ -58,9 +58,9 @@ public class GuiSpellWheel extends ModScreen {
         this.selectedItem = -1;
         this.book = book;
         this.ColorRunes = List.of(
-                new ItemStack(ModItems.GREEN_SIGIL.get()), new ItemStack(ModItems.BLACK_SIGIL.get()),
-                new ItemStack(ModItems.WHITE_SIGIL.get()), new ItemStack(ModItems.BLUE_SIGIL.get()),
-                new ItemStack(ModItems.PURPLE_SIGIL.get()), new ItemStack(ModItems.YELLOW_SIGIL.get()));
+                new ItemStack(ModItems.GREEN_RUNE.get()), new ItemStack(ModItems.BLACK_RUNE.get()),
+                new ItemStack(ModItems.WHITE_RUNE.get()), new ItemStack(ModItems.BLUE_RUNE.get()),
+                new ItemStack(ModItems.PURPLE_RUNE.get()), new ItemStack(ModItems.YELLOW_RUNE.get()));
         int size = AncientMagicks.comboSizeCalc();
         if ( size == 4 ) this.hotbar = "hotbar4.png";
         else if ( size == 5 ) this.hotbar = "hotbar5.png";
@@ -133,7 +133,7 @@ public class GuiSpellWheel extends ModScreen {
         this.prevTick = currTick;
 
         float animProgress = Mth.clamp(openAnimation, 0, 1);
-        animProgress = (float) (1 - Math.pow(1 - animProgress, 3));
+        animProgress = (float)(1 - Math.pow(1 - animProgress, 3));
         float radiusIn = Math.max(0.1F, 45 * animProgress) + 7;
         float radiusOut = radiusIn * 2;
         float itemRadius = (radiusIn + radiusOut) * 0.5F;
@@ -254,6 +254,10 @@ public class GuiSpellWheel extends ModScreen {
             if ( !slot.isEmpty() ) {
                 drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/square.png"),
                         posX - 3, posY - 3, 0, 0, 22, 22, 22, 22, graphics);
+                if ( hasMouseOver && mousedOverSlot == i ) {
+                    drawTexture(new ResourceLocation(AncientMagicks.MOD_ID, "textures/gui/selector.png"),
+                            posX - 4, posY - 4, 0, 0, 24, 24, 24, 24, graphics);
+                }
             }
 
             ms.pushPose();

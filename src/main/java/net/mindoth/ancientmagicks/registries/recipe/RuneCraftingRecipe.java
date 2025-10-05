@@ -36,8 +36,17 @@ public class RuneCraftingRecipe implements Recipe<CraftingContainer> {
         List<ItemStack> actualItems = Lists.newArrayList();
         for ( ItemStack itemStack : container.getItems() ) if ( !itemStack.isEmpty() ) actualItems.add(itemStack);
         if ( actualItems.size() != this.input.size() ) return false;
-        for ( int i = 0; i < this.input.size(); i++ ) if ( !this.input.get(i).test(container.getItem(i)) ) return false;
-        return true;
+        for ( Ingredient ingredient : this.input ) {
+            for ( int j = 0; j < actualItems.size(); j++ ) {
+                ItemStack stack = actualItems.get(j);
+                if ( ingredient.test(stack) ) {
+                    actualItems.remove(j);
+                    break;
+                }
+            }
+        }
+        //for ( int i = 0; i < this.input.size(); i++ ) if ( !this.input.get(i).test(actualItems.get(i)) ) return false;
+        return actualItems.isEmpty();
     }
 
     @Override
