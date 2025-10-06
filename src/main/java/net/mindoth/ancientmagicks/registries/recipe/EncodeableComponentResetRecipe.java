@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.registries.recipe;
 
 import com.google.common.collect.Lists;
+import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.rune.shelf.effect.SpellComponentItem;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
@@ -24,7 +25,7 @@ public class EncodeableComponentResetRecipe extends CustomRecipe {
         List<ItemStack> items = Lists.newArrayList();
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
-            if ( !stack.isEmpty() && stack.getItem() instanceof SpellComponentItem component && component.isEncodeable() && stack.hasTag() ) items.add(stack);
+            if ( !stack.isEmpty() && stack.getItem() instanceof RuneItem rune && rune.isEncodeable() && stack.hasTag() ) items.add(stack);
         }
         return items.size() == 1;
     }
@@ -35,7 +36,7 @@ public class EncodeableComponentResetRecipe extends CustomRecipe {
         List<ItemStack> items = Lists.newArrayList();
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
-            if ( !stack.isEmpty() && stack.getItem() instanceof SpellComponentItem component && component.isEncodeable() ) items.add(stack);
+            if ( !stack.isEmpty() && stack.getItem() instanceof RuneItem rune && rune.isEncodeable() ) items.add(stack);
         }
         if ( items.size() == 1 ) returnStack = new ItemStack(items.get(0).getItem());
         return returnStack;
@@ -43,7 +44,7 @@ public class EncodeableComponentResetRecipe extends CustomRecipe {
 
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
-        return pWidth * pHeight >= 2;
+        return true;
     }
 
     @Override
