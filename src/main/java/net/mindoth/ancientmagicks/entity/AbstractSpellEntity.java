@@ -150,7 +150,8 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     protected boolean hitFilter(Entity target) {
-        return RuneItem.allyFilter(this.caster, target, isHarmful());
+        return true;
+        //return RuneItem.allyFilter(this.caster, target, isHarmful());
     }
 
     protected HitResult getHitResult(Vec3 pStartVec, Entity pProjectile, Predicate<Entity> pFilter, Vec3 pEndVecOffset, Level pLevel) {
@@ -377,12 +378,12 @@ public abstract class AbstractSpellEntity extends Projectile {
     }
 
     public boolean isHarmful() {
-        for ( int i = 0; i < getSpellStack().size(); i++ ) {
+        return true;
+        /*for ( int i = 0; i < getSpellStack().size(); i++ ) {
             RuneItem item = getSpellStack().get(i);
-            //if ( item instanceof SpellEffectItem effect && effect.isHarmful(getData().get(i)) ) return true;
-            return true;
+            if ( item instanceof SpellEffectItem effect && effect.isHarmful(getData().get(i)) ) return true;
         }
-        return false;
+        return false;*/
     }
 
     public static final EntityDataAccessor<Integer> RED = SynchedEntityData.defineId(AbstractSpellEntity.class, EntityDataSerializers.INT);

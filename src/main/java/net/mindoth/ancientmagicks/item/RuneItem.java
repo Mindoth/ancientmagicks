@@ -4,18 +4,17 @@ import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.client.particle.ember.ParticleColor;
 import net.mindoth.ancientmagicks.config.ModCommonConfig;
 import net.mindoth.ancientmagicks.event.DimVec3;
+import net.mindoth.ancientmagicks.event.MultiBlockHitResult;
+import net.mindoth.ancientmagicks.event.SpellData;
+import net.mindoth.ancientmagicks.item.rune.UseOnBlockTemplate;
 import net.mindoth.ancientmagicks.item.rune.shelf.effect.SpellComponentItem;
 import net.mindoth.ancientmagicks.item.rune.shelf.effect.SpellEffectItem;
 import net.mindoth.ancientmagicks.mobeffect.MindControlEffect;
 import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
 import net.mindoth.ancientmagicks.registries.ModEffects;
-import net.mindoth.ancientmagicks.event.MultiBlockHitResult;
-import net.mindoth.ancientmagicks.event.SpellData;
-import net.mindoth.ancientmagicks.item.rune.UseOnBlockTemplate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -49,17 +48,10 @@ public class RuneItem extends Item {
     public static final String NBT_KEY_EMPTY = "am_empty";
     public static final String NBT_KEY_COMPONENT_DATA = "am_component_data_string";
 
+    //Encoding
     public boolean isEncodeable() {
         return false;
     }
-
-    private boolean isEncodedComponent(ItemStack stack) {
-        return stack.getItem() instanceof RuneItem rune && rune.isEncodeable() && stack.hasTag() && stack.getTag().contains(NBT_KEY_COMPONENT_DATA);
-    }
-
-    public void decodeTooltipData(List<Component> tooltip, String data, Item item) {
-    }
-
     public String encodeComponentData(ItemStack stack) {
         if ( isEncodeable() && stack.hasTag() && stack.getTag().contains(NBT_KEY_COMPONENT_DATA) ) return stack.getTag().getString(NBT_KEY_COMPONENT_DATA);
         return NBT_KEY_EMPTY;

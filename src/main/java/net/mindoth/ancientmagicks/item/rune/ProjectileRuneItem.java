@@ -42,6 +42,8 @@ public class ProjectileRuneItem extends UseOnPositionTemplate {
             ProjectileSpellEntity projectile = new ProjectileSpellEntity(level, caster);
             projectile.ignoredEntities.put(caster.getId(), projectile.tickCount);
             projectile.setNoGravity(true);
+            spellData.getRuneList().remove(0);
+            spellData.getDataList().remove(0);
             projectile.getEntityData().set(AbstractSpellEntity.SPELLSTACK, CastingValidator.getStringFromSpellStack(spellData.getRuneList()));
             projectile.getEntityData().set(AbstractSpellEntity.DATA, CastingValidator.getStringFromDataList(spellData.getDataList()));
             projectile.spellData = spellData;

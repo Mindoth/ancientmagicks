@@ -20,13 +20,13 @@ public class CastingValidator {
         if ( !(scroll.getItem() instanceof ParchmentItem) || !scroll.hasTag() ) return false;
         if ( !scroll.getTag().contains(ParchmentItem.NBT_KEY_SPELL_STRING) ) return false;
         List<RuneItem> runeList = getSpellStackFromScroll(scroll);
-        List<String> data = getDataListFromScroll(scroll);
+        List<String> encodedData = getDataListFromScroll(scroll);
         if ( !runeList.isEmpty() && isValidSpell(runeList) ) {
             SpellData spellData = new SpellData();
             for ( int i = 0; i < runeList.size(); i++ ) {
                 RuneItem rune = runeList.get(i);
                 spellData.addRune(rune);
-                spellData.addData(data.get(i));
+                spellData.addData(encodedData.get(i));
             }
             return resolveSpell(caster, spellData, runeList);
         }
@@ -35,10 +35,10 @@ public class CastingValidator {
 
     public static boolean resolveSpell(Entity caster, SpellData spellData, List<RuneItem> runeList) {
         for ( RuneItem rune : runeList ) {
-            if ( !spellData.getRuneList().isEmpty() ) spellData.getRuneList().remove(0);
-            if ( !spellData.getDataList().isEmpty() ) spellData.getDataList().remove(0);
             spellData = rune.resolve(caster, spellData);
             if ( rune == ModItems.PROJECTILE_RUNE_ITEM.get() ) break;
+            if ( !spellData.getRuneList().isEmpty() ) spellData.getRuneList().remove(0);
+            if ( !spellData.getDataList().isEmpty() ) spellData.getDataList().remove(0);
             if ( !spellData.isValid() ) {
                 if ( caster instanceof Player player ) player.displayClientMessage(Component.literal("FAILED SPELL ON: " + rune), false);
                 break;

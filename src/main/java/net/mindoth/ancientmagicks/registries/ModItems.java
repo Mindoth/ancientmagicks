@@ -125,6 +125,10 @@ public class ModItems {
     public static final RegistryObject<Item> PROJECTILE_RUNE_ITEM = ITEMS.register("projectile_rune",
             () -> new ProjectileRuneItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> SPATIAL_RUNE_ITEM = ITEMS.register("spatial_rune",
+            () -> new SpatialRuneItem(new Item.Properties()));
+
+
     public static final RegistryObject<Item> INTEGER_ONE_RUNE_ITEM = ITEMS.register("integer_one_rune",
             () -> new IntegerOneRuneItem(new Item.Properties()));
 
