@@ -20,8 +20,8 @@ public class ModRecipes {
     public static final RegistryObject<SimpleCraftingRecipeSerializer<AlchemyEffectItemRecipe>> ALCHEMY_EFFECT_ITEM_RECIPE =
             SERIALIZERS.register("alchemy_effect_item_crafting", () -> new SimpleCraftingRecipeSerializer<>(AlchemyEffectItemRecipe::new));
 
-    public static final RegistryObject<SimpleCraftingRecipeSerializer<EncodeableComponentResetRecipe>> ENCODEABLE_COMPONENT_RESET_RECIPE =
-            SERIALIZERS.register("encodeable_component_reset_crafting", () -> new SimpleCraftingRecipeSerializer<>(EncodeableComponentResetRecipe::new));
+    public static final RegistryObject<SimpleCraftingRecipeSerializer<EncodeableRuneResetRecipe>> ENCODEABLE_RUNE_RESET_RECIPE =
+            SERIALIZERS.register("encodeable_rune_reset_crafting", () -> new SimpleCraftingRecipeSerializer<>(EncodeableRuneResetRecipe::new));
 
 
     public static final RegistryObject<RecipeSerializer<RuneCraftingRecipe>> RUNE_CRAFTING_RECIPE =

@@ -2,7 +2,6 @@ package net.mindoth.ancientmagicks.registries.recipe;
 
 import com.google.common.collect.Lists;
 import net.mindoth.ancientmagicks.item.RuneItem;
-import net.mindoth.ancientmagicks.item.rune.shelf.effect.SpellComponentItem;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -14,9 +13,9 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-public class EncodeableComponentResetRecipe extends CustomRecipe {
+public class EncodeableRuneResetRecipe extends CustomRecipe {
 
-    public EncodeableComponentResetRecipe(ResourceLocation pId, CraftingBookCategory category) {
+    public EncodeableRuneResetRecipe(ResourceLocation pId, CraftingBookCategory category) {
         super(pId, category);
     }
 
@@ -49,6 +48,6 @@ public class EncodeableComponentResetRecipe extends CustomRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.ENCODEABLE_COMPONENT_RESET_RECIPE.get();
+        return ModRecipes.ENCODEABLE_RUNE_RESET_RECIPE.get();
     }
 }
