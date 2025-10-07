@@ -2,14 +2,13 @@ package net.mindoth.ancientmagicks.registries;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
 import net.mindoth.ancientmagicks.item.AncientTabletItem;
+import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.ParchmentItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.armor.ModArmorMaterials;
 import net.mindoth.ancientmagicks.item.castingitem.ColorableStaffItem;
 import net.mindoth.ancientmagicks.item.castingitem.StaffItem;
-import net.mindoth.ancientmagicks.item.rune.shelf.effect.AlchemyEffectItem;
-import net.mindoth.ancientmagicks.item.ColorRuneItem;
 import net.mindoth.ancientmagicks.item.rune.*;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
@@ -76,11 +75,6 @@ public class ModItems {
             () -> new ParchmentItem(new Item.Properties(), 27));
 
 
-    ///???
-    public static final RegistryObject<Item> ALCHEMY_SIGIL = ITEMS.register("alchemy_sigil",
-            () -> new AlchemyEffectItem(new Item.Properties(), 1));
-
-
     //REVAMPED RUNES
     public static final RegistryObject<Item> RUNE_ESSENCE = ITEMS.register("rune_essence",
             () -> new Item(new Item.Properties()));
@@ -118,6 +112,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> BLOCK_POSITION_RUNE_ITEM = ITEMS.register("block_position_rune",
             () -> new BlockPositionRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> BLOCK_FACE_RUNE_ITEM = ITEMS.register("block_face_rune",
+            () -> new BlockFaceRuneItem(new Item.Properties()));
 
     public static final RegistryObject<Item> TOUCH_RUNE_ITEM = ITEMS.register("touch_rune",
             () -> new TouchRuneItem(new Item.Properties()));
@@ -168,6 +165,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> FORCE_RUNE_ITEM = ITEMS.register("force_rune",
             () -> new ForceRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> ALCHEMY_RUNE_ITEM = ITEMS.register("alchemy_rune",
+            () -> new AlchemyRuneItem(new Item.Properties()));
 
     /*
     public static final RegistryObject<Item> TARGET_ENTITY_RUNE_ITEM = ITEMS.register("target_entity_rune",

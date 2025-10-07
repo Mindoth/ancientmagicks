@@ -15,14 +15,14 @@ public class MultiBlockHitResult extends BlockHitResult {
         return this.blocks;
     }
 
-    private final DimVec3 pos;
+    private final DimVec3 dimVec3;
     public DimVec3 getPos() {
-        return this.pos;
+        return this.dimVec3;
     }
 
-    public MultiBlockHitResult(Vec3 pLocation, Direction pDirection, BlockPos pBlockPos, boolean pInside, List<BlockPos> blocks, DimVec3 pos) {
+    public MultiBlockHitResult(Vec3 pLocation, Direction pDirection, BlockPos pBlockPos, boolean pInside, List<BlockPos> blocks, DimVec3 dimVec3) {
         super(pLocation, pDirection, pBlockPos, pInside);
         this.blocks = blocks;
-        this.pos = pos;
+        this.dimVec3 = dimVec3;
     }
 }

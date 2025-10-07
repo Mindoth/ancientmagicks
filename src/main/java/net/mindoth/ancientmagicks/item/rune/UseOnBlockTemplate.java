@@ -19,12 +19,12 @@ public class UseOnBlockTemplate extends RuneItem {
                 MultiBlockHitResult result = spellData.getLatestBlock();
                 spellData.purgeBlocks(1);
                 final SpellData copyData = SpellData.clone(spellData);
-                spellData = result(caster, spellData, result.getBlocks().get(0), result.getPos().getLevel());
+                spellData = result(caster, spellData, result, result.getBlocks().get(0));
                 boolean state = spellData.isValid();
                 for ( int i = 1; i < result.getBlocks().size(); i++ ) {
                     final SpellData tempData = SpellData.clone(copyData);
                     BlockPos blockPos = result.getBlocks().get(i);
-                    result(caster, tempData, blockPos, result.getPos().getLevel());
+                    result(caster, tempData, result, blockPos);
                     if ( !state && tempData.isValid() ) state = true;
                 }
                 spellData.setValid(state);
@@ -35,7 +35,7 @@ public class UseOnBlockTemplate extends RuneItem {
         return spellData;
     }
 
-    protected SpellData result(Entity caster, SpellData spellData, BlockPos blockPos, Level level) {
+    protected SpellData result(Entity caster, SpellData spellData, MultiBlockHitResult result, BlockPos blockPos) {
         return spellData;
     }
 

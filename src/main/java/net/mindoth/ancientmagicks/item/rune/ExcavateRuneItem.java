@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.rune;
 
 import com.mojang.authlib.GameProfile;
+import net.mindoth.ancientmagicks.event.MultiBlockHitResult;
 import net.mindoth.ancientmagicks.event.SpellData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -40,12 +41,12 @@ public class ExcavateRuneItem extends UseOnBlockTemplate {
     private static final GameProfile FAKE_PROFILE = new GameProfile(UUID.fromString("fdc17a6f-5d46-484e-9343-820f43c7b101"), "am_fake_player_profile");
 
     @Override
-    protected SpellData result(Entity caster, SpellData spellData, BlockPos pos, Level level) {
+    protected SpellData result(Entity caster, SpellData spellData, MultiBlockHitResult result, BlockPos pos) {
         if ( !spellData.getIntegers().isEmpty() ) {
             if ( spellData.getLatestInteger() != null ) {
                 int power = spellData.getLatestInteger();
                 spellData.purgeIntegers(1);
-                handleMine(caster, pos, level, power);
+                handleMine(caster, pos, result.getPos().getLevel(), power);
                 return spellData;
             }
             else spellData.purgeIntegers(1);

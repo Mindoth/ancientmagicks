@@ -1,0 +1,21 @@
+{
+  "type": "ancientmagicks:rune_crafting",
+  "ingredients": [
+    {
+      "item": "ancientmagicks:rune_essence"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "item": "minecraft:nether_wart"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "item": "ancientmagicks:alchemy_rune"
+  }
+}

@@ -24,9 +24,9 @@ public class EncodeableRuneResetRecipe extends CustomRecipe {
         List<ItemStack> items = Lists.newArrayList();
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
-            if ( !stack.isEmpty() && stack.getItem() instanceof RuneItem rune && rune.isEncodeable() && stack.hasTag() ) items.add(stack);
+            if ( !stack.isEmpty() ) items.add(stack);
         }
-        return items.size() == 1;
+        return items.size() == 1 && items.get(0).getItem() instanceof RuneItem rune && rune.isEncodeable() && items.get(0).hasTag();
     }
 
     @Override
@@ -35,9 +35,9 @@ public class EncodeableRuneResetRecipe extends CustomRecipe {
         List<ItemStack> items = Lists.newArrayList();
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
-            if ( !stack.isEmpty() && stack.getItem() instanceof RuneItem rune && rune.isEncodeable() ) items.add(stack);
+            if ( !stack.isEmpty() ) items.add(stack);
         }
-        if ( items.size() == 1 ) returnStack = new ItemStack(items.get(0).getItem());
+        if ( items.size() == 1 && items.get(0).getItem() instanceof RuneItem rune && rune.isEncodeable() && items.get(0).hasTag() ) returnStack = new ItemStack(items.get(0).getItem());
         return returnStack;
     }
 

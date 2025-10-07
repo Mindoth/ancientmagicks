@@ -24,8 +24,7 @@ public class CastingValidator {
         if ( !runeList.isEmpty() && isValidSpell(runeList) ) {
             SpellData spellData = new SpellData();
             for ( int i = 0; i < runeList.size(); i++ ) {
-                RuneItem rune = runeList.get(i);
-                spellData.addRune(rune);
+                spellData.addRune(runeList.get(i));
                 spellData.addData(encodedData.get(i));
             }
             return resolveSpell(caster, spellData, runeList);

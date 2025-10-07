@@ -1,6 +1,7 @@
 package net.mindoth.ancientmagicks.item.rune;
 
 import net.mindoth.ancientmagicks.event.DimVec3;
+import net.mindoth.ancientmagicks.event.MultiBlockHitResult;
 import net.mindoth.ancientmagicks.event.SpellData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -30,8 +31,8 @@ public class BlockPositionRuneItem extends UseOnBlockTemplate {
     }
 
     @Override
-    public SpellData result(Entity caster, SpellData spellData, BlockPos pos, Level level) {
-        spellData.addObject(new DimVec3(new Vec3(pos.getX(), pos.getY(), pos.getZ()), level));
+    public SpellData result(Entity caster, SpellData spellData, MultiBlockHitResult result, BlockPos pos) {
+        spellData.addObject(new DimVec3(new Vec3(pos.getX(), pos.getY(), pos.getZ()), result.getPos().getLevel()));
         return spellData;
     }
 }

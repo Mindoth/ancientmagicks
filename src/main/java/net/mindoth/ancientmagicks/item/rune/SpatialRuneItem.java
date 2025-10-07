@@ -29,6 +29,11 @@ public class SpatialRuneItem extends RuneItem {
         super(pProperties);
     }
 
+    @Override
+    public boolean isEncodeable() {
+        return true;
+    }
+
     //TODO Set dimension name from lang file and round coordinates in this tooltip
     @OnlyIn(Dist.CLIENT)
     @Override
@@ -70,10 +75,6 @@ public class SpatialRuneItem extends RuneItem {
         return spellData;
     }
 
-    @Override
-    public boolean isEncodeable() {
-        return true;
-    }
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand handIn) {
         InteractionResultHolder<ItemStack> result = InteractionResultHolder.fail(player.getItemInHand(handIn));

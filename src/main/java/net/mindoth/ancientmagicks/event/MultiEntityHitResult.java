@@ -14,14 +14,14 @@ public class MultiEntityHitResult extends EntityHitResult {
         return this.entities;
     }
 
-    private final DimVec3 pos;
+    private final DimVec3 dimVec3;
     public DimVec3 getPos() {
-        return this.pos;
+        return this.dimVec3;
     }
 
-    public MultiEntityHitResult(Entity pEntity, Vec3 pLocation, List<Entity> entities, DimVec3 pos) {
+    public MultiEntityHitResult(Entity pEntity, Vec3 pLocation, List<Entity> entities, DimVec3 dimVec3) {
         super(pEntity, pLocation);
         this.entities = entities;
-        this.pos = pos;
+        this.dimVec3 = dimVec3;
     }
 }

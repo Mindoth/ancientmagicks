@@ -17,8 +17,8 @@ public class ModRecipes {
     public static final RegistryObject<SimpleCraftingRecipeSerializer<SpellBookAddRecipe>> SPELL_BOOK_ADD_RECIPE =
             SERIALIZERS.register("spell_book_add_crafting", () -> new SimpleCraftingRecipeSerializer<>(SpellBookAddRecipe::new));
 
-    public static final RegistryObject<SimpleCraftingRecipeSerializer<AlchemyEffectItemRecipe>> ALCHEMY_EFFECT_ITEM_RECIPE =
-            SERIALIZERS.register("alchemy_effect_item_crafting", () -> new SimpleCraftingRecipeSerializer<>(AlchemyEffectItemRecipe::new));
+    public static final RegistryObject<SimpleCraftingRecipeSerializer<AlchemyRuneAddRecipe>> ALCHEMY_RUNE_ADD_RECIPE =
+            SERIALIZERS.register("alchemy_rune_add_crafting", () -> new SimpleCraftingRecipeSerializer<>(AlchemyRuneAddRecipe::new));
 
     public static final RegistryObject<SimpleCraftingRecipeSerializer<EncodeableRuneResetRecipe>> ENCODEABLE_RUNE_RESET_RECIPE =
             SERIALIZERS.register("encodeable_rune_reset_crafting", () -> new SimpleCraftingRecipeSerializer<>(EncodeableRuneResetRecipe::new));

@@ -1,12 +1,13 @@
 package net.mindoth.ancientmagicks.registries.recipe;
 
 import com.google.common.collect.Lists;
-import net.mindoth.ancientmagicks.item.rune.shelf.effect.SpellComponentItem;
+import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.registries.ModItems;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
@@ -20,9 +21,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
-public class AlchemyEffectItemRecipe extends CustomRecipe {
+public class AlchemyRuneAddRecipe extends CustomRecipe {
 
-    public AlchemyEffectItemRecipe(ResourceLocation pId, CraftingBookCategory category) {
+    public AlchemyRuneAddRecipe(ResourceLocation pId, CraftingBookCategory category) {
         super(pId, category);
     }
 
@@ -34,7 +35,7 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( !stack.isEmpty() ) items.add(stack);
-            if ( stack.getItem() == ModItems.ALCHEMY_SIGIL.get() && (!stack.hasTag() || !stack.getTag().contains(SpellComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
+            if ( stack.getItem() == ModItems.ALCHEMY_RUNE_ITEM.get() && (!stack.hasTag() || !stack.getTag().contains(RuneItem.NBT_KEY_COMPONENT_DATA)) ) {
                 if ( slate == null ) slate = stack;
                 else return false;
             }
@@ -43,7 +44,7 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
                 else return false;
             }
         }
-        return items.size() == 2 && slate != null && potion != null;
+        return items.size() == 2 && slate != null && potion != null && doesPotionHaveInstant(potion);
     }
 
     @Override
@@ -55,26 +56,41 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
         for ( int i = 0; i < container.getContainerSize(); i++ ) {
             ItemStack stack = container.getItem(i);
             if ( !stack.isEmpty() ) items.add(stack);
-            if ( stack.getItem() == ModItems.ALCHEMY_SIGIL.get() && (!stack.hasTag() || !stack.getTag().contains(SpellComponentItem.NBT_KEY_COMPONENT_DATA)) ) {
+            if ( stack.getItem() == ModItems.ALCHEMY_RUNE_ITEM.get() && (!stack.hasTag() || !stack.getTag().contains(RuneItem.NBT_KEY_COMPONENT_DATA)) ) {
                 if ( slate == null ) slate = stack;
             }
             if ( stack.getItem() instanceof PotionItem ) {
                 if ( potion == null ) potion = PotionUtils.getPotion(stack);
             }
         }
-        if ( items.size() == 2 && slate != null && potion != null ) {
-            ItemStack newStack = new ItemStack(ModItems.ALCHEMY_SIGIL.get());
+        if ( items.size() == 2 && slate != null && potion != null && doesPotionHaveInstant(potion) ) {
+            ItemStack newStack = new ItemStack(ModItems.ALCHEMY_RUNE_ITEM.get());
             CompoundTag tag = newStack.getOrCreateTag();
             StringBuilder stringBuilder = new StringBuilder();
             for ( int i = 0; i < potion.getEffects().size(); i++ ) {
                 if ( i > 0 ) stringBuilder.append(" ");
-                MobEffect effect = potion.getEffects().get(i).getEffect();
-                stringBuilder.append(ForgeRegistries.MOB_EFFECTS.getKey(effect).toString());
+                MobEffectInstance instance = potion.getEffects().get(i);
+                stringBuilder.append(ForgeRegistries.MOB_EFFECTS.getKey(instance.getEffect()).toString());
+                stringBuilder.append("/");
+                stringBuilder.append(instance.getAmplifier());
+                stringBuilder.append("/");
+                stringBuilder.append(instance.getDuration());
             }
-            tag.putString(SpellComponentItem.NBT_KEY_COMPONENT_DATA, stringBuilder.toString());
+            tag.putString(RuneItem.NBT_KEY_COMPONENT_DATA, stringBuilder.toString());
             returnStack = newStack;
         }
         return returnStack;
+    }
+
+    private boolean doesPotionHaveInstant(Potion potion) {
+        boolean state = true;
+        for ( MobEffectInstance instance : potion.getEffects() ) {
+            if ( instance.getEffect().isInstantenous() ) {
+                state = false;
+                break;
+            }
+        }
+        return state;
     }
 
     @Override
@@ -84,6 +100,6 @@ public class AlchemyEffectItemRecipe extends CustomRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.ALCHEMY_EFFECT_ITEM_RECIPE.get();
+        return ModRecipes.ALCHEMY_RUNE_ADD_RECIPE.get();
     }
 }

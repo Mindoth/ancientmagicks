@@ -86,6 +86,8 @@
   "item.ancientmagicks.projectile_rune": "Projectile Rune",
   "item.ancientmagicks.touch_rune": "Touch Rune",
   "item.ancientmagicks.spatial_rune": "Spatial Rune",
+  "item.ancientmagicks.alchemy_rune": "Alchemy Rune",
+  "item.ancientmagicks.block_face_rune": "Block Face Rune",
 
   "tooltip.ancientmagicks.any": "Any",
   "tooltip.ancientmagicks.null": "Null",
