@@ -74,7 +74,7 @@ public class TouchRuneItem extends UseOnPositionTemplate {
         double listedEntityY = center.y();
         double listedEntityZ = center.z();
         int particleInterval = (int)Math.round(position.distanceToSqr(center));
-        Vec3 startPos = position.add(direction.multiply(1.0D, 1.0D, 1.0D));
+        Vec3 startPos = position.add(direction);
         Vec3 endPos = center;
         for ( int k = 1; k < (1 + particleInterval); k++ ) {
             double lineX = playerX * (1 - ((double) k / particleInterval)) + listedEntityX * ((double) k / particleInterval);

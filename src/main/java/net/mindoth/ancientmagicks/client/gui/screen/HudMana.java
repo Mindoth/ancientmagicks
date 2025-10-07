@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.client.gui.screen;
 
-import net.mindoth.ancientmagicks.capability.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.capability.playermagic.ClientMagickData;
 import net.mindoth.ancientmagicks.config.ModClientConfig;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
@@ -23,7 +23,7 @@ public class HudMana implements IGuiOverlay {
         if ( player == null ) return;
         if ( !shouldDisplayMana() ) return;
         double maxMagick = player.getAttributeValue(ModAttributes.MAGICK.get());
-        double currentMagick = ClientMagicData.getCurrentMana();
+        double currentMagick = ClientMagickData.getCurrentMana();
         String mana = (int)currentMagick + "/" + (int)maxMagick;
         int posX = (MINECRAFT.getWindow().getGuiScaledWidth() / 2) + 30 + ModClientConfig.MAGICK_BAR_X_OFFSET.get();
         int posY = MINECRAFT.getWindow().getGuiScaledHeight() - 48 + ModClientConfig.MAGICK_BAR_Y_OFFSET.get();
@@ -37,7 +37,7 @@ public class HudMana implements IGuiOverlay {
         ItemStack main = player.getMainHandItem();
         ItemStack off = player.getOffhandItem();
         return !(MINECRAFT.screen instanceof GuiSpellWheel || player.isSpectator() || player.isCreative())
-                && (ClientMagicData.getCurrentMana() < player.getAttributeValue(ModAttributes.MAGICK.get())
+                && (ClientMagickData.getCurrentMana() < player.getAttributeValue(ModAttributes.MAGICK.get())
                 || CastingItem.isValidCastingItem(main) || CastingItem.isValidCastingItem(off) || isWearingMagicArmor(player));
     }
 

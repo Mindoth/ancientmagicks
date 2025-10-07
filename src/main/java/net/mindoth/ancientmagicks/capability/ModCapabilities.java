@@ -1,8 +1,8 @@
 package net.mindoth.ancientmagicks.capability;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.capability.playermagic.PlayerMagic;
-import net.mindoth.ancientmagicks.capability.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.capability.playermagic.PlayerMagick;
+import net.mindoth.ancientmagicks.capability.playermagic.PlayerMagickProvider;
 import net.mindoth.ancientmagicks.event.MagickEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,8 +21,8 @@ public class ModCapabilities {
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
         if ( event.getObject().level().isClientSide ) return;
         if ( event.getObject() instanceof Player player ) {
-            if ( !player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).isPresent() ) {
-                event.addCapability(new ResourceLocation(AncientMagicks.MOD_ID, PlayerMagic.AM_MAGIC), new PlayerMagicProvider());
+            if ( !player.getCapability(PlayerMagickProvider.PLAYER_MAGICK).isPresent() ) {
+                event.addCapability(new ResourceLocation(AncientMagicks.MOD_ID, PlayerMagick.AM_MAGICK), new PlayerMagickProvider());
             }
         }
     }
@@ -31,8 +31,8 @@ public class ModCapabilities {
     public static void onPlayerCreatedAfterDeath(PlayerEvent.Clone event) {
         if ( event.getEntity() instanceof ServerPlayer serverPlayer ) {
             event.getOriginal().reviveCaps();
-            event.getOriginal().getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(oldStore -> {
-                event.getEntity().getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(newStore -> {
+            event.getOriginal().getCapability(PlayerMagickProvider.PLAYER_MAGICK).ifPresent(oldStore -> {
+                event.getEntity().getCapability(PlayerMagickProvider.PLAYER_MAGICK).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
                     if ( event.isWasDeath() ) MagickEvents.changeMagick(serverPlayer, Integer.MIN_VALUE);
                 });
@@ -43,6 +43,6 @@ public class ModCapabilities {
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-        event.register(PlayerMagic.class);
+        event.register(PlayerMagick.class);
     }
 }

@@ -1,6 +1,6 @@
 package net.mindoth.ancientmagicks.network;
 
-import net.mindoth.ancientmagicks.capability.playermagic.ClientMagicData;
+import net.mindoth.ancientmagicks.capability.playermagic.ClientMagickData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -23,7 +23,7 @@ public class PacketSyncClientMana {
     }
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
-        contextSupplier.get().enqueueWork(() -> ClientMagicData.setCurrentMana(this.mana));
+        contextSupplier.get().enqueueWork(() -> ClientMagickData.setCurrentMana(this.mana));
         contextSupplier.get().setPacketHandled(true);
     }
 }

@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.rune;
 
+import net.mindoth.ancientmagicks.event.MultiEntityHitResult;
 import net.mindoth.ancientmagicks.event.SpellData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -28,7 +29,7 @@ public class SightRuneItem extends UseOnEntityTemplate {
     }
 
     @Override
-    public SpellData result(Entity caster, SpellData spellData, Entity entity) {
+    public SpellData result(Entity caster, SpellData spellData, MultiEntityHitResult result, Entity entity) {
         spellData.addObject(entity.getLookAngle());
         return spellData;
     }

@@ -120,6 +120,26 @@ public class SpellData {
         return getIntegers().get(getIntegers().size() - 1);
     }
 
+    public List<Boolean> getBooleans() {
+        List<Boolean> booleans = Lists.newArrayList();
+        for ( Object object : this.stackList ) if ( object == null || object instanceof Boolean ) booleans.add((Boolean)object);
+        return booleans;
+    }
+    public void purgeBooleans(int amount) {
+        for ( int i = 0; i < amount; i++ ) {
+            for ( int j = this.stackList.size() - 1; j >= 0; j-- ) if ( !getBooleans().isEmpty() ) {
+                Object object = this.stackList.get(j);
+                if ( object == null || object instanceof Boolean ) {
+                    this.stackList.remove(j);
+                    break;
+                }
+            }
+        }
+    }
+    public Boolean getLatestBoolean() {
+        return getBooleans().get(getBooleans().size() - 1);
+    }
+
     public SpellData() {
         this.stackList = Lists.newArrayList();
         this.valid = true;

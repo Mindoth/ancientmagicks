@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.rune;
 
+import net.mindoth.ancientmagicks.event.MultiEntityHitResult;
 import net.mindoth.ancientmagicks.event.SpellData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -60,7 +61,7 @@ public class AlchemyRuneItem extends UseOnEntityTemplate {
     }
 
     @Override
-    protected SpellData result(Entity caster, SpellData spellData, Entity entity) {
+    protected SpellData result(Entity caster, SpellData spellData, MultiEntityHitResult result, Entity entity) {
         List<String> stringList = List.of(spellData.getDataList().get(0).split(" "));
         if ( entity instanceof LivingEntity living ) {
             for ( String string : stringList ) {

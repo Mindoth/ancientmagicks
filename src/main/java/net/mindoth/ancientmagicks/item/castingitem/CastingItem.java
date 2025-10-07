@@ -1,12 +1,13 @@
 package net.mindoth.ancientmagicks.item.castingitem;
 
-import net.mindoth.ancientmagicks.capability.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.capability.playermagic.PlayerMagickProvider;
 import net.mindoth.ancientmagicks.event.CastingValidator;
 import net.mindoth.ancientmagicks.event.MagickEvents;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
-import net.mindoth.ancientmagicks.item.rune.shelf.effect.SpellEffectItem;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +29,7 @@ public class CastingItem extends Item {
     public static void doSpell(Entity caster, @Nullable ItemStack stack, ItemStack scroll) {
         //Handling for players
         if ( caster instanceof ServerPlayer serverPlayer ) {
-            serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
+            serverPlayer.getCapability(PlayerMagickProvider.PLAYER_MAGICK).ifPresent(magic -> {
                 List<RuneItem> componentList = CastingValidator.getSpellStackFromScroll(scroll);
                 int cost = 0;
                 //for ( SpellComponentItem item : componentList ) cost += item.getCost();
@@ -61,11 +62,15 @@ public class CastingItem extends Item {
     }
 
     public static void whiffSpell(Entity caster) {
-        SpellEffectItem.playWhiffSound(caster);
+        playWhiffSound(caster);
         if ( caster instanceof LivingEntity living ) {
             living.stopUsingItem();
             for ( Item item : ForgeRegistries.ITEMS.getValues() ) if ( item instanceof StaffItem ) addCastingCooldown(caster, item, 20);
         }
+    }
+
+    public static void playWhiffSound(Entity caster) {
+        if ( caster instanceof Player player ) player.playNotifySound(SoundEvents.NOTE_BLOCK_SNARE.get(), SoundSource.PLAYERS, 0.5F, 1.0F);
     }
 
     public static @Nonnull ItemStack getHeldStaff(LivingEntity playerEntity) {

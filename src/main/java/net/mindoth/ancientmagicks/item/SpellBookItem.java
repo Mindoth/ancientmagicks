@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class SpellBookItem extends Item implements DyeableMagicItem {
+public class SpellBookItem extends Item implements DyeableMagickItem {
 
     public static final String NBT_KEY_SPELLS = "am_book_spells";
     public static final String NBT_KEY_DATA = "am_data";

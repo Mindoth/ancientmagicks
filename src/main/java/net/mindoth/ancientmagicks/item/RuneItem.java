@@ -7,18 +7,13 @@ import net.mindoth.ancientmagicks.event.DimVec3;
 import net.mindoth.ancientmagicks.event.MultiBlockHitResult;
 import net.mindoth.ancientmagicks.event.SpellData;
 import net.mindoth.ancientmagicks.item.rune.UseOnBlockTemplate;
-import net.mindoth.ancientmagicks.item.rune.shelf.effect.SpellComponentItem;
-import net.mindoth.ancientmagicks.item.rune.shelf.effect.SpellEffectItem;
-import net.mindoth.ancientmagicks.mobeffect.MindControlEffect;
 import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketSendCustomParticles;
-import net.mindoth.ancientmagicks.registries.ModEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.Item;
@@ -192,7 +187,7 @@ public class RuneItem extends Item {
     }
 
     public static ParticleColor getParticleColor(HashMap<String, Float> stats) {
-        ParticleColor color = new ParticleColor(Mth.floor(stats.get(SpellComponentItem.RED)), Mth.floor(stats.get(SpellComponentItem.GREEN)), Mth.floor(stats.get(SpellComponentItem.BLUE)));
+        ParticleColor color = new ParticleColor(Mth.floor(stats.get("red")), Mth.floor(stats.get("green")), Mth.floor(stats.get("blue")));
         if ( color.getRed() < 0 || color.getRed() > 255 || color.getGreen() < 0 || color.getGreen() > 255 || color.getBlue() < 0 || color.getBlue() > 255 ) {
             int r = new Random().nextInt(0, 256);
             int g = new Random().nextInt(0, 256);
@@ -340,7 +335,7 @@ public class RuneItem extends Item {
         return target instanceof LivingEntity && !(target instanceof ArmorStand)
                 //&& (owner != target || !isHarmful)
                 && (ModCommonConfig.SPELL_FREE_FOR_ALL.get()
-                || ((SpellEffectItem.isAlly(owner, target) && !isHarmful) || (!SpellEffectItem.isAlly(owner, target) && isHarmful)));
+                || ((RuneItem.isAlly(owner, target) && !isHarmful) || (!RuneItem.isAlly(owner, target) && isHarmful)));
     }
 
     public static boolean isAlly(Entity owner, Entity target) {
@@ -351,20 +346,8 @@ public class RuneItem extends Item {
             if ( owner instanceof LivingEntity livingOwner ) {
                 if ( target instanceof LivingEntity livingTarget && !(livingOwner.canAttack(livingTarget)) ) flag = true;
                 if ( target instanceof TamableAnimal pet && pet.isOwnedBy(livingOwner) ) flag = true;
-                if ( target instanceof Mob mob && isMinionsSummoner(livingOwner, mob) ) flag = true;
             }
         }
         return flag;
-    }
-
-    public static boolean isMinionsOwner(LivingEntity owner, Mob mob) {
-        return mob.hasEffect(ModEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
-                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner;
-    }
-
-    public static boolean isMinionsSummoner(LivingEntity owner, Mob mob) {
-        return mob.hasEffect(ModEffects.MIND_CONTROL.get()) && mob.getPersistentData().hasUUID(MindControlEffect.NBT_KEY_CONTROL)
-                && mob.getPersistentData().getUUID(MindControlEffect.NBT_KEY_CONTROL).equals(owner.getUUID()) && mob.getTarget() != owner
-                && mob.getPersistentData().getBoolean(MindControlEffect.NBT_KEY_SUMMON);
     }
 }

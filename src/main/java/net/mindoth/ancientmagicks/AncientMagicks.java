@@ -9,9 +9,6 @@ import net.mindoth.ancientmagicks.registries.attribute.ModAttributes;
 import net.mindoth.ancientmagicks.registries.recipe.ModRecipes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionBrewing;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -45,8 +42,6 @@ public class AncientMagicks {
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
-        ModEffects.EFFECTS.register(modEventBus);
-        ModPotions.POTIONS.register(modEventBus);
         ModParticles.PARTICLES.register(modEventBus);
         ModModifiers.LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
         ModModifiers.LOOT_FUNCTIONS.register(modEventBus);
@@ -72,35 +67,12 @@ public class AncientMagicks {
         event.enqueueWork(() -> {
             ModNetwork.init();
             ITEM_LIST = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
-
-            PotionBrewing.addMix(Potions.AWKWARD, Items.ELYTRA, ModPotions.FLIGHT_POTION.get());
-            PotionBrewing.addMix(ModPotions.FLIGHT_POTION.get(), Items.REDSTONE, ModPotions.LONG_FLIGHT_POTION.get());
-            PotionBrewing.addMix(Potions.AWKWARD, Items.FEATHER, ModPotions.FALL_CONTROL_POTION.get());
-            PotionBrewing.addMix(ModPotions.FALL_CONTROL_POTION.get(), Items.REDSTONE, ModPotions.LONG_FALL_CONTROL_POTION.get());
-            PotionBrewing.addMix(Potions.AWKWARD, Items.POTATO, ModPotions.SLEEP_POTION.get());
-            PotionBrewing.addMix(ModPotions.SLEEP_POTION.get(), Items.REDSTONE, ModPotions.LONG_SLEEP_POTION.get());
-            PotionBrewing.addMix(Potions.AWKWARD, Items.ENDER_PEARL, ModPotions.TELEBLOCK_POTION.get());
-            PotionBrewing.addMix(ModPotions.TELEBLOCK_POTION.get(), Items.REDSTONE, ModPotions.LONG_TELEBLOCK_POTION.get());
-            PotionBrewing.addMix(Potions.AWKWARD, ModItems.WOOL_CLOTH.get(), ModPotions.POLYMORPH_POTION.get());
-            PotionBrewing.addMix(ModPotions.POLYMORPH_POTION.get(), Items.REDSTONE, ModPotions.LONG_POLYMORPH_POTION.get());
-            PotionBrewing.addMix(ModPotions.POLYMORPH_POTION.get(), Items.FERMENTED_SPIDER_EYE, ModPotions.CHAOTIC_POLYMORPH_POTION.get());
-            PotionBrewing.addMix(ModPotions.LONG_POLYMORPH_POTION.get(), Items.FERMENTED_SPIDER_EYE, ModPotions.CHAOTIC_POLYMORPH_POTION.get());
         });
     }
 
     public static void createLists(Random seededRand) {
         createArcaneDustList(seededRand);
     }
-
-    /*public static boolean isSpellEnabled(SpellItem spell) {
-        List<SpellItem> disabledSpells = Lists.newArrayList();
-        List<String> configString = AncientMagicksCommonConfig.DISABLED_SPELLS.get();
-        configString.forEach(string -> {
-            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
-            if ( item instanceof SpellItem spellItem ) disabledSpells.add(spellItem);
-        });
-        return disabledSpells.isEmpty() || !disabledSpells.contains(spell);
-    }*/
 
     public static List<Item> ARCANE_DUST_LIST = Lists.newArrayList();
 
@@ -143,13 +115,6 @@ public class AncientMagicks {
 
     //How many Color Runes should be in a Spell Code.
     public static int comboSizeCalc() {
-        //return (n * (n + 2) * (n + 1)) >= (6 * SPELL_LIST.size());
-        /*int returnValue = 0;
-        if ( (56 * (56 + 2) * (56 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 3;
-        else if ( (126 * (126 + 2) * (126 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 4;
-        else if ( (252 * (252 + 2) * (252 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 5;
-        else if ( (462 * (462 + 2) * (462 + 1)) >= (6 * SPELL_LIST.size()) ) returnValue = 6;
-        return returnValue;*/
         return 3;
     }
 }

@@ -1,7 +1,7 @@
 package net.mindoth.ancientmagicks.event;
 
 import net.mindoth.ancientmagicks.AncientMagicks;
-import net.mindoth.ancientmagicks.capability.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.capability.playermagic.PlayerMagickProvider;
 import net.mindoth.ancientmagicks.network.ModNetwork;
 import net.mindoth.ancientmagicks.network.PacketSyncClientMana;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +27,7 @@ public class ServerEvents {
         CompoundTag playerData = player.getPersistentData();
         CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
         if ( event.getEntity() instanceof ServerPlayer serverPlayer ) {
-            serverPlayer.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
+            serverPlayer.getCapability(PlayerMagickProvider.PLAYER_MAGICK).ifPresent(magic -> {
                 if ( data.getBoolean(NBT_KEY_NOT_FIRST_LOGIN) ) ModNetwork.sendToPlayer(new PacketSyncClientMana(magic.getCurrentMana()), serverPlayer);
                 else MagickEvents.changeMagick(serverPlayer, Integer.MIN_VALUE);
             });

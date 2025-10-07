@@ -1,0 +1,29 @@
+package net.mindoth.ancientmagicks.capability.playermagic;
+
+import net.minecraft.nbt.CompoundTag;
+
+public class PlayerMagick {
+
+    public static final String AM_MAGICK = "am_magick";
+    public static final String AM_CURRENT_MANA = "am_current_mana";
+
+    private double currentMana;
+    public double getCurrentMana() {
+        return currentMana;
+    }
+    public void setCurrentMana(double currentMana) {
+        this.currentMana = currentMana;
+    }
+
+    public void copyFrom(PlayerMagick source) {
+        this.currentMana = source.currentMana;
+    }
+
+    public void saveNBTData(CompoundTag tag) {
+        tag.putDouble(AM_CURRENT_MANA, this.currentMana);
+    }
+
+    public void loadNBTData(CompoundTag tag) {
+        this.currentMana = tag.getDouble(AM_CURRENT_MANA);
+    }
+}

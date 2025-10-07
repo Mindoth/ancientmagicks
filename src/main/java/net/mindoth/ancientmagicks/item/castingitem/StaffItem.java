@@ -2,7 +2,7 @@ package net.mindoth.ancientmagicks.item.castingitem;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.mindoth.ancientmagicks.capability.playermagic.PlayerMagicProvider;
+import net.mindoth.ancientmagicks.capability.playermagic.PlayerMagickProvider;
 import net.mindoth.ancientmagicks.event.CastingValidator;
 import net.mindoth.ancientmagicks.item.RuneItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
@@ -66,7 +66,7 @@ public class StaffItem extends CastingItem implements Vanishable {
             return;
         }
         ItemStack scroll = SpellBookItem.getActiveScrollFromBook(book);
-        player.getCapability(PlayerMagicProvider.PLAYER_MAGIC).ifPresent(magic -> {
+        player.getCapability(PlayerMagickProvider.PLAYER_MAGICK).ifPresent(magic -> {
             List<RuneItem> runeList = CastingValidator.getSpellStackFromScroll(scroll);
             int manaCost = 0;
             //for ( SpellComponentItem item : runeList ) manaCost += item.getCost();

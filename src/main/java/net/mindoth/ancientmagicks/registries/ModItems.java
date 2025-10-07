@@ -32,6 +32,9 @@ public class ModItems {
     public static final RegistryObject<Item> ARCANE_DUST = ITEMS.register("arcane_dust",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> RUNE_ESSENCE = ITEMS.register("rune_essence",
+            () -> new Item(new Item.Properties()));
+
 
     //Equipment
     public static final RegistryObject<Item> WOODEN_STAFF = ITEMS.register("wooden_staff",
@@ -75,10 +78,7 @@ public class ModItems {
             () -> new ParchmentItem(new Item.Properties(), 27));
 
 
-    //REVAMPED RUNES
-    public static final RegistryObject<Item> RUNE_ESSENCE = ITEMS.register("rune_essence",
-            () -> new Item(new Item.Properties()));
-
+    //RUNES
     public static final RegistryObject<Item> BLUE_RUNE = ITEMS.register("blue_rune",
             () -> new ColorRuneItem(new Item.Properties(), "\u00A7b"));
 
@@ -125,6 +125,12 @@ public class ModItems {
     public static final RegistryObject<Item> SPATIAL_RUNE_ITEM = ITEMS.register("spatial_rune",
             () -> new SpatialRuneItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> ENTITY_FILTER_ITEM_RUNE_ITEM = ITEMS.register("entity_filter_item_rune",
+            () -> new EntityFilterItemRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> ENTITY_FILTER_LIVING_RUNE_ITEM = ITEMS.register("entity_filter_living_rune",
+            () -> new EntityFilterLivingRuneItem(new Item.Properties()));
+
 
     public static final RegistryObject<Item> INTEGER_ONE_RUNE_ITEM = ITEMS.register("integer_one_rune",
             () -> new IntegerOneRuneItem(new Item.Properties()));
@@ -150,6 +156,15 @@ public class ModItems {
     public static final RegistryObject<Item> PURGE_RUNE_ITEM = ITEMS.register("purge_rune",
             () -> new PurgeRuneItem(new Item.Properties()));
 
+    public static final RegistryObject<Item> BOOLEAN_TRUE_RUNE_ITEM = ITEMS.register("boolean_true_rune",
+            () -> new BooleanTrueRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> BOOLEAN_FALSE_RUNE_ITEM = ITEMS.register("boolean_false_rune",
+            () -> new BooleanFalseRuneItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> VECTOR_RUNE_ITEM = ITEMS.register("vector_rune",
+            () -> new VectorRuneItem(new Item.Properties()));
+
     //Power Runes
     public static final RegistryObject<Item> EXCAVATE_RUNE_ITEM = ITEMS.register("excavate_rune",
             () -> new ExcavateRuneItem(new Item.Properties()));
@@ -168,27 +183,4 @@ public class ModItems {
 
     public static final RegistryObject<Item> ALCHEMY_RUNE_ITEM = ITEMS.register("alchemy_rune",
             () -> new AlchemyRuneItem(new Item.Properties()));
-
-    /*
-    public static final RegistryObject<Item> TARGET_ENTITY_RUNE_ITEM = ITEMS.register("target_entity_rune",
-            () -> new TargetEntityRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> AREA_TARGET_ENTITY_RUNE_ITEM = ITEMS.register("area_target_entity_rune",
-            () -> new AreaTargetEntityRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> TARGET_BLOCK_RUNE_ITEM = ITEMS.register("target_block_rune",
-            () -> new TargetBlockRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> AREA_TARGET_BLOCK_RUNE_ITEM = ITEMS.register("area_target_block_rune",
-            () -> new AreaTargetBlockRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> TARGET_FACE_RUNE_ITEM = ITEMS.register("target_face_rune",
-            () -> new TargetFaceRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> AREA_TARGET_FACE_RUNE_ITEM = ITEMS.register("area_target_face_rune",
-            () -> new AreaTargetFaceRuneItem(new Item.Properties()));
-
-    public static final RegistryObject<Item> TARGET_POSITION_RUNE_ITEM = ITEMS.register("target_position_rune",
-            () -> new TargetPositionRuneItem(new Item.Properties()));
-     */
 }

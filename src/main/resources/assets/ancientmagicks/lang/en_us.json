@@ -88,7 +88,14 @@
   "item.ancientmagicks.spatial_rune": "Spatial Rune",
   "item.ancientmagicks.alchemy_rune": "Alchemy Rune",
   "item.ancientmagicks.block_face_rune": "Block Face Rune",
+  "item.ancientmagicks.entity_filter_item_rune": "Entity Filter Item Rune",
+  "item.ancientmagicks.entity_filter_living_rune": "Entity Filter Living Rune",
+  "item.ancientmagicks.boolean_true_rune": "Boolean True Rune",
+  "item.ancientmagicks.boolean_false_rune": "Boolean False Rune",
+  "item.ancientmagicks.vector_rune": "Vector Rune",
 
+
+  "tooltip.ancientmagicks.book_owner": "Owner: ",
   "tooltip.ancientmagicks.any": "Any",
   "tooltip.ancientmagicks.null": "Null",
   "tooltip.ancientmagicks.vector": "Vector",
@@ -96,77 +103,5 @@
   "tooltip.ancientmagicks.block": "Block",
   "tooltip.ancientmagicks.integer": "Integer",
   "tooltip.ancientmagicks.position": "Position",
-
-
-  "effect.ancientmagicks.mind_control": "Mind Controlled",
-  "effect.ancientmagicks.polymorph": "Polymorphed",
-  "item.minecraft.potion.effect.polymorph_potion": "Potion of Polymorph",
-  "item.minecraft.potion.effect.long_polymorph_potion": "Potion of Polymorph",
-  "item.minecraft.splash_potion.effect.polymorph_potion": "Splash Potion of Polymorph",
-  "item.minecraft.splash_potion.effect.long_polymorph_potion": "Splash Potion of Polymorph",
-  "item.minecraft.lingering_potion.effect.polymorph_potion": "Lingering Potion of Polymorph",
-  "item.minecraft.lingering_potion.effect.long_polymorph_potion": "Lingering Potion of Polymorph",
-  "item.minecraft.tipped_arrow.effect.polymorph_potion": "Arrow of Polymorph",
-  "item.minecraft.tipped_arrow.effect.long_polymorph_potion": "Arrow of Polymorph",
-
-  "effect.ancientmagicks.chaotic_polymorph": "Chaotic Polymorph",
-  "item.minecraft.potion.effect.chaotic_polymorph_potion": "Potion of Chaotic Polymorph",
-  "item.minecraft.splash_potion.effect.chaotic_polymorph_potion": "Splash Potion of Chaotic Polymorph",
-  "item.minecraft.lingering_potion.effect.chaotic_polymorph_potion": "Lingering Potion of Chaotic Polymorph",
-  "item.minecraft.tipped_arrow.effect.chaotic_polymorph_potion": "Arrow of Chaotic Polymorph",
-
-  "effect.ancientmagicks.flight": "Flight",
-  "item.minecraft.potion.effect.flight_potion": "Potion of Flight",
-  "item.minecraft.potion.effect.long_flight_potion": "Potion of Flight",
-  "item.minecraft.splash_potion.effect.flight_potion": "Splash Potion of Flight",
-  "item.minecraft.splash_potion.effect.long_flight_potion": "Splash Potion of Flight",
-  "item.minecraft.lingering_potion.effect.flight_potion": "Lingering Potion of Flight",
-  "item.minecraft.lingering_potion.effect.long_flight_potion": "Lingering Potion of Flight",
-  "item.minecraft.tipped_arrow.effect.flight_potion": "Arrow of Flight",
-  "item.minecraft.tipped_arrow.effect.long_flight_potion": "Arrow of Flight",
-
-  "effect.ancientmagicks.fall_control": "Fall Control",
-  "item.minecraft.potion.effect.fall_control_potion": "Potion of Fall Control",
-  "item.minecraft.potion.effect.long_fall_control_potion": "Potion of Fall Control",
-  "item.minecraft.splash_potion.effect.fall_control_potion": "Splash Potion of Fall Control",
-  "item.minecraft.splash_potion.effect.long_fall_control_potion": "Splash Potion of Fall Control",
-  "item.minecraft.lingering_potion.effect.fall_control_potion": "Lingering Potion of Fall Control",
-  "item.minecraft.lingering_potion.effect.long_fall_control_potion": "Lingering Potion of Fall Control",
-  "item.minecraft.tipped_arrow.effect.fall_control_potion": "Arrow of Fall Control",
-  "item.minecraft.tipped_arrow.effect.long_fall_control_potion": "Arrow of Fall Control",
-
-  "effect.ancientmagicks.sleep": "Sleepy",
-  "item.minecraft.potion.effect.sleep_potion": "Potion of Sleep",
-  "item.minecraft.potion.effect.long_sleep_potion": "Potion of Sleep",
-  "item.minecraft.splash_potion.effect.sleep_potion": "Splash Potion of Sleep",
-  "item.minecraft.splash_potion.effect.long_sleep_potion": "Splash Potion of Sleep",
-  "item.minecraft.lingering_potion.effect.sleep_potion": "Lingering Potion of Sleep",
-  "item.minecraft.lingering_potion.effect.long_sleep_potion": "Lingering Potion of Sleep",
-  "item.minecraft.tipped_arrow.effect.sleep_potion": "Arrow of Sleep",
-  "item.minecraft.tipped_arrow.effect.long_sleep_potion": "Arrow of Sleep",
-
-  "effect.ancientmagicks.teleblock": "Teleblocked",
-  "item.minecraft.potion.effect.teleblock_potion": "Potion of Teleblock",
-  "item.minecraft.potion.effect.long_teleblock_potion": "Potion of Teleblock",
-  "item.minecraft.splash_potion.effect.teleblock_potion": "Splash Potion of Teleblock",
-  "item.minecraft.splash_potion.effect.long_teleblock_potion": "Splash Potion of Teleblock",
-  "item.minecraft.lingering_potion.effect.teleblock_potion": "Lingering Potion of Teleblock",
-  "item.minecraft.lingering_potion.effect.long_teleblock_potion": "Lingering Potion of Teleblock",
-  "item.minecraft.tipped_arrow.effect.teleblock_potion": "Arrow of Teleblock",
-  "item.minecraft.tipped_arrow.effect.long_teleblock_potion": "Arrow of Teleblock",
-
-
-
-  "tooltip.ancientmagicks.shift": "Hold SHIFT for more information",
-  "tooltip.ancientmagicks.empty": "Empty",
-  "tooltip.ancientmagicks.book_owner": "Owner: ",
-  "tooltip.ancientmagicks.component_cost": "Cost: ",
-  "tooltip.ancientmagicks.type_form": "Form",
-  "tooltip.ancientmagicks.type_effect": "Effect",
-  "tooltip.ancientmagicks.type_modifier": "Modifier",
-
-
-  "item.ancientmagicks.blank_slate": "Blank Slate",
-  "item.ancientmagicks.spell_scroll": "Spell Scroll",
-  "item.ancientmagicks.spell_pearl": "Spell Pearl"
+  "tooltip.ancientmagicks.boolean": "Boolean"
 }

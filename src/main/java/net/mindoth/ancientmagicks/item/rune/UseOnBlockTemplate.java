@@ -15,7 +15,7 @@ public class UseOnBlockTemplate extends RuneItem {
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
         if ( !spellData.getBlocks().isEmpty() ) {
-            if ( spellData.getLatestBlock() != null ) {
+            if ( spellData.getLatestBlock() != null && !spellData.getLatestBlock().getBlocks().isEmpty() ) {
                 MultiBlockHitResult result = spellData.getLatestBlock();
                 spellData.purgeBlocks(1);
                 final SpellData copyData = SpellData.clone(spellData);

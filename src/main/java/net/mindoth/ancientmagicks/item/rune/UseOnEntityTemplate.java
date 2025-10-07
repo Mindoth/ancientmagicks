@@ -17,16 +17,16 @@ public class UseOnEntityTemplate extends RuneItem {
     @Override
     public SpellData resolve(Entity caster, SpellData spellData) {
         if ( !spellData.getEntities().isEmpty() ) {
-            if ( spellData.getLatestEntity() != null ) {
+            if ( spellData.getLatestEntity() != null && !spellData.getLatestEntity().getEntities().isEmpty() ) {
                 MultiEntityHitResult result = spellData.getLatestEntity();
                 spellData.purgeEntities(1);
                 final SpellData copyData = SpellData.clone(spellData);
-                spellData = result(caster, spellData, result.getEntities().get(0));
+                spellData = result(caster, spellData, result, result.getEntities().get(0));
                 boolean state = spellData.isValid();
                 for ( int i = 1; i < result.getEntities().size(); i++ ) {
                     final SpellData tempData = SpellData.clone(copyData);
                     Entity entity = result.getEntities().get(i);
-                    result(caster, tempData, entity);
+                    result(caster, tempData, result, entity);
                     if ( !state && tempData.isValid() ) state = true;
                 }
                 spellData.setValid(state);
@@ -37,7 +37,7 @@ public class UseOnEntityTemplate extends RuneItem {
         return spellData;
     }
 
-    protected SpellData result(Entity caster, SpellData spellData, Entity entity) {
+    protected SpellData result(Entity caster, SpellData spellData, MultiEntityHitResult result, Entity entity) {
         return spellData;
     }
 

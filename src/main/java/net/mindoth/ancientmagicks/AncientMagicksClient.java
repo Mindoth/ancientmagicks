@@ -3,7 +3,7 @@ package net.mindoth.ancientmagicks;
 import net.mindoth.ancientmagicks.client.gui.screen.*;
 import net.mindoth.ancientmagicks.client.model.SimpleRobeModel;
 import net.mindoth.ancientmagicks.config.ModClientConfig;
-import net.mindoth.ancientmagicks.item.DyeableMagicItem;
+import net.mindoth.ancientmagicks.item.DyeableMagickItem;
 import net.mindoth.ancientmagicks.item.SpellBookItem;
 import net.mindoth.ancientmagicks.item.armor.ColorableMagickArmorItem;
 import net.mindoth.ancientmagicks.item.castingitem.CastingItem;
@@ -46,7 +46,7 @@ public class AncientMagicksClient {
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         for ( Item item : ForgeRegistries.ITEMS.getValues() ) {
             if ( item instanceof ColorableMagickArmorItem || item instanceof ColorableStaffItem || item instanceof SpellBookItem ) {
-                event.getItemColors().register((color, armor) -> armor > 0 ? -1 : ((DyeableMagicItem)color.getItem()).getColor(color), item);
+                event.getItemColors().register((color, armor) -> armor > 0 ? -1 : ((DyeableMagickItem)color.getItem()).getColor(color), item);
             }
         }
     }

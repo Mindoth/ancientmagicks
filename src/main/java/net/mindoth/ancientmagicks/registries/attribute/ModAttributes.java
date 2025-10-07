@@ -14,7 +14,7 @@ public class ModAttributes {
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, AncientMagicks.MOD_ID);
 
     public static final RegistryObject<Attribute> MAGICK = ATTRIBUTES.register("magick_max",
-            () -> (new MagicAttribute("attribute.ancientmagicks.magick", 20.0D, 0.0D, Integer.MAX_VALUE).setSyncable(true)));
+            () -> (new MagickAttribute("attribute.ancientmagicks.magick", 20.0D, 0.0D, Integer.MAX_VALUE).setSyncable(true)));
 
     @SubscribeEvent
     public static void modifyEntityAttributes(EntityAttributeModificationEvent event) {

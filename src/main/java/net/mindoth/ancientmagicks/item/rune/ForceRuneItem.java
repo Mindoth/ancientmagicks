@@ -1,5 +1,6 @@
 package net.mindoth.ancientmagicks.item.rune;
 
+import net.mindoth.ancientmagicks.event.MultiEntityHitResult;
 import net.mindoth.ancientmagicks.event.SpellData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -29,15 +30,15 @@ public class ForceRuneItem extends UseOnEntityTemplate {
     }
 
     @Override
-    protected SpellData result(Entity caster, SpellData spellData, Entity entity) {
+    protected SpellData result(Entity caster, SpellData spellData, MultiEntityHitResult result, Entity entity) {
         if ( !spellData.getVectors().isEmpty() && !spellData.getIntegers().isEmpty() ) {
-            if ( spellData.getLatestVector() != null || spellData.getLatestInteger() != null ) {
+            if ( spellData.getLatestVector() != null && spellData.getLatestInteger() != null ) {
                 Vec3 direction = spellData.getLatestVector();
                 spellData.purgeVectors(1);
                 int power = spellData.getLatestInteger();
                 spellData.purgeIntegers(1);
-                Vec3 towards = entity.position().add(direction.multiply(power, power, power));
-                entity.push(towards.x - entity.position().x, towards.y - entity.position().y, towards.z - entity.position().z);
+                Vec3 towards = entity.position().add(direction);
+                entity.push((towards.x - entity.position().x) * power, (towards.y - entity.position().y) * power, (towards.z - entity.position().z) * power);
                 entity.hurtMarked = true;
             }
             else {
